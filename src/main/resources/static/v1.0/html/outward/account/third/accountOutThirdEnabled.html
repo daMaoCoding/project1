@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="col-sm-9">
+            <form class="form-inline" id="accountFilter">
+                <span class="label label-lg label-purple arrowed-right">盘口</span>
+                <select class="chosen-select width70" name="search_EQ_handicapId">
+                    <option value="" selected="selected">全部</option>
+                </select>
+                <span class="label label-lg label-purple arrowed-right">银行</span>
+                <input type="text" style="height:32px;width:80px;" name="search_LIKE_bankType" placeholder="银行类别" />
+                <span class="label label-lg label-purple arrowed-right">帐号</span>
+                <input type="text" style="height:32px;width:80px;" name="search_LIKE_account" class="input-medium" placeholder="帐号" />
+                <span class="label label-lg label-purple arrowed-right">编号</span>
+                <input type="text" style="height:32px;width:70px;" class="input-medium" placeholder="编号" name="search_LIKE_alias" />
+                <span class="label label-lg label-purple arrowed-right">操作人</span>
+                <input type="text" style="height:32px;width:70px;" class="input-medium" placeholder="操作人" name="search_LIKE_operator" />
+                <span class="label label-lg label-purple arrowed-right">层级</span>
+                <label class="inline">
+                    <input type="checkbox" name="currSysLevel" class="ace" value="1" checked="checked">
+                    <span class="lbl">外层</span>
+                </label>
+                <label class="inline">
+                    <input type="checkbox" name="currSysLevel" class="ace" value="2" checked="checked">
+                    <span class="lbl">内层</span>
+                </label>
+                <a type="button" id="outwardAccountBankUsed" style="display: none;padding-left: 1%;" class="btn btn-warning" onclick="openModal();">清算</a>
+            </form>
+        </div>
+        <span class="col-sm-3">
+             <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="searchByFilter();"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button></label>
+             <label class="pull-right inline">&nbsp;&nbsp;</label>
+             <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('accountFilter');"><i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button></label>
+             <label class="pull-right inline">&nbsp;&nbsp;</label>
+             <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold contentRight" contentRight="OutwardAccountThirdEnabled:Create:*" onclick="addAccount();"><i class="ace-icon fa fa-plus bigger-100 green"></i>新增</button></label>
+		</span>
+        <table id="dynamic-table" class="table table-bordered table-hover  no-margin-bottom">
+            <thead>
+            <tr>
+                <th style="width:4%;">盘口</th>
+                <th style="width:3%;">层级</th>
+                <th style="width:10%;">账号</th>
+                <th style="width:9%;">第三方余额</th>
+                <th style="width:7%;">平台已确认</th>
+                <th style="width:7%;">第三方已确认</th>
+                <th style="width:10%;">转出对账</th>
+                <th style="width:10%;">转入对账</th>
+                <th style="width:5%;">操作人</th>
+                <th style="width:30%;">操作</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="accountPage"></div>
+    </div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalOutAccount.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalTransferBalance.js"></script>

@@ -1,0 +1,123 @@
+<div class="row">
+	<!-- 主页面查询条件 -->
+	<div id="accountFilter" style="z-index:1" class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left">
+		<div class="col-sm-12">
+			<div class="col-sm-3">
+				<span class="label label-lg label-purple arrowed-right">&nbsp;&nbsp;盘口&nbsp;&nbsp;</span>
+				<select class="chosen-select width150" name="search_EQ_handicapId"></select>
+			</div>
+			<div class="col-sm-2">
+				<span class="label label-lg label-purple arrowed-right">账号</span>
+				<input type="text" style="height:32px;width: 95px;" name="search_LIKE_account" class="input-medium" placeholder="帐号" />
+			</div>
+			<div class="col-sm-7">
+				<input type="hidden" id="refresh_inFromCommBank"  >
+				<span class="label label-lg label-purple arrowed-right">刷新</span>
+				<div id="refreshAccountListSelect"></div>
+				&nbsp;&nbsp;&nbsp;
+				<span class="label label-lg label-purple arrowed-right">层级</span>
+				&nbsp;
+				<label class="inline">
+					<input type="radio" name="currSysLevel" class="ace defaultCheck" checked value="" >
+					<span class="lbl">全部</span>
+				</label>
+				<label class="inline">
+					<input type="radio" name="currSysLevel" class="ace" value="1" >
+					<span class="lbl">外层</span>
+				</label>
+				<label class="inline">
+					<input type="radio" name="currSysLevel" class="ace" value="2" >
+					<span class="lbl">内层</span>
+				</label>
+				<label class="inline">
+					<input type="radio" name="currSysLevel" class="ace" value="8" >
+					<span class="lbl">指定层</span>
+				</label>
+				
+				<label class="pull-right inline">
+					<button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('accountFilter');">
+						<i class="ace-icon fa fa-refresh bigger-100 green"></i><span>重置</span>
+					</button>
+				</label>
+			</div>
+		</div>
+		<div  class="col-sm-12" style="height:10px;"></div>
+		<div class="col-sm-12">
+			<div class="col-sm-3">
+				<span class="label label-lg label-purple arrowed-right">&nbsp;&nbsp;编号&nbsp;&nbsp;</span>
+				<input type="text" style="height:32px" name="search_LIKE_alias" class="input-medium" placeholder="编号" />
+			</div>
+			<div class="col-sm-2">
+				<span class="label label-lg label-purple arrowed-right">银行</span>
+				<select name="search_LIKE_bankType" class="chosen-select" style="height:32px;width:100px;">
+					<option>请选择</option>
+				</select>
+			</div>
+			<div class="col-sm-7">
+				<span class="label label-lg label-danger arrowed-right">状态</span>
+				<label class="inline"><input type="checkbox" checked="checked" name="search_IN_status_type" class="ace" value="1"/><span class="lbl">在用&nbsp;&nbsp;</span></label>
+				<label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace defaultNoCheck" value="5"/><span class="lbl">可用&nbsp;&nbsp;</span></label>
+				<label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace defaultNoCheck" value="4"/><span class="lbl">停用&nbsp;&nbsp;</span></label>
+				
+				<span class="label label-lg label-purple arrowed-right">来源</span>
+				&nbsp;
+				<label class="inline">
+					<input type="radio" name="flag" class="ace defaultCheck" checked value="" >
+					<span class="lbl">全部</span>
+				</label>
+				<label class="inline">
+					<input type="radio" name="flag" class="ace" value="0" >
+					<span class="lbl">PC</span>
+				</label>
+				<label class="inline">
+					<input type="radio" name="flag" class="ace" value="2" >
+					<span class="lbl">返利网</span>
+				</label>
+				<a type="button" id="outwardAccountBankUsed" style="display: none;padding-left: 2%;" class="btn btn-warning" onclick="openModal();">清算</a>
+				&nbsp;
+				<label class="pull-right inline">
+					<button class="btn btn-xs btn-white btn-info btn-bold" onclick="refreshContent(0);">
+						<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+					</button>
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12">
+    	<!-- 设备状态 -->
+		<input type="hidden"  id="deviceStatus"  value="online">
+		<ul class="nav nav-tabs">
+			<li onclick="changeDevice('')"  ><a data-toggle="tab" >全部&nbsp;<span class="badge badge-danger" id="totalIdSize">0</span></a></li>
+			<li onclick="changeDevice('online')"  class="active"><a data-toggle="tab" >在线&nbsp;<span class="badge badge-danger" id="onlineSize">0</span></a></li>
+			<li onclick="changeDevice('stop')"  ><a data-toggle="tab" >暂停&nbsp;<span class="badge badge-danger" id="stopSize">0</span></a></li>
+			<li onclick="changeDevice('offline')"  ><a data-toggle="tab" >离线&nbsp;<span class="badge badge-danger" id="offlineSize">0</span></a></li>
+		</ul>
+		<table id="dynamic-table" class="table table-striped table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th style='width:7%;'>盘口</th>
+					<th style='width:7%;'>层级</th>
+					<th style='width:6%;'>编号</th>
+					<th style='width:14%;'>账号</th>
+					<th style='min-width:60px;'>状态&nbsp;
+					<i class="ace-icon fa fa-info-circle bigger-150 red" style="cursor:pointer " 
+					title="说明：
+	“在线”，指的是设备实时在线
+	“暂停”，指的是兼职人员自己操作暂停了设备运作，或在PC监控/工具端 对账号操作了暂停
+	“离线”，指的是设备离线，需要客服尽快联系兼职人员处理"></i></th>
+					<th style='width:5%;'>来源</th>
+					<th style='width:10%;'>银行余额</th>
+					<th style="width:8%;">系统余额</th>
+					<th style='width:8%;'>转入对账</th>
+					<th style='width:8%;'>转出记录</th>
+					<th style='width:13%;'>操作</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		<div id="accountPage"></div>
+	</div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalTransferBalance.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>

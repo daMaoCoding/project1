@@ -1,0 +1,540 @@
+
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content" id="fczl">
+			<div class="row">
+				<div class="col-xs-12">
+					<h3 class="row header smaller lighter blue">
+						<div class="col-sm-12">
+							<form class="form-inline">
+							    <span class="label label-lg label-pink arrowed-right">盘口</span>
+								<select name="handicap" onchange="searQuery()" id="handicap" class="chosen-select form-control"   style="height:32px" >
+									
+								</select>
+								<span class="label label-lg label-pink arrowed-right">账号</span>
+								<input class="form-control" style="width: 80px;" id="fromaccount" type="text" name="fromaccount" />
+								<span class="label label-lg label-pink arrowed-right">开户人</span>
+								<input style="width: 65px;" class="form-control" id=accountOwner type="text" name="accountOwner" />
+								<span class="label label-lg label-pink arrowed-right">银行类别</span>
+								 <select onchange="$('#searhByCondition').click()" id="bankType" name="bankType" class="chosen-select form-control" style="height:32px;width:100px;">
+	                                 <option value="">请选择</option>
+	                             </select>
+								<div class="input-group">
+									<input class="form-control date-range-picker" onclick="clearRadioValue('form-field-checkbox');" placeholder="自定义时间段" type="text" style="width: 210px;" name="startAndEndTime" id="startAndEndTime" />
+								</div>
+								<!-- <label class="inline">
+									<input type="radio" checked="checked" onclick="clearStartAndEndTime()" value="today" name="form-field-checkbox" class="ace" />
+									<span class="lbl"> 今日</span>
+								</label> -->
+								<label class="inline">
+									<input type="radio" checked="checked" onclick="clearStartAndEndTime()" value="thisWeek" name="form-field-checkbox" class="ace" />
+									<span class="lbl"> 昨日</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="clearStartAndEndTime()" value="week" name="form-field-checkbox" class="ace" />
+									<span class="lbl"> 本周</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="clearStartAndEndTime()" value="lastweek" name="form-field-checkbox" class="ace" />
+									<span class="lbl"> 上周</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="clearStartAndEndTime()" value="thisMonth" name="form-field-checkbox" class="ace" />
+									<span class="lbl"> 本月</span>
+								</label>
+								<!-- <label class="inline">
+									<input type="radio" onclick="clearStartAndEndTime()" value="lastMonth" name="form-field-checkbox" class="ace" />
+									<span class="lbl"> 上月</span>
+								</label> -->
+								<label class="pull-right inline">
+									<button id="searhByCondition" type="button" name="searhByCondition" class="btn btn-xs btn-white btn-info btn-bold">
+										<i class="ace-icon fa fa-search bigger-100 green"></i>
+										查询
+									</button>
+								</label>
+							</form>
+					</h3>
+
+					<div class="tabbable">
+						<ul class="nav nav-tabs" id="myTab3">
+							<li style="display: none;" class="active">
+								<a id="bank" onclick="changevalue(0);" data-toggle="tab" href="#tab1">
+								   <i class="pink ace-icon fa 	fa-credit-card bigger-110"></i>入款银行卡中转
+								</a>
+							</li>
+							<li class="active">
+								<a id="thirdpartypay" onclick="changevalue(3);" data-toggle="tab" href="#tab4">
+								   <i class="ace-icon fa fa-briefcase"></i>下发银行卡中转(转出)
+								</a>
+							</li>
+							<li>
+								<a id="standbyCard" onclick="changevalue(4);" data-toggle="tab" href="#tab8">
+								   <i class="ace-icon fa fa-briefcase"></i>备用银行卡中转(转出)
+								</a>
+							</li>
+							<li>
+								<a id="sendCard" data-toggle="tab" onclick="changevalue(8);" href="#sendCardCent">
+									<i class="pink ace-icon fa 	fa-credit-card bigger-110"></i>下发银行卡(转入)
+								</a>
+							</li>
+							<li>
+								<a id="standbyCardd" data-toggle="tab" onclick="changevalue(9);" href="#standbyCardCent">
+									<i class="pink ace-icon fa 	fa-credit-card bigger-110"></i>备用银行卡(转入)
+								</a>
+							</li>
+							<li style="display: none;">
+								<a id="third" onclick="changevalue(6);" data-toggle="tab" href="#tab6">
+								   <i class="ace-icon fa fa-briefcase"></i>入款第三方中转
+								</a>
+							</li>
+							<!-- <li>
+							  <a id="zhifubao" onclick="changevalue(1);" data-toggle="tab" href="#tab2">
+							  	   <i class="ace-icon fa fa-rocket"></i>入款支付宝中转
+							  </a>
+							 </li>
+							<li>
+								<a id="weixin" onclick="changevalue(2);" data-toggle="tab" href="#tab3">
+								   <i class="blue ace-icon fa fa-comments-o bigger-110"></i>入款微信中转
+								</a>
+							</li> -->
+							
+							<li>
+								<a id="weixin" onclick="changevalue(7);" data-toggle="tab" href="#tab7">
+								   <i class="ace-icon fa fa-eye"></i>中转隔天排查
+								</a>
+							</li>
+							
+							<li>
+								<a onclick="showExportModal_InOut(-8,'income')" type="button"  class="btn btn-xs btn-white btn-primary btn-bold">
+                                        <i class="ace-icon fa fa-list  bigger-100 blue"></i>余额</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+						
+						<!-- ----------------------------入款银行卡中转start------------------------------ -->
+						
+							<div style="display: none;" id="tab1" >
+								<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+								<thead>
+									<tr>
+										<th rowspan="2">序号</th>
+										<th rowspan="2">盘口</th>
+										<th rowspan="2">汇出账号</th>
+										<th colspan="3" class="center">流水</th>
+										<th colspan="2" class="center">系统</th>
+										<th rowspan="2" colspan="2" class="center">明细</th>
+									</tr>
+									<tr>
+										<th>金额</th>
+										<th>手续费</th>
+										<th>笔数</th>
+										<th>金额</th>
+										<th>笔数</th>
+									</tr>
+								</thead>
+								<tbody id="total_tbody_Bankcard">
+									
+								</tbody>
+							</table>
+							<div id="fininStatBankcardPage"></div>
+							</div>
+							<!-- ----------------------------入款银行卡中转end------------------------------ -->
+							
+							<!-- ----------------------------入款第三方中转start------------------------------ -->
+						
+							<div id="tab6" class="tab-pane">
+								<span style="float:right;">
+									<a class="btn btn-xs btn-white btn-primary btn-bold" onclick="showMoalThirdParty();">
+										<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+							    	</a>
+						    	</span>
+								<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th rowspan="2">序号</th>
+											<th rowspan="2">盘口</th>
+											<th rowspan="2">汇出账号</th>
+											<th rowspan="2">账号类型</th>
+											<th colspan="3" class="center">系统</th>
+											<th rowspan="2" colspan="2" class="center">明细</th>
+										</tr>
+										<tr>
+											<th>金额</th>
+											<th>手续费</th>
+											<th>笔数</th>
+										</tr>
+									</thead>
+									<tbody id="total_tbody_third">
+										
+									</tbody>
+							  </table>
+							  <div id="fininthirdPage"></div>
+							</div>
+							<!-- ----------------------------入款第三方中转end------------------------------ -->
+
+
+                        <!-- ----------------------------入款支付宝中转start------------------------------ -->
+							<div id="tab2" class="tab-pane">
+								<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th rowspan="2">汇入账号</th>
+											<th rowspan="2">账号类型</th>
+											<th colspan="3" class="center">流水</th>
+											<th colspan="3" class="center">系统</th>
+											<th rowspan="2" colspan="2" class="center">明细</th>
+										</tr>
+										<tr>
+											<th>金额</th>
+											<th>手续费</th>
+											<th>笔数</th>
+											<th>金额</th>
+											<th>手续费</th>
+											<th>笔数</th>
+										</tr>
+									</thead>
+									<tbody id="total_tbody_Paytreasure">
+									  
+									</tbody>
+								</table>
+								<div id="fininStatPaytreasurePage"></div>
+							</div>
+	                <!-- ----------------------------入款支付宝中转end------------------------------ -->
+
+
+
+
+
+                       <!-- ----------------------------入款微信中转start------------------------------ -->
+							<div id="tab3" class="tab-pane">
+								<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th rowspan="2">汇入账号</th>
+											<th rowspan="2">账号类型</th>
+											<th colspan="3" class="center">流水</th>
+											<th colspan="3" class="center">系统</th>
+											<th rowspan="2" colspan="2" class="center">明细</th>
+										</tr>
+										<tr>
+											<th>金额</th>
+											<th>手续费</th>
+											<th>笔数</th>
+											<th>金额</th>
+											<th>手续费</th>
+											<th>笔数</th>
+										</tr>
+									</thead>
+									<tbody id="total_tbody_WeChat">
+									
+									</tbody>
+								</table>
+								<div id="fininStatWeChatPage"></div>
+							</div>
+				<!-- ----------------------------入款微信中转end------------------------------ -->
+				
+				
+				
+				
+				
+				
+				<!-- ----------------------------下发银行卡中转start------------------------------ -->
+							<div id="tab4" class="tab-pane in active">
+								<span style="float:right;"><a class="btn btn-xs btn-white btn-primary btn-bold" onclick="showMoalSender();">
+										<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+								    </a></span>
+								<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+									<tr>
+										<th rowspan="2">序号</th>
+										<th rowspan="2">盘口</th>
+										<th rowspan="2">汇入账号</th>
+										<th colspan="3" class="center">流水</th>
+										<th colspan="2" class="center">系统</th>
+										<th rowspan="2" colspan="2" class="center">明细</th>
+									</tr>
+									<tr>
+										<th>金额</th>
+										<th>手续费</th>
+										<th>笔数</th>
+										<th>金额</th>
+										<th>笔数</th>
+									</tr>
+									</thead>
+									<tbody id="total_tbody_Thethirdparty">
+
+									</tbody>
+								</table>
+								<div id="fininStatThethirdpartyPage"></div>
+							</div>
+				<!-- ----------------------------入款第三方中转end------------------------------ -->
+				
+				<!-- ----------------------------备用银行卡中转start------------------------------ -->
+							<div id="tab8" class="tab-pane">
+								<span style="float:right;"><a class="btn btn-xs btn-white btn-primary btn-bold" onclick="showMoalStandby();">
+										<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+								    </a></span>
+								<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+									<tr>
+										<th rowspan="2">序号</th>
+										<th rowspan="2">盘口</th>
+										<th rowspan="2">汇入账号</th>
+										<th colspan="3" class="center">流水</th>
+										<th colspan="2" class="center">系统</th>
+										<th rowspan="2" colspan="2" class="center">明细</th>
+									</tr>
+									<tr>
+										<th>金额</th>
+										<th>手续费</th>
+										<th>笔数</th>
+										<th>金额</th>
+										<th>笔数</th>
+									</tr>
+									</thead>
+									<tbody id="total_tbody_standby">
+
+									</tbody>
+								</table>
+								<div id="fininStatstandbyPage"></div>
+							</div>
+				<!-- ----------------------------入款第三方中转end------------------------------ -->
+							
+							
+							
+				<!-- ----------------------------下发卡中转start------------------------------ -->
+							<div id="tab5" class="tab-pane">
+								<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+									<tr>
+										<th rowspan="2">序号</th>
+										<th rowspan="2">汇入账号</th>
+										<th rowspan="2">账号类型</th>
+										<th colspan="3" class="center">流水</th>
+										<th colspan="3" class="center">系统</th>
+										<th rowspan="2" colspan="2" class="center">明细</th>
+									</tr>
+									<tr>
+										<th>金额</th>
+										<th>手续费</th>
+										<th>笔数</th>
+										<th>金额</th>
+										<th>手续费</th>
+										<th>笔数</th>
+									</tr>
+									</thead>
+									<tbody id="total_tbody_Thesender">
+									
+									</tbody>
+								</table>
+								<div id="ThesenderPage">
+							</div>
+					<!-- ----------------------------下发卡中转end------------------------------ -->	
+						</div>
+						
+					<!-- ----------------------------中转隔天排查---------------------------------------->	
+						<div id="tab7" class="tab-pane">
+							<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+								<thead>
+									<tr>
+										<th>转出账号</th>
+										<th>转入账号</th>
+										<th>金额</th>
+										<th>订单号</th>
+										<th>状态</th>
+										<th>创建时间</th>
+										<th>匹配时间</th>
+									</tr>
+								</thead>
+								<tbody id="screeningTbody">
+									
+								</tbody>
+						  </table>
+						  <div id="screeningPage"></div>
+					</div>
+					
+					<div id="sendCardCent" class="tab-pane">
+									<span style="float:right;">
+										<a onclick="showExportModal_InOut(0,'income')" type="button"  class="btn btn-xs btn-white btn-primary btn-bold">
+                                          <i class="ace-icon fa fa-list  bigger-100 blue"></i>导出</a>
+									</span>
+									<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+										<tr>
+											<th style="width: 3%">序号</th>
+											<th>盘口</th>
+											<th>收款账号</th>
+											<th>余额</th>
+											<th>金额</th>
+											<th style="display: none;">手续费</th>
+											<th>笔数</th>
+											<th>操作</th>
+										</tr>
+										</thead>
+										<tbody id="total_tbody_sendCardCent">
+											
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<!-- 分页 -->
+									<div id="fininStatSendCardCentPage"></div>
+								</div>
+								
+								<div id="standbyCardCent" class="tab-pane">
+									<span style="float:right;">
+										<a onclick="showExportModal_InOut(-1,'income')" type="button"  class="btn btn-xs btn-white btn-primary btn-bold">
+                                          <i class="ace-icon fa fa-list  bigger-100 blue"></i>导出</a>
+									</span>
+									<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+										<tr>
+											<th style="width: 3%">序号</th>
+											<th>盘口</th>
+											<th>收款账号</th>
+											<th>余额</th>
+											<th>金额</th>
+											<th style="display: none;">手续费</th>
+											<th>笔数</th>
+											<th>操作</th>
+										</tr>
+										</thead>
+										<tbody id="total_tbody_standbyCard">
+											
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<!-- 分页 -->
+									<div id="fininStatStandbyCardPage"></div>
+								</div>
+					
+					
+					</div>
+				</div><!-- /.col -->
+			</div><!-- /.row -->
+
+		</div>
+	</div>
+</div>
+
+
+<!-- 导出选择弹出框 -->
+<div id="choiceExportModal" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<input type="hidden" id="exportType"/>
+	<div class="modal-dialog modal-lg" style="width:400px;">
+	<div class="modal-content">
+		<div class="modal-header no-padding text-center">
+			<div class="table-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="white">&times;</span>
+				</button>导出
+			</div>
+		</div>
+		<div class="modal-body">
+			<div class="widget-box">
+				<div class="widget-header">
+					<h4 class="smaller">
+						中转明细
+					</h4>
+				</div>
+				<div class="widget-body">
+					<div class="widget-main">
+						<label class="control-label bolder blue">时间</label>
+						<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+						<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime_sys" style="height: 32px;width:290px;"/>
+						<div class="control-group">
+							<div class="radio">
+								<span class="lbl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								<label>
+									<input name="parentfieldval_sys" type="radio" class="ace" value="today">
+									<span class="lbl">今日</span>
+								</label>
+								<label>
+									<input name="parentfieldval_sys" type="radio" class="ace" value="yesterday">
+									<span class="lbl">昨日</span>
+								</label>
+								<label>
+									<input name="parentfieldval_sys" type="radio" class="ace" value="thisMonth">
+									<span class="lbl">本月</span>
+								</label>
+							</div>
+						</div>
+						<div style="text-align:center;">
+							<a class="btn btn-sm btn-success" id="sysLink" onclick="beforeExport(this,'sys','/r/export/exportTransitMacth');">
+								<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="widget-box">
+				<div class="widget-header">
+					<h4 class="smaller">
+						流水明细
+					</h4>
+				</div>
+				<div class="widget-body">
+					<div class="widget-main">
+						<label class="control-label bolder blue">时间</label>
+						<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+						<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime_bank" style="height: 32px;width:290px;"/>
+						<div class="control-group">
+							<div class="radio">
+								<span class="lbl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								<label>
+									<input name="parentfieldval_bank" type="radio" class="ace" value="today">
+									<span class="lbl">今日</span>
+								</label>
+								<label>
+									<input name="parentfieldval_bank" type="radio" class="ace" value="yesterday">
+									<span class="lbl">昨日</span>
+								</label>
+								<label>
+									<input name="parentfieldval_bank" type="radio" class="ace" value="thisMonth">
+									<span class="lbl">本月</span>
+								</label>
+							</div>
+						</div>
+						<div style="text-align:center;">
+							<a class="btn btn-sm btn-success" id="bankLogLink" onclick="beforeExport(this,'bank','/r/export/exportTransitMacth');">
+									<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- modalbox 快捷查询点击导出弹出-->
+<div class="modal inmodal" id="exportParagraph" tabindex="-1" role="dialog"  aria-hidden="true">
+	<div class="form-inline">
+		<div class="modal-dialog modal-lg" style="width: 500px;">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header" style="width: 500px;"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button><span id="contText" style="font-size: 16pt;">导出出款单信息</span></div>
+			</div>
+			<div class="modal-content" style="width: 500px;height: 68px;padding-top: 10px;">
+				<span class="label label-lg label-pink arrowed-right">盘口</span>
+				<select  name="exportHandicap" id="exportHandicap" class="chosen-select form-control"   style="height:32px" >
+					
+				</select>
+				 <div class="input-group">
+					<span class="input-group-addon">
+						<i class="fa fa-calendar bigger-110"></i>
+					</span>
+					<input class="form-control date-range-picker-export" type="text" id="exportStartAndEndTime" name="exportStartAndEndTime" style="height: 32px;width:250px;"/>
+				</div>
+				<a class="btn btn-xs btn-white btn-primary btn-bold" id="exportOut">
+					<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/common_export.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>

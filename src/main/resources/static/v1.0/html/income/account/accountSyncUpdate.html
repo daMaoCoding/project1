@@ -1,0 +1,345 @@
+<div class="row">
+	<div id="accountInfo" class="col-xs-12">
+		<label class="control-label bolder blue">您正在修改此账号与平台的同步设置信息：
+			<a name="account" class='bind_hover_card' data-placement='auto right' data-trigger='hover'></a>&nbsp;&nbsp;&nbsp;&nbsp;
+			<span name="bankType"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+			<span name="bankName"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+			<span name="owner"></span>
+		</label>
+		<label class="pull-right inline">
+			<button class="btn btn-xs btn-white btn-info btn-bold" onclick="window.history.back();">
+				<i class="fa-rotate-left fa fa-search bigger-100 green"></i>返回
+			</button>
+		</label>
+		<h3 class="header smaller lighter green" style="margin-top:0px;"></h3>
+	</div>
+
+	<div class="col-xs-12 col-sm-6 widget-container-col ui-sortable">
+		<div class="widget-box ui-sortable-handle" id="status_widget">
+			<div class="widget-header">
+				<h5 class="widget-title">状态设置</h5>
+				<div class="widget-toolbar">
+					<a href="#" data-action="fullscreen" class="orange2">
+						<i class="ace-icon fa fa-expand"></i>
+					</a>
+					<a onclick="reloadSetting(5)" title="重置">
+						<i class="ace-icon fa fa-refresh"></i>
+					</a>
+					<a href="#" data-action="collapse">
+						<i class="ace-icon fa fa-chevron-up"></i>
+					</a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-main" style="text-align:center;">
+					<span style="width:330px;color:#333">
+						<label class="form-group bl">
+							<input type="radio" name="status" value="5" disabled >
+							<span>新卡</span>
+						</label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<label class="form-group bl">
+							<input type="radio" name="status" value="1">
+							<span>在用</span>
+						</label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<label class="form-group bl">
+							<input type="radio" name="status" value="4">
+							<span>停用</span>
+						</label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<label class="form-group bl">
+							<input type="radio" name="status" value="3">
+							<span>冻结</span>
+						</label><br/>
+						<input name="remark" style="height:32px;width:100%;" class="input-medium" placeholder="改为冻结请输入备注（5-100字）">
+					</span>
+				</div>
+				<div class="widget-toolbox padding-8 clearfix">
+					<button class="btn btn-xs btn-success pull-right contentRight" contentRight="AccountSyncSetting:syncSetting:*"  type="button" onclick="updateSetting(5)">
+						<span class="bigger-110">保存</span>
+						<i class="ace-icon fa fa-check icon-on-right"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<br/>
+		
+		
+		<div class="widget-box ui-sortable-handle" id="level_widget">
+			<div class="widget-header">
+				<h5 class="widget-title">层级设置</h5>
+				<div class="widget-toolbar">
+					<a href="#" data-action="fullscreen" class="orange2">
+						<i class="ace-icon fa fa-expand"></i>
+					</a>
+					<a onclick="reloadSetting(1)" title="重置">
+						<i class="ace-icon fa fa-refresh"></i>
+					</a>
+					<a href="#" data-action="collapse">
+						<i class="ace-icon fa fa-chevron-up"></i>
+					</a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-main">
+					<table id="levelListTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+						<thead>
+							<tr>
+								<th colspan="4" class="red">说明：在列表中勾选后，对应层级的会员才能使用该通道入款</th>
+							</tr>
+							<tr>
+								<th style="width:10%;"></th>
+								<th style="width:20%;">层级名称</th>
+								<th style="width:35%;">单笔最大入款金额</th>
+								<th style="width:35%;">单日累计最大金额</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<div class="widget-toolbox padding-8 clearfix">
+					<button class="btn btn-xs btn-success pull-right contentRight" contentRight="AccountSyncSetting:syncSetting:*"  type="button" onclick="updateSetting(1)">
+						<span class="bigger-110">保存</span>
+						<i class="ace-icon fa fa-check icon-on-right"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<br/>
+		
+		
+	</div>
+	
+	
+	<div class="col-xs-12 col-sm-6 widget-container-col ui-sortable">
+		
+		<div class="widget-box ui-sortable-handle hide" id="info_widget">
+			<div class="widget-header">
+				<h5 class="widget-title">资料设置</h5>
+				<div class="widget-toolbar">
+					<a href="#" data-action="fullscreen" class="orange2">
+						<i class="ace-icon fa fa-expand"></i>
+					</a>
+					<a onclick="reloadSetting(6)" title="重置">
+						<i class="ace-icon fa fa-refresh"></i>
+					</a>
+					<a href="#" data-action="collapse">
+						<i class="ace-icon fa fa-chevron-up"></i>
+					</a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-main" style="text-align:center;">
+					省<i class="ace-icon fa fa-asterisk red"></i>
+					<select name="province_select" class="chosen-select width200">
+						<option value='' >--------------请选择--------------</option>
+					</select>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					市<i class="ace-icon fa fa-asterisk red"></i>
+					<select name="city_select" class="chosen-select width200">
+						<option value='' >--------------请选择--------------</option>
+					</select>
+					<div style="height:10px;">&nbsp;</div>
+					
+					网站提示文字
+					<div style="height:1px;">&nbsp;</div>
+					<textarea name="website" class="input-sm" style="width:100%;max-width:100%;"></textarea>
+					<div style="height:10px;">&nbsp;</div>
+					
+					APP提示文字
+					<div style="height:1px;">&nbsp;</div>
+					<textarea name="app" class="input-sm" style="width:100%;max-width:100%;"></textarea>
+					<div style="height:10px;">&nbsp;</div>
+					
+					WAP提示文字
+					<div style="height:1px;">&nbsp;</div>
+					<textarea name="wap" class="input-sm" style="width:100%;max-width:100%;"></textarea>
+					<div style="height:10px;">&nbsp;</div>
+					停用金额&nbsp;&nbsp;<input type="number" name="warnMoney" class="input-sm" >
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					停用百分比（%）&nbsp;&nbsp;<input type="number" name="stopAmountProportion" class="input-sm" >
+					<div style="height:10px;">&nbsp;</div>
+					<div class="red" style="height:10px;"><strong>说明：停用金额和停用百分比同时设置时，以停用金额为准</strong></div>
+				</div>
+				<div class="widget-toolbox padding-8 clearfix">
+					<button class="btn btn-xs btn-success pull-right contentRight" contentRight="AccountSyncSetting:syncSetting:*"  type="button" onclick="updateSetting(6)">
+						<span class="bigger-110">保存</span>
+						<i class="ace-icon fa fa-check icon-on-right"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<br/>
+		
+	
+		<div class="widget-box ui-sortable-handle hide" id="front_widget">
+			<div class="widget-header">
+				<h5 class="widget-title">前端选择</h5>
+				<div class="widget-toolbar">
+					<a href="#" data-action="fullscreen" class="orange2">
+						<i class="ace-icon fa fa-expand"></i>
+					</a>
+					<a onclick="reloadSetting(2)" title="重置">
+						<i class="ace-icon fa fa-refresh"></i>
+					</a>
+					<a href="#" data-action="collapse">
+						<i class="ace-icon fa fa-chevron-up"></i>
+					</a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-main">
+					<table id="levelListTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+						<thead>
+							<tr>
+								<th colspan="3" class="red">说明：勾选后将在对应的前端使用(通道开启的状态下 只能查看不能修改)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="width:30%;">
+									<input type="checkbox" name="app" style="width:20px;height:20px;">
+									&nbsp;&nbsp;<span>APP</span>
+								</td>
+								<td style="width:30%;">
+									<input type="checkbox" name="website" style="width:20px;height:20px;">
+									&nbsp;&nbsp;<span>网站</span>
+								</td>
+								<td style="width:30%;">
+									<input type="checkbox" name="wap" style="width:20px;height:20px;">
+									&nbsp;&nbsp;<span>WAP</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="widget-toolbox padding-8 clearfix">
+					<button class="btn btn-xs btn-success pull-right contentRight" contentRight="AccountSyncSetting:syncSetting:*"  type="button" onclick="updateSetting(2)">
+						<span class="bigger-110">保存</span>
+						<i class="ace-icon fa fa-check icon-on-right"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<br/>
+		
+		<div class="widget-box ui-sortable-handle hide" id="nickName_widget">
+			<div class="widget-header">
+				<h5 class="widget-title">昵称和备注</h5>
+				<div class="widget-toolbar">
+					<a href="#" data-action="fullscreen" class="orange2">
+						<i class="ace-icon fa fa-expand"></i>
+					</a>
+					<a onclick="reloadSetting(3)" title="重置">
+						<i class="ace-icon fa fa-refresh"></i>
+					</a>
+					<a href="#" data-action="collapse">
+						<i class="ace-icon fa fa-chevron-up"></i>
+					</a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-main">
+					<table id="levelListTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+						<thead>
+							<tr>
+								<th colspan="3" class="red">说明：在列表中勾选后，设置项才会在前端显示</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="width:10%;"><input type="checkbox" name="nickNameIsCheck" style="width:20px;height:20px;"></td>
+								<td style="width:20%;">通道昵称</td>
+								<td style="width:70%;"><input type="text" name="nickName" class="input-sm" style="width:80%;"></td>
+							</tr>
+							<tr>
+								<td style="width:10%;"><input type="checkbox" name="remarkIsCheck" style="width:20px;height:20px;"></td>
+								<td style="width:20%;">备注</td>
+								<td style="width:70%;"><textarea name="remark" class="input-sm" style="width:80%;max-width:80%;"></textarea></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="widget-toolbox padding-8 clearfix">
+					<button class="btn btn-xs btn-success pull-right contentRight" contentRight="AccountSyncSetting:syncSetting:*"  type="button" onclick="updateSetting(3)">
+						<span class="bigger-110">保存</span>
+						<i class="ace-icon fa fa-check icon-on-right"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<br/>
+		
+		<div class="widget-box ui-sortable-handle hide" id="tips_widget">
+			<div class="widget-header">
+				<h5 class="widget-title">APP、WAP银行转账温馨提示</h5>
+				<div class="widget-toolbar">
+					<a href="#" data-action="fullscreen" class="orange2">
+						<i class="ace-icon fa fa-expand"></i>
+					</a>
+					<a onclick="reloadSetting(4)" title="重置">
+						<i class="ace-icon fa fa-refresh"></i>
+					</a>
+					<a href="#" data-action="collapse">
+						<i class="ace-icon fa fa-chevron-up"></i>
+					</a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-main">
+					<table id="levelListTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+						<thead>
+							<tr>
+								<th colspan="2" class="red">说明： 输入字符限制24 ~ 64</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="2">
+									<input type="checkbox" name="useSameTipsIsChoice" style="width:20px;height:20px;">
+									&nbsp;&nbsp;<span>使用统一银行转账微信提示</span>
+								</td>
+							</tr>
+							<tr>
+								<td style="width:30%;">转账温馨<i class="ace-icon fa fa-asterisk red"></i></td>
+								<td style="width:70%;">
+									<textarea name="transfer" class="input-sm" style="width:80%;max-width:80%;max-width:80%;"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td style="width:30%;">转账支付确认码温馨<i class="ace-icon fa fa-asterisk red"></i></td>
+								<td style="width:70%;"><textarea name="transferQr" class="input-sm" style="width:80%;max-width:80%;"></textarea></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="widget-toolbox padding-8 clearfix">
+					<button class="btn btn-xs btn-success pull-right contentRight" contentRight="AccountSyncSetting:syncSetting:*"  type="button" onclick="updateSetting(4)">
+						<span class="bigger-110">保存</span>
+						<i class="ace-icon fa fa-check icon-on-right"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<br/>
+	</div>
+	
+	
+	
+	
+	
+	
+</div>
+
+<div class="row text-center">
+		<button type="button" class="btn btn-danger btn-white btn-bold btn-round" onclick="reloadSetting()">
+			<i class="ace-icon fa fa-refresh icon-on-right"></i>&nbsp;一键重置
+		</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button type="button" class="btn btn-success hide btn-white btn-bold btn-round contentRight" contentright='AccountSyncSetting:syncSetting:*'  onclick="updateSetting()">
+			<i class="ace-icon fa fa-check icon-on-right"></i>&nbsp;一键保存
+		</button>
+</div>
+<br/>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/lib/bootstrap-wysiwyg.js"></script>
+<script type="text/javascript"  src="../javascript/lib/elements.wysiwyg.js"></script>
+<script type="text/javascript"  src="../javascript/lib/ace-extra.js"></script>
+<script type="text/javascript"  src="../javascript/lib/index.js"></script>

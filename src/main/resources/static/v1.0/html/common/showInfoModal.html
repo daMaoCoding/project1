@@ -1,0 +1,1844 @@
+<div>
+<!-- 可引入后，根据输入条件展示对应模式框 -->
+	<!-- 银行卡信息展示 -->
+	<div id="accountInfoModal" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog modal-lg"  style="width:700px;">
+			<div class="modal-content">
+				<div class="modal-header no-padding text-center">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+						<span name='owner'></span>&nbsp;
+						<span name='account'></span>
+					</div>
+				</div>
+				<div class="modal-body no-padding-bottom">
+					<table class="table table-bordered min-width100">
+						<thead>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>盘口</strong></td><td><span name="handicapName"></span></td>
+								<td class="text-right bk-color-f9"><strong>层级</strong></td><td><span name="levelNameToGroup"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>编号</strong></td><td><span name="alias"></span></td>
+								<td class="text-right bk-color-f9"><strong>账号</strong></td><td><span name="account"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>开户行</strong></td><td><span name="bankName"></span></td>
+								<td class="text-right bk-color-f9"><strong>开户人</strong></td><td><span name="owner"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>状态</strong></td><td><span name="status"></span></td>
+								<td class="text-right bk-color-f9"><strong>类型</strong></td><td><span name="type"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>创建人</strong></td><td><span name="creator"></span></td>
+								<td class="text-right bk-color-f9"><strong>创建时间</strong></td><td><span name="createTime"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>更新人</strong></td><td><span name="modifier"></span></td>
+								<td class="text-right bk-color-f9"><strong>更新时间</strong></td><td><span name="updateTime"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>持卡人</strong></td><td><span name="holderStr"></span></td>
+								<td class="text-right bk-color-f9"><strong>锁定人</strong></td><td><span name="lockerStr"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>当日入款限额</strong></td><td><span name="limitIn"></span></td>
+								<td class="text-right bk-color-f9"><strong>当日出款限额</strong></td><td><span name="limitOut"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>系统余额</strong></td><td><span name="balance"></span></td>
+								<td class="text-right bk-color-f9"><strong>银行余额</strong></td><td><span name="bankBalance"></span></td>
+							</tr>
+						</tbody>
+						<tfoot></tfoot>
+					</table>
+				</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-danger"  type="button" data-dismiss="modal">关闭</button>
+			</div>
+			</div>
+		</div>
+	</div>
+	<!-- 支付宝/微信/第三方 信息展示 -->
+	<div id="accountInfoModalWechat_Ali" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog modal-lg"  style="width:700px;">
+			<div class="modal-content">
+				<div class="modal-header no-padding text-center">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+						<span name='owner'></span>&nbsp;
+						<span name='account'></span>
+					</div>
+				</div>
+				<div class="modal-body no-padding-bottom">
+					<table class="table table-bordered min-width100">
+						<thead>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>盘口</strong></td><td><span name="handicapName"></span></td>
+								<td class="text-right bk-color-f9"><strong>层级</strong></td><td><span name="levelNameToGroup"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong id="owner">姓名</strong></td><td><span name="owner"></span></td>
+								<td class="text-right bk-color-f9"><strong>账号</strong></td><td><span name="account"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>状态</strong></td><td><span name="status"></span></td>
+								<td class="text-right bk-color-f9"><strong>类型</strong></td><td><span name="type"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>创建人</strong></td><td><span name="creator"></span></td>
+								<td class="text-right bk-color-f9"><strong>创建时间</strong></td><td><span name="createTime"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>更新人</strong></td><td><span name="modifier"></span></td>
+								<td class="text-right bk-color-f9"><strong>更新时间</strong></td><td><span name="updateTime"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right bk-color-f9"><strong>当日入款限额</strong></td><td><span name="limitIn"></span></td>
+								<td class="text-right bk-color-f9"><strong>当日出款限额</strong></td><td><span name="limitOut"></span></td>
+							</tr>
+							<tr id="balance_1" style="display:none;">
+								<td class="text-right bk-color-f9"><strong>系统余额</strong></td>
+								<td colspan="3"><span name="balance"></span></td>
+							</tr>
+							<tr id="balance_2" style="display:none;">
+								<td class="text-right bk-color-f9"><strong>系统余额</strong></td><td><span name="balance"></span></td>
+								<td class="text-right bk-color-f9"><strong>第三方余额</strong></td><td><span name="bankBalance"></span></td>
+							</tr>
+						</tbody>
+						<tfoot></tfoot>
+					</table>
+				</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-danger"  type="button" data-dismiss="modal">关闭</button>
+			</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 分页 -->
+	<div class="noDataTipsPage table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+		<div style="margin-bottom:0px;font-size: 20px;" class="alert alert-success center">无数据</div>
+	</div>
+	<div class="message-footer clearfix no-padding common_Page">
+		<div class="pull-left" style="height:34px;line-height:34px;padding-left:10px;">
+			<div class="showImgTips">
+				<span class="badge badge-warning" title="匹配中">匹配中</span>
+				<span class="badge badge-success" title="已匹配">已匹配</span>
+				<span class="badge badge-inverse" title="已驳回">已驳回</span>
+			</div>
+			<span class="label label-info" name="footTitle"></span>
+			<span class="showTotal" >共&nbsp;<span class="TotalCount">0</span>&nbsp;条 </span>
+		</div>
+		<div class="pull-right">
+			<div class="inline middle">
+				<select class="form-control input-sm pageRecordCount" title="每页显示条数">
+                    <option value="10">&nbsp;&nbsp;10</option>
+                    <option value="20">&nbsp;&nbsp;20</option>
+                    <option value="30">&nbsp;&nbsp;30</option>
+                    <option value="50">&nbsp;&nbsp;50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="400">400</option>
+                    <option value="500">500</option>
+                </select>
+			</div>&nbsp;
+			<div class="inline middle">第 &nbsp;<span class="Current_Page">1</span>&nbsp;/&nbsp;<span class="TotalPage">1</span>&nbsp;页</div>
+			<ul class="pagination middle">
+				<li class="disabled paging_first"><a href="javascript:void(0);"><i class="ace-icon fa fa-step-backward middle"></i></a></li>
+				<li class="disabled paging_previous"><a href="javascript:void(0);"><i class="ace-icon fa fa-caret-left bigger-140 middle"></i></a></li>
+				<li><span><input class="CurrentPageInput" readonly="readonly" value="1" maxlength="3" type="text" /></span></li>
+				<li class="paging_next"><a href="javascript:void(0);"><i class="ace-icon fa fa-caret-right bigger-140 middle"></i></a></li>
+				<li class="paging_last"><a href="javascript:void(0);"><i class="ace-icon fa fa-step-forward middle"></i></a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<!-- 账号流水数据列表展示 -->
+	<div id="accountLogListModal" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog" style="width:90%">
+			<div class="modal-content">
+				<div class="modal-header text-center no-padding">
+					<input type="hidden" name="fromId"/>
+					<h3 id="incomeStatusChangeTitle">账号流水信息:<span name="fromAccount"></span></h3>
+				</div>
+				<div class="modal-body">
+					<div class="row header smaller lighter blue  less-margin no-margin-left" >
+						<div class="col-sm-3" >				
+							<span class="label label-lg label-purple arrowed-right">&nbsp;&nbsp;ID号&nbsp;&nbsp;</span>
+							<input id="qid" type="text" placeholder="ID" style="height: 32px">
+						</div>						
+						<div class="col-sm-3">
+							<span class="label label-lg label-purple arrowed-right">日期</span>
+								<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+								<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime" style="height: 32px;width:180px;"/>
+						</div>	
+						<div class="col-sm-3">
+						</div>		
+						<div class="col-sm-3">
+							<label id="searchBtnModal" class="pull-right inline">
+								<button type="button" class="btn btn-xs btn-white btn-info btn-bold">
+								<i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+							</label>
+						</div>
+					</div>
+					<div class="tab-pane in active" name="accountFlow">
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>汇出账号</th>
+									<th>汇入账号</th>
+									<th>时间</th>
+									<th>金额</th>
+									<th>手续费</th>
+									<th>流水号</th>
+									<th>状态</th>
+									<th>类型</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+							<tfoot></tfoot>
+						</table>
+						<div id="accountListPage"></div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-danger"  type="button" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<!-- 转账 -->
+<div id="exchangeBalanceModal" class="modal fade ">
+	<input type="hidden" id="fromAccountId" value="{id}"/>
+	<input type="hidden" id="fromAccountType" value="{type}"/>
+    <input type="hidden" id="toAccountType" value="{defaultToAccountType}"/>
+	<div class="modal-dialog modal-lg" style="width:1300px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button><span>汇入账号列表</span></div>
+			</div>
+			<div class="modal-body no-padding">
+				<div id="bindAccountFilter" class="col-sm-12 row header smaller lighter blue less-margin no-margin-left" style="z-index:1">
+					<div class="col-sm-2"><span class="label label-lg label-purple arrowed-right">帐号</span><input type="text" style="height:32px" name="search_LIKE_account" class="input-small" placeholder="帐号" /></div>
+					<div class="col-sm-2"><span class="label label-lg label-purple arrowed-right">开户人</span><input type="text" style="height:32px" name="search_LIKE_owner" class="input-small" placeholder="开户人" /></div>
+					<div class="col-sm-2"><span class="label label-lg label-purple arrowed-right">状态</span><label class="inline"><input type="checkbox" name="search_IN_lockStatus" class="ace" value="0" checked="checked" /><span class="lbl">未锁&nbsp;&nbsp;</span></label><label class="inline"><input type="checkbox" name="search_IN_lockStatus" class="ace" value="1" checked="checked" /><span class="lbl">已锁</span></label></div>
+					<div class="col-sm-4"><span class="label label-lg label-purple arrowed-right">银行类别</span>	
+						<select class="chosen-select width150" name="search_LIKE_bankType">
+							<option value="">全部</option>
+						</select>
+					</div>
+					<div class="col-sm-1"><button onclick="showExchangeBalance(0)" type="button" class="btn btn-xs btn-white btn-info btn-bold"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button></div>
+				</div>
+				<div class="tabbable">
+					<ul class="nav nav-tabs" id="myTab3">{liHtml4ToAccountType}</ul>
+					<div class="tab-content padding-2">
+						<div id="tab5" class="tab-pane in active">
+							<table id="exchangeBalanceTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+								<thead>
+									<tr>
+										<th style="width:120px;" class="third_hide">编号</th>
+										<th style="width:220px;">汇入账号</th>
+										<th style="width:190px;">开户行</th>
+										<th style="width:85px;">开户人</th>
+										<th style="width:80px;">当日收款</th>
+										<th style="width:130px;">银行余额</th>
+										<th style="width:120px;">转入金额</th>
+										<th style="width:100px;">手续费</th>
+										<th style="width:80px;">锁定</th>
+										<th style="width:95px;">确认</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+							<div id="exchangeBalancePage"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- 提现 -->
+<div id="withdrawCashModal" class="modal fade ">
+	<input type="hidden" name="frAccType" value="{accountTypeInAli}"/>
+	<input type="hidden" name="alipay" value="{alipay}"/>
+	<input type="hidden" name="weichat" value="{weichat}"/>
+	<input type="hidden" name="account" value="{account}"/>
+	<input type="hidden" name="mobile" value="{mobile}"/>
+	<input type="hidden" name="fromAccountId" value=""/>
+	<div class="modal-dialog modal-lg" style="width:1300px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button><span>手机号码:{mobile}</span></div>
+			</div>
+			<div class="modal-body no-padding">
+				<div class="tabbable">
+					<ul class="nav nav-tabs">
+						<li onclick="withdrawCashTabInit('{accountTypeInAli}')" class="active"><a data-toggle="tab" href="#tab{accountTypeInAli}">支付宝</a></li>
+						<li onclick="withdrawCashTabInit('{accountTypeInWechat}')"><a data-toggle="tab" href="#tab{accountTypeInWechat}">微信</a></li>
+						<li onclick="withdrawCashTabInit('{accountTypeBindCustomer}')"><a data-toggle="tab" href="#tab{accountTypeBindCustomer}">银行卡</a></li>
+					</ul>
+					<div class="tab-content padding-2">
+						<div id="tab{accountTypeInAli}" class="tab-pane in active">
+							{alipayFmt}
+						</div>
+						<div id="tab{accountTypeInWechat}" class="tab-pane">
+							{wechatFmt}
+						</div>
+						<div id="tab{accountTypeBindCustomer}" class="tab-pane">
+							<div class="col-sm-12 row header smaller lighter blue less-margin no-margin-left" style="z-index:1">
+								<div class="col-sm-2"><span class="label label-lg label-purple arrowed-right">帐号</span><input type="text" style="height:32px" name="search_LIKE_account" class="input-small" placeholder="帐号" /></div>
+								<div class="col-sm-2"><span class="label label-lg label-purple arrowed-right">开户人</span><input type="text" style="height:32px" name="search_LIKE_owner" class="input-small" placeholder="开户人" /></div>
+								<div class="col-sm-3"><span class="label label-lg label-purple arrowed-right">银行类别</span>	<input type="text" style="height:32px" name="search_LIKE_bankType" class="input-medium" placeholder="银行类别" /></div>
+								<div class="col-sm-2">
+									<span class="label label-lg label-purple arrowed-right bg-primary">类别</span>
+									<select class="chosen-select width100" name="search_EQ_type" style="width:94px;">
+										<option value="" selected="selected">全部</option>
+										<option value="5">出款银行卡</option>
+										<option value="8">备用卡</option>
+									</select>
+								</div>
+								<div class="col-sm-1"><button onclick="showWithdrawCash(0)" type="button" class="btn btn-xs btn-white btn-info btn-bold"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button></div>
+							</div>
+							{bankFmt}
+							<div id="exchangeBalancePage"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 新增黑名单 -->
+<div id="addBlackList" class="modal fade" data-backdrop="static"  tabindex="-1">
+	<div class="modal-dialog modal-lg" style="width:400px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>新增黑名单</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:300px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+                            <td class="blue">盘口<i class='ace-icon fa fa-asterisk red'></i></td>
+                            <td class="pull-left">
+                            	<select name="handicap_select" class="chosen-select" style="width:300px" ></select>
+                            </td>
+						</tr>
+						<tr>
+								<td class="blue" style="padding-top: 10px;">会员账号<i class="ace-icon fa fa-asterisk red"></i></td>
+								<td class="pull-left" style="padding-top: 10px;">
+									<input class="input-sm" style="width:300px" name="memberCode" type="text" placeholder="会员账号">
+								</td>
+						</tr>
+						<tr>
+								<td class="blue" style="padding-top: 10px;">真实姓名<i class="ace-icon fa fa-asterisk red"></i></td>
+								<td class="pull-left" style="padding-top: 10px;">
+									<input class="input-sm" style="width:300px" name="name" type="text" placeholder="真实姓名">
+								</td>
+						</tr>
+						<tr>
+								<td class="blue" style="padding-top: 10px;">出款账号<i class="ace-icon fa fa-asterisk red"></i></td>
+								<td class="pull-left" style="padding-top: 10px;">
+									<input class="input-sm" style="width:300px" name="account" type="text" placeholder="出款账号">
+								</td>
+						</tr>
+						<tr>
+								<td class="blue" style="padding-top: 10px;">备注<i class="ace-icon fa fa-asterisk red"></i></td>
+								<td class="pull-left" style="padding-top: 10px;">
+									<textarea style="margin: 0px; width: 300px; height: 60px;" name="remark" placeholder="请输入5~300字的备注"></textarea>
+								</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doAddBlackList();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- 新增账号 -->
+<div id="addBindAccount" class="modal fade" data-backdrop="static"  tabindex="-1">
+	<div class="modal-dialog modal-lg" style="width:700px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>新增银行账号</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+                            <td>盘口</td>
+                            <td>
+                                <select name="handicap_select" class="chosen-select width200">
+                                </select>
+                            </td>
+							<td>层级</td>
+							<td>
+								<select name="currSysLevel" class="chosen-select width200">
+									<option selected="selected" value="">------------请选择------------</option>
+									<option value="1" >外层</option>
+									<option value="2" >内层</option>
+									<option value="8" >指定层</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td colspan="2">
+								<span class="blue" style="font-size:12px;">
+									<i class="ace-icon fa fa-exclamation-triangle bigger-130 red" style="cursor:pointer;"></i>
+									外层和指定层的账号新增后不允许修改
+								</span>
+							</td>
+						</tr>
+                        <tr>
+                            <td>账号</td>
+                            <td>
+								<span class='input-icon'>
+									<input class="input-sm width200" style="wiidth:200px" name="account" type="number" placeholder="账号">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+                            </td>
+                            <td>余额</td>
+                            <td>
+								<span class='input-icon'>
+									<input class="input-sm width200" name="balance" type="number" min="0" placeholder="余额">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+                            </td>
+                        </tr>
+						<tr>
+							<td>开户人</td>
+							<td>
+								<span class='input-icon'>
+									<input class="input-sm width200" name="owner" type="text"  placeholder="开户人">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+							<td>开户行</td>
+							<td>
+								<select class="chosen-select"  style="width:98px;"name="choiceBankBrand" ></select>
+								<span class='input-icon'>
+									<input class="input-sm" name="bankName" type="text" style="width:100px;" placeholder="开户支行">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>当日入款限额</td>
+							<td><input class="input-sm width200" name="limitIn" type="number" min="0"  placeholder="当日入款限额"></td>
+							<td>当日出款限额</td>
+							<td><input class="input-sm width200" name="limitOut" type="number" min="0"  placeholder="当日出款限额"></td>
+						</tr>
+						<tr>
+							<td>余额告警</td>
+							<td><input class="input-sm width200" name="limitBalance" type="number" ></td>
+							<td>备注</td>
+							<td>
+								<span class='input-icon'>
+									<input class="input-sm" style="width:200px;" name="remark" type="text" placeholder="请输入账号来源等信息">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr id="bindTypeTr">
+							<td>绑定类型</td>
+							<td colspan="3">
+								<div class="control-group">
+									<div class="radio">
+										<label>
+											<input value=10  name="bindType" type="radio">
+											<span class="lbl">微信</span>
+										</label>
+										<label>
+											<input value=11  name="bindType" type="radio">
+											<span class="lbl">支付宝</span>
+										</label>
+										<label>
+											<input value=12  name="bindType" type="radio">
+											<span class="lbl">第三方</span>
+										</label>
+										<label>
+											<input value=13  name="bindType" type="radio">
+											<span class="lbl">公用</span>
+										</label>
+									</div>
+									<span class="red">
+										银行卡绑定类型是微信/支付宝/第三方，则仅限微信/支付宝/第三方提现<br/>
+										公用的则可用于所有下发
+									</span>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="addBindAccount();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 修改绑定银行卡账号信息 -->
+<div id="updateBindAccount" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<div class="modal-dialog modal-lg" style="width:700px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>修改银行账号</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>账号</td>
+							<td><input class="input-sm width200" disabled="disabled" style="wiidth:200px" name="account" type="text" placeholder="账号"></td>
+							<td>层级</td>
+							<td>
+								<select name="currSysLevel" class="chosen-select width200">
+									<option selected="selected" value="">------------请选择------------</option>
+									<option value="1" >外层</option>
+									<option value="2" >内层</option>
+									<option value="8" >指定层</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td colspan="2">
+								<span class="blue" style="font-size:12px;">
+									<i class="ace-icon fa fa-exclamation-triangle bigger-130 red" style="cursor:pointer;"></i>
+									外层和指定层的账号不允许修改层级
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>开户人</td>
+							<td><input class="input-sm width200" name="owner" type="text"  placeholder="开户人"></td>
+							<td>开户行</td>
+							<td>
+								<select class="chosen-select"  style="width:98px;" name="choiceBankBrand" ></select>
+								<input class="input-sm" style="width:100px;" name="bankName" type="text" placeholder="开户支行">
+							</td>
+						</tr>
+						<tr>
+							<td>当日入款限额</td>
+							<td><input class="input-sm width200" name="limitIn" type="number" ></td>
+							<td>当日出款限额</td>
+							<td><input class="input-sm width200" name="limitOut" type="number" ></td>
+						</tr>
+						<tr>
+							<td style="padding-top: 10px;">余额告警</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitBalance" type="number" ></td>
+							<td style="padding-top: 10px;">余额峰值</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="peakBalance" type="number" ></td>
+						</tr>
+						<tr>
+							<td>绑定类型</td>
+							<td>
+								<div class="control-group">
+									<div class="radio"  title="提示：只支持修改为公共类型，且不可恢复！">
+										<label style="cursor:not-allowed;">
+											<input value=10  name="bindType" type="radio" disabled="disabled">
+											<span class="lbl">微信</span>
+										</label>
+										<label style="cursor:not-allowed;">
+											<input value=11  name="bindType" type="radio" disabled="disabled">
+											<span class="lbl">支付宝</span>
+										</label>
+										<label style="cursor:not-allowed;">
+											<input value=12  name="bindType" type="radio" disabled="disabled">
+											<span class="lbl">第三方</span>
+										</label>
+										<label>
+											<input value=13  name="bindType" type="radio">
+											<span class="lbl">公用</span>
+										</label>
+									</div>
+								</div>
+							</td>
+							<td colspan="2" >
+								<span class="blue" style="font-size:12px;">
+									<i class="ace-icon fa fa-exclamation-triangle red bigger-130"></i>
+									&nbsp;提示：只支持修改为公共类型，且不可恢复！
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<span class="red">
+									银行卡绑定类型是微信/支付宝/第三方，则仅限微信/支付宝/第三方提现<br/>
+									公用的则可用于所有下发
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="updateBindAccount();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 绑定记录 -->
+<div id="bindAccountListModal" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<div class="modal-dialog modal-lg" style="width:900px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					账号绑定记录
+				</div>
+			</div>
+			<div class="modal-body">
+				<!-- 查询条件 -->
+				<div style="z-index:1" class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left">
+					<div class="col-sm-12">
+						<span class="label label-lg label-purple arrowed-right">帐号</span>
+						<input type="text" style="height:32px;width:150px;" name="search_LIKE_account" class="input-small" placeholder="帐号" />
+						
+						<span class="label label-lg label-purple arrowed-right">开户人</span>
+						<input type="text" style="height:32px;width:150px;" name="search_LIKE_owner" class="input-small" placeholder="开户人" />
+						
+						<span class="label label-lg label-purple arrowed-right">状态</span>
+						<label class="inline">
+							<input type="checkbox" name="search_IN_status" checked class="ace" value="1" /><span class="lbl">在用</span>
+						</label>
+						<label class="inline">
+							<input type="checkbox" name="search_IN_status" class="ace defaultNoCheck" value="4" /><span class="lbl">停用</span>
+						</label>
+						<label class="inline">
+							<input type="checkbox" name="search_IN_status" class="ace defaultNoCheck" value="3" /><span class="lbl">冻结</span>
+						</label>
+						<label id="searchBtn" class="pull-right inline">
+							<button onclick="showBindAccountList();" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+						</label>
+					</div>
+				</div>
+				<table class="table table-striped table-bordered table-hover no-margin-bottom" >
+					<thead><tr>
+						<th style="width:25%;">账号</th>
+						<th style="width:25%;">开户人</th>
+						<th style="width:25%;">状态</th>
+						<th style="width:25%;">类型</th>
+					</tr></thead>
+					<tbody></tbody>
+				</table>
+				<div id="bindAccountListPage"></div>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center"></div>
+		</div>
+	</div>
+</div>
+
+<!-- 匹配功能 -->
+<div id="confirmMatchModal" class="modal fade " tabindex="-1">
+	<div class="modal-dialog modal-lg" style="width:1000px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					<span id='accountTitle'>匹配确认</span>
+				</div>
+			</div>
+			<div class="modal-body">
+				<table class="table table-striped table-bordered table-hover no-margin-bottom" >
+					<thead><tr>
+						<th>数据类型</th>
+						<th>ID</th>
+						<th>汇出账号</th>
+						<th>汇入账号</th>
+						<th>时间</th>
+						<th>金额</th>
+						<th>手续费</th>
+					</tr></thead>
+					<tbody></tbody>
+				</table>
+				<div  class="col-sm-12" style="height:10px;"></div>
+				<div>
+					<span class="label label-lg label-purple arrowed-right">备注</span>
+					<span class="input-icon">
+						<input type="text" id="remark" style="width:900px;">
+						<!--<i class="ace-icon fa fa-asterisk red"></i>-->
+					</span>
+				</div>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center"><button class="btn btn-primary" type="button" id="doMatch">完成匹配</button></div>
+		</div>
+	</div>
+</div>
+
+<!-- 修改入款银行卡账号信息 -->
+<div id="updateIncomeAccount" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<div class="modal-dialog modal-lg" style="width:700px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>账号修改</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableUpdate" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+						</tr>
+					</thead>
+					<tbody id="showCoutx">
+						<tr>
+							<td style="padding-top: 10px;">盘口</td>
+							<td style="padding-top: 10px;">
+								<select name="handicap_select" class="chosen-select width200" disabled>
+								</select>
+							</td>
+							<td style="padding-top: 10px;display:none;" class="thirdShow">第三方</td>
+							<td style="padding-top: 10px;display:none;" class="thirdShow">
+								<select class="chosen-select"  style="width:100px;"name="choiceThirdBrand" ></select>
+								<input class="input-sm" style="width:98px;" name="thirdBankName" type="text" min="0" placeholder="第三方">
+							</td>
+							<td style="padding-top: 10px;" class="needHide">层级</td>
+							<td style="padding-top: 10px;" class="needHide">
+								<select name="currSysLevel" class="chosen-select width200">
+									<option selected="selected" value="">------------请选择------------</option>
+									<option value="1" >外层</option>
+									<option value="2" >内层</option>
+									<option value="8" >指定层</option>
+								</select>
+							</td>
+						</tr>
+						<tr class="hide">
+							<td colspan="2"></td>
+							<td colspan="2">
+								<span class="blue" style="font-size:12px;">
+									<i class="ace-icon fa fa-exclamation-triangle bigger-130 red" style="cursor:pointer;"></i>
+									外层和指定层的账号不允许修改层级
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td style="padding-top: 10px;">账号</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" disabled="disabled" style="wiidth:200px" name="account" type="text" placeholder="账号"></td>
+							<td style="padding-top: 10px;display:none;" class="thirdShow">系统余额</td>
+							<td style="padding-top: 10px;display:none;" class="thirdShow">
+								<input class="input-sm width200"  name="thirdBalance" type="number" min="0" placeholder="系统余额">
+							</td>
+							<td style="padding-top: 10px;" class="needHide">银行类别</td>
+							<td style="padding-top: 10px;" class="needHide">
+								<select class="chosen-select" name="choiceBankBrand" style="width:98px;" ></select>
+								<input class="input-sm" name="bankName" type="text" style="width:98px;" placeholder="开户支行">
+							</td>
+						</tr>
+                        <tr class="needHide">
+                            <td style="padding-top: 10px;">省份</td>
+                            <td style="padding-top: 10px;">
+                                <select class="input-sm width200" name="province" ></select>
+                            </td>
+                            <td style="padding-top: 10px;">城市</td>
+                            <td style="padding-top: 10px;">
+                                <select class="input-sm width200" name="city" ></select>
+                            </td>
+                        </tr>
+						<tr class="needHide">
+							<td style="padding-top: 10px;">开户人</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="owner" type="text" ></td>
+							<td style="padding-top: 10px;">余额峰值</td>
+							<td style="padding-top: 10px;">
+								<input class="input-sm width200" name="peakBalance" type="number" placeholder="余额峰值">
+							</td>
+						</tr>
+						<tr>
+							<td style="padding-top: 10px;">当日入款限额</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitIn" type="number" ></td>
+							<td style="padding-top: 10px;">余额告警</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitBalance" type="number" ></td>
+						</tr>
+						<tr>
+							<td style="padding-top: 10px;">当日出款限额</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitOut" type="number" ></td>
+							<td style="padding-top: 10px;">单笔出款限额<br/><span class="blue">（最高）</span></td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitOutOne" type="number" placeholder="最高单笔出款限额"></td>
+						</tr>
+						<tr id="freezeTr" style="display: none;">
+							<td style="padding-top: 10px;">状态</td>
+							<td style="padding-top: 10px;" colspan="3"><input onclick="showfreezeTrBZ()" type="checkbox" value="" id="freezeAccount">冻结<span style="color: red;">("停用"状态下,可勾选,一旦"冻结",不可恢复,请谨慎操作)</span></td>
+						</tr>
+						<tr id="freezeTrBZ" style="display: none;">
+							<td style="padding-top: 10px;">备注</td>
+							<td style="padding-top: 10px;" colspan="3"><input style="width: 100%;" type="text"  id="freezeAccountBZ"></td>
+						</tr>
+						<tr class="needHide">
+							<td style="padding-top: 10px;">当日出款笔数</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitOutCount" type="number" placeholder="当日出款笔数" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" ></td>
+							<td style="padding-top: 10px;">单笔出款限额<br/><span class="blue">（最低）</span></td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitOutOneLow" type="number" placeholder="最低单笔出款限额"></td>
+						</tr>
+						<tr class="needHide">
+							<td style="padding-top: 10px;">单笔最小入款金额</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="minInAmount" type="number" placeholder="单笔最小入款金额" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" ></td>
+						</tr>
+						<tr>
+							<tbody id="showTbody" style="border:none;display: none;">
+								<tr><td style="padding-top: 10px;display:none;" colspan="4" class="header smaller lighter blue no-padding no-margin"><h6>第三方下发手续费规则</h6></td></tr>
+								<tr>
+									<td style="padding-top: 10px;;width: 150px;"" class="thirdShow">收费方式：</td>
+									<td style="padding-top: 10px;width: 350px;" class="thirdShow">
+										<input type="radio" checked="checked" value="0"  name="mtc"/>从商户余额扣取&nbsp;&nbsp;&nbsp;
+										<input type="radio" value="1"  name="mtc"/>从到账金额扣取
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4" style="padding-top: 10px;" class="thirdShow">
+										<input type="radio" checked="checked" value="0" onclick="changeComputingMethod(0)" name="computingMethod"/>按百分比计算&nbsp;&nbsp;&nbsp;
+										<input type="radio" value="1" onclick="changeComputingMethod(1)" name="computingMethod"/>按阶梯式计算
+									</td>
+								</tr>
+									<tr id="downRateTr">
+										<td style="padding-top: 10px;width: 200px;" class="thirdShow">统一收取费率：</td>
+										<td style="padding-top: 10px;" class="fixed"><input onkeyup="clearNoNum(this)" type="text" name="downRate">%</td>
+									</tr>
+									<tr id="chargingTr" style="display: none;">
+										<td colspan="4" style="padding-top: 10px;" class="thirdShow">
+											<input type="radio" checked="checked" value="1" onclick="changeCharging(0)" name="charging"/>按金额计费&nbsp;&nbsp;&nbsp;
+											<input type="radio" value="0" onclick="changeCharging(1)" name="charging"/>按百分比计费
+										</td>
+									</tr>
+									<tr id="ladderTr" style="display: none;">
+										<td colspan="4" style="padding-top: 10px;" class="ladder">
+											<input style="width: 100px;" onblur="intersection(this,0)" onkeyup="clearNoNum(this)" name="charStartAmount" type="text">
+											元至
+											<input style="width: 100px;" onblur="intersection(this,0)" onkeyup="clearNoNum(this)" name="charEndAmount" type="text">
+										
+										&nbsp;&nbsp;<input type="checkbox" id="Infinity" value="Infinity"/>无穷大
+										&nbsp;&nbsp;收费<input style="width: 80px;" onkeyup="clearNoNum(this)" type="text" name="rateAmount"><span id="showMessage">元</span>
+										&nbsp;&nbsp;<a onclick="addRate()" type='button'  class='btn btn-xs btn-white btn-primary btn-bold'>添加</td>
+									</tr>
+									<tr><tbody id="showList"></tbodu></tr>
+							</tbody>
+					    </tr>
+						
+						
+						
+						
+						<tr>
+							<tbody id="rateTbody" style="border:none;display: none;">
+								<tr>
+									<td style="padding-top: 10px;display:none;" class="thirdShow">费率方式</td>
+									<td style="padding-top: 10px;display:none;" class="thirdShow">
+										<input type="radio" checked="checked" value="0" onclick="changeRateTyle(0)" name="rateType"/>固定费率&nbsp;&nbsp;&nbsp;
+										<input type="radio" value="1" onclick="changeRateTyle(1)" name="rateType"/>阶梯式
+									</td>
+									<td style="padding-top: 10px;display:none;" class="fixed">费率(百分比)</td>
+									<td style="padding-top: 10px;display:none;" class="fixed"><input onkeyup="clearNoNum(this)" type="text" name="rate" value="3">%</td>
+								</tr>
+								<tr>
+									<td style="padding-top: 10px;display:none;" class="ladder">金额</td>
+									<td style="padding-top: 10px;display:none;" class="ladder"><input style="width: 70px;" onblur="intersection(this,0)" onkeyup="clearNoNum(this)" name="startAmount" type="text">~<input onblur="intersection(this,0)" onkeyup="clearNoNum(this)" name="endAmount" style="width: 70px;" type="text"></td>
+									<td style="padding-top: 10px;display:none;" class="ladder">费率(百分比)</td>
+									<td style="padding-top: 10px;display:none;" class="ladder"><input onkeyup="clearNoNum(this)" type="text" name="rates" value="3">%<a onclick="addRow()"  style="cursor:pointer;" class="ace-icon glyphicon glyphicon-plus"></a></td>
+								</tr>
+							</tbody>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			 <span id="prompt_owner"
+   				 style="display:none;color: red;padding-left: 160px;">请填写开户人</span>
+   				 
+   			<span id="prompt_choiceBankBrand"
+   				 style="display:none;color: red;padding-left: 160px;">请选择开户行</span>
+   			<span id="prompt_bankName"
+   				 style="display:none;color: red;padding-left: 160px;">请填写开户支行</span>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" id="do_update" >确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 新增 入款银行卡-->
+<div id="addIncomeAccount_bank" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<div class="modal-dialog modal-lg" style="width:700px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>账号修改</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding-top: 10px;">盘口</td>
+							<td style="padding-top: 10px;">
+								<select name="handicap_select" class="chosen-select width200">
+								</select>
+							</td>
+							<td>层级</td>
+							<td>
+								<select name="currSysLevel" class="chosen-select width200">
+									<option selected="selected" value="">------------请选择------------</option>
+									<option value="1" >外层</option>
+									<option value="2" >内层</option>
+									<option value="8" >指定层</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td colspan="2">
+								<span class="blue" style="font-size:12px;">
+									<i class="ace-icon fa fa-exclamation-triangle bigger-130 red" style="cursor:pointer;"></i>
+									外层和指定层的账号新增后不允许修改
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>账号</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" style="wiidth:200px" name="account" type="number" placeholder="账号">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+							<td>开户人</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" name="owner" type="text"  placeholder="开户人">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>银行类别</td>
+							<td>
+								<select class="chosen-select width200" name="choiceBankBrand" ></select>
+							</td>
+							<td>开户支行</td>
+							<td>
+								<span class="input-icon">
+								<input class="input-sm width200" name="bankName" type="text" placeholder="开户行">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>当日入款限额</td>
+							<td>
+								<input class="input-sm width200" name="limitIn" type="number" min="0"  placeholder="当日入款限额">
+							</td>
+							<td>当日出款限额</td>
+							<td>
+								<input class="input-sm width200" name="limitOut" type="number" min="0" placeholder="当日出款限额">
+							</td>
+						</tr>
+						<tr>
+							<td>单笔出款限额</td>
+							<td>
+								<input class="input-sm width200" name="limitOutOne" type="number" min="0" placeholder="当日出款限额">
+							</td>
+						</tr>
+						<tr>
+							<td>余额</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" name="balance" type="number" min="0" placeholder="余额">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+							<td>余额告警</td>
+							<td>
+								<input class="input-sm width200" name="limitBalance" type="number" min="0" placeholder="余额告警">
+							</td>
+						</tr>
+						<tr>
+							<td>来源</td>
+							<td>
+								<label class="inline">
+									<input type="radio" name="flag" class="ace" value="0" >
+									<span class="lbl">PC</span>
+								</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<label class="inline">
+									<input type="radio" name="flag" class="ace" value="1" >
+									<span class="lbl">手机</span>
+								</label>
+							</td>
+							<td>手机号</td>
+							<td><input class="input-sm width200" name="mobile" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" placeholder="来源选择为手机时必填"></td>
+						</tr>
+						<tr>
+							<td>备注</td>
+							<td colspan="3">
+								<span class="input-icon">
+									<input class="input-sm" style="width:544px;" name="remark" type="text" placeholder="请输入账号来源等信息">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" id="do_update" >确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 新增 入款微信-->
+<div id="addIncomeAccount_wechat" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<div class="modal-dialog modal-lg" style="width:700px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>账号修改</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding-top: 10px;">盘口</td>
+							<td style="padding-top: 10px;">
+								<select name="handicap_select" class="chosen-select width200">
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>微信号</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" style="wiidth:200px" name="account" type="text" placeholder="微信号">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+							<td>姓名</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" name="owner" type="text"  placeholder="姓名">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>当日入款限额</td>
+							<td>
+								<input class="input-sm width200" name="limitIn" type="number" min="0"  placeholder="当日入款限额">
+							</td>
+							<td>当日出款限额</td>
+							<td>
+								<input class="input-sm width200" name="limitOut" type="number" min="0" placeholder="当日出款限额">
+							</td>
+						</tr>
+						<tr>
+							<td>余额</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" name="balance" type="number" min="0" placeholder="余额">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+							<td>余额告警</td>
+							<td>
+								<input class="input-sm width200" name="limitBalance" type="number" min="0" placeholder="余额告警">
+							</td>
+						</tr>
+						<tr>
+							<td>备注</td>
+							<td colspan="3">
+								<span class="input-icon">
+									<input class="input-sm" style="width:550px;" name="remark" type="text" placeholder="请输入账号来源等信息">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" id="do_update" >确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 新增 入款支付宝-->
+<div id="addIncomeAccount_ali" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<div class="modal-dialog modal-lg" style="width:700px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>账号修改</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding-top: 10px;">盘口</td>
+							<td style="padding-top: 10px;">
+								<select name="handicap_select" class="chosen-select width200">
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>支付宝号</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" style="wiidth:200px" name="account" type="text" placeholder="支付宝号">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+							<td>姓名</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" name="owner" type="text"  placeholder="姓名">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>当日入款限额</td>
+							<td>
+								<input class="input-sm width200" name="limitIn" type="number" min="0"  placeholder="当日入款限额">
+							</td>
+							<td>当日出款限额</td>
+							<td>
+								<input class="input-sm width200" name="limitOut" type="number" min="0" placeholder="当日出款限额">
+							</td>
+						</tr>
+						<tr>
+							<td>余额</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" name="balance" type="number" min="0" placeholder="余额">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+							<td>余额告警</td>
+							<td>
+								<input class="input-sm width200" name="limitBalance" type="number" min="0" placeholder="余额告警">
+							</td>
+						</tr>
+						<tr>
+							<td>备注</td>
+							<td colspan="3">
+								<span class="input-icon">
+									<input class="input-sm" style="width:550px;" name="remark" type="text" placeholder="请输入账号来源等信息">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" id="do_update" >确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-- 账号操作日志记录列表展示 -->
+	<div id="accountExtraListModal" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog modal-lg" style="width:700px;">
+			<div class="modal-content">
+				<div class="modal-header no-padding text-center">
+					<div class="table-header">
+						<input type="hidden" id="accountId"/>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">&times;</span>
+						</button>
+						<span>
+							账号流操作记录:&nbsp;
+							<span name="alias"></span>&nbsp;
+							<span name="account"></span>&nbsp;
+							<span name="owner"></span>
+						</span>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="row header smaller lighter blue  less-margin no-margin-left" id="accountExtraListModal_filter" >
+						<span class="control-label blue">操作人</span>&nbsp;&nbsp;
+						<input id="operator" type="text" placeholder="操作人" style="height: 32px">
+						&nbsp;&nbsp;
+						<span class="control-label blue">日期</span>&nbsp;&nbsp;
+						<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+						<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime" style="height: 32px;width:290px;"/>
+						&nbsp;&nbsp;
+						<label onclick="reset('accountExtraListModal_filter');"  class="inline">
+							<button type="button" class="btn btn-xs btn-white btn-info btn-bold">
+							<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button>
+						</label>&nbsp;&nbsp;
+						<label id="searchBtn" onclick="accountExtraList();" class="inline">
+							<button type="button" class="btn btn-xs btn-white btn-info btn-bold">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+						</label>
+					</div>
+					<table class="table table-striped table-bordered table-hover no-margin-bottom">
+						<thead>
+							<tr>
+								<th style="width:100px;">操作人</th>
+								<th style="width:200px;">时间</th>
+								<th style="width:400px;">备注</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+					<div id="accountExtraListPage"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 账号操作日志记录列表展示 -->
+	<div id="AccountClickListModal" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog modal-lg" style="width:700px;">
+			<div class="modal-content">
+				<div class="modal-header no-padding text-center">
+					<div class="table-header">
+						<input type="hidden" id="accountId"/>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">&times;</span>
+						</button>
+						<span>
+							账号流操作记录:&nbsp;
+							<span name="alias"></span>&nbsp;
+							<span name="account"></span>&nbsp;
+							<span name="owner"></span>
+						</span>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="row header smaller lighter blue  less-margin no-margin-left" id="accountExtraListModal_filter" >
+						<span class="control-label blue">操作人</span>&nbsp;&nbsp;
+						<input id="operator" type="text" placeholder="操作人" style="height: 32px">
+						&nbsp;&nbsp;
+						<span class="control-label blue">日期</span>&nbsp;&nbsp;
+						<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+						<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime" style="height: 32px;width:290px;"/>
+						&nbsp;&nbsp;
+						<label onclick="reset('AccountClickListModal');"  class="inline">
+							<button type="button" class="btn btn-xs btn-white btn-info btn-bold">
+							<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button>
+						</label>&nbsp;&nbsp;
+						<label id="searchBtn" onclick="accountClickList();" class="inline">
+							<button type="button" class="btn btn-xs btn-white btn-info btn-bold">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+						</label>
+					</div>
+					<table class="table table-striped table-bordered table-hover no-margin-bottom">
+						<thead>
+							<tr>
+								<th style="width:100px;">操作人</th>
+								<th style="width:200px;">时间</th>
+								<th style="width:400px;">备注</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+					<div id="accountClickListPage"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--用户黑名单列表 -->
+	<div id="BlackListModal" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog modal-lg" style="width:1200px;">
+			<div class="modal-content">
+				<div class="modal-header no-padding text-center">
+					<div class="table-header">
+						<input type="hidden" id="accountId"/>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">&times;</span>
+						</button>
+						<span>黑名单列表</span>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="row header smaller lighter blue  less-margin no-margin-left" id="blackListModal_filter" >
+						<span class="control-label blue">盘口</span>
+						<select name="search_EQ_handicapId" class="chosen-select"   style="width:100px;"></select>
+						&nbsp;&nbsp;
+						<span class="control-label blue">会员账号</span>&nbsp;&nbsp;
+						<input name="search_LIKE_memberCode" type="text" placeholder="会员账号"  class="input-sm"  style="width:80px">
+						&nbsp;&nbsp;
+						<span class="control-label blue">真实姓名</span>&nbsp;&nbsp;
+						<input name="search_LIKE_name"  type="text" placeholder="真实姓名"  class="input-sm"  style="width:80px">
+						&nbsp;&nbsp;
+						<span class="control-label blue">出款账号</span>&nbsp;&nbsp;
+						<input name="search_LIKE_account"  type="text" placeholder="出款账号"  class="input-sm"  style="width:200px">
+						&nbsp;&nbsp;
+						<span class="control-label blue">操作人</span>&nbsp;&nbsp;
+						<input name="search_EQ_operator"  type="text" placeholder="操作人"  class="input-sm"  style="width:80px">
+						
+						<label class="inline pull-right">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+						<label id="searchBtn" onclick="showBlackList();" class="inline pull-right">
+							<button type="button" class="btn btn-xs btn-white btn-info btn-bold">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+						</label>
+						<label class="inline pull-right">&nbsp;</label>
+						<label onclick="reset('blackListModal_filter');"  class="inline pull-right">
+							<button type="button" class="btn btn-xs btn-white btn-info btn-bold">
+							<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button>
+						</label>
+						<label class="inline pull-right">&nbsp;</label>
+						<label onclick="showAddBlackList();"  class="inline pull-right">
+							<button type="button" class="btn btn-xs btn-white btn-info btn-bold contentRight" contentright='OutwardAccountBankUsed:AddBlackList:*'>
+							<i class="ace-icon fa fa-plus bigger-100 green"></i>新增</button>
+						</label>
+						<label onclick="showAddBlackList();"  class="inline pull-right">
+							<button type="button" class="btn btn-xs btn-white btn-info btn-bold contentRight" contentright='AccountOutComp:BlackList:*'>
+							<i class="ace-icon fa fa-plus bigger-100 green"></i>新增</button>
+						</label>
+					</div>
+					<table class="table table-striped table-bordered table-hover no-margin-bottom">
+						<thead>
+							<tr>
+								<th style="width:7%;">盘口</th>
+								<th style="width:12%;">会员账号</th>
+								<th style="width:10%;">真实姓名</th>
+								<th style="width:20%;">出款账号</th>
+								<th style="width:16%;">创建日期</th>
+								<th style="width:10%;">操作人</th>
+								<th style="width:25%;">备注</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+					<div id="BlackListPage"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!--入款卡出入款额度设置 -->
+	<div id="InOutLimitModal" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog modal-lg" style="width:850px;">
+			<div class="modal-content">
+				<div class="modal-header no-padding text-center">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">&times;</span>
+						</button>
+						<span>入款卡出入款额度设置</span>
+					</div>
+				</div>
+				<div class="modal-body">
+					<h5 class="header smaller center lighter blue no-padding no-margin-top">
+						已选择的银行卡&nbsp;
+						<span class="red bolder">（“当前用途”列，鼠标悬浮可以查看银行卡当前用途设置详情）</span>
+					</h5>
+					<table name="selected_cards" class="table table-striped table-bordered table-hover no-margin-bottom">
+						<thead>
+							<tr>
+								<th style="width:10%;">银行类别</th>
+								<th style="width:12%;">账号</th>
+								<th style="width:8%;">开户人</th>
+								<th style="width:10%;">信用额度</th>
+								<th style="width:15%;">当前用途&nbsp;<i class="ace-icon fa fa-info-circle bigger-150 red" style="cursor:pointer " title="鼠标悬浮可查看账号已设置的用途详细参数"></i></th>
+								<th style="width:45%;">操作</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+					<h5 class="header smaller center lighter blue no-padding no-margin-top">针对上面列表中的银行卡，批量设置</h5>
+					<div class="inline no-padding-bottom"  style="width:100%">
+		                <p class="alert alert-success hide">
+		                	<span class='lbl'>
+			                	大额专用(返利网)：当余额大于或等于信用额度的
+			                   	<input class="input-sm" name="limitPercentage0" style="width:60px;" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+			                    % 时，留
+			                    <input class="input-sm" name="minBalance0"  style="width:60px;" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+			                    元，其余一笔转出到出款卡
+		                    </span>
+		                </p>
+		                <p class="alert alert-success">
+		                	<span class='lbl'>
+			                	先入后出(返利网)：当余额大于或等于信用额度的
+			                   	<input class="input-sm" name="limitPercentage1"  style="width:60px;" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+			                    %时，转为出款卡，当余额小于
+			                    <input class="input-sm" name="minBalance1"  style="width:60px;" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+			                    元，再转为入款卡
+		                    </span>
+		                </p>
+		                <p class="alert alert-success">
+		                	<span class='lbl'>
+			                	边入边出(返利网)：&nbsp;&nbsp;&nbsp;&nbsp;
+			                	<span class="red bolder"><i class="ace-icon fa fa-info-circle bigger-110 red" ></i>&nbsp;仅绑定了云闪付的卡，才会成功转为边入边出卡</span>
+		                    </span>
+		                </p>
+	                </div>
+				</div>
+				<div class="col-sm-12 modal-footer no-margin center">
+					<input type="hidden" id="setLimitids" >
+					<button class="btn btn-primary" type="button" onclick="do_set_inOut_limit();">确认</button>
+					<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!--问题排查汇总 设备排查 排查按钮 -->
+	<div id="ProblemInvTotalRemarkModal" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog modal-lg" style="width:430px;">
+			<div class="modal-content">
+				<div class="modal-header no-padding text-center">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">&times;</span>
+						</button>
+						<span>排查</span>&nbsp;&nbsp;&nbsp;&nbsp;
+						<span name="mobile"></span>
+					</div>
+				</div>
+				<div class="modal-body">
+					 <div >
+					 	<span class="bolder blue">兼职人员信用额度：</span>&nbsp;&nbsp;
+					 	<span class="red" name="credits"></span>&nbsp;&nbsp;
+					 	（<span name="creditsTime"></span>）
+		             </div>
+		             <br/>
+		             <div>
+					 	<span class="bolder blue">兼职人员联系方式：</span>&nbsp;&nbsp;
+					 	<span name="contactor"></span>&nbsp;&nbsp;
+					 	（<span name="contactorInfo"></span>）
+		             </div>
+		             <br/>
+		             <div>
+					 	<span class="bolder blue">历史备注：</span>
+						<span class=" right pull-right"name="lastUpdateTime"></span>
+						<span class="bolder blue right pull-right" >更新时间：&nbsp;&nbsp;</span>
+						<br/>
+						<span name="history_remark"  ></span>
+					 	<!-- <a name="history_remark"  style='width:400px; height:32px;line-height:32px;color:#000;overflow: hidden; display:block;word-break:keep-all;white-space:nowrap;text-overflow:ellipsis;'></a> -->
+		             </div>
+					<div>
+						<span class="bolder blue">追加备注</span><br/>
+						<textarea rows="3" name="remark" style="width:400px;" data-placeholder="请追加备注，5-100字" ></textarea>
+					</div>
+		             <br/>
+					<div>
+						<span class="bolder blue">发展该兼职的返利网工作人员：</span>&nbsp;&nbsp;
+						<span class="red" name="salesName"></span>
+					</div>
+		             <br/>
+					<h6  class="header smaller center lighter blue no-padding no-margin-top"  >问题跟进情况</h6>
+					<div>
+						<span class="bolder blue">当前跟进锁定人：</span>&nbsp;&nbsp;
+						<span class="red" name="currLock"></span>
+						<br/>
+						<span class="bolder blue">转交锁定到此人：</span>&nbsp;&nbsp;
+						<select  name="select_operator" style="height:32px;width:200px;" class="chosen-select"  data-placeholder="请选择锁定人..." >
+							<option selected="selected" value="">----------请选择----------</option>
+						</select>
+						<button class="btn btn-xs btn-white btn-info btn-bold" id="btnDevInvLock">
+							<i class="ace-icon fa fa-share bigger-100 green"></i>立即转交
+						</button>
+					</div>
+				</div>
+				<div class="col-sm-12 modal-footer no-margin center">
+					<button class="btn btn-primary" type="button" id="problem_saveRemark">保存备注</button>
+					<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 第三方代付明细  -->
+	<div id="thirdDaiFuDetail_modal" class="modal fade" aria-hidden="false" >
+		<input type="hidden" id="handicapId">
+		<input type="hidden" id="configId">
+		<div class="modal-dialog" style="width:1200px;">
+			<div class="modal-content">
+				<div class="modal-header text-center no-padding">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">×</span>
+						</button>
+						<span name='request_host'></span>&nbsp;第三方代付明细
+					</div>
+				</div>
+				<div class="modal-body no-padding">
+					<div id="filter" style="z-index:1" class="row col-sm-12 header smaller lighter blue  less-margin no-margin-left">
+						<div class="col-sm-3">
+							<span class="label label-lg label-purple arrowed-right">代付订单号</span>
+							<input type="text"  name="platPayCode" class="input-sm" placeholder="代付订单号" />
+						</div>
+						<div class="col-sm-3">
+							<span class="label label-lg label-purple arrowed-right">处理结果</span>
+							<select class="statusSearch" name="platStatus" style="width:150px;">
+									<option selected="selected" value="">全部</option>
+									<option value="0" >待处理</option>
+									<option value="1" >完成</option>
+									<option value="2" >取消</option>
+							</select>
+						</div>
+						<div class="col-sm-4">
+							<span class="label label-lg label-purple arrowed-right">金额</span>
+							<span style="height:32px">
+								<input name="exactMoneyBegin" type="text" class="input-small" style="width:66px;height:32px">
+								~
+								<input name="exactMoneyEnd" type="text" class="input-small" style="width:66px;height:32px">
+							</span>
+						</div>
+						<div class="col-sm-2">
+							<label  class="pull-right inline">
+								<button onclick="reset('filter');" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+									<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+								</button>
+							</label>
+						</div>
+						<div class="col-sm-12"></div>
+						<div class="col-sm-3">
+							<span class="label label-lg label-purple arrowed-right">出款订单号</span>
+							<input type="text"  name="outwardRequestOrderNo" class="input-sm" placeholder="出款订单号" />
+						</div>
+						<div class="col-sm-7">
+							<span class="label label-lg label-purple arrowed-right">提单时间</span>
+							<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+							<input class="date-range-picker" type="text" placeholder="抓取时间 / 请选择起始日期" name="startAndEndTime" style="height: 32px;width:285px;"/>
+						</div>
+						<div class="col-sm-2">
+							<label id="searchBtn" class="pull-right inline">
+								<button onclick="searchDaiFuDetail()" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+									<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+								</button>
+							</label>
+						</div>
+					</div>
+					<table class="table table-striped table-bordered table-hover no-margin-bottom">
+						<thead>
+							<tr>
+								<th style="width:14%;">提单时间</th>
+								<th style="width:20%;">代付订单号</th>
+								<th style="width:15%;">出款订单号</th>
+								<th style="width:8%;">金额</th>
+								<th style="width:8%;">处理结果</th>
+								<th style="width:10%;">操作人</th>
+								<th style="width:14%;">最后操作时间</th>
+								<th style="width:13%;">错误消息</th>
+								<th style="width:13%;">备注</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div id="thirdDaiFuDetail_Page"></div>
+				</div>
+				<div class="col-sm-12 modal-footer no-margin text-center">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--返利网管理——》发展管理设置——》额度提升 弹出的设置页面 -->
+	<div id="accountAuditMarginSetting" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog modal-lg" style="width:900px;">
+			<div class="modal-content">
+				<div class="modal-header no-padding text-center">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">&times;</span>
+						</button>
+						<span id="developmentTitle">发展管理设置</span>
+					</div>
+				</div>
+				<div class="modal-body">
+					<h5 class="header smaller center lighter blue no-padding no-margin-top">
+						符合以下规则的兼职会在本页面列表中显示出来，方便运营工作人员联系客服：&nbsp;
+						<span class="red bolder">（注：只要满足其中一项规则，就会在列表中显示出来）</span>
+					</h5>
+					<table name="selected_cards" class="table table-striped table-bordered table-hover no-margin-bottom">
+						<tr>
+							<td style="text-align:left !important"><input type="checkbox" id="margin_zero_days_more_enable" name="margin_zero_days_more_enable" class="ace" value="1"/><span class="lbl">零元信用额度的兼职，并且注册天数大于或等于</span><input id="margin_zero_days_more" name="margin_zero_days_more" onkeyup="clearNoNum(this); " type="text" class="input-small"/></td>
+						</tr>
+						<tr>
+							<td style="text-align:left !important"><input type="checkbox" id="margin_less_3000_days_more_enable" name="margin_less_3000_days_more_enable" class="ace" value="1" /><span class="lbl">信用额度小于3000元的兼职,并且注册天数大于或等于</span><input id="margin_less_3000_days_more" name="margin_less_3000_days_more" onkeyup="clearNoNum(this); " type="text" class="input-small"/></td>
+						</tr>
+						<tr>
+							<td style="text-align:left !important"><input type="checkbox" id="margin_3000_10000_days_more_enable" name="margin_3000_10000_days_more_enable" class="ace" value="1" /><span class="lbl">信用额度大于或等于3000元，并且小于10000元，并且注册天数大于或等于</span><input id="margin_3000_10000_days_more" name="margin_3000_10000_days_more" onkeyup="clearNoNum(this); " type="text" class="input-small"/></td>
+						</tr>
+						<tr>
+							<td style="text-align:left !important"><input type="checkbox" id="margin_active_cards_enable" name="margin_active_cards_enable" class="ace" value="1" /><span class="lbl">信用额度大于或等于</span><input id="margin_active_cards_margin" name="margin_active_cards_margin" onkeyup="clearNoNum(this); " type="text" class="input-small"/>元，并且已添加激活银行卡小于<input id="margin_active_cards_cards" name="margin_active_cards_cards" onkeyup="clearNoNum(this); " type="text" class="input-small"/>张的兼职</td>
+						</tr>
+					</table>
+				</div>
+				<div class="col-sm-12 modal-footer no-margin center">
+					<button class="btn btn-primary" type="button" onclick="do_set_margin_cards();">确认</button>
+					<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--返利网管理——》发展管理设置——》卡数提升 弹出的设置页面 -->
+	<div id="accountAuditCardsSetting" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog modal-lg" style="width:900px;">
+			<div class="modal-content">
+				<div class="modal-header no-padding text-center">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">&times;</span>
+						</button>
+						<span >发展管理设置</span>
+					</div>
+				</div>
+				<div class="modal-body">
+					<h5 class="header smaller center lighter blue no-padding no-margin-top">
+						符合以下规则的兼职会在本页面列表中显示出来：&nbsp;
+						<span class="red bolder">（注：只要满足其中一项规则，就会在列表中显示出来）</span>
+					</h5>
+					<table name="selected_cards" class="table table-striped table-bordered table-hover no-margin-bottom">
+						<tr>
+							<td style="text-align:left !important"><input type="checkbox" id="active_cards_join_days_margin_enable" name="active_cards_join_days_margin_enable" class="ace" value="1" /><span class="lbl">激活卡数小于或等于</span><input id="active_cards_join_days_margin_cards" name="active_cards_join_days_margin_cards" onkeyup="clearNoNum(this); " type="text" class="input-small"/>张，并且注册天数大于或等于<input id="active_cards_join_days_margin_days" name="active_cards_join_days_margin_days" onkeyup="clearNoNum(this); " type="text" class="input-small"/>天，并且信用额度大于或等于<input id="active_cards_join_days_margin_margin" name="active_cards_join_days_margin_margin" onkeyup="clearNoNum(this); " type="text" class="input-small"/>元</td>
+						</tr>
+					</table>
+				</div>
+				<div class="col-sm-12 modal-footer no-margin center">
+					<button class="btn btn-primary" type="button" onclick="do_set_margin_cards();">确认</button>
+					<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--返利网管理——》发展管理设置——》额度提升/卡数提升 处理的页面 -->
+	<div id="accountAuditDealRebate" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog modal-lg" style="width:900px;">
+			<div class="modal-content">
+				<div class="modal-header no-padding text-center">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">&times;</span>
+						</button>
+						<span id="developmentRebateTitle">处理</span>
+					</div>
+				</div>
+				<div class="modal-body">
+					<h5 class="header smaller left lighter no-padding no-margin-top">
+						<span class="bolder">返利网账号：&nbsp;</span>
+						<span id="rebateUserName" class="bolder"></span>
+						<br>
+						根据与兼职沟通的结果，做以下处理：
+					</h5>
+					<table name="selected_cards" class="table table-striped table-bordered table-hover no-margin-bottom">
+						<tr>
+							<td style="text-align:left !important"><input id="displayDate" name="displayDate" onkeyup="clearNoNum(this); " type="text" class="input-small"/><span class="lbl">天后，将该兼职显示在本页面列表中，继续沟通确认（</span><span class="lbl red">即使该兼职不满足【设置】条件，也会显示在列表</span>）</td>
+						</tr>
+						<tr>
+							<td style="text-align:left !important"><input type="checkbox" id="isDisplay" name="isDisplay" class="ace" value="1" onclick="changeDisplay();"/><span class="lbl">经过沟通，兼职不愿意再提升</span><span class="lbl" id="cardOrMargin">信用额度</span><span class="lbl">，以后不再将该兼职显示在本页面列表中（</span><span class="lbl red">即使该兼职满足【设置】条件，也不会显示在列表</span>）</td>
+						</tr>
+						<tr id="showAddJoinActivity">
+							<td style="text-align:left !important"><input type="checkbox" id="joinActivity" name="joinActivity" class="ace" value="1" /><span class="lbl">将兼职加入返利网优惠活动中</span></td>
+						</tr>
+					</table>
+				</div>
+				<div class="col-sm-12 modal-footer no-margin center">
+					<input id="rebate_uid" type="hidden"/>
+					<button class="btn btn-primary" type="button" onclick="dealWithRebate();">确认</button>
+					<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 公司用款详情/审核公用部分 -->
+	<div id="CompanyDetailModal"  class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog modal-lg"  style="width:520px;">
+			<div class="modal-content">
+				<div class="modal-header no-padding text-center">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+						<span name="title"></span>
+					</div>
+				</div>
+				<div class="modal-body">
+					<!--  暂时直接隐藏 -->
+					<div class="review_div hide" style="display:none;">
+						<span class="control-label blue">审核不通过原因：</span><span class="red"  name="review"></span>
+						<div style="height:5px;">&nbsp;</div>
+						<h6 class="header smaller center lighter blue no-padding no-margin-top" ></h6>
+					</div>
+					<div style="height:5px;">&nbsp;</div>
+					<span class="control-label blue">&nbsp;&nbsp;&nbsp;&nbsp;用款人：</span><span name="member"></span>
+					<br/><div style="height:5px;">&nbsp;</div>
+					<span class="control-label blue">用途类型：</span><span name="useName"></span>
+					<br/><div style="height:5px;">&nbsp;</div>
+					<span class="control-label blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;盘口：</span><span name="handicapName"></span>
+					<br/><div style="height:5px;">&nbsp;</div>
+					<span class="control-label blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;金额：</span><span name="amount"></span>&nbsp;元
+					<br/><div style="height:5px;">&nbsp;</div>
+					<span class="control-label blue">收款方式：</span><span name="receiptType"></span>
+					<br/>
+					<h6 class="header smaller center lighter blue no-padding no-margin-top" >收款卡信息</h6>
+					<span class="control-label blue">银行名称：</span><span name="toAccountBank"></span>
+					<br/><div style="height:5px;">&nbsp;</div>
+					<span class="control-label blue">银行卡号：</span><span name="toAccount"></span>
+					<br/><div style="height:5px;">&nbsp;</div>
+					<span class="control-label blue">&nbsp;&nbsp;&nbsp;&nbsp;开户人：</span><span name="toAccountOwner"></span>
+					<br/>
+					<h6 class="header smaller center lighter blue no-padding no-margin-top" >备注</h6>
+					<span name="remark"></span>
+					<br/><br/>
+					<!-- 财务审核记录 暂时直接隐藏 -->
+					<div class="div1 hide" style="display:none;">
+						<br/>
+						<h6 class="header smaller center lighter blue no-padding no-margin-top" ></h6>
+						<span class="control-label blue">财务审核：</span><span class="red"  name="statusStr"></span>
+						（审核人：<span name="financeReviewerName"></span>，审核时间：<span name="financeReviewerTime"></span>）
+						<div style="height:5px;">&nbsp;</div>
+					</div>
+					<!-- 下发审核记录 -->
+					<div class="div2" style="display:none;">
+						<span class="control-label blue">审核：</span><span class="red"  name="statusStr"></span>
+						（审核人：<span name="taskReviewerName"></span>，审核时间：<span name="taskReviewerTime"></span>）
+						<div style="height:5px;">&nbsp;</div>
+					</div>
+					<!-- 财务审核 -->
+					<div class="div3" style="display:none;">
+						<br/>
+						<h6 class="header smaller center lighter blue no-padding no-margin-top" ></h6>
+						<span class="control-label blue">财务审核：</span>
+						<label class="inline">
+							<input type="radio" name="status" class="ace defaultNoCheck" value="1">
+							<span class="lbl">通过</span>
+						</label>
+			         	<label class="inline">
+							<input type="radio" name="status" class="ace defaultNoCheck" value="3" >
+							<span class="lbl">不通过</span>
+						</label>
+						<br/><div style="height:5px;">&nbsp;</div>
+						<span class="red">（注：这是财务审核，通过之后会进入下发审核流程）</span>
+						<br/><div style="height:5px;">&nbsp;</div>
+						<span class="control-label blue">审核不通过原因：</span>
+						<br/><div style="height:5px;">&nbsp;</div>
+						<input class="input-sm" style="width:480px;" name="review" type="text" placeholder="不通过时必填，5~300个字">
+					</div>
+					<!-- 下发审核 -->
+					<div class="div4" style="display:none;">
+						<h6 class="header smaller center lighter blue no-padding no-margin-top" ></h6>
+						<span class="control-label blue">下发审核：</span>
+						<label class="inline">
+							<input type="radio" name="status" class="ace defaultNoCheck" value="2">
+							<span class="lbl">通过</span>
+						</label>
+						<span class="red">（注：下发主管跟财务人员电话确认后，审核通过）</span>
+						<br/><div style="height:5px;">&nbsp;</div>
+						<!-- 暂时隐藏 -->
+						<span class="hide">
+							<span class="control-label blue">审核不通过原因：</span>
+							<br/><div style="height:5px;">&nbsp;</div>
+							<input class="input-sm" style="width:480px;" name="review" type="text" placeholder="不通过时必填，5~300个字">
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-12 modal-footer no-margin center">
+					<button class="btn btn-primary" type="button" id="btn_success">确定</button>
+					<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

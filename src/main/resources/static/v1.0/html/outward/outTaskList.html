@@ -1,0 +1,1018 @@
+<!--私有CSS加载Start-->
+<link rel="stylesheet" href="../style/jquery.chosen.min.css" type="text/css">
+<style>
+    .no-padding-right-td {
+        padding-right: 0px !important;
+        text-align: center;
+    }
+
+    .message-footer {
+        padding: 0px !important;
+    }
+
+    #modal-splitTask {
+        text-align: center;
+        font-size: 18px
+    }
+
+    #failure td {
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+        padding-bottom: 5px !important;
+        padding-top: 5px !important;
+    }
+
+    /**可以通用在表格里*/
+    #doneOut td {
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+        padding-bottom: 4px !important;
+        padding-top: 4px !important;
+    }
+
+    #aliasLabel {
+        font-size: 30px;
+    !important;
+    }
+
+    #fromAccountInfoTd {
+        padding: 0px;
+    }
+</style>
+<!--私有CSS加载 End-->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="outTaskUL">
+                <li id="toOutTaskLi" style="display: none" class="active"
+                    onclick=" _initPage();_getTaskPageAhref(this);">
+                    <a data-toggle="tab" href="#toOut">
+                        <i class="pink ace-icon fa 	fa-location-arrow bigger-110"></i>
+                        正在出款
+                    </a>
+                </li>
+
+                <li id="doneOutTaskLi" onclick="initialSearchType(1);_getTaskPageAhref(this);">
+                    <a data-toggle="tab" href="#doneOut">
+                        <i class="blue ace-icon fa fa-check-circle bigger-110"></i>
+                        完成出款
+                    </a>
+                </li>
+
+                <li onclick="initialSearchType(0);_getTaskPageAhref(this);">
+                    <a data-toggle="tab" href="#failure">
+                        <i class="ace-icon fa fa-exclamation-circle  bigger-110 red"></i>
+                        待排查
+                    </a>
+                </li>
+                <label  id="setupThirdLabel"  onclick="clickThirdSetup()" style="padding-left: 100px;display: none;"   contentright="ThirdDrawTask:ChoiceThird:*">
+                    <button class="btn btn-xs btn-white btn-pink btn-bold">
+                        <i class="ace-icon fa fa-cog bigger-100 green"></i>设定第三方
+                    </button>
+                </label>
+            </ul>
+
+            <div style="padding-top: 0px" class="tab-content">
+                <div id="toOut" class="tab-pane in active">
+                    <div id="toOut_prompt" style="text-align: center;color: #497fff;display: none;"><h3>请点击右上角开始接单吧</h3>
+                    </div>
+                    <div id="info_out" class="row" style="display: none">
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <input type="hidden" id="userId">
+                                <input type="hidden" id="taskId">
+                                <input type="hidden" id="orderNoInput">
+                                <input type="hidden" id="memberCode">
+                                <span class="label label-info ">出款提单信息</span>
+                                <span id="review" style="margin-left: 35%;color: red;font-size: 23px;"><strong></strong></span>
+                                <table class="table table-bordered user-table audit_table">
+                                    <tbody>
+                                    <tr id="taskInfo" class="text-left">
+                                        <td bgcolor="#F5F5F5" style="font-size: 18px;color: #C55EE7">订单号</td>
+                                        <td id="orderNoTask" style="font-size: 18px;color: #000077"></td>
+                                        <td bgcolor="#F5F5F5" style="font-size: 18px;color: #C55EE7">盘口</td>
+                                        <td id="handicapTask" style="color: #000077;font-size: 18px;"></td>
+                                        <td bgcolor="#F5F5F5" style="font-size: 18px;color: #C55EE7">层级</td>
+                                        <td id="level" style="color: #000077;font-size: 18px;"></td>
+                                        <td bgcolor="#1e90ff" style="font-size: 18px;color:white">会员名</td>
+                                        <td id="member" style="color: #000077;font-size: 18px;"></td>
+                                        <td bgcolor="#F5F5F5" style="font-size: 18px;color: #C55EE7">时间</td>
+                                        <td id="receiveTime" style="color: #000077;font-size: 18px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td bgcolor="#1e90ff" style="color: white;font-size: 18px;text-align: center">备
+                                            注
+                                        </td>
+                                        <td colspan="9" style="font-size: 15px;text-align: center"
+                                            id="taskRemarks"></td>
+                                        <!--<td bgcolor="#1e90ff" style="color: white;font-size: 18px;text-align: center">设置</td>-->
+                                        <!--<td colspan="4" style="text-align: center;padding-top: 2px;padding-bottom: 2px">-->
+                                        <!--<input type="hidden" id="manualOutHandicap"><input type="hidden" id="manualOutMember">-->
+                                        <!--<button id="setManualOutRestrain" type="button" onclick="setManualOutRestrain();" style="display: none;" class=" btn btn-mg  btn-white btn-info btn-bold">-->
+                                        <!--<i class="ace-icon fa fal fa-user"></i>-->
+                                        <!--设定"人工出款"限制-->
+                                        <!--</button>-->
+                                        <!--<button id="cancelManualOutRestrain" type="button" onclick="cancelManualOutRestrain();" style="display: none;" class=" btn btn-mg  btn-white btn-warning btn-bold">-->
+                                        <!--<i class="ace-icon fa fas fa-user-times"></i>-->
+                                        <!--取消"人工出款"限制-->
+                                        <!--</button>-->
+                                        <!--</td>-->
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <span class="label label-info ">出款任务信息</span>
+                                <span id="splitInfo" style="display: none;" class="label label-success  ">拆单情况>>总共拆单：笔，已出款：笔，未出款：笔，当前出款第：笔</span>
+                                <table class="table table-bordered user-table audit_table">
+                                    <tbody id="toAccountInfo">
+                                    <tr class="text-left">
+                                        <td bgcolor="#F5F5F5" style="font-size: 18px;color: #C55EE7">出款金额</td>
+                                        <td style="text-align: center;font-size: 18px;" colspan="4">
+                                            <span style="color: red;" id="amount"></span>
+                                        </td>
+                                        <td style="text-align: center" colspan="1">
+                                            <i id="successFlagAmount" style="color: #00af0e;display: none;"
+                                               class="pull-left fa fa-check fa-lg" aria-hidden="true"></i>
+                                            <i  id="copyAmountTd" data-clipboard-target="#amount"
+                                               class="clipboardbtn ace-icon fa fa-copy  bigger-120 orange"
+                                               style="cursor:pointer;display: none" title="点击复制">点击复制</i>
+
+                                        </td>
+                                    </tr>
+                                    <tr class="text-left">
+                                        <td bgcolor="#F5F5F5" style="font-size: 18px;color: #C55EE7">收款帐号</td>
+                                        <td id="accountNo" style="text-align: center;color: red;font-size: 18px;"
+                                            colspan="4">
+
+                                        </td>
+                                        <td style="text-align: center" colspan="1">
+                                            <i id="successFlagAccountNo" style="color: #00af0e;display: none;"
+                                               class="pull-left fa fa-check fa-lg" aria-hidden="true"></i>
+                                            <i data-clipboard-target="#accountNo"
+                                               class="clipboardbtn ace-icon fa fa-copy  bigger-120 orange"
+                                               style="cursor:pointer" title="点击复制">点击复制</i>
+
+                                        </td>
+                                    </tr>
+                                    <tr class="text-left">
+                                        <td bgcolor="#F5F5F5" style="font-size: 18px;color: #C55EE7">开户人</td>
+                                        <td id="owner" style="text-align: center;color: #000077;font-size: 18px;"
+                                            colspan="4">
+
+                                        </td>
+                                        <td style="text-align: center" colspan="1">
+                                            <i id="successFlagOwner" style="color: #00af0e;display: none;"
+                                               class="pull-left fa fa-check fa-lg" aria-hidden="true"></i>
+                                            <i data-clipboard-target="#owner"
+                                               class="clipboardbtn ace-icon fa fa-copy  bigger-120 orange"
+                                               style="cursor:pointer" title="点击复制">点击复制</i>
+
+                                        </td>
+                                    </tr>
+                                    <tr class="text-left">
+                                        <td bgcolor="#F5F5F5" style="font-size: 18px;color: #C55EE7">开户行</td>
+                                        <td id="bankName" style="text-align: center;color: #000077;font-size: 18px;"
+                                            colspan="4">
+
+                                        </td>
+                                        <td style="text-align: center" colspan="1">
+                                            <i id="successFlagBankName" style="color: #00af0e;display: none;"
+                                               class="pull-left fa fa-check fa-lg" aria-hidden="true"></i>
+                                            <i data-clipboard-target="#bankName"
+                                               class="clipboardbtn ace-icon fa fa-copy  bigger-120 orange"
+                                               style="cursor:pointer" title="点击复制">点击复制</i>
+                                        </td>
+                                    </tr>
+                                    <tr class="text-left">
+                                        <td bgcolor="#F5F5F5" style="font-size: 18px;color: #C55EE7">开户地址</td>
+                                        <td id="toAccountName"
+                                            style="text-align: center;color: #000077;font-size: 18px;"
+                                            colspan="4">
+
+                                        </td>
+                                        <td style="text-align: center" colspan="1">
+                                            <i id="successFlagToAccountName" style="color: #00af0e;display: none;"
+                                               class="pull-left fa fa-check fa-lg" aria-hidden="true"></i>
+                                            <i data-clipboard-target="#toAccountName"
+                                               class="clipboardbtn ace-icon fa fa-copy  bigger-120 orange"
+                                               style="cursor:pointer" title="点击复制">点击复制</i>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <span class="label label-info ">出款操作</span>
+                                <span style="padding-left: 100px;"></span>
+                                <div id="splitInputDiv" class="ace-spinner middle" style="width: 125px;display: none;">
+                                    <div class="input-group">
+                                        <input type="text" id="spinner1" value="0" class="spinbox-input form-control text-center">
+                                        <div class="spinbox-buttons input-group-btn btn-group-vertical">
+                                            <button type="button" class="btn spinbox-up btn-sm btn-info" onclick="splitOrdersPlusOrMinus(2)"  >
+                                                <i class="icon-only  ace-icon fa fa-chevron-up"></i>
+                                            </button>
+                                            <button type="button" class="btn spinbox-down btn-sm btn-info" onclick="splitOrdersPlusOrMinus(1)">
+                                                <i class="icon-only  ace-icon fa fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span id="splitOrderSpan" style="display: none ">
+                                <button class="btn btn-white btn-purple " onclick="splitOrders()">
+                                    <i class="ace-icon fa fa-edit bigger-120 orange"></i>拆单
+                                </button>
+                                    <span class="label label-warning arrowed arrowed-right">说明:按输入数量把未完成的拆单  </span>
+                                </span>
+                                <button id="cancelSplitOrder" class="btn btn-white btn-purple " style="display: none" onclick="cancelSplitOrder()">
+                                    <i class="ace-icon fa fa-window-close bigger-120 red"></i>取消拆单
+                                </button>
+                                <table id="splitOrder4ThirdTab" style="display: none;margin-bottom:0px;" class="table  table-bordered table-hover">
+                                    <thead>
+                                        <tr><th>盘口</th><th>三方账号</th><th>三方商号</th><th>金额</th><th>手续费</th><th>状态</th><th>操作</th></tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                <table class="table table-bordered user-table audit_table">
+                                    <tbody>
+                                    <tr class="text-left" id="selectAccountToUseTr" style="display: none">
+                                        <td style="text-align: center;width: 20%;">
+                                            <label class="pull-left">
+                                                <button id="selectAccount" first_click_flag ="1" type="button"
+                                                        style="color: #000789;font-size: 17px">选择出款账号
+                                                </button>
+                                            </label>
+                                            <label id="freezeAccountLabel" class="pull-right" style="display: none;">
+                                                <button id="freezeAccount" type="button"
+                                                        style="color:red;font-size: 14px">冻结账号
+                                                </button>
+                                            </label>
+                                        </td>
+                                        <td id="fromAccountInfoTd" style="text-align: left;width: 70%;" colspan="4">
+                                            <span id="fromAccountInfo" style="width: auto;font-size: 20px">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:20%;text-align: center;">
+                                            <button type="button" id="transferDone"
+                                                    class="btn btn-xs btn-white btn-info btn-bold pull-left"><i
+                                                class="ace-icon fa fa-check bigger-100 blue"></i>完成出款
+                                            </button>
+                                            <label><span id="selectAccoutPrompt"
+                                                         style="color: red;display: none;"></span></label>
+                                        </td>
+                                        <td style="width:25%;"><input id="remark" type="text"
+                                                                      placeholder="1.转账完成可填 2.其他操作必填 "
+                                                                      class="form-control"></td>
+                                        <td style="width:20%;">
+                                            <button type="button" style="display: none;" id="transfer_allocate"
+                                                    class="btn btn-xs btn-white btn-warning btn-bold">
+                                                <i class="ace-icon fa fa-share  bigger-100 orange"></i>
+                                                重新分配
+                                            </button>
+                                            <button type="button" style="display: none;" id="transfer_manager"
+                                                    class="btn btn-xs btn-white btn-warning btn-bold">
+                                                <i class="ace-icon fa fa-share  bigger-100 orange"></i>
+                                                转主管处理
+                                            </button>
+                                            <button type="button" style="display: none;" id="transfer_platform"
+                                                    class="btn btn-xs btn-white btn-danger btn-bold">
+                                                <i class="ace-icon fa fa-remove  bigger-100 red"></i>
+                                                取消
+                                            </button>
+                                        </td>
+                                            <label style="position: absolute;"><span id="remarkFailPrompt"
+                                                                                     style="color: red;display: none;">请填写原因</span></label>
+                                        <td style="width:35%;">
+                                        	<select class="chosen-select"  name="choice_person"  style="width:80px;"></select>
+                                        	<input type="text" class="input-sm"name="choice_remark" placeholder="备注，必填" style="width:250px;" >
+                                            <button type="button"  onclick="do_transferOtherPerson(this);" id="btn_transferOtherPerson"
+                                            		class="btn btn-xs btn-white btn-success btn-bold ">
+                                                <i class="ace-icon fa fa-external-link  bigger-100 green"></i>
+                                                转他人处理
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td id="taskStophint" colspan="8" class="center">
+                                            <span id="accountChangeRemind" style="display: block; color: red;"></span>
+                                            <span id="taskStopRemind" style="color: mediumvioletred;font-size: 15px">温馨提示：结束接单步骤:暂停->完成当前任务->结束！</span>
+                                            <span style="color: red;font-size: 14px">(1.不要在完成出款或者转主管后执行停止接单操作 2.冻结账号后如有当前任务则转主管)</span>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="machine" class="tab-pane ">
+                    <table id="machine-table" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>机器编号</th>
+                            <th>开户行</th>
+                            <th>余额</th>
+                            <th>出款笔数</th>
+                            <th>状态</th>
+                            <th>当前出款任务信息</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="machine_tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div id="doneOut" class="tab-pane">
+                    <h3 class="row header smaller lighter blue">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">盘口</span>
+                                    <select id="handicap_1" class="chosen-select form-control"
+                                            style="height:32px;width:78%;">
+
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary">出款账号</span>
+                                    <input style="height:32px;width:69%;" id="account_1" type="text"
+                                           list="dataList_account_1">
+                                    <datalist id="dataList_account_1">
+
+                                    </datalist>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                                    <input id="orderNo_1" class="input-large " type="text"
+                                           style="height: 32px;width:72%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">金额</span>
+                                    <input id="fromMoney_1" onkeyup="clearNoNum(this)" type="text"
+                                           class="form-control input-small" style="height:32px;width:34%;">
+                                    <span style="width: 0%;display: inline" class="">~</span>
+                                    <input id="toMoney_1" onkeyup="clearNoNum(this)" type="text"
+                                           class="form-control input-small" style="height:32px;width:34%;">
+
+                                </div>
+                                <div class="col-sm-12" style="height:2px;"></div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">层级</span>
+                                    <select id="level_1" class="chosen-select form-control"
+                                            style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 67.59px;" class="label label-lg label-primary ">会员名</span>
+                                    <input id="member_1" class="input-large " type="text"
+                                           style="height: 32px;width:69%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                <span style="width: 54.59px;" class="label label-lg label-primary arrowed-right"><i
+                                    class="fa fa-calendar bigger-110"></i></span>
+                                    <input id="timeScopeTask_1" class="input-large date-range-picker" type="text"
+                                           style="height: 32px;width:72%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="pull-left">
+                                        <button id="search_1" class="btn btn-xs btn-white btn-info btn-bold "
+                                                type="button">
+                                                <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                            </button>
+                                    </span>
+                                    <span style="margin-left: 20px;" class="pull-left">
+									<button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                            onclick="_resetValueB(1);">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+
+                    <table id="doneOut-table" style="margin-bottom:0px;" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>盘口</th>
+                            <th>层级</th>
+                            <th>会员名</th>
+                            <th>订单号</th>
+                            <th>出款账号</th>
+                            <th>金额</th>
+                            <th>状态</th>
+                            <th>时间</th>
+                            <th>耗时</th>
+                            <th>备注</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="tbody_1">
+
+                        </tbody>
+                    </table>
+                    <div id="doneOutward_footPage_1">
+
+                    </div>
+                </div>
+
+                <div id="failure" class="tab-pane">
+                    <h3 class="row header smaller lighter blue">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">盘口</span>
+                                    <select id="handicap_0" class="chosen-select form-control"
+                                            style="height:32px;width:78%;">
+
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary">出款账号</span>
+                                    <input style="height:32px;width:69%;" id="account_0" type="text"
+                                           list="dataList_account_0">
+                                    <datalist id="dataList_account_0">
+
+                                    </datalist>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                                    <input id="orderNo_0" class="input-large " type="text"
+                                           style="height: 32px;width:72%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">金额</span>
+                                    <input id="fromMoney_0" onkeyup="clearNoNum(this)" type="text"
+                                           class="form-control input-small" style="height:32px;width:34%;">
+                                    <span style="width: 0%;display: inline" class="">~</span>
+                                    <input id="toMoney_0" onkeyup="clearNoNum(this)" type="text"
+                                           class="form-control input-small" style="height:32px;width:34%;">
+
+                                </div>
+
+                                <div class="col-sm-12" style="height:2px;"></div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">层级</span>
+                                    <select id="level_0" class="chosen-select form-control"
+                                            style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 67.59px;" class="label label-lg label-primary ">会员名</span>
+                                    <input id="member_0" class="input-large " type="text"
+                                           style="height: 32px;width:69%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                <span style="width: 54.59px;" class="label label-lg label-primary arrowed-right"><i
+                                    class="fa fa-calendar bigger-110"></i></span>
+                                    <input id="timeScopeTask_0" class="input-large date-range-picker" type="text"
+                                           style="height: 32px;width:72%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="pull-left">
+                                        <button id="search_0" class="btn btn-xs btn-white btn-info btn-bold "
+                                                type="button">
+                                                <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                            </button>
+                                    </span>
+                                    <span style="margin-left: 20px;" class="pull-left">
+									<button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                            onclick="_resetValueB(0);">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+                    <table id="failure-table" style="margin-bottom:0px;" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>盘口</th>
+                            <th>层级</th>
+                            <th>会员名</th>
+                            <th>订单号</th>
+                            <th>出款账号</th>
+                            <th>金额</th>
+                            <th>状态</th>
+                            <th>时间</th>
+                            <th>备注</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="tbody_0">
+
+                        </tbody>
+                    </table>
+                    <div id="doneOutward_footPage_0"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myContentForTask"></div>
+<div id="changBtnDivOutTask" class="btn-of-change">
+    <button id="pauseBtnTask" type="button" btn_value="1" class="btn btn-white btn-warning btn-bold"
+            onclick="_pauseTask();">
+    </button>
+    <button id="changBtnTask" type="button" btn_value="0" class="btn btn-white btn-info btn-bold"
+            onclick="_changStatus();">
+    </button>
+</div>
+<!--modal 转出款任务为失败-->
+<div id="modal-turnToFail" class="modal fade" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog" style="width:500px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    备注
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <label style="width: 100%;color: red;">&nbsp;&nbsp;备 注：<input id="turnToFailRemark" style="width: 85%;"
+                                                                              type="text"
+                                                                              placeholder="填写备注"></label>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <input id="turnFailId" type="hidden">
+                <span id="remark-turnToFail" style="color: red;display: none;" class="pull-left">请填写备注信息</span>
+                <button id="confirmTurnToFail" type="button" class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    确定
+                </button>
+                <button id="cancelTurnToFail" type="button" data-dismiss="modal"
+                        class="btn btn-sm btn-default pull-right">
+                    <i class="ace-icon fa fa-remove"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 出款失败 反馈 转主管 平台处理 -->
+<div id="modal-remarkFeedBack" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    填写备注
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <label style="width: 100%;color: red;">备 注：<input id="remarkFeedBack" style="width: 75%;" type="text"
+                                                                  placeholder="填写备注"></label>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <input type="hidden" id="orderNoFeedBack">
+                <input type="hidden" id="memberCodeFeedBack">
+                <input type="hidden" id="idFeedBack">
+                <input type="hidden" id="statusFeedBack">
+                <span id="remark-feedback" style="color: red;display: none;" class="pull-left">请填写备注信息</span>
+                <button id="confirmFeedBack" type="button" class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    确定
+                </button>
+                <button id="cancelFeedBack" type="button" class="btn btn-sm btn-warning pull-right">
+                    <i class="ace-icon fa fa-remove"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--modal 出款账号-->
+<div id="modal-fromAccountInfo" class="modal fade" tabindex="-1" data-backdrop="static" data-toggle="modal">
+    <div class="modal-dialog" style="width:1000px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" id="closeModal" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    选择出款账号
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content" style="padding: 0px">
+                        <label style="width: 50%;color: red">用于出款的账号：<input id="accountToDraw" type="text"
+                                                                            style="width: 60%"
+                                                                            placeholder="用于出款的账号或商号"></label>
+                        <span style="padding-left: 5px">
+                            <button id="findAccount" type="button"
+                                    class="btn btn-xs btn-white btn-info btn-bold">
+                                <i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+                            <button id="findAccountReset" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+                                <i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button>
+                        </span>
+                        <span style="padding-left: 25px;display: none;" id="useOtherThirdAccountSpan" >
+                            <button id="useOtherThirdAccount" type="button" onclick="_useOtherThirdAccount();"
+                                    class="btn btn-xs btn-white btn-info btn-bold">
+                                <i class="ace-icon fa fa-plus  bigger-100 green"></i>使用其他第三方账号</button>
+                        </span>
+                        <div id="notThridOutAccountDiv" style="display: none;">
+                            <table class="table  table-bordered table-hover" style="margin-bottom: 0px;">
+                                <thead>
+                                <th>选择</th>
+                                <th>账号</th>
+                                <th>编号</th>
+                                <th>层级</th>
+                                <th>状态</th>
+                                <th>开户行</th>
+                                <th>开户人</th>
+                                <th>银行余额</th>
+                                <!--<th>系统余额</th>-->
+                                <th>当日最大出款</th>
+                                <th>当日累计出款</th>
+                                </thead>
+                                <tbody id="modal-fromAccountInfo-tbody"></tbody>
+                            </table>
+                            <div id="modal-fromAccountInfo-foot">
+                            </div>
+                        </div>
+                        <div id="thirdOutAccountDiv" style="display: none;">
+                            <table class="table  table-bordered table-hover" style="margin-bottom: 0px;">
+                                <thead>
+                                <tr>
+                                    <th onclick="_selectedAllThirdAccount(this);" style="cursor: pointer"><input
+                                        type="checkbox" id="selectedAllThirdAccount"
+                                        onclick="_inputCheckboxInsideThClick(event,this);">全部
+                                    </th>
+                                    <th>盘口</th>
+                                    <th>层级</th>
+                                    <th>编号</th>
+                                    <th>第三方商号</th>
+                                    <th>第三方账号</th>
+                                    <th>余额</th>
+                                    <th>实际出款金额</th>
+                                </tr>
+                                </thead>
+                                <tbody id="modal-thirdAccountInfo-tbody"></tbody>
+                            </table>
+                            <div id="modal-thirdAccountInfo-foot">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <span id="out-account-prompt" style="color: red;display: none;" class="pull-left"></span>
+                <button id="cancelModal" type="button" class="btn btn-sm btn-warning pull-right">
+                    <i class="ace-icon fa fa-remove"></i>
+                    关闭
+                </button>
+                <button id="confirmAccoutToDraw" type="button" style="display: none;"
+                        class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 其他第三方出款账号-->
+<div id="modal-fromAccountInfo-otherThird" class="modal fade" tabindex="-1" data-backdrop="static" data-toggle="modal">
+    <div class="modal-dialog" style="width:900px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    其他第三方出款账号
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content" style="padding:0px;">
+                        <table class="table  table-bordered table-hover" style="margin-bottom: 0px;">
+                            <thead>
+                            <tr>
+                                <th>盘口</th>
+                                <th>第三方商号</th>
+                                <th>第三方账号</th>
+                                <th>使用金额</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="modal-otherThird-tbody">
+
+                            </tbody>
+                        </table>
+                        <div id="modal-otherThird-foot">
+                        </div>
+                        <div id="addOtherThirdAccountDiv-otherThird">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <span id="out-account-prompt-otherThird" style="color: red;display: none;" class="pull-left"></span>
+                <button id="cancelModal-otherThird" onclick="_closeUseOtherThirdAccount();" type="button" class="btn btn-sm btn-white  btn-warning pull-right">
+                    <i class="ace-icon fa fa-remove"></i>
+                    关闭
+                </button>
+                <button id="confirmAccoutToDraw-otherThird" onclick="_confirmUseOtherThirdAccount();" type="button" class="btn btn-sm btn-white btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 停止接单原因 -->
+<div class="modal fade  in" id="stopOrder" aria-hidden="false" style="display: none;">
+    <div style="" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header no-padding text-center">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    停止接单原因：
+                </div>
+            </div>
+            <div class="modal-body" id="modal_choose">
+                <div class="row">
+                    <div>
+                        <span class="label label-lg label-pink arrowed-right">原因：</span>
+                        <input type="radio" style="cursor: pointer;" onclick="changeReadonly();" value="下班"
+                               name="radioWhy">
+                        下班
+                        <input type="radio" style="cursor: pointer;" onclick="changeReadonly();" value="去诊所"
+                               name="radioWhy">
+                        去诊所
+                        <input type="radio" style="cursor: pointer;" onclick="changeReadonly();" value="上厕所"
+                               name="radioWhy">
+                        上厕所
+                        <input type="radio" style="cursor: pointer;" onclick="changeReadonly();" value="吃饭"
+                               name="radioWhy">
+                        吃饭
+                        <input type="radio" style="cursor: pointer;" onclick="changeReadonly();" value="外出抽烟"
+                               name="radioWhy">
+                        外出抽烟
+                        <input type="radio" style="cursor: pointer;" onclick="changeReadonly();" value="其它"
+                               name="radioWhy">
+                        其它
+                    </div>
+                    <div>
+                        <textarea id="whyText" name="whyText" readonly="readonly" style="width: 580px;"
+                                  rows="5"></textarea>
+                        <label><span id="remarkWhyText" style="color: red;display: none;">请填写原因再提交</span></label>
+                    </div>
+                    <div class="modal-footer" style="height: 50px;">
+                        <button class="btn btn-primary" style="height: 35px;" onclick="subStopOrder();" type="button">
+                            提交
+                        </button>
+                        <button class="btn btn-danger" onclick="closeStopOrder();" style="height: 35px;" type="button">
+                            取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!---冻结账号 填写备注 发消息给主管--->
+<div id="freezeAccount_modal" class="modal fade">
+    <div class="modal-dialog modal-middle">
+        <div class="modal-content">
+            <div class="modal-header text-center no-padding">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span>
+                    </button>
+                    冻结账号备注信息
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+				<span><i class="fa fa-asterisk red" aria-hidden="true"></i><label>备注(必填)</label>
+					<input style="width: 86.4%" id="freezeAccount_remark" type="text" list="freezeAccountRemark">
+					<datalist id="freezeAccountRemark" style="width: 86.4%">
+
+					</datalist>
+				</span>
+            </div>
+            <div class="modal-footer">
+                <label class="pull-left"><span id="prompt_freezeAccount"
+                                               style="color: #dfa020;">温馨提示：冻结账号需谨慎，系统会告知主管！</span></label>
+                <label class="pull-left"><span id="remarkPrompt_freezeAccount" style="color: red;display: none;">请填写备注再提交</span></label>
+                <button class="btn btn-primary" id="summit_cancel" type="button"
+                        onclick="_freezeAccountConfirm();">确定
+                </button>
+                <button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="taskImgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:30%;">
+        <div class="modal-content">
+            <div style="text-align: center" class="table-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                交易截图
+            </div>
+            <div class="modal-body">
+                <img id="taskImg" src=""  height="auto" width="100%" alt="auto">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 客服备注 -->
+<div id="CustomerserviceRemark1_modal" class="modal fade" tabindex="-1">
+    <input id="CustomerserviceRemark1_id" type="hidden">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomer" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    备注
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-left">备注 </label>
+                                    <div class="col-sm-6">
+                                        <textarea style="height: 120px;width: 400px;" id="CustomerserviceRemark1"
+                                                  name="CustomerserviceRemark"
+                                                  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                                <span id="prompt_remark1"
+                                      style="display:none;color: red;padding-left: 160px;">请填写备注</span>
+                                <div class="space-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button id="confirmBtnTask" type="button" onclick="save_CustomerserviceRemark1();"
+                        class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 未出款页签 分配给用户出款任务-->
+<div id="modal-distribution-third" data-backdrop="static" data-keyboard="false" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div style="padding: 0px" class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="blue">&times;</span>
+                </button>
+                <h3>任务分配</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form role="form">
+                        <div class="form-group">
+                            <label style="color: mediumvioletred">&nbsp;&nbsp;&nbsp;&nbsp;开&nbsp;&nbsp;户&nbsp;&nbsp;行&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <select multiple="multiple" class="multiselect"
+                                    id="form-field-select-allocateTaskThird"></select>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: mediumvioletred">&nbsp;&nbsp;&nbsp;&nbsp;备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <input id="allocateTaskRemarkThird" type="text" style="width: 500px;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="distribution-prompt" class="pull-left" style="color: red;display: none;"></span>
+                <label  class="pull-left blue" >分配对象：</label>&nbsp;&nbsp;&nbsp;
+                <label  class="pull-left distributeObject" onclick="_checkClickLabel(this);"><input onclick="window.event.stopPropagation();" name="distributeObjectThird" value="robot" type="radio">机器&nbsp;&nbsp;</label>
+                <label  class="pull-left distributeObject" onclick="_checkClickLabel(this);"><input onclick="window.event.stopPropagation();" type="radio" value="manual"name="distributeObjectThird">人工&nbsp;&nbsp;</label>
+                <label  class="pull-left distributeObject" onclick="_checkClickLabel(this);"><input onclick="window.event.stopPropagation();" type="radio" value="thirdOut"name="distributeObjectThird">第三方</label>
+                <label id="noDistributionObjThird" style="color: red;display: none">请选择分配对象</label>
+                <button id="confirmDistributionForThird" type="button" onclick="_allocateForThird();"
+                        class="btn btn-sm btn-success">
+                    确定
+                </button>
+                <button id="cancelDistributionForThird" type="button" data-dismiss="modal" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="taskOrderNoDetail"></div>
+
+<!--设定第三方-->
+<div id="choiceThirdModal4copy" class="modal fade" aria-hidden="false" >
+    <div class="modal-dialog modal-lg"  style="width:1200px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding text-center">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+                    设定第三方
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="third_accountFilter" style="z-index:1" class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left">
+                    <div class="col-sm-3">
+                        <span class="control-label blue">&nbsp;&nbsp;盘口&nbsp;&nbsp;</span>
+                        <select class=" width150" name="third_search_EQ_handicapId"></select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="control-label blue">&nbsp;&nbsp;帐号&nbsp;&nbsp;</span>
+                        <input type="text" class="input-sm width150" name="third_search_LIKE_account" placeholder="账号" />
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="control-label blue">第三方</span>
+                        <input type="text" class="input-sm width150" name="third_search_LIKE_bankName" placeholder="例：京东支付" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label onclick="searchChoiceThird();"  class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold">
+                            <i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+                        </label>
+                        <label class="pull-right inline">&nbsp;&nbsp;</label>
+                        <label onclick="reset('third_accountFilter');" class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold">
+                            <i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button>
+                        </label>
+                    </div>
+                </div>
+                <input type="hidden" id="thirdAccountTabType" value="2"/>
+                <ul class="nav nav-tabs" >
+                    <li onclick="change_thirdTabInit('2')" class="active" ><a data-toggle="tab">我的设定<span class="badge badge-danger mySetUpedNumber">0</span></a></li>
+                    <li onclick="change_thirdTabInit('1')" ><a data-toggle="tab" >全部<span class="badge badge-danger allSetUpNumber">0</span></a></li>
+                    <li class="unlockThird pull-right inline">
+                        <div  style="display:none;" class="unlockThird">
+                            <label onclick="saveSelectThirdRecord('2');" class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold">
+                                <i class="ace-icon fa fa-unlock bigger-100 green"></i>选中解除我的设定</button>
+                            </label>
+                        </div>
+                        <div  style="display:none;" class="lockThird">
+                            <label onclick="saveSelectThirdRecord('1');" class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold">
+                                <i class="ace-icon fa fa-lock bigger-100 green"></i>选中加入我的设定</button>
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+                <table class="table table-striped table-bordered table-hover no-margin-bottom">
+                    <thead>
+                    <tr>
+                        <th style="width:5%;">选择<input type="checkbox"  id="selectAllOrNotAllSet" onclick="selectAllOrNotAllSet(this)"></th>
+                        <th style="width:5%;">盘口</th>
+                        <th style="width:5%;">层级</th>
+                        <th style="width:8%;">账号</th>
+                        <th style="width:10%;" title="第三方商户">第三方</th>
+                        <th style="width:4%;">状态</th>
+                        <th style="width:8%;">系统余额</th>
+                        <th style="width:8%;">第三方余额</th>
+                        <th style="width:7%;">提现记录</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div id="thirdAccountPage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--私有JS加载Start-->
+<script type="text/javascript" src="../javascript/outward/orderDetail.js"></script>
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript" src="../third/thirdCommon.js"></script>
+<!-- 选择第三方 -->
+<script type="text/javascript"  src="../javascript/income/asign/thirdDrawTaskMore.js"></script>
+<!--私有JS加载 End-->
+

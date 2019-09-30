@@ -1,0 +1,35 @@
+<!--私有CSS加载Start-->
+<link rel="stylesheet" href="../style/jquery.ztree.css" type="text/css">
+<!--私有CSS加载 End-->
+<div class="row">
+	<div class="col-sm-12">
+		<h3 class="center" id="menuAuthorityHead">菜单权限设置</h3>
+		<div style="padding-top: 5px;" class="tab-content">
+			<div class="row">
+				<div style="margin-bottom: 0px" class="widget-toolbar">
+					<div class="hidden-sm hidden-xs btn-group">
+						<button id="sure" onclick="_saveMenuPermision();"
+							style="padding-top: 12px" class="btn btn-xs btn-success">
+							<i class="ace-icon fa fa-check bigger-120">保存</i>
+						</button>
+						<button id="back" onclick="javascript:history.back(-1);"
+							style="padding-top: 12px" class="btn btn-xs btn-purple">
+							<i class="ace-icon fa fa-reply ">返回</i>
+						</button>
+					</div>
+				</div>
+				<div style="border-left: 0px; border-right: 0px"
+					class="col-sm-12 no-padding">
+					<input type="hidden" id="roleId">
+					<ul id="treeDemo"
+						style="font-size:18px;border: 1px solid #C5D0DC; border-right-color: #ffffff; border-left-color: #ffffff; margin-top: 6px; margin-left: 2px; width: auto; height: auto; overflow: hidden; background: #ffffff"
+						class="ztree"></ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--私有JS加载Start-->
+<script type="text/javascript"
+	src="../javascript/lib/jquery.ztree.all.min.js"></script>
+<!--私有JS加载 End-->

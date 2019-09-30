@@ -1,0 +1,441 @@
+<div class="row">
+    <div class=" row col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="ulTable">
+                <li class="active" onclick="$('#freshAliInTotalLi').show();change('Matching');">
+                    <a data-toggle="tab" href="#wetchatToMatch">
+                        <i class="ace-icon fa fa-hourglass-start bigger-110 pink"></i>
+                        	正在匹配
+                    </a>
+                </li>
+                <li onclick="$('#freshAliInTotalLi').hide();change('Matched');">
+                    <a data-toggle="tab" href="#wetchatMatched">
+                        <i class="pink ace-icon fa fa-info-circle bigger-110"></i>
+                        	已匹配
+                    </a>
+                </li>
+                <li onclick="$('#freshAliInTotalLi').hide();change('UnClaim');">
+                    <a data-toggle="tab" href="#wetchatUnClaim">
+                        <i class="ace-icon fa fa-exclamation-circle  bigger-110 pink"></i>
+                      	  未认领
+                    </a>
+                </li>
+                <li onclick="$('#freshAliInTotalLi').hide();change('Canceled');">
+                    <a data-toggle="tab" href="#wetchatCanceled">
+                        <i class="ace-icon fa fa-times  bigger-110 red"></i>
+                      	  已取消
+                    </a>
+                </li>
+                <li id="freshAliInTotalLi" style="display: none;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-lg label-primary arrowed-right">刷新</span>
+                    <select id="autoUpdateTimeAliInTotal" >
+                    </select>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="wetchatBodyDiv" style="padding-top: 0px" class="tab-content">
+    <div id="wetchatToMatch" class="tab-pane in active">
+    	 <h3 class="">
+             <form class="form-inline">
+                 <div class="col-sm-3">
+                     <span class="label label-lg label-primary arrowed-right">盘口</span>
+                     <select id="handicap_Ali_total" name="handicap_Ali_total"
+                             class="chosen-select form-control"
+                             style="height:32px;width:78%;">
+                         <option>请选择</option>
+                     </select>
+                 </div>
+                 <div class="col-sm-3">
+                     <span style="width: 67.59px"
+                           class="label label-lg label-primary arrowed-right">会员名</span>
+                     <input id="member_AliToMatch"
+                            class="input-large "
+                            type="text" style="height: 32px;width:68%;"/>
+                 </div>
+                 <div class="col-sm-3">
+                     <span class="label label-lg label-primary arrowed-right">订单号</span>
+                     <input id="orderNo_AliToMatch"
+                            class="input-large "
+                            type="text"
+                            style="height: 32px;width:73%;"/>
+                 </div>
+                 <div class="col-sm-3">
+                     <span class="label label-lg label-primary arrowed-right">
+                      	   时间
+                     </span>
+                     <input id="time_Ali_total" name="time_Ali_total"
+                            class="input-large date-range-picker" type="text"
+                            style="height: 32px;width:77%;"/>
+                 </div>
+                 <div class="col-sm-12" style="height:2px;"></div>
+                 <div class="col-sm-3">
+                     <span class="label label-lg label-primary arrowed-right">金额</span>
+                     <input id="fromMoney_AliToMatch"
+                            onkeyup="clearNoNum(this)" type="text"
+                            class="form-control input-small"
+                            style="height:32px;width:34.5%;">
+                     <span style="width: 0%;display: inline" class="">~</span>
+                     <input id="toMoney_AliToMatch"
+                            onkeyup="clearNoNum(this)" type="text"
+                            class="form-control input-small"
+                            style="height:32px;width:34.5%;">
+                 </div>
+                 <div class="col-sm-3">
+                     <span style="width: 67.59px"
+                           class="label label-lg label-primary arrowed-right">存款人</span>
+                     <input id="payer_AliToMatch"
+                            class="input-large "
+                            type="text" style="height: 32px;width:68%;"/>
+                 </div>
+                 <div class="col-sm-3">
+                     <span class="label label-lg label-primary arrowed-right">支付宝号</span>
+                     <input id="AliNumber"
+                            class="input-large "
+                            type="text" style="height: 32px;width:68%;"/>
+                 </div>
+                 <div class="col-sm-3">
+                    <!--  <span class="label label-lg label-primary arrowed-right">类型</span>
+                     <label class="inline">
+                         <input name="order_AliToMatch" class="ace"
+                                id="order_AliToMatch1" type="checkbox" value="0">
+                         <span class="lbl">提单</span>
+                     </label>
+                     <label class="inline">
+                         <input name="flow_AliToMatch" class="ace"
+                                id="flow_AliToMatch1" type="checkbox" value="1">
+                         <span class="lbl">流水</span>
+                     </label> -->
+                     <span class="pull-right">
+                         <button class="btn btn-xs btn-white btn-info btn-bold "
+                                 id="searchBtnAliToMatch"
+                                 type="button" onclick="queryMatchingAliTotal()">
+                             <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                         </button>
+                     </span>
+                     <span class="pull-right">
+                         <button class="btn btn-xs btn-white btn-info btn-bold "
+                                 id="resetBtnAliToMatch"
+                                 type="button" onclick="_search();">
+                             <i class="ace-icon fa fa-search bigger-100 green"></i>重置
+                         </button>
+                     </span>
+                 </div>
+             </form>
+         </h3>
+         <div align="center" class="col-xs-12" id="matchPrompt" style="color: #ff3749;font-size: 18px;"></div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+	                    <tr>
+	                        <th>所属盘口</th>
+	                        <th>支付宝号</th>
+	                        <th>姓名</th>
+	                        <th>状态</th>
+	                        <th>最新抓取时间</th>
+	                        <th class="detail-col" style="width: 100px">待处理流水</th>
+	                    </tr>
+                    </thead>
+                    <tbody id="Ali_total_tbody">
+                    	
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- 分页 -->
+		<div id="Ali_total_page"></div>
+    </div>
+<!-- ----------------------------------------------------已匹配------------------------------------------------------------ -->
+    <div id="wetchatMatched" class="tab-pane">
+        <h3 class="row header smaller lighter blue">
+            <form class="form-inline">
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">盘口</span>
+                    <select id="handicap_AliMatched" name="handicap_AliMatched"
+                            class="chosen-select form-control"
+                            style="height:32px;width:78%;">
+                        <option>请选择</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                   <span style="width: 67.59px"
+                         class="label label-lg label-primary arrowed-right">会员名</span>
+                    <input id="member_AliMatched"
+                           class="input-large "
+                           type="text" style="height: 32px;width:68%;"/>
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                    <input id="orderNo_AliMatched"
+                           class="input-large "
+                           type="text"
+                           style="height: 32px;width:73%;"/>
+                </div>
+                <div class="col-sm-3">
+                     <span class="label label-lg label-primary arrowed-right">
+                                                                                      时间
+                     </span>
+                    <input id="timeScope_AliMatched" name="timeScope_AliMatched"
+                           class="input-large date-range-picker" type="text"
+                           style="height: 32px;width:77%;"/>
+                </div>
+                <div class="col-sm-12" style="height:2px;"></div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">金额</span>
+                    <input id="fromMoney_AliMatched"
+                           onkeyup="clearNoNum(this)" type="text"
+                           class="form-control input-small" style="height:32px;width:34.5%;">
+                    <span style="width: 0%;display: inline" class="">~</span>
+                    <input id="toMoney_AliMatched"
+                           onkeyup="clearNoNum(this)" type="text"
+                           class="form-control input-small" style="height:32px;width:34.5%;">
+                </div>
+                <div class="col-sm-3">
+                    <span style="width: 67.59px" class="label label-lg label-primary arrowed-right">存款人</span>
+                    <input id="payer_AliMatched"
+                           class="input-large "
+                           type="text" style="height: 32px;width:68%;"/>
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">支付宝号</span>
+                    <input id="payer_AliNo_AliMatched"
+                           class="input-large "
+                           type="text" style="height: 32px;width:68%;"/>
+                </div>
+                <div class="col-sm-3">
+                    <span class="pull-right">
+                         <button onclick="queryMatched()" class="btn btn-xs btn-white btn-info btn-bold " id="searchBtnMatched"
+                                                            type="button">
+                             <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                          </button>
+                    </span>
+                    <span class="pull-right">
+                         <button class="btn btn-xs btn-white btn-info btn-bold " id="resetBtnMatched"
+                                                            type="button">
+                              <i class="ace-icon fa fa-search bigger-100 green"></i>重置
+                         </button>
+                    </span>
+                </div>
+            </form>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th>盘口</th>
+                <th>会员名</th>
+                <th>订单号</th>
+                <th>金额</th>
+                <th>存款人</th>
+                <th>收款支付宝号</th>
+                <th>申请时间</th>
+                <th>匹配时间</th>
+                <th>任务耗时</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_AliMatched">
+                
+            </tbody>
+
+        </table>
+        <div id="AliMatched_footPage"></div>
+    </div>
+
+<!-- --------------------------------------------------未认领------------------------------------------------------------------- -->
+    <div id="wetchatUnClaim" class="tab-pane">
+        <h3 class="row header smaller lighter blue">
+            <form class="form-inline">
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">盘口</span>
+                    <select id="handicap_wetchatUnClaim" name="handicap_wetchatUnClaim"
+                            class="chosen-select form-control"
+                            style="height:32px;width:78%;">
+                        <option>请选择</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <span  class="label label-lg label-primary arrowed-right">存款人</span>
+                    <input id="member_wetchatUnClaim"
+                           class="input-large "
+                           type="text" style="height: 32px;width:73%;"/>
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">
+                      	  时间
+                    </span>
+                    <input id="timeScope_wetchatUnClaim" name="timeScope_wetchatUnClaim"
+                           class="input-large date-range-picker" type="text"
+                           style="height: 32px;width:77%;"/>
+                </div>
+                <div class="col-sm-12" style="height:2px;"></div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">金额</span>
+                    <input id="fromMoney_wetchatUnClaim"
+                           onkeyup="clearNoNum(this)" type="text"
+                           class="form-control input-small" style="height:32px;width:34.5%;">
+                    <span style="width: 0%;display: inline" class="">~</span>
+                    <input id="toMoney_wetchatUnClaim"
+                           onkeyup="clearNoNum(this)" type="text"
+                           class="form-control input-small" style="height:32px;width:34.5%;">
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">支付宝号</span>
+                    <input id="payer_AliNo_wetchatUnClaim"
+                           class="input-large "
+                           type="text" style="height: 32px;width:68%;"/>
+                </div>
+                <div class="col-sm-3">
+                    <span class="pull-right">
+                         <button onclick="queryUnClaim()" class="btn btn-xs btn-white btn-info btn-bold " id="searchBtnWetchatUnClaim"
+                                 type="button">
+                             <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                          </button>
+                    </span>
+                    <span class="pull-right">
+                         <button class="btn btn-xs btn-white btn-info btn-bold " id="resetBtnWetchatUnClaim"
+                                 type="button">
+                              <i class="ace-icon fa fa-search bigger-100 green"></i>重置
+                         </button>
+                    </span>
+                </div>
+            </form>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th>盘口</th>
+                <th>收款支付宝号</th>
+                <th>存款人</th>
+                <th>金额</th>
+                <th>交易时间</th>
+                <th>抓取时间</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_wetchatUnClaim">
+                
+            </tbody>
+
+        </table>
+        <div id="wetchatUnClaim_footPage"></div>
+    </div>
+
+ <!---------------------------------------------已取消-------------------------------------------------------------------------  -->
+    <div id="wetchatCanceled" class="tab-pane">
+        <h3 class="row header smaller lighter blue">
+            <form class="form-inline">
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">盘口</span>
+                    <select id="handicap_wetchatCanceled" name="handicap_wetchatCanceled"
+                            class="chosen-select form-control"
+                            style="height:32px;width:78%;">
+                        <option>请选择</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">会员名</span>
+                    <input id="member_wetchatCanceled" class="input-large "
+                           type="text" style="height: 32px;width:73%;"/>
+                </div>
+
+                <div class="col-sm-3">
+                   <span class="label label-lg label-primary arrowed-right">时间</span>
+                    <input id="timeScope_wetchatCanceled" name="timeScope_wetchatCanceled"
+                           class="input-large date-range-picker" type="text"
+                           style="height: 32px;width:77%;"/>
+                </div>
+                <div class="col-sm-12" style="height:2px;"></div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">金额</span>
+                    <input id="fromMoney_wetchatCanceled"
+                           onkeyup="clearNoNum(this)" type="text"
+                           class="form-control input-small" style="height:32px;width:34.5%;">
+                    <span style="width: 0%;display: inline" class="">~</span>
+                    <input id="toMoney_wetchatCanceled"
+                           onkeyup="clearNoNum(this)" type="text"
+                           class="form-control input-small" style="height:32px;width:34.5%;">
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                    <input id="orderNo_wetchatCanceled"
+                           class="input-large "
+                           type="text"
+                           style="height: 32px;width:73%;"/>
+                </div>
+                <div class="col-sm-3">
+                    <span class="pull-right">
+                         <button onclick="queryCanceled()" class="btn btn-xs btn-white btn-info btn-bold " id="searchBtnWetchatCanceled"
+                                 type="button">
+                             <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                          </button>
+                    </span>
+                    <span class="pull-right">
+                         <button class="btn btn-xs btn-white btn-info btn-bold " id="resetBtnWetchatCanceled"
+                                 type="button">
+                              <i class="ace-icon fa fa-search bigger-100 green"></i>重置
+                         </button>
+                    </span>
+                </div>
+            </form>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th>盘口</th>
+                <th>收款支付宝号</th>
+                <th>会员名</th>
+                <th>订单号</th>
+                <th>金额</th>
+                <th>取消时间</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_WetchatCanceled">
+                
+            </tbody>
+
+        </table>
+        <div id="wetchatCanceled_footPage"></div>
+    </div>
+</div>
+
+<div style="padding-top: 0px" class="table-detail hide">
+  <div>
+      <table class="table  table-bordered table-hover no-margin-bottom">
+          <thead>
+          <tr>
+              <th>会员账号</th>
+              <th>金额</th>
+              <th>订单号</th>
+              <th>提单时间</th>
+              <th>备注</th>
+          </tr>
+          </thead>
+          <tbody id="tbody_invoice"></tbody>
+      </table>
+       <div id="invoice_footPage"></div>
+  </div>
+  <div>
+        <table class="table  table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th>存款人</th>
+                <th>金额</th>
+                <th>支付时间</th>
+                <th>抓取时间</th>
+                <th>摘要</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody  id="tbody_banklog"></tbody>
+        </table>
+        <div id="banklog_footPage"></div>
+    </div>
+</div>
+
+<!--私有JS加载Start-->
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>
+<!--私有JS加载 End-->

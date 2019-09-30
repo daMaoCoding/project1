@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>快捷查询</title>
+    <meta http-equiv="pragram" content="no-cache" charset="utf-8">
+    <style>
+        .title {
+            background-color: #2C6AA0;
+            color: white;
+        }
+        .head {
+            background-color: #ddd;
+            font-weight: lighter;
+            text-align: center;
+        }
+        .content{
+            font-weight: lighter;
+            color: black;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="../../style/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../style/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+    <link rel="stylesheet" type="text/css" href="../../style/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../style/jquery.chosen.min.css"  xmlns="http://www.w3.org/1999/html">
+    <link rel="stylesheet" type="text/css" href="../../style/bootstrap.css" xmlns="http://www.w3.org/1999/html">
+    <link rel="stylesheet" type="text/css" href="../../style/bootstrap-multiselect.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../style/jquery.bootstrap.duallistbox.min.css" >
+</head>
+<body>
+<div style="padding-top: 0px">
+    <div id="QuickQuery" style="width:100%">
+        <table style="width:100%;height: 100%" border="1" cellspacing="0" cellpadding="0">
+            <thead>
+            <tr><td colspan="15" style="text-align: center"  class="title"><h3 id="quickQueryTitle">快捷查询结果</h3></td></tr>
+            <tr class="head">
+                <th class="modifyQuickHandicap">盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th>订单号</th>
+                <th class="modifyQuickAmount1">订单金额</th>
+                <th class="modifyQuickAmount2">任务金额</th>
+                <th>审核状态</th>
+                <th class="modifyQuickStatus">出款状态</th>
+                <th>审核时间</th>
+                <th class="modifyQuickTime">出款时间</th>
+                <th>备注</th>
+                <th>截图</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_QuickQueryData" class="content">
+
+            </tbody>
+        </table>
+       <div id="quickQueryFootPage"></div>
+
+        <div style="display: none;" class="message-footer clearfix">
+            <div class="pull-left">
+            </div>
+            <div class="pull-right">
+                <input id="totalPagesQuick" type="hidden">
+                <input id="previousPageNoQuick" type="hidden">
+                <input id="nextPageNoQuick" type="hidden">
+                <div class="inline middle" id="currentPageAndTotalPage"> 1/1 </div>
+                &nbsp; &nbsp;
+                <ul class="pagination middle">
+                    <li id="step-backward" >
+                        <a onclick="">
+                            <i class="ace-icon fa fa-step-backward middle"></i>
+                        </a>
+                    </li>
+
+                    <li id="step-left" >
+                        <a onclick="">
+                            <i class="ace-icon fa fa-caret-left bigger-140 middle"></i>
+                        </a>
+                    </li>
+                    <li >
+                        <span>
+                            <input id="currentPageNo" value="1" maxlength="3" type="text" />
+                        </span>
+                    </li>
+                    <li id="step-right">
+                        <a onclick="">
+                            <i class="ace-icon fa fa-caret-right bigger-140 middle"></i>
+                        </a>
+                    </li>
+                    <li id="step-forward">
+                        <a onclick="">
+                            <i class="ace-icon fa fa-step-forward middle"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<!--modal 客服备注 -->
+<div id="addRemarkInQuick_modal" class="modal fade" tabindex="-1" data-backdrop="static">
+    <input id="addRemarkInQuickTaskId" type="hidden">
+    <input id="turnToFinishType" type="hidden">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomer" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    备注
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-left"
+                                           for="remarkInQuick">备注 </label>
+                                    <div class="col-sm-6">
+                                        <textarea style="height: 120px;width: 400px;" id="remarkInQuick"
+                                                  name="CustomerserviceRemark"
+                                                  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="space-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <span id="prompt_remark" style="display:none;color: red;padding-left: 160px;" >请填写备注</span>
+                <button id="totalTaskFinishBTN" type="button" class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 客服发消息 -->
+<div id="CustomersendMessage_modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomerSendMessage" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    消息内容
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <!-- /section:elements.form -->
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-left">消息 </label>
+                                    <div class="col-sm-6">
+                                        <textarea style="height: 120px;width: 400px;" id="messageCont"
+                                                  name="messageCont"
+                                                  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                                <span id="messageCont_remark"
+                                      style="display:none;color: red;padding-left: 160px;">请填写消息</span>
+                                <div class="space-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="save_message();" class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 审核 点击审核弹出模态框-->
+<div id="toAudit_quickPage_modal">
+
+</div>
+<!--取消 拒绝 模态框--->
+<div id="modal-quickpage-cancelOrReject" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDiv" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    取消任务
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <input type="hidden" id="cancelOrReject_taskId">
+                        <input type="hidden" id="cancelOrReject-reqId">
+                        <span class="label label-info ">出款任务</span>
+                        <table class="table table-bordered user-table audit_table">
+                            <tbody>
+                            <tr>
+                                <td bgcolor="#F5F5F5">订单号</td>
+                                <td id="cancelOrReject_orderNo"></td>
+                                <td bgcolor="#F5F5F5" class="modifyHandicap">盘口</td>
+                                <td id="cancelOrReject_handicap"></td>
+                                <td bgcolor="#F5F5F5">层级</td>
+                                <td id="cancelOrReject_level"></td>
+                            </tr>
+                            <tr>
+                                <td bgcolor="#F5F5F5">转交时间</td>
+                                <td id="cancelOrReject_asignTime"></td>
+                                <td bgcolor="#F5F5F5">会员名</td>
+                                <td id="cancelOrReject_member"></td>
+                                <td bgcolor="#F5F5F5">出款类型</td>
+                                <td id="cancelOrReject_type"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div id="messages">
+                            <form class="form-horizontal" role="form" id="save_form">
+                                <p></p>
+                                <!-- #section:elements.form -->
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"
+                                           for="cancelOrReject_amount">出款金额 </label>
+                                    <div class="col-sm-9">
+                                        <input readonly type="text" onkeyup="clearNoNum(this)" id="cancelOrReject_amount"
+                                               placeholder="出款金额"
+                                               class="input-sm" style="width:265px;"/>
+                                        <span class="help-inline col-xs-12 col-sm-7">
+											<span class="middle"></span>
+										</span>
+                                    </div>
+                                </div>
+                                <div class="space-4"></div>
+                                <input type="hidden" id="button_type">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"
+                                           for="cancelOrReject_remark">备注 </label>
+                                    <div class="col-sm-6">
+                                        <textarea id="cancelOrReject_remark" name="cancelOrReject_remark"
+                                                  class="autosize-transition form-control"
+                                                  placeholder="如果该订单有一笔出款或者多笔出款失败，请填写失败原因说明"></textarea>
+
+                                        <span class="help-inline col-xs-12 col-sm-7">
+											<span class="middle"></span>
+										</span>
+                                    </div>
+                                    <span id="prompt" style="display:none;color: red;">请填写备注</span>
+                                </div>
+                                <div class="space-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="_executeCancelOrRejectTask();" class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--分配-->
+<div id="modal-distribution" data-backdrop="static" data-keyboard="false" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div style="padding: 0px" class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="blue">&times;</span>
+                </button>
+                <h3>任务分配</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form role="form">
+                        <div class="form-group">
+                            <label style="color: mediumvioletred">&nbsp;&nbsp;&nbsp;&nbsp;开&nbsp;&nbsp;户&nbsp;&nbsp;行&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <select multiple="multiple" class="multiselect"
+                                    id="form-field-select-allocateTask"></select>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: mediumvioletred">&nbsp;&nbsp;&nbsp;&nbsp;备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <input id="allocateTaskRemark" type="text" style="width: 500px;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="distribution-prompt" class="pull-left" style="color: red;display: none;"></span>
+                <input id="distributionTaskId" type="hidden">
+                <input id="operatePage" type="hidden">
+                <label class="pull-left blue" >分配对象：</label>&nbsp;&nbsp;&nbsp;<label  class="pull-left distributeObject " onclick="_checkClickLabel(this);"><input onclick="window.event.stopPropagation();" name="distributeObject" value="robot" type="radio">机器&nbsp;&nbsp;</label><label  class="pull-left distributeObject" onclick="_checkClickLabel(this);"><input onclick="window.event.stopPropagation();" type="radio" value="manual"name="distributeObject">人工</label>
+                <label id="noDistributionObj" style="color: red;display: none">请选择分配对象</label>
+                <button id="confirmDistribution" type="button" onclick="_saveReallocateTask();"
+                        class="btn btn-sm btn-success">
+                    确定
+                </button>
+                <button id="cancelDistribution" type="button" data-dismiss="modal" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--转排查-->
+<div id="modal-turnToFailTotal" class="modal fade" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog" style="width:500px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    备注
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <label style="width: 100%;color: red;">&nbsp;&nbsp;备 注：<input id="turnToFailRemarkTotal"
+                                                                              style="width: 85%;" type="text"
+                                                                              placeholder="填写备注"></label>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <input id="turnFailIdTotal" type="hidden">
+                <span id="remark-turnToFailTotal" style="color: red;display: none;" class="pull-left">请填写备注信息</span>
+                <button id="confirmTurnToFailTotal"  type="button"
+                        class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    确定
+                </button>
+                <button style="margin-right: 20px;" id="cancelTurnToFailTotal" type="button" data-dismiss="modal"
+                        class="btn btn-sm btn-default pull-right">
+                    <i class="ace-icon fa fa-remove"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="quickQueryImgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:30%;">
+        <div class="modal-content">
+            <div  style="text-align: center" class="table-header">
+                <button type="button" class="close white" data-dismiss="modal" aria-hidden="true">×</button>
+                交易截图
+            </div>
+            <div class="modal-body">
+                <img id="quickQueryImg" src=""  height="auto" width="100%" alt="auto">
+            </div>
+            <div class="modal-footer">
+                <a id="downLoadImgBtnQuick"  class="btn btn-success" >下载</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../javascript/lib/jquery.min.js" type="text/javascript"  charset="utf-8"></script>
+<script src="../../javascript/lib/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../javascript/lib/jquery.gritter.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../javascript/lib/bootbox.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="../../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../../javascript/lib/bootstrap-multiselect.min.js"></script>
+<script type="text/javascript" src="../../javascript/lib/jquery.bootstrap-duallistbox.min.js"></script>
+<script type="text/javascript" src="../../javascript/outward/orderDetail.js" charset="utf-8"></script>
+<script type="text/javascript" src="../../javascript/outward/quickQueryForOut.js" charset="utf-8"></script>
+</html>
+

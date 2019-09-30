@@ -1,0 +1,201 @@
+<div>
+
+<!-- 新增云闪付 -->
+<div id="addYSF_Modal" class="modal fade" data-backdrop="static"  tabindex="-1">
+	<div class="modal-dialog modal-lg" style="width:640px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>新增云闪付</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:200px;;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:220px;;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+                            <td class="blue">盘口<i class='ace-icon fa fa-asterisk red'></i></td>
+                            <td class="pull-left">
+                            	<select name="ysf_handicapId" class="chosen-select" style="width:162px;" >
+                            		<option value="">--------请选择--------</option>
+                            	</select>
+                            </td>
+							<td class="blue" >类型<i class="ace-icon fa fa-asterisk red"></i></td>
+							<td>
+								<label class="inline incomeHide1">
+									<input type="radio" name="ysf_ownType" class="ace" value="1" >
+									<span class="lbl">自有</span>
+								</label>
+								<label class="inline">
+									<input type="radio" name="ysf_ownType" class="ace" value="2" >
+									<span class="lbl">兼职</span>
+								</label>
+								<label onclick="resetYSF();" class="pull-right inline">
+									<button class="btn btn-xs btn-white btn-info btn-bold">
+										<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+									</button>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<td class="blue" >手机号<i class="ace-icon fa fa-asterisk red"></i></td>
+							<td class="pull-left"  colspan="3">
+								<input name="ysf_accountNo"  class="input-sm"  type="text" placeholder="手机号">
+							</td>
+							<td class="blue" >登录密码<i class="ace-icon fa fa-asterisk red"></i></td>
+							<td class="pull-left" >
+								<input name="ysf_loginPWD" class="input-sm" type="password"  autocomplete='new-password' placeholder="登录密码">
+							</td>
+						</tr>
+						<tr>
+							<td class="blue" >真实姓名<i class="ace-icon fa fa-asterisk red"></i></td>
+							<td class="pull-left" >
+								<input name="ysf_owner" class="input-sm" type="text" placeholder="真实姓名">
+							</td>
+							<td class="blue" >支付密码<i class="ace-icon fa fa-asterisk red"></i></td>
+							<td class="pull-left" >
+								<input name="ysf_payPWD" class="input-sm" type="password" placeholder="支付密码">
+							</td>
+						</tr>
+						<tr>
+							<td class="blue" >备注<i class="ace-icon fa fa-asterisk red"></i></td>
+							<td colspan="3" >
+								<textarea  class="pull-left" style="margin: 0px; width: 463px; height: 60px;" name="ysf_remark" placeholder="请输入5~300字的备注"></textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<h5 class="header smaller lighter green">添加云闪付账号绑定的银行卡资料：<span class="red">（注：必须至少添加一张银行卡）</span></h5>
+				<div id="addAccountToBind">
+					<span class="blue center" >账号层级<i class="ace-icon fa fa-asterisk red"></i></span>
+					<div id="levelListDiv" class="row"><p class='alert alert-danger center'>请先选择云闪付的盘口，以获取绑定账号的层级信息</p></div>
+					<span class="blue" >银行类别<i class="ace-icon fa fa-asterisk red"></i></span>
+                    <select name="add_bankType" class="chosen-select" style="width:200px;" >
+                    	<option value="">--------请选择--------</option>
+                    </select>
+                    &nbsp;&nbsp;
+					<span class="blue" >银行账号<i class="ace-icon fa fa-asterisk red"></i></span>
+					<input name="add_account" class="input-sm" type="text" placeholder="银行账号" style="width:200px;">
+					<label onclick="resetBindBank();" class="pull-right inline">
+						<button class="btn btn-xs btn-white btn-info btn-bold">
+							<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+						</button>
+					</label>
+					<br/>
+					<div style="height:5px;">&nbsp;</div>
+					<span class="blue" >开户支行<i class="ace-icon fa fa-asterisk red"></i></span>
+					<input name="add_bankName" class="input-sm" type="text" placeholder="开户支行" style="width:200px;">
+					&nbsp;&nbsp;
+					<span class="blue" >开户姓名<i class="ace-icon fa fa-asterisk red"></i></span>
+					<input name="add_owner" class="input-sm" type="text" placeholder="开户姓名" style="width:200px;">
+					<label class="pull-right inline" onclick="addAccountToBind()">
+						<button type="button" class="btn btn-xs btn-white btn-info btn-bold">
+							<i class="ace-icon fa fa-plus bigger-100 green"></i><span>添加</span>
+						</button>
+					</label>
+				</div>
+				<div style="height:5px;">&nbsp;</div>
+				<table id="bindYSFAccountListTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+					<thead>
+						<tr>
+							<th style="width:15%;">银行类别</th>
+							<th style="width:25%;">银行账号</th>
+							<th style="width:25%;">开户支行</th>
+							<th style="width:10%;">开户姓名</th>
+							<th style="width:10%;">绑定层级</th>
+							<th style="width:10%;">操作</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doAddYSF_All();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 修改云闪付 -->
+<div id="updateYSF_Modal" class="modal fade" data-backdrop="static"  tabindex="-1">
+	<div class="modal-dialog modal-lg" style="width:640px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>修改云闪付</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:200px;;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:220px;;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+                            <td class="blue">盘口<i class='ace-icon fa fa-asterisk red'></i></td>
+                            <td class="pull-left">
+                            	<select name="ysf_handicapId" class="chosen-select" style="width:162px;" >
+                            		<option value="">--------请选择--------</option>
+                            	</select>
+                            </td>
+							<td class="blue" >类型<i class="ace-icon fa fa-asterisk red"></i></td>
+							<td>
+								<label class="inline incomeHide1">
+									<input type="radio" name="ysf_ownType" class="ace" value="1" >
+									<span class="lbl">自有</span>
+								</label>
+								<label class="inline">
+									<input type="radio" name="ysf_ownType" class="ace" value="2" >
+									<span class="lbl">兼职</span>
+								</label>
+								<label onclick="resetYSF();" class="pull-right inline">
+									<button class="btn btn-xs btn-white btn-info btn-bold">
+										<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+									</button>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<td class="blue" >手机号<i class="ace-icon fa fa-asterisk red"></i></td>
+							<td class="pull-left"  colspan="3">
+								<input name="ysf_accountNo"  class="input-sm"  type="text" placeholder="手机号">
+							</td>
+							<td class="blue" >真实姓名<i class="ace-icon fa fa-asterisk red"></i></td>
+							<td class="pull-left" >
+								<input name="ysf_owner" class="input-sm" type="text" placeholder="真实姓名">
+							</td>
+						</tr>
+						<tr>
+							<td class="blue" >备注<i class="ace-icon fa fa-asterisk red"></i></td>
+							<td colspan="3" >
+								<textarea  class="pull-left" style="margin: 0px; width: 463px; height: 60px;" name="ysf_remark" placeholder="请输入5~300字的备注"></textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doAddYSF_All();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+</div>

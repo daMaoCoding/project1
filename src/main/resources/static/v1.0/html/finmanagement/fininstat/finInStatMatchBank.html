@@ -1,0 +1,86 @@
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<div class="main-container ace-save-state" id="main-container">
+	<div class="main-content">
+		<div class="main-content-inner">
+			<div class="page-content" id="fczl">
+							<div class="row">
+								<div class="col-sm-12">
+									<form class="form-inline">
+									<div class="row">
+										<div class="col-sm-10">
+											<span class="label label-lg label-pink arrowed-right">状态</span>
+											<select onchange="queryfinTransStatMatch()" name="bkstatus" id="bkstatus" class="chosen-select form-control"   style="height:32px" >
+												<option value="9999">全部</option>
+												<option value="0">匹配中</option>
+												<option value="1" selected>已匹配</option>
+												<option value="3">未认领</option>
+												<option value="4">已处理</option>
+												<option value="5">手续费</option>
+											</select>
+											<select onchange="queryfinTransStatMatch();" name="typeStatus" id="typeStatus" class="chosen-select form-control"   style="height:32px" >
+												<option value="0" selected>全部</option>
+												<option value="-1" selected>转出</option>
+												<option value="1">转入</option>
+											</select>
+	
+											<span class="label label-lg label-success arrowed-right">日期</span>
+											<input class="form-control date-range-picker" placeholder="自定义时间段" style="width: 230px;" type="text" id="startAndEndTime" name="startAndEndTime" />
+			
+											<span class="label label-lg label-warning arrowed-right">金额</span>
+											<div class="input-group form-group col-sm-2" style="height:32px">
+												<input type="text" id="startamount" onkeyup="clearNoNum(this)" name="startamount" class="form-control input-small"  style="height:32px">
+												<span class="input-group-addon">~</span>
+												<input type="text" id="endamount" onkeyup="clearNoNum(this)" name="endamount" class="form-control input-small"  style="height:32px">
+											</div>
+										</div>
+			
+										<span class="col-sm-2">
+			
+			
+													<label class="pull-right inline">
+															<a  class="btn btn-xs btn-white btn-primary btn-bold" id="back"  type="button">返回</a>
+													</label>
+													<label class="pull-right inline">&nbsp;&nbsp;</label>
+													<label class="pull-right inline">
+														<button id="searhByCondition" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+															<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+														</button>
+													</label>
+			
+												</span><!-- /.col -->
+			
+									</div>
+								</form>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<table id="simple-table3" class="table  table-bordered table-hover no-margin-bottom">
+										<thead>
+										<tr>
+											<th>交易时间</th>
+											<th>抓取时间</th>
+											<th>交易金额</th>
+											<th>余额</th>
+											<th>对方账号</th>
+											<th>对方姓名</th>
+											<th>摘要</th>
+											<th>备注</th>
+											<th>状态</th>
+										</tr>
+										</thead>
+										<tbody id="total_tbody">
+										
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<div id="finTransStatMatchPage">
+										
+									</div>
+								</div>
+							</div>
+			</div>
+		</div>
+	</div>
+</div>

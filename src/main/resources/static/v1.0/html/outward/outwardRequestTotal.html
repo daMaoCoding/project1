@@ -1,0 +1,556 @@
+<link rel="stylesheet" href="../style/jquery.chosen.min.css" type="text/css">
+<style>
+    .message-footer{padding: 0px !important;}
+    #tab_todeal_tbody td{padding: 6px;}
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <!-- #section:elements.tab.position -->
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="reqAuditTotalUl">
+                <li id="todeal" style="display: none" class="active" onclick="$('#freshLiReq').show();_setClickType(3);">
+                    <a data-toggle="tab" href="#tab_todeal"><i class="pink ace-icon fa 	fa-user-circle bigger-110 red"></i>主管处理</a>
+                </li>
+                <li id="toapprove" style="display: none"  onclick="$('#freshLiReq').show();_setClickType(0);">
+                    <a data-toggle="tab" href="#tab_toApprove"><i class="ace-icon fa fa-hourglass-start bigger-110 pink"></i>待审核</a>
+                </li>
+
+                <li id="approved" style="display: none;" onclick="$('#freshLiReq').hide();_setClickType(1);">
+                    <a data-toggle="tab" href="#tab_approved"><i class=" ace-icon fa fa-check bigger-110 blue"></i>已审核</a>
+                </li>
+                <li id="refused"  style="display: none"  onclick="$('#freshLiReq').hide();_setClickType(2);">
+                    <a data-toggle="tab" href="#tab_refused"><i class="ace-icon fa fa-ban bigger-110 red"></i>已拒绝</a>
+                </li>
+                <li id="canceled"  style="display: none" onclick="$('#freshLiReq').hide();_setClickType(4);">
+                    <a data-toggle="tab" href="#tab_canceled"><i class="ace-icon fa fa-remove bigger-110 red"></i>已取消</a>
+                </li>
+                <li id="freshLiReq" style="display: none;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-lg label-primary arrowed-right">刷新</span>
+                    <select id="autoUpdateTimeReq" >
+                    </select>
+                </li>
+            </ul>
+
+            <div style="padding-top: 0px;padding-bottom: 0px;" class="tab-content">
+                <div id="tab_todeal" class="tab-pane in active">
+                    <h3 class="row header smaller lighter blue">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+                                    <select onchange="_handicapAuditTotalChange();" id="handicap_3" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">会员名</span>
+                                    <input   id="member_3" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">审核人</span>
+                                    <input   id="operator_3" class="input-large " type="text"  style="height: 32px;width:72%;"/>
+                                </div>
+                                <div class="col-sm-3  ">
+                                    <span class="label label-lg label-primary arrowed-right modifyAmount">金额</span>
+                                    <div class="input-group form-group col-sm-3 modifyInAmountDivStyleAuditTotal" style="height:32px;width:78%;">
+                                        <input id="famount_3" onkeyup="clearNoNum(this); " type="text" class="form-control input-small"
+                                               style="height:32px">
+                                        <span class="input-group-addon">~</span>
+                                        <input id="tamount_3" onkeyup="clearNoNum(this); " type="text" class="form-control input-small"
+                                               style="height:32px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12" style="height:2px;"></div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">层级</span>
+                                    <select onchange="_levelAuditTotalChange();"  id="level_3" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                                    <input   id="orderNo_3" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 55px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+                                    <input id="timeScope_3" class="input-large date-range-picker" type="text"  style="height: 32px;width:72%;"/>
+                                </div>
+                                <div class="col-sm-3">
+									<span class="pull-left">
+                                        <label class="pull-right inline">
+                                            <button id="tab_todeal_search" type="button" onclick="_searchOutRequestTotal();" class="btn btn-xs btn-white btn-info btn-bold ">
+                                                <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                            </button>
+                                        </label>
+						            </span>
+                                    <span style="margin-left: 10px;" class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueForAuditTotal(3);">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+										</label>
+									</span>
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+
+                    <table style="margin-bottom: 0px;" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style=" width:48px; " class="modifyHandicap">盘口</th>
+                            <th style=" width:62px; ">层级</th>
+                            <th>会员名</th>
+                            <th>订单号</th>
+                            <th class="modifyAmount">金额</th>
+                            <th width="62px;">审核人</th>
+                            <th>创建时间</th>
+                            <th>转交时间</th>
+                            <th>备注</th>
+                            <th style="width: 120px;">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tab_todeal_tbody">
+
+                        </tbody>
+                    </table>
+                    <div id="total_footPage_3"></div>
+                </div>
+
+                <div id="tab_toApprove" class="tab-pane">
+                    <h3 class="row header smaller lighter blue">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right  modifyHandicap">盘口</span>
+                                    <select onchange="_handicapAuditTotalChange();" id="handicap_0" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">会员名</span>
+                                    <input   id="member_0" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 42px" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+                                    <input  id="timeScope_0" class="input-large date-range-picker" type="text"  style="height: 32px;width:77%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">接单类型</span>
+                                    <label class="inline">
+                                        <input onclick="_searchOutRequestTotal();" id="robot_0" value="0" type="checkbox" name="form-field-checkbox_0" class="ace" />
+                                        <span class="lbl"> 机器</span>
+                                    </label>
+                                    <label class="inline">
+                                        <input onclick="_searchOutRequestTotal();" id="manual_0" value="1" type="checkbox" name="form-field-checkbox_0" class="ace" />
+                                        <span class="lbl"> 人工</span>
+                                    </label>
+                                </div>
+                                <div class="col-sm-12" style="height:2px;"></div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">层级</span>
+                                    <select onchange="_levelAuditTotalChange();" id="level_0" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                                    <input   id="orderNo_0" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3  ">
+                                    <span  class="label label-lg label-primary arrowed-right modifyAmount">金额</span>
+                                    <div class="input-group form-group col-sm-3 modifyInAmountDivStyleAuditTotal" style="height:32px;width:77%;">
+                                        <input id="famount_0" onkeyup="clearNoNum(this); " type="text" class="form-control input-small"
+                                               style="height:32px">
+                                        <span class="input-group-addon">~</span>
+                                        <input id="tamount_0" onkeyup="clearNoNum(this); " type="text" class="form-control input-small"
+                                               style="height:32px">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+									<span class="pull-left">
+                                        <label class="pull-right inline">
+                                            <button onclick="_searchOutRequestTotal();" id="tab_toApprove_search" type="button"  class="btn btn-xs btn-white btn-info btn-bold ">
+                                                <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                            </button>
+                                        </label>
+						            </span>
+                                    <span style="margin-left: 10px;" class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick=" _resetValueForAuditTotal(0);">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+										</label>
+									</span>
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+                    <table style="margin-bottom: 0px;"  class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th class="modifyHandicap">盘口</th>
+                            <th>层级</th>
+                            <th>会员名</th>
+                            <th>订单号</th>
+                            <th class="modifyAmount">金额</th>
+                            <th>接单人</th>
+                            <th>提单时间</th>
+                            <th>备注</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tab_toApprove_tbody">
+
+                        </tbody>
+                    </table>
+                    <div id="total_footPage_0"></div>
+                </div>
+                <div id="tab_approved" class="tab-pane">
+                    <h3 class="row header smaller lighter blue">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+                                    <select onchange="_handicapAuditTotalChange();" id="handicap_1" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                                    <input   id="orderNo_1" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3  ">
+                                    <span class="label label-lg label-primary arrowed-right modifyAmount">金额</span>
+                                    <div class="input-group form-group col-sm-3 modifyInAmountDivStyleAuditTotal" style="height:32px;width:78%;">
+                                        <input  id="famount_1" onkeyup="clearNoNum(this); " type="text" class="form-control input-small"
+                                               style="height:32px">
+                                        <span class="input-group-addon">~</span>
+                                        <input id="tamount_1" onkeyup="clearNoNum(this); " type="text" class="form-control input-small"
+                                               style="height:32px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">接单类型</span>
+                                    <label class="inline">
+                                        <input onclick="_searchOutRequestTotal();"  id="robot_1" value="0" type="checkbox" name="form-field-checkbox_0" class="ace" />
+                                        <span class="lbl"> 机器</span>
+                                    </label>
+                                    <label class="inline">
+                                        <input onclick="_searchOutRequestTotal();" id="manual_1" value="1" type="checkbox" name="form-field-checkbox_0" class="ace" />
+                                        <span class="lbl"> 人工</span>
+                                    </label>
+                                    <span class="pull-right">
+										<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick=" _resetValueForAuditTotal(1);">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+									</span>
+                                </div>
+                                <div class="col-sm-12" style="height:2px;"></div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">层级</span>
+                                    <select onchange="_levelAuditTotalChange();" id="level_1" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">会员名</span>
+                                    <input   id="member_1" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <span style="width: 42px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+                                    <input  id="timeScope_1" class="input-large date-range-picker" type="text"  style="height: 32px;width:77.8%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 68px" class="label label-lg label-primary arrowed-right">审核人</span>
+                                    <input   id="operator_1" class="input-large " type="text"  style="height: 32px;width:45%;"/>
+                                    <span class="pull-right">
+                                        <button onclick="_searchOutRequestTotal();" id="tab_approved_search" type="button"  class="btn btn-xs btn-white btn-info btn-bold ">
+                                                <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                            </button>
+						            </span>
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+                    <table style="margin-bottom: 0px;"  class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th class="modifyHandicap">盘口</th>
+                            <th>层级</th>
+                            <th>会员名</th>
+                            <th>订单号</th>
+                            <th class="modifyAmount">金额</th>
+                            <th>审核人</th>
+                            <th>创建时间</th>
+                            <th>审核时间</th>
+                            <th>用时</th>
+                            <th>备注</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tab_approved_tbody">
+
+                        </tbody>
+                    </table>
+                    <div id="total_footPage_1"></div>
+                </div>
+
+                <div id="tab_refused" class="tab-pane">
+                    <h3 class="row header smaller lighter blue">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+                                    <select onchange="_handicapAuditTotalChange();" id="handicap_2" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                                    <input    id="orderNo_2" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3  ">
+                                    <span class="label label-lg label-primary arrowed-right modifyAmount">金额</span>
+                                    <div class="input-group form-group col-sm-3 modifyInAmountDivStyleAuditTotal" style="height:32px;width:78%;">
+                                        <input id="famount_2" onkeyup="clearNoNum(this); " type="text" class="form-control input-small"
+                                               style="height:32px">
+                                        <span class="input-group-addon">~</span>
+                                        <input id="tamount_2" onkeyup="clearNoNum(this); " type="text" class="form-control input-small"
+                                               style="height:32px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">接单类型</span>
+                                    <label class="inline">
+                                        <input onclick="_searchOutRequestTotal();"   id="robot_2" value="0" type="checkbox" name="form-field-checkbox_0" class="ace" />
+                                        <span class="lbl"> 机器</span>
+                                    </label>
+                                    <label class="inline">
+                                        <input onclick="_searchOutRequestTotal();"   id="manual_2" value="1" type="checkbox" name="form-field-checkbox_0" class="ace" />
+                                        <span class="lbl"> 人工</span>
+                                    </label>
+                                    <span style="margin-left: 10px;" class="pull-right">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick=" _resetValueForAuditTotal(2);">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+										</label>
+									</span>
+                                </div>
+                                <div class="col-sm-12" style="height:2px;"></div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">层级</span>
+                                    <select onchange="_levelAuditTotalChange();"  id="level_2" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">会员名</span>
+                                    <input  id="member_2" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <span style="width: 42px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+                                    <input   id="timeScope_2" class="input-large date-range-picker" type="text"  style="height: 32px;width:77.8%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 68px" class="label label-lg label-primary arrowed-right">审核人</span>
+                                    <input   id="operator_2" class="input-large " type="text"  style="height: 32px;width:45%;"/>
+                                    <span class=" pull-right">
+                                        <label class="pull-right inline">
+                                            <button onclick="_searchOutRequestTotal();" id="tab_refused_search" type="button"  class="btn btn-xs btn-white btn-info btn-bold ">
+                                                <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                            </button>
+                                        </label>
+						            </span>
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+
+                    <table style="margin-bottom: 0px;" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th class="modifyHandicap">盘口</th>
+                            <th>层级</th>
+                            <th>会员名</th>
+                            <th>订单号</th>
+                            <th class="modifyAmount">金额</th>
+                            <th>审核人</th>
+                            <th>创建时间</th>
+                            <th>拒绝时间</th>
+                            <th>备注</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tab_refused_tbody">
+
+                        </tbody>
+                    </table>
+                    <div id="total_footPage_2"></div>
+
+                </div>
+                <div id="tab_canceled" class="tab-pane">
+                    <h3 class="row header smaller lighter blue">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+                                    <select onchange="_handicapAuditTotalChange();"  id="handicap_4" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                                    <input  id="orderNo_4" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3  ">
+                                    <span class="label label-lg label-primary arrowed-right modifyAmount">金额</span>
+                                    <div class="input-group form-group col-sm-3 modifyInAmountDivStyleAuditTotal" style="height:32px;width:78%;">
+                                        <input id="famount_4" onkeyup="clearNoNum(this); " type="text" class="form-control input-small"
+                                               style="height:32px">
+                                        <span class="input-group-addon">~</span>
+                                        <input id="tamount_4" onkeyup="clearNoNum(this); " type="text" class="form-control input-small"
+                                               style="height:32px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">接单类型</span>
+                                    <label class="inline">
+                                        <input onclick="_searchOutRequestTotal();" id="robot_4" value="0" type="checkbox" name="form-field-checkbox_0" class="ace" />
+                                        <span class="lbl"> 机器</span>
+                                    </label>
+                                    <label class="inline">
+                                        <input onclick="_searchOutRequestTotal();" id="manual_4" value="1" type="checkbox" name="form-field-checkbox_0" class="ace" />
+                                        <span class="lbl"> 人工</span>
+                                    </label>
+                                    <span style="margin-left: 10px;" class="pull-right">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick=" _resetValueForAuditTotal(4);">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+										</label>
+									</span>
+                                </div>
+                                <div class="col-sm-12" style="height:2px;"></div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">层级</span>
+                                    <select onchange="_levelAuditTotalChange();" id="level_4" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">会员名</span>
+                                    <input   id="member_4" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <span style="width: 42px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+                                    <input  id="timeScope_4" class="input-large date-range-picker" type="text"  style="height: 32px;width:77.8%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 68px" class="label label-lg label-primary arrowed-right">审核人</span>
+                                    <input  id="operator_4" class="input-large " type="text"  style="height: 32px;width:45%;"/>
+                                    <span class=" pull-right">
+                                        <label class="pull-right inline">
+                                            <button onclick="_searchOutRequestTotal();" id="tab_canceled_search" type="button"  class="btn btn-xs btn-white btn-info btn-bold ">
+                                                <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                            </button>
+                                        </label>
+						            </span>
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+
+                    <table style="margin-bottom: 0px;" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th class="modifyHandicap">盘口</th>
+                            <th>层级</th>
+                            <th>会员名</th>
+                            <th>订单号</th>
+                            <th class="modifyAmount">金额</th>
+                            <th>审核人</th>
+                            <th>创建时间</th>
+                            <th>取消时间</th>
+                            <th>备注</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tab_canceled_tbody">
+
+                        </tbody>
+                    </table>
+                    <div id="total_footPage_4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modalbox 待审核 点击审核弹出-->
+<div id="total_toApprove_detail_modal">
+
+</div>
+<div id="historyDetail_modal">
+
+</div>
+<!--添加备注-->
+<!--modal 客服备注 -->
+<div id="CustomerserviceReqRemark_modal" class="modal fade" tabindex="-1">
+    <input id="CustomerserviceReqRemark_id" type="hidden">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomer" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    备注
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-left"
+                                           for="CustomerserviceReqRemark">备注 </label>
+                                    <div class="col-sm-6">
+                                        <textarea style="height: 120px;width: 400px;" id="CustomerserviceReqRemark"
+                                                  name="CustomerserviceReqRemark"
+                                                  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="space-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                 <span id="prompt_Reqremark"
+                       style="display:none;color: red;padding-left: 160px;">请填写备注</span>
+                <button id="totalReqFinishBTN" type="button" onclick="save_CustomerserviceReqRemark();"
+                        class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modalbox end -->
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../javascript/outward/orderDetail.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>

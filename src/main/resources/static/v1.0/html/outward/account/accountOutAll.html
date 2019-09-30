@@ -1,0 +1,90 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div id="accountFilter" style="z-index:1" class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left">
+            <div class="col-sm-12">
+                <span class="label label-lg label-purple arrowed-right">盘口</span>
+                <select class="chosen-select width70" name="search_EQ_handicapId">
+                    <option value="" selected="selected">全部</option>
+                </select>
+                &nbsp;&nbsp;
+                <span class="label label-lg label-purple arrowed-right">帐号</span>
+                <input type="text" style="height:32px;width:70px" name="search_LIKE_account" class="input-medium" placeholder="帐号" />
+                &nbsp;&nbsp;
+                <span class="label label-lg label-purple arrowed-right">编号</span>
+                <input type="text" style="height:32px;width:70px;" class="input-medium" placeholder="编号" name="search_LIKE_alias" />
+                &nbsp;&nbsp;
+                <span class="label label-lg label-purple arrowed-right">操作人</span>
+                <input type="text" style="height:32px" class="input-small" placeholder="操作人" name="search_LIKE_operator" />
+                &nbsp;&nbsp;
+                <span class="label label-lg label-purple arrowed-right">层级</span>
+                &nbsp;
+				<label class="inline">
+					<input type="radio" name="currSysLevel" class="ace defaultCheck" checked value="" >
+					<span class="lbl">全部</span>
+				</label>
+				<label class="inline">
+					<input type="radio" name="currSysLevel" class="ace" value="1" >
+					<span class="lbl">外层</span>
+				</label>
+				<label class="inline">
+					<input type="radio" name="currSysLevel" class="ace" value="2" >
+					<span class="lbl">内层</span>
+				</label>
+                <label class="inline">
+                    <input type="radio" name="currSysLevel" class="ace" value="8" >
+                    <span class="lbl">指定层</span>
+                </label>
+                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('accountFilter');"><i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button></label>
+                <label class="pull-right inline">&nbsp;&nbsp;</label>
+                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold contentRight" contentRight="OutwardAccountAll:Create:*" onclick="addAccount()"><i class="ace-icon fa fa-plus bigger-100 green"></i>添加</button></label>
+            </div>
+            <div  class="col-sm-12" style="height:10px;"></div>
+            <div class="col-sm-12">
+                <span class="label label-lg label-purple arrowed-right">银行</span>
+                <select name="search_LIKE_bankType" class="chosen-select" style="height:32px;width:85px;">
+                    <option>请选择</option>
+                </select>
+                &nbsp;&nbsp;
+                <span class="label label-lg label-purple arrowed-right">分类</span>
+                <label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace defaultNoCheck" value="" accountType="5"/><span class="lbl">银行卡&nbsp;</span></label>
+                <label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace defaultNoCheck" value="" accountType="6"/><span class="lbl">第三方&nbsp;</span></label>
+                <label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace defaultNoCheck" value="" accountType="8"/><span class="lbl">备用卡&nbsp;</span></label>
+                <label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace defaultNoCheck" value="" accountType="9"/><span class="lbl">现金卡&nbsp;</span></label>
+                
+				<span class="label label-lg label-danger arrowed-right">状态</span>
+                &nbsp;
+                <label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace" value="1"  checked accountType=""/><span class="lbl">在用</span></label>
+                <label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace defaultNoCheck" value="5" accountType=""/><span class="lbl">可用</span></label>
+                <label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace defaultNoCheck" value="4" accountType=""/><span class="lbl">停用</span></label>
+                <label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace defaultNoCheck" value="3" accountType=""/><span class="lbl">冻结</span></label>
+            	&nbsp;&nbsp;
+            	
+                <span class="label label-lg label-purple arrowed-right">来源</span>
+				&nbsp;
+				<label class="inline">
+					<input type="radio" name="flag" class="ace defaultCheck" checked value="" >
+					<span class="lbl">全部</span>
+				</label>
+				<label class="inline">
+					<input type="radio" name="flag" class="ace" value="0" >
+					<span class="lbl">PC</span>
+				</label>
+				<label class="inline">
+					<input type="radio" name="flag" class="ace" value="2" >
+					<span class="lbl">返利网</span>
+				</label>
+				
+                <label class="pull-right inline"><button id="search-button" class="btn btn-xs btn-white btn-info btn-bold" onclick="searchByFilter();"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button></label>
+            </div>
+        </div>
+        <table id="dynamic-table" class="table table-striped table-bordered table-hover no-margin">
+            <thead><tr><th>盘口</th><th>层级</th><th>编号</th><th>账号</th><th>状态</th><th>银行余额</th><th>系统余额</th><th>操作人</th><th>来源</th><th>操作</th></tr></thead>
+            <tbody> </tbody>
+        </table>
+        <div id="accountPage"></div>
+    </div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalOutAccount.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalFlatBalance.js"></script>

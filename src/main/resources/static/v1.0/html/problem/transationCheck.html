@@ -1,0 +1,368 @@
+<link rel="stylesheet" href="../style/jquery.chosen.min.css" type="text/css" xmlns="http://www.w3.org/1999/html">
+<link rel="stylesheet" href="../style/bootstrap-multiselect.min.css"/>
+<link rel="stylesheet" href="../style/jquery.bootstrap.duallistbox.min.css" type="text/css">
+
+<!-- ul div -->
+<div class="row">
+    <div class=" row col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="ulTable">
+                <li class="active" onclick=" ">
+                    <a data-toggle="tab" href="#transationChecking">
+                        <i class="ace-icon fa fa-hourglass-start bigger-110 pink"></i>
+                        正在排查
+                    </a>
+                </li>
+                <li  onclick=" ">
+                    <a data-toggle="tab" href="#transationToCheck">
+                        <i class="ace-icon fa fa-refresh bigger-110 red"></i>
+                        正在接单
+                    </a>
+                </li>
+                <li onclick="">
+                    <a data-toggle="tab" href="#transationChecked">
+                        <i class="green ace-icon fa fa-check-circle bigger-110"></i>
+                        已排查
+                    </a>
+                </li>
+                <li id="" style="display: none">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                        class="label label-lg label-primary arrowed-right">刷新</span>
+                    <select id="autoUpdateTimeTroubleShooting">
+                    </select>
+                </li>
+                <li id="transationBtn" style="margin-left:100px;display: none">
+                    <button id="transationStart" type="button" btn_value="1"
+                            class="btn btn-white btn-info btn-bold" style="border-radius: 5px;" onclick="_buttonClick(this);"><i
+                            class="bigger-120 ace-icon fa fa-play green"></i><span>开始接单</span></button>
+                    <button id="transationStop" style=" display: none;margin-left:100px;border-radius: 5px;" type="button" btn_value="3"
+                            class="btn btn-white btn-info btn-bold" onclick="_stopBtnAction();"><i
+                            class="bigger-120 ace-icon fa fa-square red"></i><span>结束接单</span></button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- alltab div --each tab div --->
+<div id="transationCheckTabDiv" style="padding-top: 0px" class="tab-content">
+    <div id="transationChecking" class="tab-pane in active">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">盘口</span>
+                        <select onchange=" " id="handicap_transationChecking"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">出款账号</span>
+                        <input placeholder="出款账号" style="height:32px;width:68%;" type="text"
+                               id="fromeAccount_transationChecking">
+
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">收款账号</span>
+                        <input placeholder="收款账号" style="height:32px;width:68%;" type="text"
+                               id="toAccount_transationChecking">
+
+                    </div>
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">金额</span>
+                        <input id="fromMoney_transationChecking" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:34.4%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_transationChecking" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:34.4%;">
+
+                    </div>
+                    <div  class="col-sm-6">
+                        <span class="label label-lg label-important">类型</span>
+                        <label class="inline">
+                            <input onclick=" "   class="ace" id="inner_transationChecking"
+                                   type="checkbox"
+                                   value="0">
+                            <span class="lbl">内部转账</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick=" "   class="ace" id="member_transationChecking"
+                                   type="checkbox" value="1">
+                            <span class="lbl">出款会员</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick=" "   class="ace" id="rebate_transationChecking"
+                                   type="checkbox" value="2">
+                            <span class="lbl">返利网</span>
+                        </label>
+                        </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="pull-left">
+                            <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_transationChecking"
+                                    type="button" onclick=" ">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                </button>
+                        </span>
+                        <span class=" pull-left">
+                           <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                   onclick=" ">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                                </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th>盘口</th>
+                <th>出款账号</th>
+                <th>出款前余额</th>
+                <th>收款账号</th>
+                <th>收款前余额</th>
+                <th>类型</th>
+                <th>金额</th>
+                <th>时间</th>
+                <th>备注</th>
+                <th>截图</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_transationChecking"></tbody>
+        </table>
+        <div id="transationChecking_footPage"></div>
+    </div>
+    <div id="transationChecked" class="tab-pane ">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">盘口</span>
+                        <select onchange=" " id="handicap_transationChecked"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">出款账号</span>
+                        <input placeholder="出款账号" style="height:32px;width:68%;" type="text"
+                               id="fromeAccount_transationChecked">
+
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">收款账号</span>
+                        <input placeholder="收款账号" style="height:32px;width:68%;" type="text"
+                               id="toAccount_transationChecked">
+
+                    </div>
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">金额</span>
+                        <input id="fromMoney_transationChecked" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:34.4%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_transationChecked" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:34.5%;">
+                    </div>
+                    <div  class="col-sm-6">
+                        <span class="label label-lg label-important">类型</span>
+                        <label class="inline">
+                            <input onclick=" "   class="ace" id="inner_transationChecked"
+                                   type="checkbox"
+                                   value="0">
+                            <span class="lbl">内部转账</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick=" "   class="ace" id="member_transationChecked"
+                                   type="checkbox" value="1">
+                            <span class="lbl">出款会员</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick=" "   class="ace" id="rebate_transationChecked"
+                                   type="checkbox" value="2">
+                            <span class="lbl">返利网</span>
+                        </label>
+                        </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="pull-left">
+                            <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_transationChecked"
+                                    type="button" onclick=" ">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                </button>
+                        </span>
+                        <span class=" pull-left">
+                           <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                   onclick=" ">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                                </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th>盘口</th>
+                <th>出款账号</th>
+                <th>收款账号</th>
+                <th>类型</th>
+                <th>金额</th>
+                <th>状态</th>
+                <th>时间</th>
+                <th>备注</th>
+                <th>截图</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_transationChecked">
+
+            </tbody>
+
+        </table>
+        <div id="transationChecked_footPage"></div>
+    </div>
+
+    <div id="transationToCheck" class="tab-pane">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">盘口</span>
+                        <select onchange=" " id="handicap_transationToCheck"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">出款账号</span>
+                        <input placeholder="出款账号" style="height:32px;width:68%;" type="text"
+                               id="fromeAccount_transationToCheck">
+
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">收款账号</span>
+                        <input placeholder="收款账号" style="height:32px;width:68%;" type="text"
+                               id="toAccount_transationToCheck">
+
+                    </div>
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">金额</span>
+                        <input id="fromMoney_transationToCheck" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:34.5%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_transationToCheck" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:34.4%;">
+
+                    </div>
+                    <div  class="col-sm-6">
+                        <span class="label label-lg label-important">类型</span>
+                        <label class="inline">
+                            <input onclick=" "   class="ace" id="inner_transationToCheck"
+                                   type="checkbox"
+                                   value="0">
+                            <span class="lbl">内部转账</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick=" "   class="ace" id="member_transationToCheck"
+                                   type="checkbox" value="1">
+                            <span class="lbl">出款会员</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick=" "   class="ace" id="rebate_transationToCheck"
+                                   type="checkbox" value="2">
+                            <span class="lbl">返利网</span>
+                        </label>
+                        </span>
+                    </div>
+                    <div class="col-sm-3">
+                         <span class="pull-left">
+                            <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_transationToCheck"
+                                    type="button" onclick=" ">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                </button>
+                        </span>
+                        <span class=" pull-left">
+                           <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                   onclick=" ">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                                </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th>盘口</th>
+                <th>出款账号</th>
+                <th>出款前余额</th>
+                <th>收款账号</th>
+                <th>收款前余额</th>
+                <th>出款类型</th>
+                <th>金额</th>
+                <th>时间</th>
+                <th>备注</th>
+                <th>截图</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_transationToCheck">
+
+            </tbody>
+
+        </table>
+        <div id="transationToCheck_footPage"></div>
+    </div>
+    <div id="QuickQueryTaskReview" class="tab-pane">
+        <h3 class="row "><!--去除下划线 header smaller lighter blue-->
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">会员名</span>
+                        <input id="member_QuickQuery" class="input-large " type="text" placeholder="请输入正确的会员账号" style="height: 32px;width:72%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">订单号</span>
+                        <input id="orderNo_QuickQuery" class="input-large " placeholder="请输入正确的订单号" type="text"
+                               style="height: 32px;width:72%;"/>
+                    </div>
+                    <div class="col-sm-6">
+		                <span class="col-sm-1 pull-left">
+                            <label class="pull-right inline">
+                                <button type="button" onclick="_quickQueryClick();"
+                                        id="button_QuickQuery"
+                                        class="btn btn-xs btn-white btn-info btn-bold ">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                </button>
+                            </label>
+                        </span>
+                        <span style="margin-left: 50px;" class="pull-left">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                        onclick="_resetValuesForQuickQuery();">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                                </button>
+                            </label>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </h3>
+    </div>
+</div>
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../javascript/outward/orderDetail.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript" src="../javascript/lib/bootstrap-multiselect.min.js"></script>
+<script type="text/javascript" src="../javascript/lib/jquery.bootstrap-duallistbox.min.js"></script>
+<script type="text/javascript" src="../javascript/common/modalBankLogList.js"></script>

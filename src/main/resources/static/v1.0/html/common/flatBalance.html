@@ -1,0 +1,96 @@
+<div>
+<!-- 可引入后，根据输入条件展示对应模式框 -->
+	
+<!-- 平账 模态窗口 -->
+<div id="flatBalanceModal" class="modal fade in" aria-hidden="false">
+	<div class="modal-dialog modal-lg" style="width:1200px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					平账
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<div id="createFlat" class="page-content no-padding-bottom" style="padding-buttom:0px;">
+					<!-- 平账内容 -->
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<div class="col-sm-6">
+								<span class="label label-lg label-purple arrowed-right">金额</span>
+								<input class="input-sm" type="number" name="amount" style="width:400px;" title="+100:表示系统余额加100;/-100:表示系统余额减100;" placeholder="+100:表示系统余额加100;/-100:表示系统余额减100;">
+								
+							</div>
+							<div class="col-sm-6">
+								<span class="label label-lg label-purple arrowed-right">备注</span>
+								<input type="text" class="input-sm" name="remark" style="width:400px;">
+								<span class="pull-right help-inline">
+									<button type="button" class="btn btn-xs btn-white btn-warning btn-bold" onclick="doFlatBalance()">
+										<i class="ace-icon fa fa-exchange bigger-100 orange"></i>
+										<span>完成平帐</span>
+									</button>
+								</span>
+							</div>
+						</div>
+					</form>
+				</div>
+				<h5 style="margin-bottom:0px;" class="alert alert-success center ">
+					平账历史记录
+					<i class="ace-icon fa fa-hand-o-down icon-animated-hand-pointer alert-success"></i>
+				</h5>
+				<div class="page-content">
+					<!-- 平账明细 -->
+					<div id="filter" class="row header smaller lighter blue  less-margin no-margin-left" >
+						<div class="col-sm-3">
+							<span class="label label-lg label-purple arrowed-right">时间</span>
+							<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+							<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime" style="height: 32px;width:180px;"/>
+						</div>
+						<div class="col-sm-6">
+						</div>
+						<div class="col-sm-3">
+							<label id="searchBtn" class="pull-right inline">
+								<button onclick="showFlatList()" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+									<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+								</button>
+							</label>
+						</div>
+					</div>
+					<table id="list" class="table  table-bordered table-hover no-margin-bottom">
+						<thead>
+							<tr>
+								<th style='width:20%;'>账号</th>
+								<th style='width:15%;'>平账金额</th>
+								<th style='width:10%;'>操作人</th>
+								<th style='width:20%;'>时间</th>
+								<th style='width:35%;'>备注</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+						<tfoot></tfoot>
+					</table>
+					<div id="flatBalanceListPage"></div>
+				</div>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin text-center" id="footBank">
+				<input type="hidden" id="accountInfo_id"/>
+				<div class="col-sm-3">帐号: <span name="accountInfo_account"></span></div>
+				<div class="col-sm-2">开户人: <span name="accountInfo_owner"></span></div>
+				<div class="col-sm-3">开户行: <span name="accountInfo_bankName"></span></div>
+				<div class="col-sm-2">系统余额: <span name="accountInfo_balance"></span></div>
+				<div class="col-sm-2">银行余额: <span name="accountInfo_bankBalance"></span></div>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin text-left" style="display:none;" id="footThird">
+				<div class="col-sm-5">帐号: <span name="accountInfo_account"></span></div>
+				<div class="col-sm-3">第三方: <span name="accountInfo_bankName"></span></div>
+				<div class="col-sm-2">系统余额: <span name="accountInfo_balance"></span></div>
+				<div class="col-sm-2">第三方余额: <span name="accountInfo_bankBalance"></span></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+</div>

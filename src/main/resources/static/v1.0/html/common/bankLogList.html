@@ -1,0 +1,369 @@
+<div>
+<!-- 可引入后，根据输入条件展示对应模式框 -->
+
+	<!-- 银行流水明细 -->
+	<div id="bankLogList_modal" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog" style="width:1200px;">
+			<div class="modal-content">
+				<div class="modal-header text-center no-padding">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">×</span>
+						</button>
+						<span id='accountInfo_account'></span>&nbsp;&nbsp;&nbsp;&nbsp;流水明细 - <span id='accountInfo_id_span'></span>
+					</div>
+				</div>
+				<div class="modal-body no-padding">
+					<input id="logTab" type="hidden"  value="sysLog"/>
+					<ul class="nav nav-tabs">
+						<li onclick="changeLogTab('sysLog')" class="active" ><a data-toggle="tab" href="#sysLog">系统账目</a></li>
+						<li onclick="changeLogTab('all')"  ><a data-toggle="tab" href="#bankLog">银行流水</a></li>
+						<li onclick="changeLogTab('type0')" class="hide"><a data-toggle="tab" href="#bankLog">未匹配</a></li>
+						<li onclick="changeLogTab('problem')"><a data-toggle="tab" href="#problem">排查记录</a></li>
+					</ul>
+					<div class="tab-content" style="padding-left:0px;padding-right:0px;">
+						<!-- 银行流水 -->
+						<div id="bankLog" class="tab-pane fade">
+							<div id="filter" style="z-index:1" class="row col-sm-12 header smaller lighter blue  less-margin no-margin-left">
+								<div class="col-sm-5">
+									<span class="label label-lg label-purple arrowed-right">时间</span>
+									<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+									<input class="date-range-picker" type="text" placeholder="抓取时间 / 请选择起始日期" name="startAndEndTime" style="height: 32px;width:285px;"/>
+									
+									<a id="exportBankLogBtn" style="padding:0px;margin:0px;display:inline-block;" >
+									<button onclick="do_exportBnakLog()" type="button" class="btn btn-xs btn-white btn-info btn-bold" >
+										<i class="ace-icon fa fa-cloud-download bigger-100 green"></i>导出
+									</button></a>
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-purple arrowed-right">对方账号</span>
+									<input type="text"  name="toAccount" class="input-sm" placeholder="帐号" />
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-purple arrowed-right">金额</span>
+									<span style="height:32px">
+										<input id="qstartAmount" type="text" class="input-small" style="width:66px;height:32px">
+										~
+										<input id="qendAmount" type="text" class="input-small" style="width:66px;height:32px">
+									</span>
+								</div>
+								<div class="col-sm-1">
+									<label  class="pull-right inline">
+										<button onclick="reset('filter');" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+										</button>
+									</label>
+								</div>
+								<div class="col-sm-12"></div>
+								<div class="col-sm-5">
+									<span class="statusSearch label label-lg label-important arrowed-right">状态</span>
+									<select class="statusSearch" name="search_IN_status" style="width:150px;">
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-purple arrowed-right">对方姓名</span>
+									<input type="text"  name="toAccountOwner" class="input-sm" placeholder="姓名" />
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-important arrowed-right">类型</span>
+									<label class="inline">
+										<input checked="checked" type="checkbox" name="searchTypeIn0Out1" class="ace" value="0"/>
+										<span class="lbl"> 转入</span>
+									</label>
+									<label class="inline">
+										<input checked="checked" type="checkbox" name="searchTypeIn0Out1" class="ace" value="1"/>
+										<span class="lbl"> 转出</span>
+									</label>
+								</div>
+								<div class="col-sm-1">
+									<label id="searchBtn" class="pull-right inline">
+										<button onclick="bankLogList_In_OutListById()" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+										</button>
+									</label>
+								</div>
+							</div>
+							<!-- 默认先抓取时间倒序，可以修改为交易时间trading_time  -->
+							<input id="orderByTh" value="id" type="hidden" />
+							<table id="list" class="table table-striped table-bordered table-hover no-margin-bottom">
+								<thead>
+									<tr>
+										<th style="width:12%;" class="action-buttons">交易时间
+											<a style="text-decoration:none;cursor:pointer;" onclick="changeOrderBy('trading_time')" class="blue bigger-140 show-details-btn" >
+												&nbsp;&nbsp;
+												<i class="fa fa-angle-double-down"></i>
+												&nbsp;&nbsp;
+											</a>
+										</th>
+										<th style="width:12%;" class="action-buttons">抓取时间
+											<a style="text-decoration:none;cursor:pointer;" onclick="changeOrderBy('create_time')" class="blue bigger-140 show-details-btn" >
+												&nbsp;&nbsp;
+												<i class="fa fa-angle-double-down"></i>
+												&nbsp;&nbsp;
+											</a>
+										</th>
+										<th style="width:10%;">转入金额</th>
+										<th style="width:10%;">转出金额</th>
+										<th style="width:9%;">余额</th>
+										<th style="width:10%;">对方账号</th>
+										<th style="width:8%;">对方姓名</th>
+										<th style="width:10%;">摘要</th>
+										<th style="width:10%;">备注</th>
+										<th style="width:9%;">状态</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<div id="bankLogList_In_OutPage"></div>
+						</div>
+						
+						<!-- 系统流水 -->
+						<div id="sysLog" class="tab-pane fade active in">
+							<div id="filter_sys" style="z-index:1" class="row col-sm-12 header smaller lighter blue  less-margin no-margin-left">
+								<span class="label label-lg label-purple arrowed-right">时间</span>
+								<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+								<input class="date-range-picker" type="text" placeholder="抓取时间 / 请选择起始日期" name="startAndEndTime_sys" style="height: 32px;width:285px;"/>
+								&nbsp;
+								<span class="label label-lg label-purple arrowed-right">对方账号</span>
+								<input type="text"  name="toAccount_sys" class="input-sm" placeholder="帐号" style="width:100px;" />
+								&nbsp;
+								<span class="label label-lg label-important arrowed-right">订单号</span>
+								<input type="text" name="orderNo_sys" class="input-sm" placeholder="订单号" style="width:80px;" />
+								&nbsp;
+								<span class="label label-lg label-purple arrowed-right">金额</span>
+								<span style="height:32px">
+									<input name="qstartAmount_sys" type="text" class="input-small" style="width:66px;height:32px">
+									~
+									<input name="qendAmount_sys" type="text" class="input-small" style="width:66px;height:32px">
+								</span>
+								&nbsp;
+								<label id="searchBtn" class="pull-right inline">
+									<button onclick="sysLogList()" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+										<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+									</button>
+								</label>
+								<label  class="pull-right inline">
+									<button onclick="reset('filter_sys');" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+										<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+									</button>
+								</label>
+							</div>
+							<div style="padding-left:0px;padding-right:0px;">
+								<table id="sysLog_inOut" class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th style="width:5%;">盘口</th>
+											<th style="width:4%;">类型</th>
+											<th style="width:14%;">订单号</th>
+											<th style="width:8%;">转入</th>
+											<th style="width:8%;">转出</th>
+											<th style="width:5%;">手续费</th>
+											<th style="width:8%;">系统余额</th>
+											<th style="width:8%;">银行余额</th>
+											<th style="width:12%;">设备处理时间</th>
+											<th style="width:5%;">状态</th>
+											<th style="width:12%;">摘要</th>
+											<th style="width:11%;">备注</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+								<div id="sysLogPage"></div>
+							</div>
+						</div>
+						
+						<!-- 排查记录 -->
+						<div id="problem" class="tab-pane fade">
+							<div id="filter_problem" style="z-index:1" class="row col-sm-12 header smaller lighter blue  less-margin no-margin-left">
+								<span class="label label-lg label-purple arrowed-right">时间</span>
+								<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+								<input class="date-range-picker" type="text" placeholder="抓取时间 / 请选择起始日期" name="startAndEndTime_problem" style="height: 32px;width:285px;"/>
+								&nbsp;
+								<span class="label label-lg label-purple arrowed-right">对方账号</span>
+								<input type="text"  name="toAccount_problem" class="input-sm" placeholder="帐号" style="width:100px;" />
+								&nbsp;
+								<span class="label label-lg label-important arrowed-right">订单号</span>
+								<input type="text" name="orderNo_problem" class="input-sm" placeholder="订单号" style="width:80px;" />
+								&nbsp;
+								<span class="label label-lg label-purple arrowed-right">金额</span>
+								<span style="height:32px">
+									<input name="qstartAmount_problem" type="text" class="input-small" style="width:66px;height:32px">
+									~
+									<input name="qendAmount_problem" type="text" class="input-small" style="width:66px;height:32px">
+								</span>
+								&nbsp;
+								<label id="searchBtn" class="pull-right inline">
+									<button onclick="problemList()" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+										<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+									</button>
+								</label>
+								<label  class="pull-right inline">
+									<button onclick="reset('filter_problem');" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+										<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+									</button>
+								</label>
+							</div>
+							<div style="padding-left:0px;padding-right:0px;">
+								<table id="problem_inOut" class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th style="width:6%;">盘口</th>
+											<th style="width:12%;">订单号</th>
+											<th style="width:8%;">转入</th>
+											<th style="width:8%;">转出</th>
+											<th style="width:8%;">系统余额</th>
+											<th style="width:12%;">交易时间</th>
+											<th style="width:7%;">类型</th>
+											<th style="width:8%;">操作人</th>
+											<th style="width:8%;">耗时</th>
+											<th style="width:12%;">摘要</th>
+											<th style="width:12%;">备注</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+								<div id="problemPage"></div>
+							</div>
+						</div>
+					</div>
+					<div id="bankLog_accountInfo_total" class="col-sm-12 modal-footer no-margin text-center">
+						<input type="hidden" id="accountInfo_id"/>
+						<input type="hidden" id="accountInfo_alias"/>
+						<div class="col-sm-2">银行余额：<span id="accountInfo_bankBalance"></span></div>
+						<div class="col-sm-2">未认领金额：<span id="accountInfo_noOwnerBalance"></span></div>
+						<div class="col-sm-2">今日收款:<span id="incomeDailyTotal"></span></div>
+						<div class="col-sm-2">总收款:<span id="queryIncomeTotal"></span></div>
+						<div class="col-sm-2">今日支出:<span id="outDailyTotal"></span></div>
+						<div class="col-sm-2">总支出:<span id="queryOutTotal"></span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 第三方抓取记录 -->
+	<div id="thirdLogList_modal" class="modal fade" aria-hidden="false" >
+		<input type="hidden" id="accountFromId">
+		<div class="modal-dialog" style="width:1200px;">
+			<div class="modal-content">
+				<div class="modal-header text-center no-padding">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">×</span>
+						</button>
+						<span name='request_host'></span>&nbsp;最近抓取记录
+					</div>
+				</div>
+				<div class="modal-body no-padding">
+					<table class="table table-striped table-bordered table-hover no-margin-bottom">
+						<thead>
+							<tr>
+								<th style="width:19%;">交易时间</th>
+								<th style="width:10%;">交易金额</th>
+								<th style="width:7%;">手续费</th>
+								<th style="width:15%;">订单号</th>
+								<th style="width:49%;">备注</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div id="thirdLogList_Page"></div>
+				</div>
+					<div class="col-sm-12 modal-footer no-margin text-center">
+						<input type="hidden" id="accountInfo_id"/>
+						<div class="col-sm-2">抓取账号:<span name="accountInfo_account"></span></div>
+						<div class="col-sm-2">第三方:<span name="accountInfo_bankName"></span></div>
+						<div class="col-sm-4"></div>
+					</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!-- 第三方流水明细 -->
+	<div id="thirdLogList_inOut_modal" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog" style="width:1200px;">
+			<div class="modal-content">
+				<div class="modal-header text-center no-padding">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">×</span>
+						</button>
+						&nbsp;<span id='accountInfo_account'></span>&nbsp;&nbsp;&nbsp;&nbsp;第三方流水明细 - <span id='accountInfo_id_span'></span>
+					</div>
+				</div>
+				<div class="modal-body no-padding">
+					<input name="tabType" type="hidden" value="in"/>
+					<ul class="nav nav-tabs">
+						<li class="active"><a onclick="changeInOutTypeInit_Third('in')" data-toggle="tab" href="#LogList">
+							<span class="glyphicon glyphicon-log-in"></span>&nbsp;转入</a>
+						</li>
+						<li><a onclick="changeInOutTypeInit_Third('out')" data-toggle="tab" href="#LogList">
+							<span class="glyphicon glyphicon-log-out"></span>&nbsp;转出</a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade active in">
+							<div id="filter" style="z-index:1" class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left">
+								<div class="col-sm-12">
+									<span class="label label-lg label-purple arrowed-right">&nbsp;&nbsp;订单号&nbsp;&nbsp;</span>
+									<input type="text"  name="orderNo" class="input-sm" placeholder="订单号" />
+									&nbsp;&nbsp;
+									<span class="label label-lg label-purple arrowed-right">交易日期</span>
+									<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+									<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime" style="height: 32px;width:290px;"/>
+									&nbsp;&nbsp;
+									<span class="label label-lg label-purple arrowed-right">&nbsp;&nbsp;&nbsp;&nbsp;金额&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									<span style="height:32px">
+										<input id="qstartAmount" type="text" class="input-small" style="width:80px;height:32px">
+										&nbsp;~&nbsp;
+										<input id="qendAmount" type="text" class="input-small" style="width:80px;height:32px">
+									</span>
+									&nbsp;&nbsp;
+									<label id="searchBtn" class="pull-right inline">
+										<button onclick="thirdLogList_In_OutList()" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+										</button>
+									</label>
+									<label class="pull-right inline">&nbsp;&nbsp;</label>
+									<label  class="pull-right inline">
+										<button onclick="reset('filter');" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+										</button>
+									</label>
+								</div>
+							</div>
+							<table id="list" class="table table-striped table-bordered table-hover no-margin-bottom">
+								<thead>
+									<tr>
+										<th style="width:10%;">余额</th>
+										<th style="width:10%;">交易金额</th>
+										<th style="width:7%;">手续费</th>
+										<th style="width:15%;">订单号</th>
+										<th style="width:23%;">交易时间</th>
+										<th style="width:30%;">备注</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<div id="thirdLogList_inOut_Page"></div>
+						</div>
+						
+					</div>
+					<div class="col-sm-12 modal-footer no-margin text-center">
+						<input type="hidden" id="accountInfo_id"/>
+						<div class="col-sm-2">第三方余额：<span id="accountInfo_bankBalance"></span></div>
+						<div class="col-sm-2">未认领金额：<span id="accountInfo_noOwnerBalance"></span></div>
+						<div class="col-sm-2">今日收款:<span id="incomeDailyTotal"></span></div>
+						<div class="col-sm-2">总收款:<span id="queryIncomeTotal"></span></div>
+						<div class="col-sm-2">今日支出:<span id="outDailyTotal"></span></div>
+						<div class="col-sm-2">总支出:<span id="queryOutTotal"></span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

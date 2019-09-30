@@ -1,0 +1,317 @@
+<style>
+    table > th {
+        padding: 0px;
+    }
+</style>
+<link rel="stylesheet" href="../style/jquery.chosen.min.css" type="text/css" xmlns="http://www.w3.org/1999/html">
+<link rel="stylesheet" href="../style/bootstrap-multiselect.min.css"/>
+<link rel="stylesheet" href="../style/jquery.bootstrap.duallistbox.min.css" type="text/css">
+<div style="padding-top: 0px" class="tab-content">
+    <div class="">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">金额</span>
+                        <input id="fromMoney_companyExpence" name="Money_companyExpence" onkeyup="clearNoNum(this); _initialParamDataAndQuery();"
+                               step="10"
+                               type="number"
+                               class="form-control input-small" style="height:32px;width:34%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input  id="toMoney_companyExpence" name="Money_companyExpence" onkeyup="clearNoNum(this); _initialParamDataAndQuery();"
+                               step="10"
+                               type="number"
+                               class="form-control input-small" style="height:32px;width:33%;">
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right ">创建时间</span>
+                        <input onchange=" _initialParamDataAndQuery();" id="timeCreate_companyExpence" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:68%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="width:68px;" class="label label-lg label-important">出款类型</span>
+                        <label class="inline">
+                            <input onclick=" _initialParamDataAndQuery();" name="type_companyExpence" class="ace" type="radio"
+                                   value="人工">
+                            <span class="lbl">人工</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick=" _initialParamDataAndQuery();" name="type_companyExpence" class="ace" type="radio" value="机器">
+                            <span class="lbl">机器</span>
+                        </label>
+                    </div>
+                    <div class="col-sm-12" style="height:2px;"></div>
+
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right ">来源</span>
+                        <input onkeyup=" _initialParamDataAndQuery();" placeholder="来源" class="input-large" type="text" style="height: 32px;width:76%;"
+                               type="text" id="companyExpenditurePurpose1"
+                               list="companyExpenditurePurposeList1">
+                        <datalist id="companyExpenditurePurposeList1">
+
+                        </datalist>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">出款账号</span>
+                        <input onkeyup=" _initialParamDataAndQuery();" id="accountOut_companyExpence" PLACEHOLDER="出款账号或者编号" class="input-large" type="text"
+                               style="height: 32px;width:68%;"/>
+                    </div>
+
+
+                    <div class="col-sm-3">
+                        <span class="pull-left">
+                            <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_companyExpence"
+                                    type="button" onclick=" _initialParamDataAndQuery();">
+                                <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                            </button>
+                        </span>
+                        <span class=" pull-left">
+                            <button class="btn btn-xs btn-white btn-purple btn-bold" type="button"
+                                    onclick="_resetValueCompanyExpenditure();">
+                                <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                            </button>
+                        </span>
+                        <span class="pull-left">
+                            <button class="btn btn-xs btn-white btn-success btn-bold " id="addOrderBtn_cashExpence"
+                                    type="button" style="display: none" onclick="_beforeAddCompanyExpenditure();">
+                                <i class="fa fa-plus-circle"></i>新增公司用款
+                            </button>
+                        </span>
+                        <span class="pull-left">
+                            <button class="btn btn-xs btn-white btn-warning  btn-bold "
+                                    type="button" onclick="window.history.back();">
+                                <i class="ace-icon fa fa-reply icon-only"></i>返回
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom ">
+            <thead>
+            <tr>
+                <!--<th>盘口</th>-->
+                <th>来源</th>
+                <th>订单号</th>
+                <th>金额</th>
+                <th>出款人</th>
+                <th>出款账号</th>
+                <th>收款账号</th>
+                <th>状态</th>
+                <th>审批人</th>
+                <th>创建时间</th>
+                <th>出款时间</th>
+                <th>备注</th>
+                <th>截图</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_companyExpence">
+            </tbody>
+        </table>
+        <div id="footPage_companyExpence"></div>
+    </div>
+</div>
+<!--新增-->
+<div id="addCompanyExpenditureModal" class="modal fade " tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding text-center">
+                <div id="addCompanyExpenditureTitle" class="table-header" style="display: none">
+                    <button type="button" class="close" onclick="_cancelAction(5);" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    新增公司用款
+                </div>
+                <div id="editCompanyExpenditureTitle" class="table-header" style="display: none">
+                    <button type="button" class="close" onclick="_cancelAction(5);" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    编辑公司用款
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-18 b-r">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>用款金额<i class="fa fa-asterisk red"></i></label>
+                                <input style="width: 220px;" class="input-sm" id="companyExpenditureAmount"
+                                       type="number"
+                                       oninput="if(value.length>5)value=value.slice(0,4);if(value>50000)value=50000;if(value<0)value=0;"
+                                       step="100" placeholder="用款金额">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 b-r">
+                            <div class="form-group">
+                                <label>对方账号<i class="fa fa-asterisk red"></i></label>
+                                <input style="width: 220px;" class="input-sm" id="companyExpenditureToAccount"
+                                       type="text" placeholder="对方账号">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 ">
+                            <label>来源大类<i class="fa fa-asterisk red"></i></label>
+                            <input placeholder="用款来源大类" style="width: 220px" type="text" id="companyExpenditurePurpose"
+                                   list="companyExpenditurePurposeList">
+                            <datalist id="companyExpenditurePurposeList">
+
+                            </datalist>
+                        </div>
+                        <div class="col-sm-6 b-r">
+                            <div class="form-group">
+                                <label>对方姓名<i class="fa fa-asterisk red"></i></label>
+                                <input style="width: 220px;" class="input-sm" id="companyExpenditureToName" type="text"
+                                       placeholder="对方姓名">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>来源细分<i class="fa fa-asterisk red"></i></label>
+                            <input placeholder="用款来源细分" style="width: 220px" type="text"
+                                   id="companyExpenditurePurposeChild"
+                                   list="companyExpenditurePurposeListChild">
+                            <datalist id="companyExpenditurePurposeListChild">
+
+                            </datalist>
+                        </div>
+                        <div class="col-sm-6 b-r">
+                            <div class="form-group">
+                                <label>开户银行<i class="fa fa-asterisk red"></i></label>
+                                <input style="width: 220px;" class="input-sm" id="companyExpenditureToBank" type="text"
+                                       placeholder="开户行">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <!--<label>用款盘口<i class="fa fa-asterisk red"></i></label>-->
+                            <!--<select style="width: 220px" id="companyExpenditureHandicap" >-->
+                            <!--</select>-->
+                            <div class="form-group" id="remarkOrHandicap">
+                                <label>用款盘口<i class="fa fa-asterisk red"></i></label>
+                                <input style="width: 220px;" class="input-sm" id="companyExpenditureHandicap"
+                                       type="text"
+                                       placeholder="用款盘口">
+                            </div>
+                        </div>
+                        <div class="col-sm-6  b-r">
+                            <label>选审核人<i class="fa fa-asterisk red"></i></label>
+                            <select style="width: 220px" id="companyExpenditureAuditor">
+                                <option selected="selected" value="请选择">请选择</option>
+                                <option value="">david</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin right">
+                <input type="hidden" value="" id="editCompanyExpenditrueReqId">
+                <span id="promptCompany" style="color: red"></span>
+                <button id="addOreditCompanyExpenditrue" class="btn btn-primary" type="button" onclick="">确认</button>
+                <button class="btn btn-danger" type="button" onclick="_cancelAction(5);" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--截图-->
+<div class="modal fade" id="companyImgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="width:30%;">
+        <div class="modal-content">
+            <div style="text-align: center" class="table-header">
+                <button type="button" class="close white" data-dismiss="modal" aria-hidden="true">×</button>
+                交易截图
+            </div>
+            <div class="modal-body">
+                <img id="companyImg" src="" height="auto" width="100%" alt="auto">
+            </div>
+            <div class="modal-footer">
+                <a id="downLoadImgCompanyExpendBtn" class="btn btn-success">下载</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--备注--->
+<div id="remarkForCompanyExpend_modal" class="modal fade" tabindex="-1">
+    <input id="remarkForCompanyExpend_reqId" type="hidden">
+    <input id="remarkForCompanyExpend_taskId" type="hidden">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomer" style="text-align: center;display: none" class="table-header">
+                    <button type="button" onclick="_cancelAction(2);" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    备注
+                </div>
+                <div id="titleDivApprove" style="text-align: center;display: none" class="table-header">
+                    <button type="button" onclick="_cancelAction(1);" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    审批
+                </div>
+                <div id="titleDivEdit" style="text-align: center;display: none" class="table-header">
+                    <button type="button" onclick="_cancelAction(3);" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    删除
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div id="approveBasicInfo" class="form-group center" style="display: none;">
+                                    <span>盘口：</span><span id="handicapToUse" style="color: red"></span>&nbsp;&nbsp;
+                                    <span>金额：</span><span id="amountToUse" style="color: red"></span>&nbsp;&nbsp;
+                                    <span>来源：</span><span id="purposeToUse"></span>&nbsp;&nbsp;<br>
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td style="padding-left:178px !important;">收款账号：</td>
+                                            <td id="toAccountToUse"></td>
+                                        </tr>
+                                        <td style="padding-left:165px !important;">收款人：</td>
+                                        <td id="toOwnerToUse"></td>
+                                        <tr>
+                                        </tr>
+                                        <td style="padding-left:165px !important;">开户行：</td>
+                                        <td id="toBankToUse"></td>
+                                        <tr>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-left"
+                                           for="remarkForCompanyExpend">备注 </label>
+                                    <div class="col-sm-6">
+                                        <textarea style="height: 50px;width: 400px;" id="remarkForCompanyExpend"
+                                                  name="remarkForCompanyExpend"
+                                                  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <span id="prompt_remarkForCompanyExpend"
+                      style="display:none;color: red;padding-left: 160px;">请填写备注</span>
+                <button id="companyExpendModalConfirmOrRemarkBTN" type="button" class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" onclick="_cancelAction(5);" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../javascript/outward/orderDetail.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript" src="../javascript/lib/bootstrap-multiselect.min.js"></script>
+<script type="text/javascript" src="../javascript/lib/jquery.bootstrap-duallistbox.min.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>

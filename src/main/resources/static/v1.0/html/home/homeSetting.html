@@ -1,0 +1,222 @@
+<!-- 公告设置 -->
+
+
+<div id="noticeFilter"  style="z-index:2" class="row header smaller lighter blue  less-margin no-margin-left">
+	<div class="col-sm-12">
+		<span class="label label-lg label-purple arrowed-right">标题</span>
+		<input type="text" class="input-sm" name="search_LIKE_title" style="width:80px;" placeholder="服务商" />
+		&nbsp;
+		<span class="label label-lg label-purple arrowed-right">内容</span>
+		<input type="text" class="input-sm" name="search_LIKE_contant" style="width:80px;" placeholder="服务商" />
+		&nbsp;
+		<span class="label label-lg label-purple arrowed-right">版本号</span>
+		<input type="text" class="input-sm" name="search_LIKE_publishNo" style="width:80px;" placeholder="商号" />
+		&nbsp;
+		<span class="label label-lg label-danger arrowed-right">类型</span>
+		<label class="inline"><input type="radio" name="search_IN_type" class="ace" value=""checked="checked"  /><span class="lbl">全部</span></label>
+		<label class="inline"><input type="radio" name="search_IN_type" class="ace defaultNoCheck" value="1"/><span class="lbl">自动出入款系统</span></label>
+		<label class="inline"><input type="radio" name="search_IN_type" class="ace defaultNoCheck" value="2"/><span class="lbl">返利网工具</span></label>
+		<label class="inline"><input type="radio" name="search_IN_type" class="ace defaultNoCheck" value="3"/><span class="lbl">PC工具</span></label>
+		&nbsp;
+		<label id="searchBtn" class="pull-right inline" onclick="showNoticeList()">
+			<button class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+			</button>
+		</label>
+		<label class="pull-right inline" >&nbsp;&nbsp;</label>
+		<label onclick="reset('noticeFilter');" class="pull-right inline">
+			<button class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+			</button>
+		</label>
+		<label class="pull-right inline" >&nbsp;&nbsp;</label>
+		<label onclick="showAddModal();" class="pull-right inline">
+			<button class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-plus bigger-100 green"></i>新增
+			</button>
+		</label>
+	</div>
+
+</div>
+<table id="noticeListTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+	<thead>
+		<tr>	
+			<th style="min-width:100px;">类型</th>
+			<th style="min-width:60px;">版本号</th>
+			<th style="width:100px;">标题</th>
+			<th style="width:300px;" >内容</th>
+			<th style="min-width:140px;">上线时间</th>
+			<th style="min-width:140px;">公告时间</th>
+			<th style="min-width:80px;">操作人</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+<div id="noticePage"></div>
+
+<!-- 新增公告 -->
+<div id="addNoticeModal" class="modal fade" data-backdrop="static"  tabindex="-1">
+	<div class="modal-dialog modal-lg" style="width:700px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>新增公告
+				</div>
+			</div>
+			<div class="modal-body left">
+				<table style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:10px;"></th>
+							<th style="width:550px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+                            <td class="blue pull-right">类型<i class='ace-icon fa fa-asterisk red'></i></td>
+                            <td></td>
+                            <td>
+                            	<label class="inline"><input type="radio" name="type" class="ace defaultNoCheck" value="1"/><span class="lbl">自动出入款系统</span></label>
+								<label class="inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+								<label class="inline"><input type="radio" name="type" class="ace defaultNoCheck" value="2"/><span class="lbl">返利网工具</span></label>
+								<label class="inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+								<label class="inline"><input type="radio" name="type" class="ace defaultNoCheck" value="3"/><span class="lbl">PC工具</span></label>
+                            </td>
+						</tr>
+						<tr>
+							<td class="blue pull-right" style="padding-top: 10px;">上线时间<i class="ace-icon fa fa-asterisk red"></i></td>
+							<td></td>
+                            <td>   
+                            	<input class="form-control date-range-picker" type="text" name="publishTime" style="height: 30px;width:180px;" />
+                            </td>
+						</tr>
+						<tr>
+							<td class="blue pull-right" style="padding-top: 10px;">版本号<i class="ace-icon fa fa-asterisk red"></i></td>
+                           	<td></td>
+							<td>
+								<input class="form-control input-sm" style="width:180px;" name="publishNo" type="text" placeholder="版本号">
+							</td>
+						</tr>
+						<tr>
+                            <td class="blue pull-right">标题<i class='ace-icon fa fa-asterisk red'></i></td>
+                            <td></td>
+                            <td>
+                            	<input class="input-sm" style="width:550px;'" name="title" type="text" placeholder="请输入标题，50字以内"">
+                            </td>
+						</tr>
+						<tr>
+							<td class="blue pull-right" style="padding-top: 10px;">升级内容<i class="ace-icon fa fa-asterisk red"></i></td>
+                            <td></td>
+							<td>
+					            <div class="widget-box widget-color-grey" style="text-align:left;">
+					                <div class="widget-header widget-header-small" id="contant_head">
+					                </div>
+					                <div class="widget-body">
+										<div class="widget-main no-padding">
+					                        <div class="wysiwyg-editor"  id="contant"></div>
+									     </div>
+					                </div>
+					            </div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doAddNotice();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 修改公告 -->
+<div id="updateNoticeModal" class="modal fade" data-backdrop="static"  tabindex="-1">
+	<div class="modal-dialog modal-lg" style="width:700px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>修改公告
+				</div>
+			</div>
+			<div class="modal-body">
+				<input id="noticeId" type="hidden" >
+				<table style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:10px;"></th>
+							<th style="width:550px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+                            <td class="blue pull-right">类型<i class='ace-icon fa fa-asterisk red'></i></td>
+                            <td></td>
+                            <td>
+                            	<label class="inline"><input type="radio" name="type" class="ace defaultNoCheck" value="1"/><span class="lbl">自动出入款系统</span></label>
+								<label class="inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+								<label class="inline"><input type="radio" name="type" class="ace defaultNoCheck" value="2"/><span class="lbl">返利网工具</span></label>
+								<label class="inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+								<label class="inline"><input type="radio" name="type" class="ace defaultNoCheck" value="3"/><span class="lbl">PC工具</span></label>
+                            </td>
+						</tr>
+						<tr>
+							<td class="blue pull-right" style="padding-top: 10px;">上线时间<i class="ace-icon fa fa-asterisk red"></i></td>
+							<td></td>
+                            <td>   
+                            	<input class="form-control date-range-picker" type="text" name="publishTime" style="height: 30px;width:180px;" />
+                            </td>
+						</tr>
+						<tr>
+							<td class="blue pull-right" style="padding-top: 10px;">版本号<i class="ace-icon fa fa-asterisk red"></i></td>
+                           	<td></td>
+							<td>
+								<input class="form-control input-sm" style="width:180px;" name="publishNo" type="text" placeholder="版本号">
+							</td>
+						</tr>
+						<tr>
+                            <td class="blue pull-right">标题<i class='ace-icon fa fa-asterisk red'></i></td>
+                            <td></td>
+                            <td>
+                            	<input class="input-sm" style="width:550px;" name="title" type="text" placeholder="请输入标题，50字以内">
+                            </td>
+						</tr>
+						<tr>
+							<td class="blue pull-right" style="padding-top: 10px;">升级内容<i class="ace-icon fa fa-asterisk red"></i></td>
+                            <td></td>
+							<td>
+					            <div class="widget-box widget-color-grey" style="text-align:left;">
+					                <div class="widget-header widget-header-small" id="contant_head">
+					                </div>
+					                <div class="widget-body">
+										<div class="widget-main no-padding">
+					                        <div class="wysiwyg-editor"  id="contant"></div>
+									     </div>
+					                </div>
+					            </div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doUpdateNotice();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 勿更换JS加载顺序 -->
+<script type="text/javascript" src="../javascript/lib/bootstrap-wysiwyg.js"></script>
+<script type="text/javascript" src="../javascript/lib/elements.wysiwyg.js"></script>
+<script type="text/javascript" src="../javascript/lib/ace-extra.js"></script>
+<script type="text/javascript" src="../javascript/lib/index.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript" src="../html/home/homeSetting.js"></script>

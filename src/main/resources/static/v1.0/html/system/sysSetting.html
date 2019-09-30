@@ -1,0 +1,303 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-6 widget-container-col ui-sortable">
+        <div class="widget-box ui-sortable-handle hide" id="finance_widget">
+            <div class="widget-header">
+                <h5 class="widget-title">财务管理设置</h5>
+                <div class="widget-toolbar">
+                    <a href="#" data-action="fullscreen" class="orange2">
+                        <i class="ace-icon fa fa-expand"></i>
+                    </a>
+                    <a onclick="reloadSetting(3)" title="重置">
+                        <i class="ace-icon fa fa-refresh"></i>
+                    </a>
+                    <a href="#" data-action="collapse">
+                        <i class="ace-icon fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="FINANCE_FROZEN_ACCOUNTS_FLOWS_EXPIRY" type="number">
+                        冻结卡继续抓取流水期限（天）
+                    </p>
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="INCOME_LIMIT_MONITOR_TIMEOUT" type="number">
+                        流水抓取超时时间（分钟）
+                    </p>
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="FINANCE_ACCOUNT_BALANCE_ALARM" type="number">
+                        出入款账号余额告警值（元）
+                    </p>
+                </div>
+                <div class="widget-toolbox padding-8 clearfix">
+                    <button class="btn btn-xs btn-success pull-right contentRight" contentright='SystemSetting:Update:*'
+                            type="button" onclick="updateSetting(3)">
+                        <span class="bigger-110">保存</span>
+                        <i class="ace-icon fa fa-check icon-on-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <br class="hide"/>
+        <div class="widget-box ui-sortable-handle hide" id="transferTestAccount_widget">
+            <div class="widget-header">
+                <h5 class="widget-title">测试转账，收款信息设置</h5>
+                <div class="widget-toolbar">
+                    <a href="#" data-action="fullscreen" class="orange2">
+                        <i class="ace-icon fa fa-expand"></i>
+                    </a>
+                    <a onclick="reloadSetting(5)" title="重置">
+                        <i class="ace-icon fa fa-refresh"></i>
+                    </a>
+                    <a href="#" data-action="collapse">
+                        <i class="ace-icon fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="TRANSFER_TEST_ACCOUNT" type="number">
+                        <span style="width:100px;">收款账号</span>
+                        <input class="input-sm" name="TRANSFER_TEST_OWNER" type="text">
+                        <span style="width:100px;">收款人</span>
+                        <br/>
+                        <br/>
+                        <input class="input-sm" name="TRANSFER_TEST_AMOUNT" type="number">
+                        <span style="width:100px;">转账金额</span>
+                        <input class="input-sm" name="TRANSFER_TEST_BANKNAME" type="text">
+                        <span style="width:100px;">开户行</span>
+                    </p>
+                </div>
+                <div class="widget-toolbox padding-8 clearfix">
+                    <button class="btn btn-xs btn-success pull-right contentRight" contentright='SystemSetting:Update:*'
+                            type="button" onclick="updateSetting(5)">
+                        <span class="bigger-110">保存</span>
+                        <i class="ace-icon fa fa-check icon-on-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="widget-box ui-sortable-handle" id="sync_orders_widget">
+            <div class="widget-header">
+                <h5 class="widget-title">系统定时同步平台数据</h5>
+                <div class="widget-toolbar">
+                    <a href="#" data-action="fullscreen" class="orange2">
+                        <i class="ace-icon fa fa-expand"></i>
+                    </a>
+                    <a onclick="reloadSetting(7)" title="重置">
+                        <i class="ace-icon fa fa-refresh"></i>
+                    </a>
+                    <a href="#" data-action="collapse">
+                        <i class="ace-icon fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <p class="alert alert-success">
+                    	<span class="blue bolder">入款</span>
+						&nbsp;
+						<label class="inline">
+							<input type="radio" name="action_income" class="ace" value="1" >
+							<span class="lbl">开启</span>
+						</label>
+						<label class="inline">
+							<input type="radio" name="action_income" class="ace" value="2" >
+							<span class="lbl">关闭</span>
+						</label>
+						<button class="btn btn-xs btn-success pull-right contentRight" disabled contentright='SystemSetting:Update:*'
+                            type="button" onclick="controlSynchSwitch(1);">
+	                        <span class="bigger-110">保存</span>
+	                        <i class="ace-icon fa fa-check icon-on-right"></i>
+	                    </button>
+                    </p>
+                    <p class="alert alert-success">
+                    	<span class="blue bolder">出款</span>
+						&nbsp;
+						<label class="inline">
+							<input type="radio" name="action_out" class="ace" value="1" >
+							<span class="lbl">开启</span>
+						</label>
+						<label class="inline">
+							<input type="radio" name="action_out" class="ace" value="2" >
+							<span class="lbl">关闭</span>
+						</label>
+						<button class="btn btn-xs btn-success pull-right contentRight" disabled contentright='SystemSetting:Update:*'
+                            type="button" onclick="controlSynchSwitch(2);">
+	                        <span class="bigger-110">保存</span>
+	                        <i class="ace-icon fa fa-check icon-on-right"></i>
+	                    </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="widget-box ui-sortable-handle" id="cabana_widget">
+            <div class="widget-header">
+                <h5 class="widget-title">升级操作</h5>
+                <div class="widget-toolbar">
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <button class="btn btn-xs btn-success pull-center contentRight" contentright='SystemSetting:Update:*'
+                            type="button" onclick="doCommonUpLevel(this)">
+                        <span class="bigger-110">工具升级</span>
+                        <i class="ace-icon fa fa-upload icon-on-right"></i>
+                    </button>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-xs btn-success pull-center contentRight" contentright='SystemSetting:Update:*'
+                            type="button" onclick="showCabanaUpgrade()">
+                        <span class="bigger-110">APP升级</span>
+                        <i class="ace-icon fa fa-upload icon-on-right"></i>
+                    </button>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-xs btn-danger pull-center contentRight" contentright='SystemSetting:Update:*'
+                            type="button" onclick="showModalPatch(this)">
+                        <span class="bigger-110">APP打补丁</span>
+                        <i class="ace-icon fa fa-upload icon-on-right"></i>
+                    </button>
+                </div>
+                <div class="widget-toolbox padding-8 clearfix">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 widget-container-col ui-sortable" id="finance_widget">
+        <div class="widget-box ui-sortable-handle" id="outdraw_widget">
+            <div class="widget-header">
+                <h5 class="widget-title">出款管理设置</h5>
+                <div class="widget-toolbar">
+                    <a href="#" data-action="fullscreen" class="orange2">
+                        <i class="ace-icon fa fa-expand"></i>
+                    </a>
+                    <a onclick="reloadSetting(2)" title="重置">
+                        <i class="ace-icon fa fa-refresh"></i>
+                    </a>
+                    <a href="#" data-action="collapse">
+                        <i class="ace-icon fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div class="input-group" style="width: 99%;">
+                        <p class="alert alert-success">
+                            <i class="fa fa-calendar bigger-20"></i>
+                            <input class="form-control date-range-picker" type="text"
+                                   name="OUTDRA_HALT_ALLOC_START_TIME" id="OUTDRA_HALT_ALLOC_START_TIME"
+                                   style="height: 32px;width:180px;" readonly/>
+                            停止派单时间
+                        </p>
+                    </div>
+                </div>
+                <div class="widget-toolbox padding-8 clearfix">
+                    <button class="btn btn-xs btn-success pull-right contentRight" disabled contentright='SystemSetting:Update:*'
+                            type="button" onclick="updateSetting(2)">
+                        <span class="bigger-110">保存</span>
+                        <i class="ace-icon fa fa-check icon-on-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="widget-box ui-sortable-handle">
+            <div class="widget-header">
+                <h5 class="widget-title">推送消息到所有在线用户</h5>
+                <div class="widget-toolbar">
+                    <a href="#" data-action="fullscreen" class="orange2">
+                        <i class="ace-icon fa fa-expand"></i>
+                    </a>
+                    <a onclick="reloadSetting(2)" title="重置">
+                        <i class="ace-icon fa fa-refresh"></i>
+                    </a>
+                    <a href="#" data-action="collapse">
+                        <i class="ace-icon fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-box widget-color-green">
+                <div class="widget-header widget-header-small">
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main no-padding">
+                        <div class="wysiwyg-editor" id="editor2"></div>
+                    </div>
+                    <div class="widget-toolbox padding-4 clearfix">
+                        <div class="btn-group pull-right">
+                            <button id="publishMsgToAllUser" class="btn btn-sm btn-success btn-white btn-round"
+                                    type="button">
+                                <i class="ace-icon fa fa-globe bigger-125"></i>
+                                发布
+                                <i class="ace-icon fa fa-arrow-right icon-on-right bigger-125"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="widget-box ui-sortable-handle hide" id="masLog_widget">
+            <div class="widget-header">
+                <h5 class="widget-title">其它日志设置</h5>
+                <div class="widget-toolbar">
+                    <a href="#" data-action="fullscreen" class="orange2">
+                        <i class="ace-icon fa fa-expand"></i>
+                    </a>
+                    <a onclick="reloadSetting(6)" title="重置">
+                        <i class="ace-icon fa fa-refresh"></i>
+                    </a>
+                    <a href="#" data-action="collapse">
+                        <i class="ace-icon fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <p class="alert alert-success">
+						<span style="width:330px;color:#333">
+							<label class="form-group bl">
+								<input type="radio" name="masLogLevel" value="TRACE">
+								<span>TRACE</span>
+							</label>&nbsp;
+							<label class="form-group bl">
+								<input type="radio" name="masLogLevel" value="DEBUG">
+								<span>DEBUG</span>
+							</label>&nbsp;
+							<label class="form-group bl">
+								<input type="radio" name="masLogLevel" value="INFO">
+								<span>INFO</span>
+							</label>&nbsp;
+							<label class="form-group bl">
+								<input type="radio" name="masLogLevel" value="WARN">
+								<span>WARN</span>
+							</label>&nbsp;
+							<label class="form-group bl">
+								<input type="radio" name="masLogLevel" value="ERROR">
+								<span>ERROR</span>
+							</label>
+						</span>
+                        &nbsp;&nbsp;&nbsp;日志级别选择
+                    </p>
+                </div>
+                <div class="widget-toolbox padding-8 clearfix">
+                    <button disabled class="btn btn-xs btn-success pull-right contentRight"
+                            contentright='SystemSetting:Update:*' type="button" onclick="updateSetting(6)">
+                        <span class="bigger-110">保存</span>
+                        <i class="ace-icon fa fa-check icon-on-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript" src="../javascript/lib/bootstrap-wysiwyg.js"></script>
+<script type="text/javascript" src="../javascript/lib/elements.wysiwyg.js"></script>
+<script type="text/javascript" src="../javascript/lib/ace-extra.js"></script>
+<script type="text/javascript" src="../javascript/lib/index.js"></script>

@@ -1,0 +1,69 @@
+<!-- 公司用款下发  下发记录HTML -->
+<div id="company_history_div">
+	<!-- 查询条件 -->
+	<div class="col-sm-12 filter" >
+		<span class="control-label blue">盘口</span>
+		<select class="chosen-select width150" name="history_search_IN_handicapId" ></select>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="control-label blue">编码</span>
+          <input type="text"  name="history_code" class="input-sm width150" placeholder="编码"  />
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="control-label blue">时间</span>
+	    <span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+	    <input name="history_startAndEndTime" class="date-range-picker input-sm" type="text" style="width:180px;" placeholder="请选择起始日期" />
+		&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="control-label blue">用款人</span>
+          <input type="text"  name="history_member" class="input-sm width150" placeholder="用款人"  />
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<label onclick="reset('company_history_div .filter');" class="pull-right inline">
+			<button class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+			</button>
+		</label>
+		<label class="pull-right inline" >&nbsp;&nbsp;</label>
+		<label id="searchBtn" class="pull-right inline" onclick="company_showHistoryDataList()">
+			<button class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+			</button>
+		</label>
+	</div>
+	<div class="col-sm-12 filter"  style="height:10px;">&nbsp;</div>
+	<div class="col-sm-12 filter" >
+	  	<span class="control-label blue">收款方式</span>
+		<label class="inline">
+				<input type="radio" name="history_search_receiptType" class="ace defaultCheck" value="" checked="checked">
+				<span class="lbl">全部</span>
+		</label>
+		<label class="inline">
+				<input type="radio" name="history_search_receiptType" class="ace defaultNoCheck" value="1" >
+				<span class="lbl">第三方</span>
+		</label>
+		<label class="inline">
+			<input type="radio" name="history_search_receiptType" class="ace defaultNoCheck" value="0">
+			<span class="lbl">出款卡</span>
+		</label>
+	</div>
+	<table class="table table-striped table-bordered table-hover no-margin-bottom" >
+		<thead>
+			<tr>
+				<th>编码</th>
+				<th>盘口</th>
+				<th>类型</th>
+				<th>账号信息</th>
+				<th>金额</th>
+				<th>手续费</th>
+				<th>系统余额</th>
+				<th>第三方余额</th>
+				<th>下发耗时<br/>总耗时</th>
+				<th>下发人</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+	<div id="company_history_accountPage"></div>
+</div>
+ 
+ 
+<!-- 公司用款 下发记录JS -->
+<script type="text/javascript"  src="../javascript/income/asign/thirdDrawCompanyMoney_history.js"></script>

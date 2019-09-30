@@ -1,0 +1,190 @@
+<div>
+<!-- 可引入后，根据输入条件展示对应悬浮提示 -->
+	
+	<!-- 手机号绑定的 支付宝 微信  -->
+	<div id="wechatAliInfoHover"  style="width:600px;" >
+		<div class="col-sm-12">
+			<div class="col-xs-2 text-right"><strong>账号</strong></div>
+			<div class="col-xs-4 no-padding-lr breakByWord"><span name="account"></span></div>
+			<div class="col-xs-2 text-right"><strong>盘口</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="handicapName"></span></div>
+		</div>
+		<div class="col-sm-12 bk-color-f9">
+			<div class="col-xs-2 text-right"><strong>姓名</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="owner"></span></div>
+			<div class="col-xs-2 text-right"><strong>层级</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="levelNameToGroup"></span></div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-xs-2 text-right"><strong>状态</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="status"></span></div>
+			<div class="col-xs-2 text-right"><strong>余额</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="bankBalance"></span></div>
+		</div>
+		<div class="col-sm-12 bk-color-f9">
+			<div class="col-xs-2 text-right"><strong>别名</strong></div>
+			<div class="col-xs-10 no-padding-lr"><span name="aliasStr"></span></div>
+		</div>
+		<div class="col-sm-12 hide alipayShow">
+			<div class="col-xs-2 text-right"><strong>余利宝</strong></div>
+			<div class="col-xs-4 no-padding-lr">
+				<span class="bolder">余额查询间隔（分）：</span><span name="ylbInterval"></span>
+			</div>
+			<div class="col-xs-2 text-right"><strong>提现额度</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="ylbThreshold"></span>(当日)</div>
+		</div>
+		<div class="col-sm-12 bk-color-f9">
+			<div class="col-xs-2 text-right"><strong>创建时间</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="createTime"></span></div>
+			<div class="col-xs-2 text-right"><strong>入款限额</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="limitInDaily"></span>(当日)</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-xs-2 text-right"><strong>更新时间</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="updateTime"></span></div>
+			<div class="col-xs-2 text-right"><strong>提现额度</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="limitBalance"></span></div>
+		</div>
+		<div class="col-sm-12 bk-color-f9">
+			<div class="col-xs-2 text-right"><strong>联系电话</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="tel"></span></div>
+			<div class="col-xs-2 text-right"><strong>联系人名</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="contactName"></span></div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-xs-2 text-right"><strong>提现方式</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="outType"></span></div>
+		</div>
+		<div class="col-sm-12 bk-color-f9 hide alipayShow">
+			<div class="col-xs-2 text-right"><strong>UID</strong></div>
+			<div class="col-xs-4 no-padding-lr breakByWord"><span name="uid"></span></div>
+			<div class="col-xs-2 text-right"><strong>企业号</strong></div>
+			<div class="col-xs-4 no-padding-lr breakByWord"><span name="isEpAlipay"></span></div>
+		</div>
+		<div class="col-sm-12 bk-color-f9">
+			<div class="col-xs-2 text-right"><strong>备注</strong></div>
+			<div class="col-xs-10 no-padding-lr breakByWord"><span name="remark"></span></div>
+		</div>
+	</div>
+	
+	<!-- 手机号绑定的银行卡  -->
+	<div id="bankInfoHover"  style="width:600px;" >
+		<div class="col-sm-12">
+			<div class="col-xs-2 text-right"><strong>账号</strong></div>
+			<div class="col-xs-4 no-padding-lr breakByWord"><span name="account"></span></div>
+			<div class="col-xs-2 text-right"><strong>盘口</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="handicapName"></span></div>
+		</div>
+		<div class="col-sm-12 bk-color-f9">
+			<div class="col-xs-2 text-right"><strong>开户人</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="owner"></span></div>
+			<div class="col-xs-2 text-right"><strong>层级</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="levelNameToGroup"></span></div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-xs-2 text-right"><strong>状态</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="status"></span></div>
+			<div class="col-xs-2 text-right"><strong>余额</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="bankBalance"></span></div>
+		</div>
+		<div class="col-sm-12 bankShow" style="display:none;">
+			<div class="col-xs-2 text-right"><strong>银行类别</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="bankType"></span></div>
+			<div class="col-xs-2 text-right"><strong>开户支行</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="bankName"></span></div>
+		</div>
+		<div class="col-sm-12 bk-color-f9">
+			<div class="col-xs-2 text-right"><strong>创建时间</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="createTime"></span></div>
+			<div class="col-xs-2 text-right"><strong>提现额度</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="limitBalance"></span></div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-xs-2 text-right"><strong>更新时间</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="updateTime"></span></div>
+		</div>
+		<div class="col-sm-12 ylbThreshold">
+			<div class="col-xs-2 text-right"><strong>联系电话</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="tel"></span></div>
+			<div class="col-xs-2 text-right"><strong>联系人名</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="contactName"></span></div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-xs-2 text-right"><strong>备注</strong></div>
+			<div class="col-xs-10 no-padding-lr breakByWord"><span name="remark"></span></div>
+		</div>
+	</div>
+	
+	<!-- 手机详细信息-->
+	<div id="clientMobile" style="width:600px">
+		<div class="col-sm-12">
+			<div class="col-xs-2 text-right"><strong>手机号</strong></div>
+			<div class="col-xs-4 no-padding-lr breakByWord"><span name="mobile"></span></div>
+			<div class="col-xs-2 text-right"><strong>盘口</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="handicapName"></span></div>
+		</div>
+		<div class="col-sm-12 bk-color-f9">
+			<div class="col-xs-2 text-right"><strong>联系人</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="owner"></span></div>
+			<div class="col-xs-2 text-right"><strong>层级</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="levelNameToGroup"></span></div>
+		</div>
+		<div class="col-sm-12 ">
+			<div class="col-xs-2 text-right"><strong>银行卡</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="bankCard"></span></div>
+			<div class="col-xs-2 text-right"><strong>微信</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="wechat"></span></div>
+		</div>
+		<div class="col-sm-12 bk-color-f9">
+			<div class="col-xs-2 text-right"><strong>支付宝</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="alipay"></span></div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-xs-2 text-right"><strong>设备号1</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="device1"></span>(微信)</div>
+			<div class="col-xs-2 text-right"><strong>状态</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="status"></span></div>
+		</div>
+		<div class="col-sm-12 bk-color-f9">
+			<div class="col-xs-2 text-right"><strong>设备号2</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="device2"></span>(支付宝)</div>
+			<div class="col-xs-2 text-right"><strong>类型</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="type"></span><span name="creditLimit"></span></div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-xs-2 text-right"><strong>设备号3</strong></div>
+			<div class="col-xs-10 no-padding-lr"><span name="device3"></span>(银行卡)</div>
+		</div>
+		<div class="col-sm-12 bk-color-f9">
+			<div class="col-xs-2 text-right"><strong>收款前缀</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="prefix"></span></div>
+			<div class="col-xs-2 text-right"><strong>收款后缀</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="suffix"></span></div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-xs-2 text-right"><strong>备注</strong></div>
+			<div class="col-xs-10 no-padding-lr"><span name="remark"></span></div>
+		</div>
+		<div class="col-sm-12 center blue typeCustomerShow bk-color-f9" style="display:none;">
+			<h6><strong>返佣信息</strong></h6>
+		</div>
+		<div class="col-sm-12 typeCustomerShow" style="display:none;">
+			<div class="col-xs-2 text-right"><strong>账号</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="bonusCard"></span></div>
+			<div class="col-xs-2 text-right"><strong>开户人</strong></div>
+			<div class="col-xs-4 no-padding-lr"><span name="bonusCardOwner"></span></div>
+		</div>
+		<div class="col-sm-12 bk-color-f9 typeCustomerShow" style="display:none;">
+			<div class="col-xs-2 text-right"><strong>开户行</strong></div>
+			<div class="col-xs-10 no-padding-lr"><span name="bonusCardName"></span></div>
+		</div>
+	</div>
+	
+	
+	<!-- nodata -->
+	<div id="hover_nodata"  style="width:600px;" >
+		<div class="noDataTipsPage table table-striped table-bordered table-hover no-margin-bottom no-border-top"></div>
+		<div style="margin-bottom:0px;"class="alert alert-success center">信息查询异常，请刷新页面</div>
+	</div>
+</div>
+

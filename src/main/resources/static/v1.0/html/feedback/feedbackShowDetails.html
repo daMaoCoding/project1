@@ -1,0 +1,60 @@
+<div class="row">
+	<div class="col-sm-4">
+		<div class="widget-box">
+			<div class="widget-header widget-header-flat">
+				<h4 class="widget-title smaller">
+					截图信息
+				</h4>
+			</div>
+
+			<div  class="widget-body">
+				<div align="center" class="widget-main" id="pic">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-8">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="widget-box">
+					<div class="widget-header widget-header-flat">
+						<h4 class="widget-title smaller">反馈内容</h4>
+						<span class="pull-right">
+							<button onclick="javascript :history.back(-1);" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+								<i class="ace-icon fa fa-undo bigger-110"></i>
+								返回
+							</button>
+						</span>
+					</div>
+
+					<div class="widget-body">
+						<div class="widget-main" id="conxt">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="feedBackImgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog"  style="width:90%;">
+        <div class="modal-content">
+            <div style="text-align: center" class="table-header">
+                <button type="button" class="close white" data-dismiss="modal" aria-hidden="true">×</button>
+                反馈截图
+            </div>
+            <div id="feedImg" class="modal-body center">
+                <img id="feedBackImg" style="cursor: pointer;max-width:100%;" src=""  alt="auto">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/common_export.js"></script>

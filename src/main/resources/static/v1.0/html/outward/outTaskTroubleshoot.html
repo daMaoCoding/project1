@@ -1,0 +1,708 @@
+<link rel="stylesheet" href="../style/jquery.chosen.min.css" type="text/css" xmlns="http://www.w3.org/1999/html">
+<link rel="stylesheet" href="../style/bootstrap-multiselect.min.css"/>
+<link rel="stylesheet" href="../style/jquery.bootstrap.duallistbox.min.css" type="text/css">
+
+<!-- ul div -->
+<div class="row">
+    <div class=" row col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="ulTable">
+                <li class="active" onclick="_initialPageOnFresh('dealingTask')  ">
+                    <a data-toggle="tab" href="#dealingTask">
+                        <i class="ace-icon fa fa-hourglass-start bigger-110 pink"></i>
+                        正在排查
+                    </a>
+                </li>
+                <li  onclick="_initialPageOnFresh('troubleShooting')  ">
+                    <a data-toggle="tab" href="#troubleShooting">
+                        <i class="ace-icon fa fa-refresh bigger-110 red"></i>
+                        正在接单
+                    </a>
+                </li>
+                <li onclick="_initialPageOnFresh('troubleShooted') ">
+                    <a data-toggle="tab" href="#troubleShooted">
+                        <i class="green ace-icon fa fa-check-circle bigger-110"></i>
+                        已排查
+                    </a>
+                </li>
+                <li id="QuickQueryTab"   style="display: none;" onclick="$('#freshTroubleShootingLi').hide();_initialPageOnFresh('QuickQuery');">
+                    <a data-toggle="tab" href="#QuickQueryTaskReview">
+                        <i class="ace-icon fa fa-rocket  bigger-110 red"></i>
+                        快捷查询
+                    </a>
+                </li>
+                <li id="freshTroubleShootingLi" style="display: none">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                        class="label label-lg label-primary arrowed-right">刷新</span>
+                    <select id="autoUpdateTimeTroubleShooting">
+                    </select>
+                </li>
+                <li id="changBtnTroubleShootLi" style="margin-left:100px;display: none">
+                    <button id="changBtnTroubleShoot" type="button" btn_value="1"
+                            class="btn btn-white btn-info btn-bold" style="border-radius: 5px;" onclick="_buttonClick(this);"><i
+                            class="bigger-120 ace-icon fa fa-play green"></i><span>开始接单</span></button>
+                    <button id="stopTroubleShoot" style=" display: none;margin-left:100px;border-radius: 5px;" type="button" btn_value="3"
+                            class="btn btn-white btn-info btn-bold" onclick="_stopBtnAction();"><i
+                            class="bigger-120 ace-icon fa fa-square red"></i><span>结束接单</span></button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- alltab div --each tab div --->
+<div id="troubleShootingTabDiv" style="padding-top: 0px" class="tab-content">
+    <div id="dealingTask" class="tab-pane in active">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">盘口</span>
+                        <select onchange="_handicapTypeChange(this,'dealingTask');" id="handicap_dealingTask"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">订单号</span>
+                        <input id="orderNo_dealingTask" class="input-large " type="text"
+                               style="height: 32px;width:72.8%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">出款账号</span>
+                        <input placeholder="出款账号" style="height:32px;width:68%;" type="text"
+                               id="account_dealingTask">
+
+                    </div>
+
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">出款金额</span>
+                        <input id="fromMoney_dealingTask" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:18%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_dealingTask" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:18%;">
+                        <span class=" pull-right">
+                           <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                   onclick="_resetTrouble('dealingTask');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                                </button>
+                        </span>
+                    </div>
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">层级</span>
+                        <select onchange="_searchTrouble('dealingTask');" id="level_dealingTask"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">会员名</span>
+                        <input id="member_dealingTask" class="input-large " type="text"
+                               style="height: 32px;width:22%"/>
+                        <span class="label label-lg label-primary arrowed-right">出款人</span>
+                        <input id="operator_dealingTask" class="input-medium " type="text"
+                               style="height: 32px;width:22%"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">接单时间</span>
+                        <input id="timeScope_dealingTask" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:68%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="width:68px;" class="label label-lg label-important">类型</span>
+                        <label class="inline">
+                            <input onclick=" _searchTrouble('dealingTask');" name="manual_troubleShooting" class="ace" id="manual_dealingTask"
+                                   type="checkbox" value="0">
+                            <span class="lbl">人工</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick=" _searchTrouble('dealingTask');" name="robot_troubleShooting" class="ace" id="robot_dealingTask"
+                                   type="checkbox" value="1">
+                            <span class="lbl">机器</span>
+                        </label>
+                        <span class="pull-right">
+                            <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_dealingTask"
+                                    type="button" onclick="_searchTrouble('dealingTask');">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                </button>
+                        </span>
+
+                    </div>
+                </form>
+            </div>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th>盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th>订单号</th>
+                <th>金额</th>
+                <th>状态</th>
+                <th>出款人</th>
+                <th>出款账号</th>
+                <th>最新抓取时间</th>
+                <th>接单时间</th>
+                <th>耗时</th>
+                <th>备注</th>
+                <th>截图</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_dealingTask">
+
+            </tbody>
+
+        </table>
+        <div id="dealingTask_footPage"></div>
+    </div>
+    <div id="troubleShooting" class="tab-pane ">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-12">
+                <form class="form-inline">
+
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">盘口</span>
+                        <select onchange="_handicapTypeChange(this,'troubleShooting');" id="handicap_troubleShooting"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">订单号</span>
+                        <input id="orderNo_troubleShooting" class="input-large " type="text"
+                               style="height: 32px;width:72.8%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">出款账号</span>
+                        <input placeholder="出款账号" style="height:32px;width:68%;" type="text"
+                               id="account_troubleShooting">
+
+                    </div>
+
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">出款金额</span>
+                        <input id="fromMoney_troubleShooting" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:18%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_troubleShooting" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:18%;">
+                        <span class=" pull-right">
+                           <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                   onclick="_resetTrouble('troubleShooting');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                                </button>
+                        </span>
+                    </div>
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">层级</span>
+                        <select onchange="_searchTrouble('troubleShooting');" id="level_troubleShooting"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">会员名</span>
+                        <input id="member_troubleShooting" class="input-large " type="text"
+                               style="height: 32px;width:22%"/>
+                        <span class="label label-lg label-primary arrowed-right">出款人</span>
+                        <input id="operator_troubleShooting" class="input-medium " type="text"
+                               style="height: 32px;width:22%"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">接单时间</span>
+                        <input id="timeScope_troubleShooting" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:68%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="width:68px;" class="label label-lg label-important">类型</span>
+                        <label class="inline">
+                            <input onclick="_searchTrouble('troubleShooting'); " name="manual_troubleShooting" class="ace" id="manual_troubleShooting"
+                                   type="checkbox" value="0">
+                            <span class="lbl">人工</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_searchTrouble('troubleShooting'); " name="robot_troubleShooting" class="ace" id="robot_troubleShooting"
+                                   type="checkbox" value="1">
+                            <span class="lbl">机器</span>
+                        </label>
+                        <span class="pull-right">
+                            <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_troubleShooting"
+                                    type="button" onclick="_searchTrouble('troubleShooting');">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                </button>
+                        </span>
+
+                    </div>
+                </form>
+            </div>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th>盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th>订单号</th>
+                <th>金额</th>
+                <th>状态</th>
+                <th>出款人</th>
+                <th>出款账号</th>
+                <th>分配时间</th>
+                <th>耗时</th>
+                <th>备注</th>
+                <th>截图</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_troubleShooting">
+
+            </tbody>
+
+        </table>
+        <div id="troubleShooting_footPage"></div>
+    </div>
+
+    <div id="troubleShooted" class="tab-pane">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-12">
+                <form class="form-inline">
+
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">盘口</span>
+                        <select onchange="_handicapTypeChange(this,'troubleShooted');" id="handicap_troubleShooted"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">订单号</span>
+                        <input id="orderNo_troubleShooted" class="input-large " type="text"
+                               style="height: 32px;width:72.8%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">出款账号</span>
+                        <input placeholder="出款账号" style="height:32px;width:68%;" type="text"
+                               id="account_troubleShooted">
+
+                    </div>
+
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">出款金额</span>
+                        <input id="fromMoney_troubleShooted" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:18%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_troubleShooted" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:18%;">
+                        <span class=" pull-right">
+                           <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                   onclick="_resetTrouble('troubleShooted');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                                </button>
+                        </span>
+                    </div>
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">层级</span>
+                        <select onchange="_searchTrouble('troubleShooting');" id="level_troubleShooted"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">会员名</span>
+                        <input id="member_troubleShooted" class="input-large " type="text"
+                               style="height: 32px;width:22%"/>
+                        <span class="label label-lg label-primary arrowed-right">出款人</span>
+                        <input id="operator_troubleShooted" class="input-medium " type="text"
+                               style="height: 32px;width:22%"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">排查时间</span>
+                        <input id="timeScope_troubleShooted" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:68%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="width:68px;" class="label label-lg label-important">类型</span>
+                        <label class="inline">
+                            <input onclick=" _searchTrouble('troubleShooted'); " name="manual_troubleShooted" class="ace" id="manual_troubleShooted"
+                                   type="checkbox" value="0">
+                            <span class="lbl">人工</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="  _searchTrouble('troubleShooted');" name="robot_troubleShooted" class="ace" id="robot_troubleShooted"
+                                   type="checkbox" value="1">
+                            <span class="lbl">机器</span>
+                        </label>
+                        <span class="pull-right">
+                            <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_troubleShooted"
+                                    type="button" onclick=" _searchTrouble('troubleShooted');">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                </button>
+                        </span>
+
+                    </div>
+                </form>
+            </div>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th>盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th>订单号</th>
+                <th>金额</th>
+                <th>状态</th>
+                <th>出款人</th>
+                <th>出款账号</th>
+                <th>处理时间</th>
+                <th>耗时</th>
+                <th>备注</th>
+                <th>截图</th>
+                <!--<th>操作</th>-->
+            </tr>
+            </thead>
+            <tbody id="tbody_troubleShooted">
+
+            </tbody>
+
+        </table>
+        <div id="troubleShooted_footPage"></div>
+    </div>
+    <div id="QuickQueryTaskReview" class="tab-pane">
+        <h3 class="row "><!--去除下划线 header smaller lighter blue-->
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">会员名</span>
+                        <input id="member_QuickQuery" class="input-large " type="text" placeholder="请输入正确的会员账号" style="height: 32px;width:72%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">订单号</span>
+                        <input id="orderNo_QuickQuery" class="input-large " placeholder="请输入正确的订单号" type="text"
+                               style="height: 32px;width:72%;"/>
+                    </div>
+                    <div class="col-sm-6">
+		                <span class="col-sm-1 pull-left">
+                            <label class="pull-right inline">
+                                <button type="button" onclick="_quickQueryClick();"
+                                        id="button_QuickQuery"
+                                        class="btn btn-xs btn-white btn-info btn-bold ">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                </button>
+                            </label>
+                        </span>
+                        <span style="margin-left: 50px;" class="pull-left">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                        onclick="_resetValuesForQuickQuery();">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                                </button>
+                            </label>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </h3>
+    </div>
+</div>
+
+<!--modal 重新生成任务-->
+<div id="modal-turnToFailTotal" class="modal fade" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog" style="width:500px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    备注
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <label style="width: 100%;color: red;">&nbsp;&nbsp;备 注：<input id="turnToFailRemarkTotal"
+                                                                              style="width: 85%;" type="text"
+                                                                              placeholder="填写备注"></label>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <input id="turnFailIdTotal" type="hidden">
+                <span id="remark-turnToFailTotal" style="color: red;display: none;" class="pull-left">请填写备注信息</span>
+                <button id="confirmTurnToFailTotal" type="button"
+                        class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    确定
+                </button>
+                <button style="margin-right: 20px;" id="cancelTurnToFailTotal" type="button" data-dismiss="modal"
+                        class="btn btn-sm btn-default pull-right">
+                    <i class="ace-icon fa fa-remove"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--modal 备注 -->
+<div id="CustomerserviceRemark_modal" class="modal fade" tabindex="-1">
+    <input id="CustomerserviceRemark_id" type="hidden">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomer" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    备注
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div id="backwashOrderNoDiv" class="form-group" style="display: none">
+                                    <label class="col-sm-3 control-label no-padding-left"
+                                           for="CustomerserviceRemark">订单号</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="height: 40px;width: 400px;" id="backwashOrderNo"
+                                                  name="CustomerserviceRemark"
+                                                  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div id="thirdHandiacp" class="form-group" style="display: none">
+                                    <label class="col-sm-3 control-label no-padding-left"
+                                           for="CustomerserviceRemark">盘口</label>
+                                    <div class="col-sm-6">
+                                        <input id="thirdHandiacpValue" class="autosize-transition form-control">
+                                    </div>
+                                </div>
+                                <div id="thirdAccountName" class="form-group" style="display: none">
+                                    <label class="col-sm-3 control-label no-padding-left"
+                                           for="CustomerserviceRemark">商号</label>
+                                    <div class="col-sm-6">
+                                        <input id="thirdAccountNameValue" class="autosize-transition form-control">
+                                    </div>
+                                </div>
+                                <div id="thirdOutAmount" class="form-group" style="display: none">
+                                    <label class="col-sm-3 control-label no-padding-left"
+                                           for="CustomerserviceRemark">金额</label>
+                                    <div class="col-sm-6">
+                                        <input id="thirdOutAmountValue" class="autosize-transition form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-left"
+                                           for="CustomerserviceRemark">备注 </label>
+                                    <div class="col-sm-6">
+                                        <textarea style="height: 120px;width: 400px;" id="CustomerserviceRemark"
+                                                  name="CustomerserviceRemark"
+                                                  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="space-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                 <span id="prompt_remark"
+                       style="display:none;color: red;padding-left: 160px;">请填写备注</span>
+                <label style="display:none;" id="reOutForThird" class="pull-left distributeObject"
+                       onclick="_checkClickLabel(this);"><input onclick="window.event.stopPropagation();" type="radio"
+                                                                value="reThirdOut" name="distributeObject">
+                    &nbsp;重新出款</label> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+                <label style="display:none;" id="normalRemarkForThird" class="pull-left distributeObject"
+                       onclick="_checkClickLabel(this);"><input onclick="window.event.stopPropagation();" type="radio"
+                                                                value="normalRemark" name="distributeObject">
+                    &nbsp;正常备注</label>
+                <button id="totalTaskFinishBTN" type="button" onclick="save_CustomerserviceRemark();"
+                        class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--交易截图-->
+<div class="modal fade" id="taskTotalImgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="width:30%;">
+        <div class="modal-content">
+            <div style="text-align: center" class="table-header">
+                <button type="button" class="close white" data-dismiss="modal" aria-hidden="true">×</button>
+                交易截图
+            </div>
+            <div class="modal-body">
+                <img id="taskTotalImg" src="" height="auto" width="100%" alt="auto">
+                </iframe>
+            </div>
+            <div class="modal-footer">
+                <a id="downLoadImgBtn" class="btn btn-success">下载</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--modal   分配给用户出款任务-->
+<div id="modal-distribution" data-backdrop="static" data-keyboard="false" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div style="padding: 0px" class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="blue">&times;</span>
+                </button>
+                <h3>任务分配</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form role="form">
+                        <div class="form-group">
+                            <label style="color: mediumvioletred">&nbsp;&nbsp;&nbsp;&nbsp;开&nbsp;&nbsp;户&nbsp;&nbsp;行&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <select multiple="multiple" class="multiselect"
+                                    id="form-field-select-allocateTask1"></select>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: mediumvioletred">&nbsp;&nbsp;&nbsp;&nbsp;备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <input id="allocateTaskRemark" type="text" style="width: 500px;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="distribution-prompt" class="pull-left" style="color: red;display: none;"></span>
+                <input id="distributionTaskId" type="hidden">
+                <input id="operatePage" type="hidden">
+                <label class="pull-left blue">分配对象：</label>&nbsp;&nbsp;&nbsp;
+                <label class="pull-left distributeObject " onclick="_checkClickLabel(this);"><input
+                        onclick="window.event.stopPropagation();" name="distributeObject" value="robot" type="radio">机器&nbsp;&nbsp;</label>
+                <label class="pull-left distributeObject" onclick="_checkClickLabel(this);"><input
+                        onclick="window.event.stopPropagation();" type="radio" value="manual" name="distributeObject">人工&nbsp;&nbsp;</label>
+                <label class="pull-left distributeObject" onclick="_checkClickLabel(this);"><input
+                        onclick="window.event.stopPropagation();" type="radio" value="thirdOut" name="distributeObject">第三方</label>
+                <label id="noDistributionObj" style="color: red;display: none">请选择分配对象</label>
+                <button id="confirmDistribution" type="button" onclick="_distributionTask();"
+                        class="btn btn-sm btn-success">
+                    确定
+                </button>
+                <button id="cancelDistribution" type="button" data-dismiss="modal" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-table-feedback" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDiv" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    任务反馈
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <input type="hidden" id="feedback_taskId">
+                        <span class="label label-info ">出款任务</span>
+                        <table class="table table-bordered user-table audit_table">
+                            <tbody>
+                            <tr>
+                                <td bgcolor="#F5F5F5">订单号</td>
+                                <td id="feedback_orderNo"></td>
+                                <td bgcolor="#F5F5F5">盘口</td>
+                                <td id="feedback_handicap"></td>
+                                <td bgcolor="#F5F5F5">层级</td>
+                                <td id="feedback_level"></td>
+                            </tr>
+                            <tr>
+                                <td bgcolor="#F5F5F5">转交时间</td>
+                                <td id="feedback_asignTime"></td>
+                                <td bgcolor="#F5F5F5">会员名</td>
+                                <td id="feedback_member"></td>
+                                <td bgcolor="#F5F5F5">出款类型</td>
+                                <td id="feedback_type"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div id="messages">
+                            <form class="form-horizontal" role="form" id="save_form">
+                                <p></p>
+                                <!-- #section:elements.form -->
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"
+                                           for="feedback_amount">出款金额 </label>
+                                    <div class="col-sm-9">
+                                        <input readonly type="text" onkeyup="clearNoNum(this)" id="feedback_amount"
+                                               placeholder="出款金额"
+                                               class="input-sm" style="width:265px;"/>
+                                        <span class="help-inline col-xs-12 col-sm-7">
+											<span class="middle"></span>
+										</span>
+                                    </div>
+                                </div>
+
+                                <!-- /section:elements.form -->
+                                <div class="space-4"></div>
+                                <input type="hidden" id="button_type">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"
+                                           for="feedback_remark">备注 </label>
+                                    <div class="col-sm-6">
+                                        <textarea id="feedback_remark" name="feedback_remark"
+                                                  class="autosize-transition form-control"
+                                                  placeholder="如果该订单有一笔出款或者多笔出款失败，请填写失败原因说明"></textarea>
+
+                                        <span class="help-inline col-xs-12 col-sm-7">
+											<span class="middle"></span>
+										</span>
+                                    </div>
+                                    <span id="prompt" style="display:none;color: red;">请填写备注</span>
+                                </div>
+                                <span style="margin-left:150px;">会员收款账号异常</span>
+                                <input type="checkbox" id="toAccount_error" value="ACCOUNT_ERROR">
+                                <div class="space-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="_sureButton();" class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="historyDetail_troubleShoot"></div>
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../javascript/outward/orderDetail.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript" src="../javascript/lib/bootstrap-multiselect.min.js"></script>
+<script type="text/javascript" src="../javascript/lib/jquery.bootstrap-duallistbox.min.js"></script>
+<script type="text/javascript" src="../javascript/common/modalBankLogList.js"></script>

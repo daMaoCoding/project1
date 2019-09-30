@@ -1,0 +1,98 @@
+/*main-menu change */
+.main-menu.main-menu-change{
+	position: relative;
+	width: 38px!important;
+}
+.main-menu.main-menu-change li.level1>*:first-child{
+	width: 38px!important;
+}
+.main-menu.main-menu-change li.level1>.menu-text:after{content:'';}
+.main-menu.main-menu-change .if-change{
+	display: block;
+	padding-left: 1px;
+	width: 38px;
+	height: 40px;
+}
+.main-menu.main-menu-change .if-change>.btn{
+	display: inline-block;
+	padding: 8px;
+	text-align: center;
+	border: 0;
+}
+.main-menu.main-menu-change .dis{
+	display: none;
+	position: absolute;
+	top: 0px;
+	left:38px;
+	width: 182px!important;	
+	background: #141A1B;
+	border: 1px solid #141A1B;
+	z-index: 2;	
+}
+.main-menu.main-menu-change .dis>button{
+	position: relative;
+	bottom: 3px;
+}
+.main-menu.main-menu-change .main-menu-header:hover .dis{
+	display: block;
+}
+
+
+/*.main-menu.main-menu-change level style*/
+.main-menu.main-menu-change .level1>*:first-child{border: none;}
+.main-menu.main-menu-change .level1>*:first-child>span{
+	display: none;
+	position: absolute;
+	top: 0px;
+	left:38px;
+	width: 182px!important;	
+	background: #202A2D;
+	border: 1px solid #202A2D;
+	z-index: 2;	
+}
+.main-menu.main-menu-change .level1:hover>*>span,
+.main-menu.main-menu-change .level1:hover>ul.submenu,
+.main-menu.main-menu-change .level1>ul.submenu:hover{
+	display: block!important;
+}
+.main-menu.main-menu-change .level1>ul.submenu{
+	display: block;
+    position: absolute;
+	left:38px;
+	width: 182px;
+    z-index: 3;
+}
+.main-menu.main-menu-change .level1>ul.submenu::before{
+	border: none;
+}
+#main>.main-menu.main-menu-change>ul.main-menu-trees>li.level1 .level2{
+	margin-left: 0;
+	width: 182px;
+}
+#main>.main-menu.main-menu-change>ul.main-menu-trees>li.level1 .level2:before{
+	border: none;
+}
+#main>.main-menu.main-menu-change>ul.main-menu-trees>li.level1 .level2:hover:before{
+	left: 10px;
+	border-top: 3px solid transparent;
+    border-left: 5px solid white;
+    border-bottom: 3px solid transparent;
+}
+.main-menu.main-menu-change .level2>.is-choice::before{
+	left: 10px;
+}
+
+.main-menu.main-menu-change .level2>.lock-class::before,
+.main-menu.main-menu-change .level2>.is-choice::before{
+	left:10px;
+}
+
+/* menu 100persent */
+html,body,div.main{height:100%;}
+/*body{overflow-x:hidden;}*/
+@media only screen and (max-width: 1200px;) {
+	body{overflow-x:auto!important;}
+}
+@media only screen and (min-width: 1200px;) {
+	body{overflow-x:hidden;}
+}

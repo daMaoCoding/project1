@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="../style/bootstrap-multiselect.min.css"/>
+<link rel="stylesheet" href="../style/jquery.bootstrap.duallistbox.min.css" type="text/css">
+<div class="row">
+	<div  class="col-sm-12">
+		<table id="dynamic-table" class="table table-bordered table-hover  no-margin-bottom">
+			<thead><tr><th class="center">层级名</th><th class="center">绑定平台层级</th></tr></thead>
+			<tbody></tbody>
+		</table>
+	</div>
+</div>
+
+<div id="platLevelBind" class="modal fade in" aria-hidden="false">
+	<input type="hidden" name="currentSystemLevelValue"/>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header text-center"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="blue">&times;</span></button><h5 class="hText">绑定平台层级绑定</h5></div>
+			<div class="modal-body no-padding">
+				<div id="platLevelBindFilter"  class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left">
+					<div class="col-sm-6" id="handicapGroup">
+						<span class="label label-lg label-purple arrowed-right">盘口&nbsp;&nbsp;</span>
+					</div>
+					<div class="col-sm-6">
+						<label  class="pull-right inline"><button type="button" class="btn btn-xs btn-white btn-info btn-bold" onclick="_refreshPage4PlatLevel(0)"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button></label>
+						<label  class="pull-right inline">&nbsp;</label>
+						<label  class="pull-right inline"><button type="button" class="btn btn-xs btn-white btn-info btn-bold" onclick="_saveBindRelation();"><i class="ace-icon fa fa-save bigger-100 green"></i>保存</button></label>
+						<label  class="pull-right inline">&nbsp;</label>
+						<label  class="pull-right inline"><button type="button" class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('platLevelBindFilter');"><i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button></label>
+                        <label  class="pull-left inline"><button type="button" class="btn btn-xs btn-white btn-warning btn-bold" onclick="_unbindInnerOrOuterLevel();"><i class="ace-icon fa fa-times-circle bigger-100 yellow"></i>解绑</button></label>
+                    </div>
+				</div>
+				<table id="list" class="table  table-bordered table-hover no-margin-bottom">
+					<thead> <tr><th style="width:40px;" class="center"><input type="checkbox" name="levelIdCheckBoxHead" onclick="_clickCheckboxOnHead(this)"/></th><th style="width:100px;" class="center">已绑定层级</th><th class="center">盘口</th><th  class="center">平台层级</th><th  class="center">状态</th></tr></thead>
+					<tbody></tbody>
+				</table>
+				<div id="platLevelBindPage"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"src="../javascript/lib/jquery.bootstrap-duallistbox.min.js"></script>
+<script type="text/javascript" src="../javascript/lib/bootstrap-multiselect.min.js"></script>
+

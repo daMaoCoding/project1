@@ -1,0 +1,182 @@
+<link rel="stylesheet" href="../style/jquery.chosen.min.css" type="text/css" xmlns="http://www.w3.org/1999/html">
+<link rel="stylesheet" href="../style/bootstrap-multiselect.min.css"/>
+<link rel="stylesheet" href="../style/jquery.bootstrap.duallistbox.min.css" type="text/css">
+<div style="padding-top: 0px" class="tab-content">
+    <div class="">
+
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">盘口</span>
+                        <select id="handicap_cashExpence" class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+                            <option>请选择</option>
+                            <option>彩33</option>
+                            <option>123</option>
+                            <option>699</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">创建时间</span>
+                        <input id="timeCreate_cashExpence" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:68%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="pull-left">
+                            <button  class="btn btn-xs btn-white btn-info btn-bold " id="addOrderBtn_cashExpence" type="button" onclick="_beforeAddCashExpenditure()">
+                                <i class="fa fa-plus-circle"></i>新增出现金
+                            </button>
+                        </span>
+                    </div>
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">金额</span>
+                        <input id="fromMoney_cashExpence" onkeyup="" type="text"
+                               class="form-control input-small" style="height:32px;width:34.4%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_cashExpence" onkeyup="" type="text"
+                               class="form-control input-small" style="height:32px;width:34.4%;">
+
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary">出款账号</span>
+                        <select id="account_cashExpence" class="chosen-select form-control"
+                                style="height:32px;width:68%;">
+                            <option>请选择</option>
+                            <option>第三方1</option>
+                            <option>第三方2</option>
+                            <option>第三方3</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="pull-left">
+                            <button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueT('successOut');">
+                                <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                            </button>
+                        </span>
+                        <span class="pull-left">
+                            <button  class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_cashExpence" type="button" onclick="_search();">
+                                <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                            </button>
+                        </span>
+                    </div>
+
+                </form>
+            </div>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th>盘口</th>
+                <th>订单号</th>
+                <th>金额</th>
+                <th>手续费</th>
+                <th>创建人</th>
+                <th>出款账号</th>
+                <th>第三方账号</th>
+                <th>第三方开户人</th>
+                <th>状态</th>
+                <th>创建时间</th>
+                <th>确认时间</th>
+                <th>备注</th>
+                <th>锁定</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_cashExpence" style="display: none">
+            <tr><td>699</td><td>320180228806968</td><td>10000<i class="fa fa-copy orange bigger-110 clipboardbtn " style="cursor:pointer" data-clipboard-text="10000"></i></td><td>10<i class="fa fa-copy orange bigger-110 clipboardbtn " style="cursor:pointer" data-clipboard-text="10"></i></td><td>andy</td><td>6210**123<i class="fa fa-copy orange bigger-110 clipboardbtn " style="cursor:pointer" data-clipboard-text="6210232565656123"></i></td><td>abc.123<i class="fa fa-copy orange bigger-110 clipboardbtn " style="cursor:pointer" data-clipboard-text="abc.123"></i></td><td>张三<i class="fa fa-copy orange bigger-110 clipboardbtn " style="cursor:pointer" data-clipboard-text="张三"></i></td><td>未出款</td><td>2018-02-28 16:40:12</td><td></td><td>2018-02-28 16：16：40：12 andy<br> 新增出现金</td><td><button onmouseup="_lockClick(this);">锁定</button></td><td><button>确定出款</button><button type="button" id="cancelBtn">撤销</button><button>备注</button></td></tr>
+            <tr><td>彩33</td><td>320180228807968</td><td>20000</td><td>15</td><td>andy</td><td>6210**123</td><td>jingz@123</td><td>李四</td><td>正在出款</td><td>2018-02-28 16:40:12</td><td></td><td>2018-02-28 16：16：40：12 andy<br> 新增出现金</td><td>已锁定</td><td><button>确认结果</button><button>备注</button></td></tr>
+            <tr><td>123</td><td>320180228808968</td><td>30000</td><td>20</td><td>andy</td><td>6210**123 </td><td>zhang@abc</td><td>张三</td><td>出款失败</td><td>2018-02-28 16:45:12</td><td>2018-02-28 16:55:12</td><td>2018-02-28 16:55:12 andy<br> 由于客户账户原因出款失败</td><td>已锁定</td><td><button>失败确认</button><button>备注</button></td></tr>
+            <tr><td>cpysc</td><td>320180228804968</td><td>40000</td><td>25</td><td>andy</td><td>6210**123</td><td>sgagg@gll</td><td>李四</td><td>已确认</td><td>2018-02-28 16:46:12</td><td>2018-02-28 16:55:12</td><td>2018-02-28 16:46:12 andy<br> 新增出现金<br>2018-02-28 16:55:12 andy<br> 经联系客户已确认出款成功</td><td>已锁定</td><td><button>备注</button></td></tr>
+            <tr><td colspan="2">总金额：</td><td>100000</td><td>70</td><td colspan="12"></td></tr>
+            </tbody>
+        </table>
+        <div id="footPage_cashExpence"></div>
+    </div>
+</div>
+<div id="addCashExpenceModal" class="modal fade " tabindex="-1"  data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding text-center">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>新增出现金信息
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-18 b-r">
+                        <div class="col-sm-6 ">
+                            <div class="form-group">
+                            <label>盘口<i class="fa fa-asterisk red"></i></label>
+                            <select id="cashExpendditureHandicap" style="width: 220px">
+                                <option selected="selected" value="请选择">请选择</option>
+                                <option value="" >699</option>
+                                <option value="" >彩33</option>
+                                <option value="" >123</option>
+                                <option value="" >ysc</option>
+                                <option value="" >人人彩</option>
+                                <option value="" >百家乐</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 b-r">
+                            <div class="form-group">
+                                <label>收款第三方账号<i class="fa fa-asterisk red"></i></label>
+                                <input  id="cashExpendditureThirdAccount" style="width: 220px;"  class="input-sm" type="text" placeholder="收款第三方账号">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>金额<i class="fa fa-asterisk red"></i></label>
+                                <input  id="cashExpendditureAmount" style="width: 220px;"  class="input-sm" type="text" placeholder="出款金额">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 b-r">
+                            <div class="form-group">
+                                <label>收款第三方开户人<i class="fa fa-asterisk red"></i></label>
+                                <input  id="cashExpendditureThirdOwner" style="width: 220px;"  class="input-sm" type="text" placeholder="收款第三方开户人">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>账号<i class="fa fa-asterisk red"></i></label>
+                            <select id="cashExpendditureAccount" style="width: 220px;" class="chosen-select">
+                                <option selected="selected" value="请选择">请选择</option>
+                                <option value="" >农行 62120**20156</option>
+                                <option value="" >建行 62170**85624</option>
+                                <option value="" >工商 62270**85624</option>
+                                <option value="" >中信 62370**85624</option>
+                                <option value="" >中行 62570**85624</option>
+                                <option value="" >兴业 62770**85624</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6 b-r">
+                            <div class="form-group">
+                                <label>手续费<i class="fa fa-asterisk red"></i></label>
+                                <input  id="cashExpendditureFee" style="width: 290px;"  class="input-sm" type="text" placeholder="手续费">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>出现金说明<i class="fa fa-asterisk red"></i></label>
+                                <input  id="cashExpendditureDesc" style="width: 662px;"  class="input-sm" type="text" placeholder="款项说明">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin right">
+                <span id="promptCash" style="color: red"></span>
+                <button class="btn btn-primary" type="button" onclick="_confirmCashExpenditure();">确认</button>
+                <button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../javascript/outward/orderDetail.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript" src="../javascript/lib/bootstrap-multiselect.min.js"></script>
+<script type="text/javascript" src="../javascript/lib/jquery.bootstrap-duallistbox.min.js"></script>

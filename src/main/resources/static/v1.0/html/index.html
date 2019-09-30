@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<title>自动出入款系统</title>
+		<style>
+			.clipboardbtnS {background-color: #3c791d !important;}
+			.clipboardbtnS .gritter-item {padding: 0px !important;font-size: 16px !important;}
+			.gritter-with-image {float: left !important;}
+			/*.clipboardbtnS .gritter-item{background-color:#a5dce4;}*/
+			/*.clipboardbtnS .gritter-top{background-color:#a5dce4;}*/
+			/*.clipboardbtnS .gritter-bottom{background-color:#a5dce4;}*/
+
+            /*.bootstrap-select {*/
+                /*width: 200px !important;*/
+            /*}*/
+		</style>
+	</head>
+	<link rel="stylesheet" type="text/css" href="../style/main.css" />
+	<link rel="stylesheet" href="../style/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+	<link rel="stylesheet" type="text/css" href="../style/font-awesome.min.css"/>
+	<link rel="stylesheet" type="text/css" href="../style/bootstrapValidator.min.css"/>
+	<link rel="stylesheet" type="text/css" href="../style/controllers/menuChange.css"/>
+	<link rel="stylesheet" type="text/css" href="../style/jquery.chosen.min.css">
+	<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/css/bootstrap-select.min.css">-->
+	<body style="padding-right:0px !important;">
+		<!-- header -->
+		<header>
+			<div><i class="ace-icon fa fa-database white"></i>&nbsp;&nbsp;
+				<span class="red" style="display:none;">  </span>
+				<span id="titleName">自动出入款系统&nbsp;&nbsp;</span>
+			</div>
+			<div role="navigation" class="navbar-header pull-right navbar-buttons">
+				<small style="font-size: 10px;font-weight:normal" id="onlineAccount"></small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<div id="header_right"></div>
+				<div class="navbar-buttons navbar-header pull-right" role="navigation" id="accountAlarmBell" title="账号告警">
+					<ul class="nav ace-nav">
+						<li class="purple dropdown-modal">
+							<a href="#/BizAccountAlarm:*">
+								<i class="ace-icon fa fa-bell icon-animated-bell"></i>
+								<span class="badge badge-important accountAlarmBellCount">0</span>
+							</a>
+						</li>
+				    </ul>
+				</div>
+				<ul class="nav ace-nav" style="padding-right:5px;">
+					<li class="red">
+						<a href="javascript:void(0);" onclick="showModal_addFeedback()">
+							<i class="ace-icon fa fa-comments "></i>
+							<span class="">问题建议及反馈</span>
+						</a>
+					</li>
+					<li class="light-blue dropdown-modal">
+						<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+							<img id="logo-status" class="nav-user-photo" src="../images/status_disconnect.png" />
+							<span class="user-info">
+								<small id="titleRightUid"></small>
+								<span id="titleRightUname"></span>
+							</span></a>
+						<ul style="z-index:1000"  class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+							<li onclick="showModalpwdChange()"><a><i class="ace-icon fa fa-cog"></i><span>设置</span></a></li>
+							<li class="divider"></li>
+							<li ><a href="/auth/logout"><i class="ace-icon fa fa-power-off"></i><span>退出</span></a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</header>
+		<!-- main -->
+		<div id="main">
+			<!--左手边的菜单导航树-->
+			<div class="main-menu">
+				<div class="main-menu-header">
+					<div class="if-change dsn">
+						<button class="btn"></button>
+						<button class="btn btn-info"></button>
+						<button class="btn btn-success"></button>
+						<button class="btn btn-warning"></button>
+					</div>
+					<div class="dis hidden" id="quickLink">
+						<button id="quickLink1" class="btn"><span aria-hidden="true"><img src="../images/1_24px.png"/></span></button>
+						<button id="quickLink2" class="btn btn-info"><span aria-hidden="true"><img src="../images/2_24px.png"/></span></button>
+						<button id="quickLink3" class="btn btn-success"><span aria-hidden="true"><img src="../images/3_24px.png"/></span></button>
+						<button id="quickLink4" class="btn btn-warning"><span aria-hidden="true"><img src="../images/4_24px.png"/></span></button>
+					</div>
+				</div>
+				<ul id="leftMenuTree" class="main-menu-trees"></ul>
+			</div>
+			<!--右边的路由切换功能-->
+			<div id="mainContent" class="ui-view"></div>
+	<!-- 修改密码：模态窗口 -->
+	<div id="pwdChange" class="modal fade" aria-hidden="false" style="line-height:1;" >
+		<div class="modal-dialog">
+			<div class="modal-content col-sm-10">
+				<div class="modal-header text-center no-padding">
+					<h3 id="pwdChangeTitle">修改密码</h3></div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-sm-12" style="text-align:center;">
+							<form role="form">
+								<div class="form-group">
+									<label class="width-30"><span>旧密码</span><i class="fa fa-asterisk red"></i></label>
+									<input placeholder="请输入旧密码" class="width-50" name="oldPWD"  type="text" onfocus="this.type='password'">
+								</div>
+								<div class="form-group">
+									<label class="width-30"><span>新密码</span><i class="fa fa-asterisk red"></i></label>
+									<input placeholder="请输入需要更新的密码" class="width-50" name="newPWD1"  type="text" onfocus="this.type='password'">
+								</div>
+								<div class="form-group">
+									<label class="width-30"><span>新密码</span><i class="fa fa-asterisk red"></i></label>
+									<input placeholder="请再次输入新密码以确认" class="width-50" name="newPWD2"  type="text" onfocus="this.type='password'">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary" name="okBtn" onclick="pwdChange();" type="button" data-dismiss="modal">确认</button>
+					<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 主菜单右键快捷方式 -->
+	<div id="quickMenu" class="dropdown" >
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+			<li role="presentation" value="quickLink1" style="line-height:20px;height:20px;">
+				<a role="menuitem" >
+					添加到快捷方式1
+					&nbsp;<img src="../images/1_16px.png" style="line-height:20px;padding-bottom:3px;"/>
+				</a>
+			</li>
+			<li style="height:5px;"></li>
+			<li role="presentation" value="quickLink2">
+				<a role="menuitem" >
+					添加到快捷方式2
+					&nbsp;<img src="../images/2_16px.png" style="line-height:20px;padding-bottom:3px;"/>
+				</a>
+			</li>
+			<li role="presentation" value="quickLink3">
+				<a role="menuitem">
+					添加到快捷方式3
+					&nbsp;<img src="../images/3_16px.png" style="line-height:20px;padding-bottom:3px;"/>
+				</a>
+			</li>
+			<li role="presentation" value="quickLink4">
+				<a role="menuitem">
+					添加到快捷方式4
+					&nbsp;<img src="../images/4_16px.png" style="line-height:20px;padding-bottom:3px;"/>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<!-- 遮罩层 -->
+	<div class="modal fade" id="loadingModal">
+		<div style="width: 200px;height:20px; z-index: 20000; position: absolute; text-align: center; left: 50%; top: 50%;margin-left:-100px;margin-top:-10px">
+			<div class="progress progress-striped active" style="margin-bottom: 0;">
+				<div class="progress-bar" style="width: 100%;"></div>
+			</div>
+			<h5 style="font-weight:bold;color: black;">正在加载...</h5>
+		</div>
+	</div>
+	<div class="modal fade" id="captureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="width:30%;">
+			<div class="modal-content">
+				<div  style="text-align: center" class="table-header">
+					<button type="button" class="close white" data-dismiss="modal" aria-hidden="true">×</button>交易截图
+				</div>
+				<div class="modal-body">
+					<img id="captureImg" src="" height="628"  height="auto" width="100%" alt="auto">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- 分页公用HTML -->
+	<div id="page_common_html" class="hide">
+		<div class="noDataTipsPage table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+			<div style="margin-bottom:0px;font-size: 20px;" class="alert alert-success center">无数据</div>
+		</div>
+		<div class="message-footer clearfix no-padding common_Page">
+			<div class="pull-left" style="height:34px;line-height:34px;padding-left:10px;">
+				<div class="showImgTips">
+					<label class="control-label bolder blue">对账状态</label>
+					<span class="badge badge-warning" title="匹配中">匹配中</span>
+					<span class="badge badge-success" title="已匹配">已匹配</span>
+					<span class="badge badge-inverse" title="已驳回">已驳回</span>
+					<span class="badge badge-danger" title="待排查">待排查</span>
+					&nbsp;
+					<label class="control-label bolder blue">工具状态</label>
+					<span class="label label-grey">未开始</span>
+					<span class="label label-success">抓取中</span>
+					<span class="label label-info">暂停</span>
+					<span class="label label-danger">警告</span>
+					<span class="label label-warning">超时</span>
+				</div>
+				<span class="label label-info" name="footTitle"></span>
+				<span class="showTotal" >共&nbsp;<span class="TotalCount">0</span>&nbsp;条 </span>
+			</div>
+			<div class="pull-right">
+				<div class="inline middle">
+					<select class="form-control input-sm pageRecordCount" title="每页显示条数">
+	                    <option value="10">&nbsp;&nbsp;10</option>
+	                    <option value="20">&nbsp;&nbsp;20</option>
+	                    <option value="30">&nbsp;&nbsp;30</option>
+	                    <option value="50">&nbsp;&nbsp;50</option>
+	                    <option value="100">100</option>
+	                    <option value="200">200</option>
+	                    <option value="300">300</option>
+	                    <option value="400">400</option>
+	                    <option value="500">500</option>
+	                </select>
+				</div>&nbsp;
+				<div class="inline middle">第 &nbsp;<span class="Current_Page">1</span>&nbsp;/&nbsp;<span class="TotalPage">1</span>&nbsp;页</div>
+				<ul class="pagination middle">
+					<li class="disabled paging_first"><a href="javascript:void(0);"><i class="ace-icon fa fa-step-backward middle"></i></a></li>
+					<li class="disabled paging_previous"><a href="javascript:void(0);"><i class="ace-icon fa fa-caret-left bigger-140 middle"></i></a></li>
+					<li><span><input class="CurrentPageInput" readonly="readonly" value="1" maxlength="3" type="text" /></span></li>
+					<li class="paging_next"><a href="javascript:void(0);"><i class="ace-icon fa fa-caret-right bigger-140 middle"></i></a></li>
+					<li class="paging_last"><a href="javascript:void(0);"><i class="ace-icon fa fa-step-forward middle"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+	</body>
+	<script src="../javascript/lib/clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/jquery-ui.custom.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/jqueryRouter.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/bootbox.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/moment.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/jquery.session.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/json2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/ace.basics.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/daterangepicker.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/jquery.maskedinput.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/jquery.gritter.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/jquery.dataTables.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/bootstrapValidator.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/clipboard.min.js" type="text/javascript" ></script>
+	<script src="../javascript/lib/bootstrap-multiselect.min.js" type="text/javascript"></script>
+	<script src="../javascript/common/common_check.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/common/common_sync.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/common/account/accountUpdate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/common/common_remark.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/lib/jquery.chosen.min.js" type="text/javascript"></script>
+	<script src="../javascript/lib/jquery.flot.min.js" type="text/javascript"></script>
+	<!--临时加载中文，当需要变成国际化的时候，再把zh_CN.js 变成动态的-->
+	<script src="../javascript/lib/language/zh_CN.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../javascript/app.js" type="text/javascript"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/js/bootstrap-select.min.js"></script>-->
+    <script type="text/javascript">
+		var RightToArray = [];
+		$.ajax({dataType:'json',async:false,type:"get",url:'/r/menu/get',data:{uid:getCookie('JUID')},success:function(jsonObject){
+			if(jsonObject.status == 1){
+				RightToArray = jsonObject.data;
+			}else {
+				bootbox.alert(jsonObject.message);
+			}
+		}});
+		var ajax = $.ajax,$userName=$('#titleRightUname'),$uid = $('#titleRightUid');
+		$.ajax = function(options) {
+			$userName.text(decodeURI(escape(getCookie('JUSERNAME'))));$uid.text(getCookie('JUID')),JVERSION=getCookie('JVERSION');
+			sysVersoin = JVERSION?JVERSION:sysVersoin;
+			var _dv = getCookie(JCURRENTMENUDATA);
+			if(!options.initPage||options.url.indexOf('/r/')<0 ||!_dv){
+				return ajax(options);
+			}
+			var args=options.data, url=options.url+'?',url=url.substr(0,url.indexOf('?'));
+			var dv= JSON.parse(_dv);
+			var l=window.location.hash+'?';l =l.substr(0,l.indexOf('?'));l = l.split('#/')[1];
+			var ret = buildData(dv,l);
+			options.data=ret[1].args;
+			setCookie(JCURRENTMENUDATA,JSON.stringify(ret[0]));
+			if(options.initPage){
+				options.initPage(options.data);
+			}
+
+			function buildCount(d){
+				for (var x in d) {
+					if(x!='action' && x!='child')d[x].count=1;
+				}
+				return d;
+			}
+
+			function buildData(d,action){
+				var result = [];
+				result[0]=d;
+				if(d.action == action){
+					d[url]=d[url]?d[url]:{};
+					d[url].args = d.child||d[url].count==1?d[url].args:args;
+					d[url].count = 0;
+					result[0].child=null;
+					result[1]=d[url];
+				}else if(d.child){
+					var ret = buildData(d.child,action);
+					result[0] = buildCount(result[0]);
+					result[0].child=ret[0];
+					result[1]=ret[1];
+				}else{
+					result[0] = buildCount(result[0]);
+					result[0].child = {};
+					result[0].child['action']=action;
+					result[1]=result[0].child[url]={args:args,count:0};
+				}
+				return result;
+			}
+			return ajax(options);
+		};
+		var $AccAlarm = $('#accountAlarmBell').addClass('dsn');
+		var _menuModel = "<li class=\"{classLevel}\" menuTitle=\"{name}\" menuAction=\"{action}\" onclick=\"{clickLevel}\" {minEle}><{tag} class=\"{classA}\" href=\"{href}\"  style=\"padding-left:{paddingLeft}px\"><i class=\"{classI}\" aria-hidden=\"{aria}\"></i><span>{name}</span></{tag}>{children}</li>";
+		function  createMenu(data){
+			if(!data){
+				return '';
+			}
+			if(data.action=='BizAccountAlarm:*'){
+				$AccAlarm.removeClass('dsn');
+			}
+			var result=_menuModel,level = (data.level==0?1:data.level) ,countSub =(data.children?data.children.length:0),children ='';
+			if(countSub){
+				for(var index in data.children){
+					children=children+createMenu(data.children[index]);
+				}
+			}
+			var _data ={classLevel:("level"+level),clickLevel:(level==1?';':';'),href:(countSub>0?'#':('#/'+data.action)),action:data.action,classI:((level!=1&&countSub==0)?'':data.class),paddingLeft:(11*level),
+				aria:(level==1?'true':'false'),name:data.name,classA:(countSub>0?'menu-text':''),children:(children?("<ul class=\"submenu\">"+children+"</ul>"):'') ,tag:(countSub>0?'span':'a'),minEle:(countSub>0?'':'minEle="1"')};
+			for (var _x in _data) {
+				var reger=new RegExp("{"+_x+"}","gm");
+				result = result.replace(reger, _data[_x]?_data[_x]:'');
+			}
+			return result;
+		}
+		function filterMenu(data){
+			if(!data||!data.children||!data.action||data.action.split(':').length>2){
+				return (data && data.action && data.action.split(':').length>2 ) ? false:data;
+			}
+			var children = [];
+			for(var index in data.children){
+				var child = filterMenu(data.children[index]);
+				child?children.push(child):null;
+			}
+			data.children=children.length?children:null;
+			return data;
+		}
+		var html ='';
+		var filtedArray = [];;
+		for(var index in RightToArray){
+			buildContentRight(RightToArray[index]);
+		}
+		for(var index in RightToArray){
+			var abc = filterMenu(RightToArray[index]);
+			filtedArray.push(abc);
+		}
+		for(var index in filtedArray){
+			html=html+createMenu(filtedArray[index]);
+		}
+		html+='<div style="cursor: pointer;" class="main-menu-slide" onclick="menuChange(event)"><i class="ace-icon fa fa-angle-double-left"></i><div>';
+		$(".main-menu-trees").html(html);
+		// menu click 展开事件 start
+		var saveEle,$mainMenu=$('.main-menu') ;
+		$(".main-menu li").on("click", function(e) {
+			e.stopPropagation();
+			var t =$(this);
+			//先判断是否点击到 a
+			t.children('a').addClass('lock-class');
+			if(t.children('a').hasClass('lock-class')){
+				// 取消 如果点击是 a 取消样式
+				t.parents(".level1").siblings().find('a').removeClass('lock-class');
+				t.parents(".level1").siblings().find('.menu-text').removeClass('lock-class').removeClass('is-choice');
+				// 利用事件委托  遍历样式
+				t.children('a').addClass('lock-class');
+				t.parents('li').children('.menu-text').addClass('lock-class');
+			}
+			// 文件组成员样式
+			t.siblings().find('.menu-text').removeClass('is-choice');
+			t.children('.menu-text').addClass('is-choice');
+			// 当点击的时候是 a 标签，添加背景
+			if(t.children('a').hasClass('lock-class')){
+				!!saveEle?saveEle.removeClass('child-click'):null;
+				t.children('a').closest('.level1').find('.submenu').addClass('child-click');
+				saveEle=t.children('a').closest('.level1').find('.submenu');
+			}
+			//menu  如果缩进，则第一行不给点击 除了 首页
+			if(t.closest(".main-menu").hasClass("main-menu-change") && t[0].className=="level1"){
+				if(t.prev().length==1){
+					return false;
+				}
+			}
+			//menu 菜单显示隐藏
+			t.children('.submenu').slideToggle(200);
+			t.siblings().children('.submenu').slideUp(200);
+		});
+		// menu click 涨开事件 end
+
+		// menu 缩进 状态 start
+		function menuChange(e){
+			var ele=e.currentTarget.parentElement.parentElement;
+			if(ele.className.indexOf("change")>0){
+				ele.className="main-menu";
+				ele.nextElementSibling.style.marginLeft="190px";
+				$("#leftMenuTree .fa-angle-double-right").attr("class","ace-icon fa fa-angle-double-left");
+			}else{
+				$("#leftMenuTree .fa-angle-double-left").attr("class","ace-icon fa fa-angle-double-right");
+				ele.className="main-menu main-menu-change";
+				ele.nextElementSibling.style.marginLeft="40px";
+			}
+			$('.submenu').slideUp(200);
+		}
+
+		SysEvent =(function () {
+			var list = {},args = {},ws = null;
+			var EVENT ={EVENT_INIT:'EVENT_INIT',EVENT_OFFLINE:'EVENT_OFFLINE',EVENT_MONITOR:'EVENT_MONITOR',EVENT_MONITOR_DETAIL:'EVENT_MONITOR_DETAIL',EVENT_SYSTEM:'EVENT_SYSTEM'};
+            var PREFIX_ACCOUNT_BANKLOG ="_" ;
+            var PROCCESS_EVENT_OFFLINE = true;
+
+            var _connect = function(){
+                if (window.location.protocol == 'http:') {
+                    ws = new WebSocket('ws://'+window.location.host+'/ws/system');
+                } else {
+                    ws = new WebSocket('wss://'+window.location.host+'/ws/system');
+                }
+                ws.onopen = function () {
+                    $('#logo-status').attr("src","../images/status_normal.png");
+                    var store = localStorage.valueOf();
+                    for(var key in store){
+                        if(key.startsWith(PREFIX_ACCOUNT_BANKLOG)){
+                            try{
+                                var val = JSON.parse(store[key]);
+                                val.ip =''; val.runningStatus =monitorAccountStatusUnstart;
+                                localStorage.setItem(key,JSON.stringify(val));
+                            }catch(e){
+                                console.log(e);
+                            }
+                        }
+                    }
+                    ws.send('IPS');
+                };
+                ws.onclose = function (e) {
+                    $('#logo-status').attr("src","../images/status_disconnect.png");
+                    (e.code != 1000)?setTimeout('_connect()',6000):null;
+                    (e.reason=='Logout')?(window.location.href = window.location.href.split(getCookie('JVERSION'))[0]) : null;
+					if(e.code==1000&&e.reason=='History'){
+                        window.opener = null;
+                        window.open('/','_self');
+                        window.close();
+                    }
+                };
+                ws.onmessage = function (event) {
+                    _emit(event);
+                };
+            };
+
+			var _init = function(event){
+				var data = JSON.parse(event.data);
+				if(data.ip && data.action == monitorHostStatusOffLine){
+					var storage = localStorage.valueOf();
+					for(var key in storage){
+						if(key.startsWith(PREFIX_ACCOUNT_BANKLOG)){
+                            try{
+                                var val = JSON.parse(storage[key]);
+                                if (val.ip && val.ip == data.ip) {
+                                    val.runningStatus = monitorAccountStatusUnstart;
+                                    localStorage.setItem(key, JSON.stringify(val));
+                                }
+                            }catch(e){
+							    console.log(e);
+                            }
+						}
+					}
+				}else if(data.ip && data.data != monitorLog_TRANSFERINFO && data.data && data.data.length > 0){
+                    $.each(data.data,function(i,record){
+                        record.ip = data.ip ;
+                        if(!record.lastTime){
+                            try{
+                                var his = localStorage.getItem(PREFIX_ACCOUNT_BANKLOG+record.id);
+                                if(his){
+                                    his = JSON.parse(his);
+                                    record.lastTime =his.lastTime?his.lastTime:record.lastTime;
+                                }
+                            }catch(e){
+                                console.log(e);
+                            }
+                        }
+                        localStorage.setItem(PREFIX_ACCOUNT_BANKLOG+record.id,JSON.stringify(record));
+                    });
+                }
+			} ;
+
+			var _on = function(key,fn,o){
+				if(!fn ||!EVENT[key]||(key == EVENT.EVENT_OFFLINE && (!o ||!Object.prototype.toString.call(o)=='[object Array]'))){
+                    return false;
+				}
+				for(var event in list){
+                    if(EVENT.EVENT_INIT != event && EVENT.EVENT_SYSTEM != event){
+                        delete list[event];
+                        delete args[key];
+                    }
+                }
+				list[EVENT[key]] = fn;
+                args[key] = o ? o : null;
+				if(key == EVENT.EVENT_MONITOR || key == EVENT.EVENT_MONITOR_DETAIL){
+                    ws != null ? ws.send('IPS') : bootbox.alert('WebSocket connection not established.');
+                }else if(key == EVENT.EVENT_OFFLINE){
+                    var arr = args[key];
+                    for(var index in arr){
+                        try{
+                            var data = localStorage.getItem(PREFIX_ACCOUNT_BANKLOG+ arr[index]);
+                            data ? fn(data):null;
+                        }catch(e1){console.log(e1);}
+                    }
+                    if(arr&&arr.length>0){
+						ws != null ? ws.send('IDS,'+arr.join(',')) : bootbox.alert('WebSocket connection not established.');
+					}
+                }
+				return true;
+			};
+
+			var _emit = function(event){
+                var bank = false;
+                try{
+                    var data = JSON.parse(event.data);
+                    bank = data && data.ip ? true :false;
+                }catch(e){console.log(e);}
+				for(var key in list){
+					var fun = list[key];
+                    if(!fun){
+                        return;
+                    }
+                    try {
+                        if((!bank && key == EVENT.EVENT_SYSTEM) || (bank && key != EVENT.EVENT_OFFLINE)){
+                            fun(event);
+                        }else if(bank && key == EVENT.EVENT_OFFLINE && args[key] && args[key].length > 0){
+                            PROCCESS_EVENT_OFFLINE = true;
+                            //var arr = args[key];
+                            //for(var index in arr){
+                            //    try{
+                            //        var data = localStorage.getItem(PREFIX_ACCOUNT_BANKLOG+ arr[index]);
+                            //        data ? fun.apply(Window,[data]):null;
+                            //    }catch(e1){console.log(e1);}
+                            //}
+                        }
+                    }catch(e){  console.log(e); }
+				}
+			};
+
+			var _invsgt = function(pageNo,pageSize){
+				var vsgt = [],d = new Date().getTime();
+				var storage = localStorage.valueOf();
+				for(var key in storage){
+					if(key.startsWith(PREFIX_ACCOUNT_BANKLOG)){
+						try{
+							var val = JSON.parse(storage[key]);
+							if (!val||!val.ip) {
+								continue;
+							}
+							if(val.runningStatus != monitorAccountStatusUnstart){
+								if( val.lastTime && ( d - val.lastTime )>=900000 ) {
+									val.statusColor=0;//很久没抓流水
+									vsgt.push(val);
+								}
+							}else{
+								val.statusColor=2;//离线
+								vsgt.push(val);
+							}
+						}catch(e){
+							console.log(e);
+						}
+					}
+				}
+				vsgt.sort(function(o1,o2){  return o1.statusColor - o2.statusColor;});
+				$.each(vsgt,function(index,obj){ obj.statusColor?(obj.statusColor = '#A0A0A0'):(obj.statusColor = 'orange');});
+				var totalElements = vsgt.length;
+				var totalPages = parseInt((totalElements%pageSize==0)?(totalElements/pageSize):(totalElements/pageSize+1));
+				pageNo = !!!pageNo?1:pageNo;
+				pageNo = (pageNo<=1?1:pageNo);
+				pageNo = (pageNo>=totalPages)?totalPages:pageNo;
+				var from = ((pageNo-1)*pageSize),to = (from+pageSize);
+				var to = (to >= totalElements ? totalElements : to);
+				return {
+					status:1,data:vsgt.slice(from,to),
+					page:{
+						first: (pageNo==1),hasNext:(pageNo<totalPages),hasPrevious: (pageNo>1),
+						last: (pageNo>=totalPages),nextPageNo: (pageNo<totalPages?(pageNo+1):totalPages),
+						pageNo: pageNo, pageSize: pageSize,previousPageNo: ((pageNo<=1)?1:(pageNo-1)),
+						totalElements: totalElements,totalPages:totalPages
+					}
+				};
+			};
+
+			var _retrieve = function(id){
+				if(id){
+					return localStorage.getItem(PREFIX_ACCOUNT_BANKLOG+ id);
+				}else{
+					return null;
+				}
+			};
+
+			var _rem = function(key){
+                if(EVENT.EVENT_INIT != key && EVENT.EVENT_SYSTEM != key){
+                    delete list[key];
+                    delete args[key];
+                }
+			};
+
+			_on(EVENT.EVENT_INIT,_init);
+
+            _connect();
+
+            var intervalOffine = function(){
+                if(!PROCCESS_EVENT_OFFLINE){
+                    return;
+                }
+                PROCCESS_EVENT_OFFLINE = false;
+                if(args[EVENT.EVENT_OFFLINE] && args[EVENT.EVENT_OFFLINE].length > 0){
+                    var fun = list[EVENT[EVENT.EVENT_OFFLINE]];
+                    var arr = args[EVENT[EVENT.EVENT_OFFLINE]];
+                    for(var index in arr){
+                        try{
+                            var data = localStorage.getItem(PREFIX_ACCOUNT_BANKLOG+ arr[index]);
+                            data ? fun.apply(Window,[data]):null;
+                        }catch(e1){console.log(e1);}
+                    }
+                }
+            };
+
+            setInterval(intervalOffine,2000);
+
+			return {on:_on,rem:_rem,invsgt:_invsgt,retrieve:_retrieve,
+                EVENT_OFFLINE:EVENT.EVENT_OFFLINE,
+                EVENT_SYSTEM:EVENT.EVENT_SYSTEM,
+                EVENT_MONITOR:EVENT.EVENT_MONITOR,
+                EVENT_MONITOR_DETAIL:EVENT.EVENT_MONITOR_DETAIL}
+		})();
+        var $accountAlarmBellCount = $('span.accountAlarmBellCount');
+		var gritterUniqueId=null;
+        SysEvent.on(SysEvent.EVENT_SYSTEM,function(event){
+            var data = JSON.parse(event.data);
+            if(data && data.ip){
+                return;
+            }
+            var category = data.category;
+            if(category == systemWebSocketCategoryCustomerService){
+                //客服发消息
+                var SendMessageflag=false;
+                //判断是否有出款任务汇总》主管处理》分配按钮的权限(如果有就是主管，则显示通知)
+                $.each(ContentRight['OutwardTaskTotal:*'],function(name,value) {
+                    if(name=='OutwardTaskTotal:Distribution:*'){
+                        Distributionflag=true;
+                        return;
+                    }
+                });
+                if(Distributionflag)
+                    gritterUniqueId = $.gritter.add({time:5000000000,position : 'top-right',class_name: 'gritter-success',title:"客服消息",text:data.message,sticky:false});
+            }else if(category == systemWebSocketCategoryOutwardTaskCancel){//主管取消通知
+                if(gritterUniqueId){
+                    $.gritter.remove(gritterUniqueId,{});
+                }
+                var text = "<small>"+data.message+"</small>";
+                gritterUniqueId = $.gritter.add({time:5000000000,position : 'top-right',class_name: 'gritter-error',title:'紧急通知',text:text,sticky:false});
+            }else if(category==systemWebSocketCategoryMessageToAllUser){
+                $.gritter.add({
+                    time: '',
+                    class_name: '',
+                    title: '系统消息',
+                    text: data.message,
+                    sticky: true,
+                    image: '../images/message.png'
+                });
+                return;
+            }
+            var message = JSON.parse(data.message);
+            if (category==systemOutwardTaskOperation) {
+                $.gritter.add({
+                    time: 1500,
+                    class_name: '',
+                    title: '系统消息',
+                    text: message.Desc=='OK'?"出款成功！":message.Desc,
+                    sticky: false,
+                    image: '../images/message.png'
+                });
+            }else if (category==systemLockOutwardTaskOperation) {
+                //锁定
+                $.gritter.add({
+                    time: 1500,
+                    class_name: '',
+                    title: '系统消息',
+                    text: message.Desc=='OK'?"锁定成功！":message.Desc,
+                    sticky: false,
+                    image: '../images/message.png'
+                });
+            }else if (category==systemUnLockOutwardTaskOperation) {
+                //解锁
+                $.gritter.add({
+                    time: 1500,
+                    class_name: '',
+                    title: '系统消息',
+                    text: message.Desc=='OK'?"解锁成功！":message.Desc,
+                    sticky: false,
+                    image: '../images/message.png'
+                });
+            }else if(category==systemWebSocketCategorySystem){
+                if("unauthentication" == message){
+                    bootbox.alert("您尚未登录（或会话已过期），请重新登录", function () {
+                        window.location.href = '/auth/logout';
+                    });
+                }else if("unauthorized" == message){
+                    bootbox.alert("访问被拒绝，未授权，请联系管理员");
+                }else{
+                    showMessage(message);
+                }
+            }else if(category==systemWebSocketCategoryOnlineStat){
+                var userCategory = getCookie('JUSERCATEGORY'),total=0,online=0,extHtml='',alloHtml='',userId = getCookie('JUSERID');
+                $.each(message,function(index,record){
+                    if(record.code!=userCategoryAllocatedAndAll){
+                        total = total +record.total;
+                        online = online +record.online;
+                        if(userId!=userIdAdmin&&userCategory == record.code){
+                            extHtml='，'+record.name+"（"+record.online+"/"+record.total+"）";
+                        }
+                        if(userId==userIdAdmin && record.code <= userCategoryHandicapPrefix){
+                            extHtml=extHtml+'，'+record.name+"（"+record.online+"/"+record.total+"）";
+                        }
+                    }else if(userId==userIdAdmin || userCategory ==userCategoryIncomeAudit){
+                        alloHtml='，'+record.name+"（"+record.online+"/"+record.total+"）";
+                    }
+
+                });
+                $("#onlineAccount").html("总人数（"+online+"/"+total+"）"+(extHtml+alloHtml));
+            }else if(category==systemWebSocketCategoryMenuList){
+                RightToArray = message;
+                for(var index in RightToArray){
+                    buildContentRight(RightToArray[index]);
+                }
+                contentRight();
+                contentRightUpdate = true;
+            }else if(category==systemWebSocketCategoryAccountAmountAlarm){
+                if(gritterUniqueId){
+                    $.gritter.remove(gritterUniqueId,{});
+                }
+                message.typeName = message.typeName?message.typeName:'';
+                message.alias = message.alias?message.alias:'无';
+                message.bankType = message.bankType?message.bankType:'无';
+                message.owner = message.owner?message.owner:'无';
+                message.account = message.account?message.account:'无';
+                var text = "<small>信息:"+message.alias+"|"+message.bankType+"|"+message.owner+"<br/>账号:"+message.account+"<br/>余额:"+setAmountAccuracy(message.bankBalance)+"</small>";
+                gritterUniqueId = $.gritter.add({time:5000000000,position : 'top-right',class_name: 'gritter-error',title:(message.typeName+'余额超限告警'),text:text,sticky:false});
+            }else if(category == systemWebSocketAccountAlarmCount){
+				var alarmNum =  message[getCookie('JUSERZONE')];
+				alarmNum = alarmNum ? alarmNum:0;
+				$accountAlarmBellCount.text(alarmNum);
+			}
+        },null);
+
+		function showMessage(message){
+			$.gritter.add({time: '',class_name: '',title: '系统消息',text:message,sticky:false,image:'../images/message.png'});
+		}
+
+		var pwdChange=function(){
+			var $div=$("#pwdChange");
+			var originalPassword=$.trim($div.find("[name=oldPWD]").val());
+			var newPWD1=$.trim($div.find("[name=newPWD1]").val());
+			var newPWD2=$.trim($div.find("[name=newPWD2]").val());
+			if(newPWD1!=newPWD2){
+				bootbox.alert("两次密码输入不一致");
+			}else{
+				$.ajax({type:'PUT', url:'/r/user/alterPassword', data:{"id":getCookie('JUSERID'),originalPassword:originalPassword,currentPassword:newPWD1}, dataType:'JSON', async:false, success:function (jsonObject) {
+					if(jsonObject&&jsonObject.status==1) {
+						showMessageForSuccess("密码更新成功");
+					}else{
+						showMessageForFail(jsonObject.message);
+					}
+				}});
+			}
+		};
+		//修改密码弹出框
+		var showModalpwdChange=function(){
+			var $div=$("#pwdChange");
+			//清空
+			$div.find("input").val("");
+			$div.modal("toggle");
+		};
+	    function grepIP(sdp) {
+	        sdp && (sdp.split('\r\n').forEach(function (line) { 
+	            if (~line.indexOf("a=candidate")) { 
+	                var items = line.split(' '); 
+	                var ip = items[4] ,type = items[7];
+	                if(type=='host'&&ip&&ip!='0.0.0.0'&&ip!='127.0.0.1'&&ip.indexOf(":")<0){
+						$.session.set('NativeIP',ip);
+	                }
+	            } 
+	            if(~line.indexOf("c=")){
+	                var ip = line.split(' ')[2];
+	                if(ip && '0.0.0.0' != ip && '127.0.0.1' != ip && ip.indexOf(":")<0){
+						$.session.set('NativeIP',ip);
+	                }
+	            }    
+	        }));
+	    }
+		function NativeIP(){
+	    	var RTCPeerConn = window.RTCPeerConnection || window.webkitRTCPeerConnection || 
+	    			window.mozRTCPeerConnection;
+	        if(!RTCPeerConn) return "undefined";   
+	        var rtc = new RTCPeerConn({iceServers:[]});
+	        rtc.createDataChannel('', {reliable:!(window.mozRTCPeerConnection)});
+	        rtc.onicecandidate = function (evt) {
+	            (evt.candidate) && (grepIP("a="+evt.candidate.candidate));
+	        };
+	        rtc.createOffer(function (offerDesc) {
+	             (grepIP(offerDesc.sdp)) & (rtc.setLocalDescription(offerDesc));
+	        }, function (e) {console.info(e)});
+	    }
+		$(document).ready(function(){
+	        var ua = navigator.userAgent.toLocaleLowerCase();
+	       	if (!ua.match(/chrome/)
+	       			||ua.match(/firefox/)||ua.match(/ubrowser/)||ua.match(/opera/)
+	       			||ua.match(/bidubrowser/)||ua.match(/metasr/)||ua.match(/tencenttraveler/)
+	       			||ua.match(/maxthon/)||ua.match(/metasr/)||ua.match(/edge/)) {
+	            $("body").html("<h1 class='center blue'>本项目仅支持谷歌内核的浏览器</h1>");
+	            return;
+	        }else{
+	        	 var is360 = _mime("type", "application/vnd.chromium.remoting-viewer");
+	             function _mime(option, value) {
+	                 var mimeTypes = navigator.mimeTypes;
+	                 for (var mt in mimeTypes) {
+	                     if (mimeTypes[mt][option] == value) {
+	                         return true;
+	                     }
+	                 }
+	                 return false;
+	             }
+	             if(is360){
+	 	            $("body").html("<h1 class='center blue'>本项目仅支持谷歌浏览器</h1>");
+		            return;
+	             }
+	 			if (!!window.ActiveXObject || "ActiveXObject" in window){
+					$t = $("#login-box .widget-body .widget-main");
+					$t.find("h4.header.blue.lighter.bigger span").html("注意&nbsp;/&nbsp;Notice");
+					$t.find(".classLogin").html("<h4 class='red'>本系统不支持IE浏览器</h4><h5 class='red'>The system can't support IE Browser</h5>");
+				}
+	        }
+			//异步加载系统配置
+			loadSysSetting();
+			//异步初始化快捷按钮
+			//initQuickLink();
+			//初始化右上角登录信息
+			$("#titleRightUid").text(getCookie('JUID'));
+			$("#modalUid").text(getCookie('JUID'));
+			$("#titleRightUname").text(decodeURI(escape(getCookie('JUSERNAME'))));
+			//临时隐藏节点
+		 	$("[href=\\#\\/IncomeAsignIssue\\:\\*]").parent().hide();
+			$("[href=\\#\\/OtherPermission\\:\\*]").parent().hide();
+			$("[href=\\#\\/IncomeAuditWechatIn\\:\\*]").parent().hide();//微信入款
+			$("[href=\\#\\/IncomeAuditAliIn\\:\\*]").parent().hide();//支付宝入款
+			$("[href=\\#\\/IncomeAsignWechat\\:\\*]").parent().hide();//微信下发
+			$("[href=\\#\\/IncomeAsignAlipay\\:\\*]").parent().hide();//支付宝下发
+			$("[menuaction=IncomeAccountWechat\\:\\*]").hide();//账号管理 - 微信
+			$("[menuaction=IncomeAccountAli\\:\\*]").hide();//账号管理 - 支付宝（子节点 企业支付宝/客户绑定银行卡/客户资料管理/支付明细 会同时隐藏）
+			$("[menuaction=IncomeAsignCompBank\\:\\*]").hide();//下发管理 - 公司卡下发
+			$("[menuaction=IncomeAsignComnBank\\:\\*]").hide();//下发管理 - 第三方下发
+			$("[menuaction=OutwardAccountBank\\:\\*]").hide();//出款银行卡 - 支付宝（在用/可用/停用/冻结 会同时隐藏）
+			$("[menuaction=OutwardAccountAll\\:\\*]").hide();//出款银行卡 - 全部  
+			$("[menuaction=financeCompanyExpenditure\\:\\*]").hide();//旧公司用款 
+			//异步加载所有盘口
+			loadAllHandicap();
+			//同步加载有权限的盘口层级数据
+			getHandicap_Level();
+			//调用方法加载IP $.session.get('NativeIP');
+			NativeIP();
+		});
+		/* //【请勿调换顺序】点击页面元素隐藏右键菜单
+ 		$("header,#leftMenuTree,#mainContent").mousedown(function(e){
+			if (3 != e.which) {
+				$("#quickMenu").removeClass("open");
+			}
+		});
+		//【请勿调换顺序】取消绑定左侧菜单栏的所有右键事件,只取消有绑定div的根节点，方便调试
+		$("#leftMenuTree").find("[minele=1]").bind("contextmenu", function(){
+		    return false;
+		});
+		var choiceLink;
+		//【请勿调换顺序】左侧主菜单右键点击事件
+		$("#leftMenuTree").find("[minele=1]").mousedown(function(e){
+			 if (3 == e.which) {
+		        choiceLink=$(this).find("a");
+		        $("#quickMenu").toggleClass("open");
+		        var offsetTop=$(this).offset().top;
+		        var offsetLeft=$(this).offset().left;
+		        $("#quickMenu").css({position: "absolute",'top':offsetTop+30,'left':offsetLeft+50,'z-index':100});
+			 }else{
+				$("#quickMenu").removeClass("open");
+			 }
+		});
+		//添加到快捷方式点击事件
+		$("#quickMenu li").click(function(){
+			if(!!!choiceLink){
+				return;
+			}
+			$.ajax({
+				type:"PUT",
+				async:false,
+				url:"/r/set/savequicklink",
+				data:{
+	 				'propertyKey':this.getAttribute("value"),
+					'propertyValue':choiceLink[0].hash,
+					'propertyName':choiceLink[0].text
+				},
+				dataType:'json',
+				success:function(jsonObject){
+					$("#quickMenu").removeClass("open");
+					//查询失败；返回值为undefined或空字符串时返回
+					if(!!!jsonObject||jsonObject.status !=1){
+			        	showMessageForFail("快捷方式设置失败，"+jsonObject.message);
+						return;
+					}
+		        	showMessageForSuccess("快捷方式设置成功");
+		        	initQuickLink();
+				}
+			});
+		});
+		**/
+		//
+		$("#leftMenuTree").find("[minele=1]").click(function(){
+			$.ajax({dataType:'json',async:false,type:"get",url:'/global/version',success:function(){}});
+			var currentMenuPath = menuPath($(this));
+			setCurrMenuData($(this).attr("menuAction"));
+			$("html head title").text(currentMenuPath);
+		});
+
+		function setCurrMenuData(currMenu){
+			var index =currMenu.indexOf('#/');
+			currMenu = index<0?currMenu:currMenu.substring(index+'#/'.length);
+			var currentMenuData = getCookie(JCURRENTMENUDATA);
+			currentMenuData = currentMenuData?JSON.parse(currentMenuData):{};
+			currentMenuData = currentMenuData.action == $(this).attr("menuAction") ? currentMenuData:{};
+			currentMenuData.action =currMenu;
+			setCookie(JCURRENTMENUDATA,JSON.stringify(currentMenuData));
+		}
+
+		function menuPath($obj){
+			var r = $obj.attr("menuTitle"),l=$obj.attr("class").substring(5);
+			return (l<=1)?r:(r+"/"+menuPath($obj.closest("li.level"+(l-1))));
+		}
+
+		new Clipboard('.clipboardbtn').on('success', function(e) {
+		    if(e.trigger.dataset.clipboardTarget=='#amount' || e.trigger.dataset.clipboardTarget=='#toOut_amount') {
+				$('#successFlagAmount').show();
+			}
+            if(e.trigger.dataset.clipboardTarget=='#accountNo'|| e.trigger.dataset.clipboardTarget=='#toOut_accountNo') {
+                $('#successFlagAccountNo').show();
+            }
+            if(e.trigger.dataset.clipboardTarget=='#payCodeTask'|| e.trigger.dataset.clipboardTarget=='#toOut_payCode') {
+                $('#successFlagPayCode').show();
+            }
+            if(e.trigger.dataset.clipboardTarget=='#owner' || e.trigger.dataset.clipboardTarget=='#toOut_owner') {
+                $('#successFlagOwner').show();
+            }
+            if(e.trigger.dataset.clipboardTarget=='#bankName' || e.trigger.dataset.clipboardTarget=='#toOut_bankName') {
+                $('#successFlagBankName').show(); //successFlagToAccountName
+            }
+            if(e.trigger.dataset.clipboardTarget=='#toAccountName' || e.trigger.dataset.clipboardTarget=='#toOut_toAccountName') {
+                $('#successFlagToAccountName').show(); //
+            }
+			$.gritter.add({time: 50,class_name: 'clipboardbtnS',title: '复制成功',text:e.text,sticky:false,image:'../images/message.png'});
+		});
+		var getCopyHtmlStr=function(copyInfo){
+			return "<i class='fa fa-copy orange clipboardbtn' style='cursor:pointer' data-clipboard-text="+copyInfo+" ></i>";
+		};
+		var initQuickLink=function(){
+			$.ajax({
+				type:"PUT",
+				url:"/r/set/findQuickLinkByUserId",
+				data:{},
+				dataType:'json',
+				success:function(jsonObject){
+					//查询失败；返回值为undefined或空字符串时返回
+					if(!!!jsonObject||jsonObject.status !=1){
+			        	showMessageForFail("快捷方式设置失败，"+jsonObject.message);
+						return;
+					}
+					$.each(jsonObject.data,function(index,result){
+						$("#"+result.propertyKey).attr("onclick","setCurrMenuData('"+result.propertyValue+"');window.location.href='"+result.propertyValue+"'");
+						$("#"+result.propertyKey).attr("title",result.propertyName);
+					});
+				}
+			});
+		};
+
+		contentRight();
+
+		var bankLogOffline = function(data){
+            if(data == null){
+                return ;
+            }
+            var  bankLog = JSON.parse(data),status = bankLog.runningStatus,last='';
+			$('div.BankLogEvent[target='+bankLog.id+']').each(function(){
+			    var t = $(this);
+				var $time = t.find("span.time");
+				try{
+                    var classBadge =(status==monitorAccountStatusUnstart)?'label-grey':(status==monitorAccountStatusAcquisition?'label-success':(status==monitorAccountStatusPause?'label-info':'label-danger'));
+					//如果账号处于抓取流水状态，但在3分钟内未抓取流水，则改改变背景色--badge-warning
+					classBadge = (status==monitorAccountStatusAcquisition&&bankLog.lastTime&&(new Date().getTime()- bankLog.lastTime)>=900000)?'badge-warning':classBadge;
+                    if(bankLog.lastTime){
+                    	last=geeTime4Crawl(bankLog.lastTime)
+                    }
+                    if(last){
+                        $time.text(last).attr('class','time label').attr('style','display:block;width:100%;cursor:pointer;').attr('title',"流水抓取时间"+bankLog.ip).addClass(classBadge);
+                    }else{
+                        $time.text('').attr('class','time').attr('style','');
+                    }
+				}catch(e){
+					console.log(e);
+				}
+			});
+		}
+		//是否拥有权限查看操作记录
+		var OperatorLog=false,OperatorLogBtn='';
+		$.each(ContentRight['OtherPermission:*'], function (name, value) {
+		    if (name == 'OtherPermission:OperatorLog:*') {
+		    	OperatorLog = true;
+		    }
+		});
+		if(!OperatorLog){
+			OperatorLogBtn=' hide ';
+		}
+		//是否是需要隐藏账号信息的角色 如果是
+		var isHideAccount=false,isHideAccountBtn='';
+		$.each(ContentRight['OtherPermission:*'], function (name, value) {
+		    if (name == 'OtherPermission:IsHideAccount:*') {
+		    	isHideAccount = true;
+		    }
+		});
+		if(isHideAccount){
+			isHideAccountBtn=' hide ';
+		}
+        //入款汇总/出款汇总是否修改名词和屏蔽出款账号
+        var isHideOutAccountAndModifyNouns=false;
+        $.each(ContentRight['OtherPermission:*'], function (name, value) {
+            if (name == 'OtherPermission:HideOutAccountAndModifyNouns:*') {
+                isHideOutAccountAndModifyNouns = true;
+            }
+        });
+        //是否需要显示出款截图  默认不给看，勾选则可看
+        var isHideImg=true;
+        $.each(ContentRight['Outward:*'], function (name, value) {
+            if (name == 'Outward:IsHideImg:*') {
+            	isHideImg = false;
+            }
+        });
+		//敏感节点更名
+		if(isHideOutAccountAndModifyNouns){
+			$("[href=\\#\\/Income\\:\\*]").find("span[text='入款管理']").text("入货管理");
+			$("[href=\\#\\/IncomeAudit\\:\\*]").find("span[text='入款审核']").text("入货审核");
+			$("[href=\\#\\/Outward\\:\\*]").find("span[text='出款管理']").text("出货管理");
+			$("[href=\\#\\/IncomeAuditCompTotal\\:\\*]").text("公司入货汇总");
+			$("[href=\\#\\/IncomeAuditAliIn\\:\\*]").text("支付宝入货");
+			$("[href=\\#\\/IncomeAuditAliIn2\\:\\*]").text("支付宝入货");
+			$("[href=\\#\\/OutwardAuditTotal\\:\\*]").text("出货审核汇总");
+			$("[href=\\#\\/OutwardTaskTotal\\:\\*]").text("出货任务汇总");
+			$("#titleName").html("自动出入货系统");
+			$("title").html("自动出入货系统");
+		}
+	</script>
+</html>

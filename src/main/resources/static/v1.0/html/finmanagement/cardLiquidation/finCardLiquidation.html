@@ -1,0 +1,161 @@
+
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content" id="fczl">
+			<div class="row">
+				<div class="col-xs-12">
+					<h3 class="row header smaller lighter blue">
+						<div class="col-sm-12">
+							<form class="form-inline">
+							    <span class="label label-lg label-pink arrowed-right">盘口</span>
+								<select name="handicap" onchange="searQuery()" id="handicap" class="chosen-select form-control"   style="height:32px" >
+									
+								</select>
+								<span class="label label-lg label-pink arrowed-right">账号</span>
+								<input class="form-control" style="width: 100px;" id="fromaccount" type="text" name="fromaccount" />
+								<span class="label label-lg label-pink arrowed-right">开户人</span>
+								<input style="width: 65px;" class="form-control" id=accountOwner type="text" name="accountOwner" />
+								<span class="label label-lg label-pink arrowed-right">银行类别</span>
+								 <select onchange="queryFinCardLiquidationcard(0)" id="bankType" name="bankType" class="chosen-select form-control" style="height:32px;width:100px;">
+				                     <option value="">请选择</option>
+				                </select>
+								<div class="input-group">
+									<input class="form-control date-range-picker" onclick="clearRadioValue('form-field-checkbox');" placeholder="自定义时间段" type="text" style="width: 210px;" name="startAndEndTime" id="startAndEndTime" />
+								</div>
+								<br/>
+								<span class="label label-lg label-purple arrowed-right">类型</span>
+								<label class="inline">
+									<input type="radio" checked="checked" onclick="queryFinCardLiquidationcard(0)" value="" name="carType" class="ace" />
+									<span class="lbl"> 全部</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="queryFinCardLiquidationcard(0)" value="income" name="carType" class="ace" />
+									<span class="lbl"> 入款</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="queryFinCardLiquidationcard(0)" value="outward" name="carType" class="ace" />
+									<span class="lbl"> 出款</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="queryFinCardLiquidationcard(0)" value="issue" name="carType" class="ace" />
+									<span class="lbl"> 下发</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="queryFinCardLiquidationcard(0)" value="other" name="carType" class="ace" />
+									<span class="lbl"> 其它</span>
+								</label>
+								<span class="label label-lg label-purple arrowed-right">状态</span>
+								<label class="inline">
+									<input type="radio" checked="checked" onclick="queryFinCardLiquidationcard(0)" value="" name="status" class="ace" />
+									<span class="lbl"> 全部</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="queryFinCardLiquidationcard(0)" value="1" name="status" class="ace" />
+									<span class="lbl"> 在用</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="queryFinCardLiquidationcard(0)" value="5" name="status" class="ace" />
+									<span class="lbl"> 可用</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="queryFinCardLiquidationcard(0)" value="4" name="status" class="ace" />
+									<span class="lbl"> 停用</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="queryFinCardLiquidationcard(0)" value="3" name="status" class="ace" />
+									<span class="lbl"> 冻结</span>
+								</label>
+								<span class="label label-lg label-purple arrowed-right">时间</span>
+								<label class="inline">
+									<input type="radio" checked="checked" onclick="clearStartAndEndTime()" value="today" name="form-field-checkbox" class="ace" />
+									<span class="lbl"> 今日</span>
+								</label>
+								<label class="inline">
+									<input type="radio" checked="checked" onclick="clearStartAndEndTime()" value="thisWeek" name="form-field-checkbox" class="ace" />
+									<span class="lbl"> 昨日</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="clearStartAndEndTime()" value="week" name="form-field-checkbox" class="ace" />
+									<span class="lbl"> 本周</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="clearStartAndEndTime()" value="lastweek" name="form-field-checkbox" class="ace" />
+									<span class="lbl"> 上周</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="clearStartAndEndTime()" value="thisMonth" name="form-field-checkbox" class="ace" />
+									<span class="lbl"> 本月</span>
+								</label>
+								<!-- <label class="inline">
+									<input type="radio" onclick="clearStartAndEndTime()" value="lastMonth" name="form-field-checkbox" class="ace" />
+									<span class="lbl"> 上月</span>
+								</label> -->
+								<label class="pull-right inline">
+									<button id="searhByCondition" type="button" name="searhByCondition" class="btn btn-xs btn-white btn-info btn-bold">
+										<i class="ace-icon fa fa-search bigger-100 green"></i>
+										查询
+									</button>
+								</label>
+							</form>
+					</h3>
+
+					<div class="tabbable">
+						<ul class="nav nav-tabs" id="myTab3">
+							<li class="active">
+								<a id="bank" onclick="changevalue(0);" data-toggle="tab" href="#tab1">
+								   <i class="pink ace-icon fa 	fa-credit-card bigger-110"></i>银行卡汇总
+								</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+						
+						<!-- ----------------------------入款银行卡中转start------------------------------ -->
+						
+							<div id="tab1" class="tab-pane in active">
+								<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+								<thead>
+									<tr>
+										<th rowspan="2" class="center">盘口</th>
+										<th rowspan="2" class="center">账号</th>
+										<th rowspan="2" class="center">状态</th>
+										<th rowspan="2" class="center">类型</th>
+										<th rowspan="2" class="center">余额</th>
+										<th colspan="2" class="center">转入流水</th>
+										<th colspan="2" class="center">系统转入</th>
+										<th colspan="2" class="center">转出流水</th>
+										<th colspan="2" class="center">系统转出</th>
+										<th rowspan="2" class="center">手续费</th>
+										<th rowspan="2" class="center">手续费笔数</th>
+										<th rowspan="2" class="center">亏损金额</th>
+										<th rowspan="2" class="center">亏损笔数</th>
+										<th rowspan="2" class="center">操作</th>
+									</tr>
+									<tr>
+										<th  class="center">金额</th>
+										<th  class="center">笔数</th>
+										<th  class="center">金额</th>
+										<th  class="center">笔数</th>
+										<th  class="center">金额</th>
+										<th  class="center">笔数</th>
+										<th  class="center">金额</th>
+										<th  class="center">笔数</th>
+									</tr>
+								</thead>
+								<tbody id="total_tbody_Bankcard">
+									
+								</tbody>
+							</table>
+							<div id="fininStatBankcardPage"></div>
+							</div>
+							<!-- ----------------------------入款银行卡中转end------------------------------ -->
+					</div>
+				</div><!-- /.col -->
+			</div><!-- /.row -->
+		 </div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/common_export.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>

@@ -1,0 +1,80 @@
+<div class="row">
+	<!-- 主页面查询条件 去除 style="z-index:999" 否则 无法在当前页面退出-->
+	<div id="accountFilter"  style="z-index:2" class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left">
+		<div class="col-sm-12">
+			<span class="label label-lg label-purple arrowed-right">盘口</span>
+			<select class="chosen-select width150" name="search_EQ_handicapId"></select>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="label label-lg label-purple arrowed-right">开户行</span>
+			<select class="chosen-select width150" name="search_LIKE_bankType">
+				<option value="">全部</option>
+			</select>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="label label-lg label-purple arrowed-right">类别</span>
+			<select class="chosen-select" name="search_EQ_accountType" style="width:150px;" ></select>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="label label-lg label-purple arrowed-right">刷新</span>
+			<div id="refreshAccountListSelect"></div>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<label onclick="reset('accountFilter');" class="pull-right inline">
+				<button class="btn btn-xs btn-white btn-info btn-bold">
+					<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+				</button>
+			</label>
+		</div>
+		<div class="col-sm-12" style="height:10px;"></div>
+		<div class="col-sm-12">
+			<span class="label label-lg label-purple arrowed-right">账号</span>
+			<input type="text" class="input-sm width150" name="search_LIKE_account" placeholder="帐号" />
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="label label-lg label-purple arrowed-right">开户人</span>
+			<input type="text" name="search_LIKE_owner" class="input-sm width150" placeholder="开户人" />
+			<input type="hidden" id="refresh_accountIncomp"  >
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="label label-lg label-purple arrowed-right">层级</span>
+			&nbsp;
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace defaultCheck" checked value="" >
+				<span class="lbl">全部</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace" value="1" >
+				<span class="lbl">外层</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace" value="2" >
+				<span class="lbl">内层</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace" value="8" >
+				<span class="lbl">指定层</span>
+			</label>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<label id="searchBtn" class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+			</label>
+		</div>
+	</div>
+	<div class="col-sm-12">
+		<table id="accountListTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th style='width:7%;'>盘口</th>
+					<th style='width:7%;'>层级</th>
+					<th style='width:7%;'>编号</th>
+					<th style='width:25%;'>账号</th>
+					<th style='width:7%;'>状态</th>
+					<th style='width:10%;'>类型</th>
+					<th style='width:10%;'>银行余额</th>
+					<th style='width:14%;'>操作</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		<div id="accountPage"></div>
+	</div>
+</div>
+
+<script type="text/javascript"  src="../javascript/common/modalOutAccount.js"></script>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>

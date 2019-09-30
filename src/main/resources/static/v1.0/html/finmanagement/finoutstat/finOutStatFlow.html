@@ -1,0 +1,117 @@
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+		<div class="main-content-inner">
+			<div class="page-content">
+				<div class="tabbable" id="auditTab">
+							<form class="form-inline">
+								<div class="row">
+									<div class="col-sm-12">
+										<h3 class="row">
+											<div class="col-sm-12">
+												<form class="form-inline">
+													<span class="label label-lg label-pink arrowed-right">开户人</span>
+													<input type="text" id="toaccountowner" name="toaccountowner" style="width: 175px;" class="form-control"/>
+													<span class="label label-lg label-pink arrowed-right">收款账号</span>
+													<input type="text" id="toaccount" name="toaccount" class="form-control"/>
+													<!-- <span class="label label-info">
+														出款账号：9558855881236&nbsp;&nbsp;
+														账号类型：银行卡&nbsp;&nbsp;
+														盘口：彩33&nbsp;&nbsp;
+														层级：未分层&nbsp;&nbsp;
+														采集时间：2017-01-27 07:00:00~2017-04-27 06:59:59&nbsp;&nbsp;
+													</span> -->
+													<i class="fa fa-calendar bigger-110"></i>
+													<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime" style="height: 32px;width:290px;"/>
+													</br>
+													<span class="label label-lg label-warning arrowed-right">金额</span>
+													<div class="input-group form-group col-sm-2" style="height:32px">
+														<input type="text" id="startamount" onkeyup="clearNoNum(this)" name="startamount" class="form-control input-small"  style="height:32px">
+														<span class="input-group-addon">~</span>
+														<input type="text" id="endamount" onkeyup="clearNoNum(this)" name="endamount" class="form-control input-small"  style="height:32px">
+													</div>
+													<span class="label label-lg label-pink arrowed-right">状态</span>
+													<select onchange="queryFinOutStatFlow();" name="bkstatus" id="bkstatus" class="chosen-select form-control"   style="height:32px" >
+														<option value="9999">全部</option>
+														<option value="0">匹配中</option>
+														<option value="1" selected>已匹配</option>
+														<option value="3">未认领</option>
+														<option value="4">已处理</option>
+														<option value="5">手续费</option>
+													</select>
+													
+													<span class="label label-lg label-pink arrowed-right"></span>
+													<select onchange="queryFinOutStatFlow();" name="typeStatus" id="typeStatus" class="chosen-select form-control"   style="height:32px" >
+														<option value="0" selected>全部</option>
+														<option value="-1" selected>转出</option>
+														<option value="1">转入</option>
+													</select>
+												</form>
+												<label class="pull-right inline">
+													<a  class="btn btn-xs btn-white btn-primary btn-bold" id="back" type="button">返回</a>
+												</label>
+												<label class="pull-right inline">&nbsp;&nbsp;</label>
+												<label class="pull-right inline">
+													<button id="searhBytToAccountOwner" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+														<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+													</button>
+												</label>
+											</div>
+										</h3>
+									</div>
+								</div>
+							</form>
+							<div class="row" >
+								<table class="table  table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th style="width: 12%;">
+												交易时间
+												<span id="tradingUp" onclick="orderByType('up','trading');" class="glyphicon glyphicon-chevron-up" style="display: none;cursor: pointer;"></span>
+												<span id="tradingDown" onclick="orderByType('down','trading');" class="glyphicon glyphicon-chevron-down" style="cursor: pointer;" ></span>
+											</th>
+											<th style="width: 12%;">
+												抓取时间
+												<span id="grabUp" onclick="orderByType('up','grab');" class="glyphicon glyphicon-chevron-up" style="display: none;cursor: pointer;"></span>
+												<span id="grabDown" onclick="orderByType('down','grab');" class="glyphicon glyphicon-chevron-down" style="cursor: pointer;" ></span>
+											</th>
+											<th style="width: 8%;">交易金额</th>
+											<th style="width: 8%;">余额</th>
+											<th style="width: 13%;">对方账号</th>
+											<th style="width: 5%;">对方姓名</th>
+											<th style="width: 8%;">摘要</th>
+											<th>备注</th>
+											<th style="width: 7%;">状态</th>
+											<th style="width: 5%;">操作</th>
+										</tr>
+									</thead>
+									<tbody id="total_tbody">
+										
+									</tbody>
+								</table>
+								<!-- #section:pages-footer -->
+								<div id="finOutStatFlowPage"></div>
+							</div>
+				</div>
+			</div>
+		</div>
+	
+	<!-- modalbox 点击详情弹出-->
+	<div class="modal inmodal" id="finOutStatFlow_details" tabindex="-1" role="dialog"  aria-hidden="true">
+	<div class="modal-dialog modal-lg" >
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button><span style="font-size: 16pt;">详情</span></div>
+			</div>
+			<div class="modal-body no-padding">
+			  <span id="inner_body">
+				
+				</br>
+			  </span>
+			</div>
+			<div class="table-header  no-padding  no-margin text-center">
+				<span id="modal_body">
+					
+				</span>
+			</div>
+		</div>
+	</div>
+</div>

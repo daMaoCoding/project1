@@ -1,0 +1,150 @@
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>
+	<div class="main-content">
+		<div class="main-content-inner">
+			<div class="page-content">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="tabbable">
+							<ul class="nav nav-tabs" id="myTab3">
+								<li class="active" style="display: none;" id="goldenerLi">
+									<a data-toggle="tab" onclick="queryGoldenerDrawing()" href="#goldenerTab"><i class="ace-iconace-icon fa fa-eye bigger-110 pink"></i>待金流主管清理</a>
+								</li>
+								<li id="finLi" style="display: none;">
+									<a data-toggle="tab" onclick="queryfin()" href="#finTab"><i class="ace-icon fa fa-bullhorn bigger-110 red"></i>待财务主管删除</a>
+								</li>
+							</ul>
+							<div style="padding: 0px 0px; " class="tab-content">
+<!-- -----------------------------------------------待金流主管处理-------------------------------------------------------------------->
+								<div id="goldenerTab" style="display: none;"  class="tab-pane in active">
+									<div class="col-sm-12 header smaller lighter less-margin no-margin-left">
+										<div class="inline" style="line-height:40px;" >
+											<span class="label label-lg label-primary arrowed-right">盘口</span>
+											<select onchange="queryGoldenerDrawing()" class="chosen-select" id="goldenerHandicap" name="goldenerHandicap" style="width:100px;" >
+											</select>
+											<span style="margin-left: 10px;" class="label label-lg label-primary arrowed-right">编号</span>
+											<input id="alias" class="input-large " type="text" style="height: 32px; width: 15%">
+											<span style="margin-left: 10px;" class="label label-lg label-primary arrowed-right">来源</span>
+											<label class="inline">
+												<input type="radio" onclick="queryGoldenerDrawing()" name="flag" class="ace" checked="checked" value="">
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="queryGoldenerDrawing()" name="flag" class="ace" value="0">
+												<span class="lbl">PC</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="queryGoldenerDrawing()" name="flag" class="ace" value="2">
+												<span class="lbl">返利网</span>
+											</label>
+											<span style="margin-left: 10px;" class="label label-lg label-primary arrowed-right">状态</span>
+											<label class="inline">
+												<input type="radio" onclick="queryGoldenerDrawing()" name="status" class="ace defaultCheck" checked="checked" value="">
+												<span class="lbl">全部</span>
+											</label>.
+											<label class="inline">
+												<input type="radio" onclick="queryGoldenerDrawing()" name="status" class="ace defaultCheck" value="4">
+												<span class="lbl">停用</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="queryGoldenerDrawing()" name="status" class="ace defaultCheck" value="3">
+												<span class="lbl">冻结</span>
+											</label>
+										</div>
+										<label class="pull-right inline">
+											<button style="display: none;" id="goldenerDeleteBT" onclick="deleteAccounts('goldener');"  class="btn btn-xs btn-white btn-primary btn-bold orange"><i class="ace-icon fa fa-credit-card bigger-100 orange"></i><span>批量删除</span></button>
+											<button onclick="queryGoldenerDrawing()" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-search bigger-100 green"></i>
+												查询
+											</button>
+										</label>
+									</div>
+									<table class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+											<tr>
+												<th>选择</th>
+												<th>盘口</th>
+												<th>账号</th>
+												<th>来源</th>
+												<th>编号</th>
+												<th>账号类型</th>
+												<th>状态</th>
+												<th>余额</th>
+												<th>更新时间</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody id="goldener_tbody">
+											
+
+										</tbody>
+									</table>
+									<!-- 分页 -->
+									<div id="goldenerPage"></div>
+								</div>
+<!--------------------------------------------------------待金流主管处理end------------------------------------------------------------------>
+
+<!-- -----------------------------------------------待财务主管处理-------------------------------------------------------------------->
+								<div id="finTab" class="tab-pane">
+									<div class="col-sm-12 header smaller lighter less-margin no-margin-left">
+										<div class="inline" style="line-height:40px;" >
+											<span class="label label-lg label-primary arrowed-right">盘口</span>
+											<select onchange="queryfin()" class="chosen-select" id="finHandicap" name="finHandicap" style="width:100px;" >
+											</select>
+											<span style="margin-left: 10px;" class="label label-lg label-primary arrowed-right">编号</span>
+											<input id="finAlias" class="input-large " type="text" style="height: 32px; width: 15%">
+											<span style="margin-left: 10px;" class="label label-lg label-primary arrowed-right">来源</span>
+											<label class="inline">
+												<input type="radio" onclick="queryfin()" name="finFlag" class="ace defaultCheck" checked="checked" value="">
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="queryfin()" name="finFlag" class="ace defaultCheck" value="0">
+												<span class="lbl">PC</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="queryfin()" name="finFlag" class="ace defaultCheck" value="2">
+												<span class="lbl">返利网</span>
+											</label>
+										</div>
+										<label class="pull-right inline">
+											<button onclick="deleteAccounts('fin')" style="display: none;" id="finDeleteBT"  class="btn btn-xs btn-white btn-primary btn-bold orange"><i class="ace-icon fa fa-credit-card bigger-100 orange"></i><span>批量删除</span></button>
+											<button type="button" onclick="queryfin()" class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-search bigger-100 green"></i>
+												查询
+											</button>
+										</label>
+									</div>
+									<table class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+											<tr>
+												<th>选择</th>
+												<th>盘口</th>
+												<th>账号</th>
+												<th>来源</th>
+												<th>编号</th>
+												<th>账号类型</th>
+												<th>状态</th>
+												<th>余额</th>
+												<th>更新时间</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody id="fin_tbody">
+											
+
+										</tbody>
+									</table>
+									<!-- 分页 -->
+									<div id="finPage"></div>
+								</div>
+<!--------------------------------------------------------待财务主管处理end------------------------------------------------------------------>
+							</div>
+						</div>
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div>
+		</div>
+	</div>
+

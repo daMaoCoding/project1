@@ -1,0 +1,125 @@
+<div class="row">
+	<div  class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left" id="accountFilter">
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">盘口</span>
+			<select class="chosen-select input-medium" name=search_EQ_handicapId>
+			</select>
+		</div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">编号</span>
+			<input type="text" style="height:32px" class="input-medium" placeholder="编号" name="search_LIKE_alias" />
+		</div>
+		<div class="col-sm-4">
+			<span class="label label-lg label-purple arrowed-right">银行</span>
+			<select name="search_LIKE_bankType" class="chosen-select" style="height:32px;width:100px;">
+				<option>请选择</option>
+			</select>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="label label-lg label-purple arrowed-right">来源</span>
+			<label class="inline"><input type="checkbox" name="flag" class="ace defaultNoCheck" value="0"/><span class="lbl">PC</span></label>
+			<label class="inline"><input type="checkbox" name="flag" class="ace defaultNoCheck" value="1"/><span class="lbl">手机</span></label>
+		</div>
+		<div class="col-sm-2">
+			<label class="pull-right inline">
+				<button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('accountFilter');">
+					<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+				</button>
+			</label>
+			<label class="pull-right inline contentRight" contentright='OutwardAccountStorageReserved:SystemSetting:*'>
+				<button class="btn btn-xs btn-white btn-info btn-bold" onclick="showModal_reserveInfo();">
+					<i class="ace-icon fa fa-cog bigger-100 green"></i>设置
+				</button>
+			</label>
+		</div>
+		<div  class="col-sm-12" style="height:5px;"></div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">帐号</span>
+			<input type="text" style="height:32px" name="search_LIKE_account" class="input-medium" placeholder="帐号" />
+		</div>
+		<div class="col-sm-3" >
+			<span class="label label-lg label-danger arrowed-right">状态</span>
+			<label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace" value="1" accountType="8" checked/><span class="lbl">在用</span></label>
+			<label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace defaultNoCheck" value="5" accountType="8"/><span class="lbl">可用</span></label>
+			<label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace defaultNoCheck" value="4" accountType="8"/><span class="lbl">停用</span></label>
+			<label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace defaultNoCheck" value="3" accountType="8"/><span class="lbl">冻结</span></label>
+		</div>
+		
+		<div class="col-sm-4">
+			<span class="label label-lg label-purple arrowed-right">层级</span>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace defaultCheck" checked value="" >
+				<span class="lbl">全部</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace" value="1" >
+				<span class="lbl">外层</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace" value="2" >
+				<span class="lbl">内层</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace" value="8" >
+				<span class="lbl">指定层</span>
+			</label>
+		</div>
+		<div class="col-sm-2">
+			<label class="pull-right inline">
+				<button class="btn btn-xs btn-white btn-info btn-bold" onclick="searchByFilter();">
+					<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+				</button>
+			</label>
+			<label class="pull-right inline">
+				<button id="add-button" class="btn btn-xs btn-white btn-info btn-bold contentRight" contentRight="OutwardAccountStorageReserved:Create:*" onclick="addAccount();">
+					<i class="ace-icon fa fa-plus bigger-100 green"></i>新增
+				</button>
+			</label>&nbsp;&nbsp;
+		</div>
+	</div>
+	<div class="col-sm-12">
+		<table id="dynamic-table" class="table table-bordered table-hover  no-margin-bottom">
+			<thead><tr><th>盘口</th><th>层级</th><th>编号</th><th class="col-sm-2">账号</th><th>状态</th><th>来源</th><th  class="col-sm-1">银行已确认</th><th>银行余额</th><th>系统余额</th><th>转出记录</th><th>转入对账</th><th  class="col-sm-3">操作</th> </tr></thead>
+			<tbody></tbody>
+		</table>
+		<div id="accountPage"></div>
+	</div>
+</div>
+<!-- 备用卡参数设置 -->
+<div id="reserveInfoModal" class="modal fade" aria-hidden="false" >
+	<div class="modal-dialog modal-lg"  style="width:1000px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					备用卡参数设置
+				</div>
+			</div>
+			<div class="modal-body">
+				<div id="handNameZoneList" class="row"></div>
+				<!-- 样式用DIV 勿删 -->
+				<div class="inline no-padding-bottom" style="width:49.5%;">
+					<p class="alert alert-success">
+						<input class="input-small" name="RESERVE_TO_RESERVE_BALANCE" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+						备用卡互转阀值，余额大于该值会下发至其它备用卡
+					</p>
+					<button type="button" class="pull-right btn btn-danger btn-white btn-bold btn-round" onclick="resetReserveInfo()">
+						<i class="ace-icon fa fa-refresh icon-on-right"></i>&nbsp;重置
+					</button>
+				</div>
+				<div class="inline no-padding-bottom" style="width:49.5%;">
+					<p class="alert alert-success">
+						<input class="input-small" name="RESERVE_TO_RESERVE_MINAMOUNT" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+						备用卡互转单笔最小金额
+					</p>
+					<button type="button" class="pull-left btn btn-success btn-white btn-bold btn-round" onclick="saveIncomeInfo()">
+						<i class="ace-icon fa fa-check icon-on-right"></i>&nbsp;保存
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalOutAccount.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalTransferBalance.js"></script>

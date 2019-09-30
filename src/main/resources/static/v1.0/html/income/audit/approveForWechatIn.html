@@ -1,0 +1,779 @@
+<div class="row">
+	<div class=" row col-sm-12">
+		<div class="tabbable">
+			<ul class="nav nav-tabs" id="ulTable">
+				<li class="active"
+					onclick="$('#freshWechatInLi').show();change('Matching');queryMatchingWechat();"><a
+					data-toggle="tab" href="#wetchatToMatch"> <i
+						class="ace-icon fa fa-hourglass-start bigger-110 pink"></i> 正在匹配
+				</a></li>
+				<li onclick="inithancipad('wechatNotMatched');$('#freshWechatInLi').hide();change('NotMatch');queryNotMatched();">
+					<a data-toggle="tab" href="#wetchatNotMatched"> <i
+						class="pink ace-icon fa fa-info-circle bigger-110"></i> 未匹配
+				</a>
+				</li>
+				<li onclick="inithancipad('wechatMatched');$('#freshWechatInLi').hide();change('Matched');queryMatched();">
+					<a data-toggle="tab" href="#wetchatMatched"> <i
+						class="pink ace-icon fa fa-info-circle bigger-110"></i> 已匹配
+				</a>
+				</li>
+				<li onclick="inithancipad('wetchatUnClaim');$('#freshWechatInLi').hide();change('UnClaim');queryUnClaim();">
+					<a data-toggle="tab" href="#wetchatUnClaim"> <i
+						class="ace-icon fa fa-exclamation-circle  bigger-110 pink"></i>
+						未认领
+				</a>
+				</li>
+				<li onclick="inithancipad('wetchatCanceled');$('#freshWechatInLi').hide();change('Canceled');queryCanceled();">
+					<a data-toggle="tab" href="#wetchatCanceled"> <i
+						class="ace-icon fa fa-times  bigger-110 red"></i> 已取消
+				</a>
+				</li>
+				<li id="freshWechatInLi" style="display: none;">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+					class="label label-lg label-primary arrowed-right">刷新</span> <select
+					id="autoUpdateTimeWechatIn">
+				</select>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div id="wetchatBodyDiv" style="padding-top: 0px" class="tab-content">
+	<div id="wetchatToMatch" class="tab-pane in active">
+		<h3 class="row header smaller lighter blue">
+			<form class="form-inline">
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">盘口</span>
+					<select id="handicap_wechat_total" name="handicap_wechat_total"
+						class="chosen-select form-control"
+						style="height: 32px; width: 78%;">
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">会员名</span> <input
+						id="member_wechatToMatch" class="input-large " type="text"
+						style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">订单号</span>
+					<input id="orderNo_wechatToMatch" class="input-large " type="text"
+						style="height: 32px; width: 73%;" />
+				</div>
+
+				<div class="col-sm-12" style="height: 2px;"></div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">金额</span>
+					<input id="fromMoney_wechatToMatch" onkeyup="clearNoNum(this)"
+						type="text" class="form-control input-small"
+						style="height: 32px; width: 34.5%;"> <span
+						style="width: 0%; display: inline" class="">~</span> <input
+						id="toMoney_wechatToMatch" onkeyup="clearNoNum(this)" type="text"
+						class="form-control input-small"
+						style="height: 32px; width: 34.5%;">
+				</div>
+				<!--<div class="col-sm-3">-->
+					<!--<span style="width: 67.59px"-->
+						<!--class="label label-lg label-primary arrowed-right">存款人</span> <input-->
+						<!--id="payer_wechatToMatch" class="input-large " type="text"-->
+						<!--style="height: 32px; width: 73%;" />-->
+				<!--</div>-->
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">微信号</span>
+					<input id="wechatNumber" class="input-large " type="text"
+						style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<span style="width: 54.59px;" class="label label-lg label-primary arrowed-right"> 时间</span>
+					<input id="time_wechat_total" name="timeScope_wechatNotMatched"
+								   class="input-large date-range-picker" type="text"
+								   style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<!-- <span class="label label-lg label-primary arrowed-right">类型</span>
+                     <label class="inline">
+                         <input name="order_wechatToMatch" class="ace"
+                                id="order_wechatToMatch" type="checkbox" value="0">
+                         <span class="lbl">提单</span>
+                     </label>
+                     <label class="inline">
+                         <input name="flow_wechatToMatch" class="ace"
+                                id="flow_wechatToMatch" type="checkbox" value="1">
+                         <span class="lbl">流水</span>
+                     </label> -->
+					<span class="pull-left">
+						<button class="btn btn-xs btn-white btn-info btn-bold "
+							id="searchBtnWechatToMatch" type="button"
+							onclick="queryMatchingWechat();">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+						</button>
+					</span>
+					<span class="pull-left">
+						<button class="btn btn-xs btn-white btn-info btn-bold "
+							id="resetBtnWechatToMatch" type="button" onclick="_search();">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>重置
+						</button>
+					</span>
+				</div>
+			</form>
+		</h3>
+		<!--  <div align="center" class="col-xs-12" id="matchPrompt"
+			style="color: #ff3749; font-size: 18px;"></div>-->
+		<table id="simple-table" class="table table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th>所属盘口</th>
+					<th class="center">微信号</th>
+					<th class="center">状态</th>
+					<th>最新抓取时间</th>
+					<th class="detail-col" style="width: 100px">待处理流水</th>
+				</tr>
+			</thead>
+			<tbody id="wechat_total_tbody">
+
+			</tbody>
+		</table>
+		<!-- 分页 -->
+		<div id="wechat_total_page"></div>
+	</div>
+	
+	<!-- ----------------------------------------------------未匹配------------------------------------------------------------ -->
+	<div id="wetchatNotMatched" class="tab-pane">
+		<h3 class="row header smaller lighter blue">
+			<form class="form-inline">
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">盘口</span>
+					<select id="handicap_wechatNotMatched" name="handicap_wechatNotMatched"
+						class="chosen-select form-control"
+						style="height: 32px; width: 78%;">
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<span  class="label label-lg label-primary arrowed-right">会员名</span> <input
+						id="member_wechatNotMatched" class="input-large " type="text"
+						style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">订单号</span>
+					<input id="orderNo_wechatNotMatched" class="input-large " type="text"
+						style="height: 32px; width: 73%;" />
+				</div>
+
+				<div class="col-sm-12" style="height: 2px;"></div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">金额</span>
+					<input id="fromMoney_wechatNotMatched" onkeyup="clearNoNum(this)"
+						type="text" class="form-control input-small"
+						style="height: 32px; width: 34.5%;"> <span
+						style="width: 0%; display: inline" class="">~</span> <input
+						id="toMoney_wechatNotMatched" onkeyup="clearNoNum(this)" type="text"
+						class="form-control input-small"
+						style="height: 32px; width: 34.5%;">
+				</div>
+				<!--<div class="col-sm-3">-->
+					<!--<span style="width: 67.59px"-->
+						<!--class="label label-lg label-primary arrowed-right">存款人</span> <input-->
+						<!--id="payer_wechatNotMatched" class="input-large " type="text"-->
+						<!--style="height: 32px; width: 73%;" />-->
+				<!--</div>-->
+				<div class="col-sm-3">
+					<span style="width: 54.59px;" class="label label-lg label-primary arrowed-right"> 时间
+					</span> <input id="timeScope_wechatNotMatched" name="timeScope_wechatNotMatched"
+								   class="input-large date-range-picker" type="text"
+								   style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">微信号</span>
+					<input id="payer_wechatNo_wechatNotMatched" class="input-large "
+						type="text" style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<span class="pull-left">
+						<button onclick="queryNotMatched()"
+							class="btn btn-xs btn-white btn-info btn-bold "
+							id="searchBtnNotMatched" type="button">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+						</button>
+					</span>
+					<span class="pull-left">
+						<button class="btn btn-xs btn-white btn-info btn-bold "
+							id="resetBtnNotMatched" type="button">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>重置
+						</button>
+					</span>
+				</div>
+			</form>
+		</h3>
+		<table class="table table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th>盘口</th>
+					<th>层级</th>
+					<th>会员名</th>
+					<th>订单号</th>
+					<th>金额</th>
+					<th>收款微信号</th>
+					<th>创建时间</th>
+					<th>备注</th>
+				</tr>
+			</thead>
+			<tbody id="tbody_wechatNotMatched">
+
+			</tbody>
+
+		</table>
+		<div id="wechatNotMatched_footPage"></div>
+	</div>
+	
+	
+	<!-- ----------------------------------------------------已匹配------------------------------------------------------------ -->
+	<div id="wetchatMatched" class="tab-pane">
+		<h3 class="row header smaller lighter blue">
+			<form class="form-inline">
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">盘口</span>
+					<select id="handicap_wechatMatched" name="handicap_wechatMatched"
+						class="chosen-select form-control"
+						style="height: 32px; width: 78%;">
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<span  class="label label-lg label-primary arrowed-right">会员名</span> <input
+						id="member_wechatMatched" class="input-large " type="text"
+						style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">订单号</span>
+					<input id="orderNo_wechatMatched" class="input-large " type="text"
+						style="height: 32px; width: 73%;" />
+				</div>
+
+				<div class="col-sm-12" style="height: 2px;"></div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">金额</span>
+					<input id="fromMoney_wechatMatched" onkeyup="clearNoNum(this)"
+						type="text" class="form-control input-small"
+						style="height: 32px; width: 34.5%;"> <span
+						style="width: 0%; display: inline" class="">~</span> <input
+						id="toMoney_wechatMatched" onkeyup="clearNoNum(this)" type="text"
+						class="form-control input-small"
+						style="height: 32px; width: 34.5%;">
+				</div>
+				<!--<div class="col-sm-3">-->
+					<!--<span style="width: 67.59px"-->
+						<!--class="label label-lg label-primary arrowed-right">存款人</span> <input-->
+						<!--id="payer_wechatMatched" class="input-large " type="text"-->
+						<!--style="height: 32px; width: 73%;" />-->
+				<!--</div>-->
+				<div class="col-sm-3">
+					<span style="width: 54.59px;" class="label label-lg label-primary arrowed-right"> 时间
+					</span> <input id="timeScope_wechatMatched" name="timeScope_wechatMatched"
+								   class="input-large date-range-picker" type="text"
+								   style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">微信号</span>
+					<input id="payer_wechatNo_wechatMatched" class="input-large "
+						type="text" style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<span class="pull-left">
+						<button onclick="queryMatched()"
+							class="btn btn-xs btn-white btn-info btn-bold "
+							id="searchBtnMatched" type="button">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+						</button>
+					</span>
+					<span class="pull-left">
+						<button class="btn btn-xs btn-white btn-info btn-bold "
+							id="resetBtnMatched" type="button">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>重置
+						</button>
+					</span>
+				</div>
+			</form>
+		</h3>
+		<table class="table table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th>盘口</th>
+					<th>层级</th>
+					<th>会员名</th>
+					<th>订单号</th>
+					<th>金额</th>
+					<th>收款微信号</th>
+					<th>创建时间</th>
+					<th>匹配时间</th>
+					<th>耗时</th>
+					<th>备注</th>
+				</tr>
+			</thead>
+			<tbody id="tbody_wechatMatched">
+
+			</tbody>
+
+		</table>
+		<div id="wechatMatched_footPage"></div>
+	</div>
+
+	<!-- --------------------------------------------------未认领------------------------------------------------------------------- -->
+	<div id="wetchatUnClaim" class="tab-pane">
+		<h3 class="row header smaller lighter blue">
+			<form class="form-inline">
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">盘口</span>
+					<select id="handicap_wetchatUnClaim" name="handicap_wetchatUnClaim"
+						class="chosen-select form-control"
+						style="height: 32px; width: 78%;">
+					</select>
+				</div>
+				<!--<div class="col-sm-3">-->
+					<!--<span class="label label-lg label-primary arrowed-right">存款人</span>-->
+					<!--<input id="member_wetchatUnClaim" class="input-large " type="text"-->
+						<!--style="height: 32px; width: 73%;" />-->
+				<!--</div>-->
+				<!---->
+				<div class="col-sm-3">
+					<span style="width: 54.95px;" class="label label-lg label-primary arrowed-right"> 时间
+					</span> <input id="timeScope_wetchatUnClaim"
+								   name="timeScope_wetchatUnClaim"
+								   class="input-large date-range-picker" type="text"
+								   style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-12" style="height: 2px;"></div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">金额</span>
+					<input id="fromMoney_wetchatUnClaim" onkeyup="clearNoNum(this)"
+						type="text" class="form-control input-small"
+						style="height: 32px; width: 34.5%;"> <span
+						style="width: 0%; display: inline" class="">~</span> <input
+						id="toMoney_wetchatUnClaim" onkeyup="clearNoNum(this)" type="text"
+						class="form-control input-small"
+						style="height: 32px; width: 34.5%;">
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">微信号</span>
+					<input id="payer_wechatNo_wetchatUnClaim" class="input-large "
+						type="text" style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<span class="pull-left">
+						<button onclick="queryUnClaim()"
+							class="btn btn-xs btn-white btn-info btn-bold "
+							id="searchBtnWetchatUnClaim" type="button">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+						</button>
+					</span>
+					<span class="pull-left">
+						<button class="btn btn-xs btn-white btn-info btn-bold "
+							id="resetBtnWetchatUnClaim" type="button">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>重置
+						</button>
+					</span>
+				</div>
+			</form>
+		</h3>
+		<table class="table table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th>盘口</th>
+					<th>收款微信号</th>
+					<th>金额</th>
+					<th>交易时间</th>
+					<th>抓取时间</th>
+					<th>备注</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody id="tbody_wetchatUnClaim">
+
+			</tbody>
+
+		</table>
+		<div id="wetchatUnClaim_footPage"></div>
+	</div>
+
+	<!---------------------------------------------已取消-------------------------------------------------------------------------  -->
+	<div id="wetchatCanceled" class="tab-pane">
+		<h3 class="row header smaller lighter blue">
+			<form class="form-inline">
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">盘口</span>
+					<select id="handicap_wetchatCanceled"
+						name="handicap_wetchatCanceled" class="chosen-select form-control"
+						style="height: 32px; width: 78%;">
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">会员名</span>
+					<input id="member_wetchatCanceled" class="input-large " type="text"
+						style="height: 32px; width: 73%;" />
+				</div>
+
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">时间</span>
+					<input id="timeScope_wetchatCanceled"
+						name="timeScope_wetchatCanceled"
+						class="input-large date-range-picker" type="text"
+						style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-12" style="height: 2px;"></div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">金额</span>
+					<input id="fromMoney_wetchatCanceled" onkeyup="clearNoNum(this)"
+						type="text" class="form-control input-small"
+						style="height: 32px; width: 34.5%;"> <span
+						style="width: 0%; display: inline" class="">~</span> <input
+						id="toMoney_wetchatCanceled" onkeyup="clearNoNum(this)"
+						type="text" class="form-control input-small"
+						style="height: 32px; width: 34.5%;">
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">订单号</span>
+					<input id="orderNo_wetchatCanceled" class="input-large "
+						type="text" style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<span class="pull-left">
+						<button onclick="queryCanceled()"
+							class="btn btn-xs btn-white btn-info btn-bold "
+							id="searchBtnWetchatCanceled" type="button">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+						</button>
+					</span>
+					<span class="pull-left">
+						<button class="btn btn-xs btn-white btn-info btn-bold "
+							id="resetBtnWetchatCanceled" type="button">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>重置
+						</button>
+					</span>
+				</div>
+			</form>
+		</h3>
+		<table class="table table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th>盘口</th>
+					<th>层级</th>
+					<th>收款微信号</th>
+					<th>会员名</th>
+					<th>订单号</th>
+					<th>金额</th>
+					<th>创建时间</th>
+					<th>取消时间</th>
+					<th>备注</th>
+				</tr>
+			</thead>
+			<tbody id="tbody_WetchatCanceled">
+
+			</tbody>
+
+		</table>
+		<div id="wetchatCanceled_footPage"></div>
+	</div>
+</div>
+
+<div style="padding-top: 0px" class="table-detail hide">
+	<div>
+		<table class="table  table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th>选择</th>
+					<th>会员账号</th>
+					<th>金额</th>
+					<th>订单号</th>
+					<th>提单时间</th>
+					<th>备注</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody id="tbody_invoice"></tbody>
+		</table>
+		<div id="invoice_footPage"></div>
+	</div>
+	<div class="row hr-8">
+		<span id="match" style="display: none;"><button class="btn btn-sm btn-purple" onclick="_beforeMatch(this);"><i class="ace-icon fa fa-check-circle bigger-80">匹配</i></button></span>
+	</div>
+	<div>
+		<table class="table  table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th>选择</th>
+					<!-- <th>存款人</th> -->
+					<th>金额</th>
+					<th>支付时间</th>
+					<th>抓取时间</th>
+					<th>摘要</th>
+					<th>备注</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody id="tbody_banklog"></tbody>
+		</table>
+		<div id="banklog_footPage"></div>
+	</div>
+</div>
+
+
+<!---需要匹配的记录 和 流水 信息 modal--->
+<div class="modal fade  in" id="toMatchInfo" aria-hidden="false"
+	style="display: none;">
+	<input name="id" id="pp" type="hidden" value="11">
+	<div style="" class="modal-dialog">
+		<div class="modal-content">
+			<div style="padding: 0px 0px 0px 0px"
+				class="modal-header text-center">
+				<h2>匹配确认信息</h2>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="tab-content">
+							<span class="label label-purple">提单信息</span>
+							<p>
+								<tbody id="sysRequestBody">
+									<tr>
+										<td><span style="color: blue;">充值金额:</span><span
+											id="sysRequestBody_amount"
+											style="color: red; padding-left: 10px; font-size: 20px; font-weight: bolder"></span>
+										</td>
+									</tr>
+									</br>
+									<tr>
+										<td><span>提单号:</span><span id="sysRequestBody_orderNo"
+											style="padding-left: 10px"></span></td>
+									</tr>
+									</br>
+									<tr>
+										<td><span>创建时间:</span><span id="sysRequestBody_time"
+											style="padding-left: 10px"></span></td>
+									</tr>
+									</br>
+								</tbody>
+							</p>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="tab-content">
+							<span class="label label-purple">银行流水</span>
+							<p>
+								<tbody id="bankFlowBody">
+									<tr>
+										<td><span style="color: blue;">存入金额:</span><span
+											id="bankFlowBody_amount"
+											style="color: red; padding-left: 10px; font-size: 20px; font-weight: bolder"></span>
+										</td>
+									</tr>
+									</br>
+									<tr>
+										<td><span>摘 要:</span><span id="bankFlowBody_flowNo"
+											style="padding-left: 10px"></span></td>
+									</tr>
+									</br>
+									<tr>
+										<td><span>交易时间:</span><span id="bankFlowBody_time"
+											style="padding-left: 10px"></span></td>
+									</tr>
+									</br>
+								</tbody>
+							</p>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<span style="display: none" id="inconsistentAmountMatchInfo1">
+							<i class="fa fa-asterisk red" aria-hidden="true"></i> <label>会员账号</label>
+							<input style="width: 34.2%"
+							id="inconsistentAmountMatchMemberAccount" readonly="readonly"
+							type="text"> <i style="margin-left: 25px;"
+							class="fa fa-asterisk red" aria-hidden="true"></i> <label>存款人的姓名</label><input
+							style="width: 30.1%; color: red;" readonly="readonly"
+							id="inconsistentAmountMatchName" type="text">
+						</span> <span style="display: none" id="inconsistentAmountMatchInfo2">
+							<i class="fa fa-asterisk red" aria-hidden="true"></i> <label>存入金额</label>
+							<input style="width: 34.2%; color: red;"
+							id="inconsistentAmountMatchAmount" readonly="readonly"
+							type="text"> <i style="margin-left: 25px;"
+							class="fa fa-asterisk red" aria-hidden="true"></i> <label>公司收款微信</label><input
+							style="width: 30.1%; color: red;" readonly="readonly"
+							id="inconsistentAmountMatchBankAccount" type="text">
+						</span> <span style="display: none" id="inconsistentAmountMatchInfo3">
+							<i class="fa fa-asterisk red" aria-hidden="true"></i> <label
+							style="margin-left: 28px;">备注</label> <input style="width: 34.2%"
+							id="inconsistentAmountMatchRemark" type="text"
+							list="inconsistentAmountMatchRemarkList"> <datalist
+								id="inconsistentAmountMatchRemarkList" style="width: 34.2%">
+
+							</datalist> <i style="margin-left: 25px;" class="fa fa-asterisk red"
+							aria-hidden="true"></i> <label style="margin-left: 56px;">差额</label><input
+							style="width: 30%; color: red;" readonly="readonly"
+							id="inconsistentAmountMatchBalanceGap" type="text">
+						</span> <span style="display: none;" id="inconsistentAmountMatchInfo4">
+							<i class="fa fa-asterisk red" aria-hidden="true"></i> <label>存款类型</label>
+							<input style="width: 2%;" type="radio" name="makeUpDepositType"
+							value="1">网银转帐 <input style="width: 3%;" type="radio"
+							name="makeUpDepositType" value="2">ATM自动柜员机 <input
+							style="width: 2%;" type="radio" name="makeUpDepositType"
+							value="3">ATM现金入款 <input style="width: 3%;" type="radio"
+							name="makeUpDepositType" value="4">银行柜台 <input
+							style="width: 2%;" type="radio" name="makeUpDepositType"
+							value="5">手机银行 <input style="width: 3%;" type="radio"
+							name="makeUpDepositType" value="10">其它
+						</span> <br> <span id="commonMatchInfo" style="display: block">
+							<i class="fa fa-asterisk red" aria-hidden="true"></i> <label>备注(必填)</label>
+							<input style="width: 85.2%" name="matchRemark" type="text"
+							list="commonMatchRemark"> <datalist
+								id="commonMatchRemark" style="width: 85.4%">
+							</datalist>
+						</span>
+
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<input type="hidden" id="sysRequestId_match"> <input
+					type="hidden" id="bankFlowId_match"> <input type="hidden"
+					id="orderNo_match"> <input type="hidden"
+					id="memberCode_match"> <input type="hidden"
+					id="amount_match"> <input type="hidden"
+					id="memberName_match"> <input type="hidden"
+					id="memberAccount_match"> <input type="hidden"
+					id="companyAccount_match"> <input type="hidden"
+					id="accountId_match"> <label class="pull-left"><span
+					id="balanceGapPrompt" style="color: red;">注意:差额=提单金额-银行流水金额</span></label>
+				<label><span id="remarkPrompt"
+					style="color: red; display: none;">请填写备注再提交</span></label>
+				<button class="btn btn-primary" onclick="_executeMatch();"
+					type="button">提交</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!---客服发消息 添加备注 操作modal--->
+<div id="customer_modal" class="modal fade">
+	<div class="modal-dialog modal-middle">
+		<div class="modal-content">
+			<div class="modal-header text-center no-padding">
+				<div class="table-header">
+					<button id="customerTitle" type="button" class="close"
+						data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					备注信息
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<span><i class="fa fa-asterisk red" aria-hidden="true"></i><label>备注(必填)</label>
+					<input style="width: 86.4%" id="customer_remark" type="text"
+					list="commonCancelRemark"> <datalist
+						id="commonCancelRemark" style="width: 86.4%">
+
+					</datalist> </span>
+			</div>
+			<div class="modal-footer">
+				<input type="hidden" id="sysRequestId_customer"> <input
+					type="hidden" id="bankFlowId_customer"> <input
+					type="hidden" id="incomeType_customer"> <input
+					type="hidden" id="operateType_customer"> <label
+					class="pull-left selectEvent"> 选择处理结果： </label> <label
+					class="pull-left selectEvent"
+					style="display: none; margin-right: 5px"
+					onclick="_checkClickLabelCompanyIn(this);"> <input
+					onclick="window.event.stopPropagation();" name="selectEvent1"
+					type="radio" value="4">已处理
+				</label> <label class="pull-left selectEvent" style="display: none;"
+					onclick="_checkClickLabelCompanyIn(this);"> <input
+					onclick="window.event.stopPropagation();" name="selectEvent1"
+					type="radio" value="5">手续费
+				</label> <label><span id="remarkPrompt_customer"
+					style="color: red; display: none;">请填写备注再提交</span></label>
+				<button class="btn btn-primary" id="summit_cancel" type="button"
+					onclick="_customerExecute();">确定</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!---取消 提单--->
+<div id="cancel_modal" class="modal fade">
+	<div class="modal-dialog modal-middle">
+		<div class="modal-content">
+			<div class="modal-header text-center no-padding">
+				<div class="table-header">
+					<button id="cancel_btn" type="button" class="close"
+						data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					取消备注信息
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<span><i class="fa fa-asterisk red" aria-hidden="true"></i><label>备注</label>
+					<input style="width: 92.5%" id="cancel_remark" type="text">
+				</span>
+			</div>
+			<div class="modal-footer">
+				<input type="hidden" id="cancel_sysRequestId"> <input
+					type="hidden" id="cancel_handicapId"> <input type="hidden"
+					id="cancel_orderNo"> <input type="hidden"
+					id="cancel_memberCode"> <label><span
+					id="cancel_remarkPrompt" style="color: red; display: none;">请填写备注再提交</span></label>
+				<button class="btn btn-primary" id="cancel_confirm" type="button"
+					onclick="_confirmConcel();">确定</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--补提单信息-->
+<div id="makeUpFlow" class="modal fade" aria-hidden="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 500px;">
+            <div class="modal-header no-padding text-center">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    补提单信息
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input type="hidden" id="bankLogIdToReBuild">
+                        <input type="hidden" id="createTime">
+                        <input type="hidden" id="handicap">
+                        <span style="padding-top: 10px;color: blue;font-size:20px;">会员账号</span><span
+                        style="padding-top: 10px;color: red;">(*必填)</span>
+                        <input style="width: 100%;color: tomato;" id="makeUpMemberAccount" type="text"
+                               placeholder="会员账号">
+                        <span style="padding-top: 10px;color: blue;font-size:20px;">存入金额</span>
+                        <input style="width: 100%;color: tomato;" type="text" id="makeUpAmount" placeholder="存入金额"
+                               onkeyup="clearNoNum(this);">
+                        <span style="padding-top: 10px;color: blue;font-size:20px;">微信入款账号</span>
+                        <input style="width: 100%;color: tomato;" type="text" id="makeUpAccount" placeholder="公司入款账号">
+                        <span style="padding-top: 10px;color: blue;font-size:20px;">备注</span><span
+                        style="padding-top: 10px;color: red;">(*必填)</span>
+                        <input style="width: 100%;color: tomato;" type="text" id="makeUpRemark" placeholder="备注">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="makeUpPrompt" style="display: none;color: red;"></span>
+                <button class="btn btn-primary" onclick="_confirmAddIncomeRequest();" type="button">确认</button>
+                <button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--私有JS加载Start-->
+<script type="text/javascript"
+	src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript"
+	src="../javascript/common/common_getInfo.js"></script>
+<!--私有JS加载 End-->

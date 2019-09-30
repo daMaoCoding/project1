@@ -1,0 +1,105 @@
+<div class="row col-xs-12 col-sm-12 widget-container-col ui-sortable" id="page_bankType_maintain">
+	<!-- 查询条件 -->
+	<label class="control-label bolder blue">银行类别</label>&nbsp;&nbsp;
+	<input type="text"  class="input-sm" id="search_bankType_like"/>
+	<label onclick="reloadAll();" class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold">
+		<i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+	</label>
+	<!-- 同行转账列表 -->
+	<div class="widget-box ui-sortable-handle" id="peer_widget">
+		<div class="widget-header">
+			<h5 class="widget-title" style="color: red;">同行转账&nbsp;(&nbsp;假设:工商银行开启同行转账，工商银行下发，出款将同行转账，其他银行处于维护状态 &nbsp;)</h5>
+			&nbsp;&nbsp;
+			<label class="pos-rel">
+				<input type="checkbox" class="ace" id="checkedAll_peer_widget">
+				<span class="lbl">&nbsp;全选</span>
+			</label>
+			<div class="widget-toolbar">
+				<a href="#" data-action="fullscreen" class="orange2">
+					<i class="ace-icon fa fa-expand"></i>
+				</a>
+				<a onclick="loadPeerBankList();" title="重置">
+					<i class="ace-icon fa fa-refresh"></i>
+				</a>
+				<a href="#" data-action="collapse">
+					<i class="ace-icon fa fa-chevron-up"></i>
+				</a>
+			</div>
+		</div>
+		<div class="widget-body">
+			<div class="widget-main col-sm-12" id="bankTypeList" style="background-color:#fff;">
+			</div>
+			<div class="widget-toolbox padding-8 clearfix">
+				<button class="btn btn-xs btn-success pull-right contentRight" contentright='SystemSetting:Update:*' type="button" onclick="savePeerBankList()">
+					<i class="ace-icon fa fa-check icon-on-right"></i>
+					<span class="bigger-110">保存</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!-- 银行维护列表-->
+	<div class="widget-box ui-sortable-handle" id="income_widget">
+		<div class="widget-header">
+			<h5 class="widget-title" style="color: red;">银行维护&nbsp;(&nbsp;假设:工商银行开启银行维护，则工商银行将暂停出款&nbsp;）</h5>
+			&nbsp;&nbsp;
+			<label class="pos-rel">
+				<input type="checkbox" class="ace" id="checkedAll_income_widget">
+				<span class="lbl">&nbsp;全选</span>
+			</label>
+			<div class="widget-toolbar">
+				<button class="btn btn-xs btn-success contentRight" contentright='SystemSetting:Update:*' type="button" onclick="showModal_addBankType()">
+					<i class="ace-icon fa fa-plus icon-on-right"></i>
+					<span class="bigger-110">新增</span>
+				</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="#" data-action="fullscreen" class="orange2">
+					<i class="ace-icon fa fa-expand"></i>
+				</a>
+				<a onclick="loadBankList()" title="重置">
+					<i class="ace-icon fa fa-refresh"></i>
+				</a>
+				<a href="#" data-action="collapse">
+					<i class="ace-icon fa fa-chevron-up"></i>
+				</a>
+			</div>
+		</div>
+		<div class="widget-body">
+			<div class="widget-main col-sm-12" id="bankTypeList" style="background-color:#fff;">
+			</div>
+			<div class="widget-toolbox padding-8 clearfix">
+				<button class="btn btn-xs btn-success pull-right contentRight" contentright='SystemSetting:Update:*' type="button" onclick="saveBankList()">
+					<i class="ace-icon fa fa-check icon-on-right"></i>
+					<span class="bigger-110">保存</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="addBankTypeModal" class="modal fade" aria-hidden="false" >
+	<div class="modal-dialog modal-lg"  style="width:300px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					新增出款银行
+				</div>
+				<div class="table-body">
+					<br/>
+					<label class="control-label bolder blue">银行类别&nbsp;</label>
+					<input class="input-sm" type="text" name="bankTypeName">
+					<br/>
+					<br/>
+				</div>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-success"  type="button" onclick="do_addBankType()">新增</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<button class="btn btn-danger"  type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>

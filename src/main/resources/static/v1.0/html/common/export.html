@@ -1,0 +1,65 @@
+<div>
+
+<!-- 导出选择弹出框 -->
+<div id="choiceExportModal_InOut" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<input type="hidden" id="operaType"/>
+	<input type="hidden" id="exBankType"/>
+	<div class="modal-dialog modal-lg" style="width:400px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>导出
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="widget-box">
+					<div class="widget-header hide">
+						<h4 class="smaller">
+							系统明细
+						</h4>
+					</div>
+					<div class="widget-body">
+						<div class="widget-main">
+							<label class="control-label bolder blue">时间</label>&nbsp;&nbsp;
+							<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+							<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime_export" style="height: 32px;width:290px;"/>
+							<div class="control-group">
+								<div class="radio">
+									<span class="lbl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									<label>
+										<input name="fieldval_export" type="radio" class="ace" value="today">
+										<span class="lbl">今日</span>
+									</label>
+									<label>
+										<input name="fieldval_export" type="radio" class="ace" value="yesterday">
+										<span class="lbl">昨日</span>
+									</label>
+									<label>
+										<input name="fieldval_export" type="radio" class="ace" value="thisMonth">
+										<span class="lbl">本月</span>
+									</label>
+								</div>
+							</div>
+							<div style="text-align:center;">
+								<a class="btn btn-sm btn-success" id="sysLink">
+									<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出系统明细
+								</a>&nbsp;&nbsp;
+								<a class="btn btn-sm btn-success" id="bankLogLink">
+									<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出银行流水
+								</a>&nbsp;&nbsp;
+								<a class="btn btn-sm btn-success hidden" id="incomeIssiuedLink">
+									<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出下发银行卡明细
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</div>

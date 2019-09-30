@@ -1,0 +1,611 @@
+
+	<div class="main-content">
+		<div class="main-content-inner">
+			<div class="page-content" id="fczl">
+				<div class="row">
+					<div class="col-xs-12">
+						<h3 class="row header smaller lighter blue">
+							<div class="col-sm-10" style="width: 95%;">
+								<form class="form-inline" style="width: 95%">
+									<span class="label label-lg label-pink arrowed-right">盘口</span>
+									<select id="handicap" onchange="changeLevel();search();" name="handicap" class="chosen-select form-control"   style="height:32px" >
+									</select>
+									<span style="display: none;" class="label label-lg label-primary  arrowed-right">层级</span>
+									<select style="width: 90px;display: none;" onchange="search();" id="level" name="level" class="chosen-select form-control"   style="height:32px" >
+									</select>
+									<span class="label label-lg label-purple arrowed-right">收款账号</span>
+									<input id="account" name="account" style="width: 135px;" class="form-control" placeholder="收款账号" type="text"/>
+									<span class="label label-lg label-purple arrowed-right">开户人</span>
+									<input id="accountOwner" name="accountOwner" style="width: 135px;" class="form-control" placeholder="开户人" type="text"/>
+									</br>
+									<div class="input-group">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar bigger-110"></i>
+										</span>
+										<input class="form-control date-range-picker" onclick="clearRadioValue('form-field-checkbox');" style="height: 32px;width:280px;" placeholder="自定义时间段" type="text" id="startAndEndTime" name="startAndEndTime" />
+									</div>
+									<!-- <label class="inline">
+										<input type="radio" value="today" name="form-field-checkbox" class="ace" />
+										<span class="lbl"> 今日</span>
+									</label>  -->
+									<label class="inline">
+										<input type="radio" checked="checked" value="thisWeek" name="form-field-checkbox" class="ace" />
+										<span class="lbl"> 昨日</span>
+									</label>
+									<label class="inline">
+										<input type="radio" value="week" name="form-field-checkbox" class="ace"/>
+										<span class="lbl"> 本周</span>
+									</label>
+									<label class="inline">
+										<input type="radio" value="lastweek" name="form-field-checkbox" class="ace"/>
+										<span class="lbl"> 上周</span>
+									</label>
+									<label class="inline">
+										<input type="radio" value="thisMonth" name="form-field-checkbox" class="ace" />
+										<span class="lbl"> 本月</span>
+									</label>
+									<span class="label label-lg label-purple arrowed-right">银行类别</span>
+									 <select onchange="search();" id="bankType" name="bankType" class="chosen-select form-control" style="height:32px;width:100px;">
+		                                 <option value="">请选择</option>
+		                             </select>
+								</form>
+							</div><!-- /.col -->
+							<label class="pull-right inline">
+								<button id="searhByCondition" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+									<i class="ace-icon fa fa-search bigger-100 green"></i>
+									查询
+								</button>
+							</label>
+						</h3>
+						<!-- #section:elements.tab.position -->
+						<div class="tabbable">
+							<ul class="nav nav-tabs" id="myTab3">
+								<li class="active">
+									<a id="bank" data-toggle="tab" onclick="changevalue(0);" href="#home3">
+										<i class="pink ace-icon fa 	fa-credit-card bigger-110"></i>入款银行卡
+									</a>
+								</li>
+								
+								<li style="display: none;">
+									<a id="sendCard" data-toggle="tab" onclick="changevalue(4);" href="#sendCardCent">
+										<i class="pink ace-icon fa 	fa-credit-card bigger-110"></i>下发银行卡
+									</a>
+								</li>
+								
+								<li style="display: none;">
+									<a id="standbyCard" data-toggle="tab" onclick="changevalue(5);" href="#standbyCardCent">
+										<i class="pink ace-icon fa 	fa-credit-card bigger-110"></i>备用银行卡
+									</a>
+								</li>
+							<!-- 	
+								<li>
+									<a id="clientCard" data-toggle="tab" onclick="changevalue(8);" href="#clientCardCent">
+										<i class="pink ace-icon fa 	fa-credit-card bigger-110"></i>客户绑定卡
+									</a>
+								</li>
+								 -->
+								<li>
+									<a id="thirdpartypay" data-toggle="tab" onclick="changevalue(3);" href="#thirdparty">
+										<i class="ace-icon fa fa-briefcase"></i>第三方
+									</a>
+								</li>
+
+								<!-- <li>
+									<a id="weixin" data-toggle="tab" onclick="changevalue(1);" href="#profile3">
+										<i class="blue ace-icon fa fa-comments-o bigger-110"></i>微信
+									</a>
+								</li> -->
+
+								<!-- <li>
+									<a id="zhifubao" data-toggle="tab" onclick="changevalue(2);" href="#alipay">
+										<i class="ace-icon fa fa-rocket"></i>支付宝
+									</a>
+								</li> -->
+								<li onclick="changeTabInit('FastSearch',this)" >
+								      <a data-toggle="tab" href="#FastSearch_tab">
+								          <i class="ace-icon fa fa-rocket bigger-110 red"></i>快捷查询
+								      </a>
+								</li>
+							</ul>
+
+							<div class="tab-content">
+								<div id="home3" class="tab-pane in active">
+									<span style="float:right;">
+											<a onclick="showExportModal_InOut(-3,'income')" type="button"  class="btn btn-xs btn-white btn-primary btn-bold">
+	                                         <i class="ace-icon fa fa-list  bigger-100 blue"></i>导出</a>
+									</span>
+									<table id="dynamic-table" class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+											<tr>
+												<th style="width: 3%">序号</th>
+												<th style="width: 5%">盘口</th>
+												<th style="width: 30%">层级</th>
+												<th style="width: 15%">收款账号</th>
+												<th style="width: 8%">余额</th>
+												<th style="width: 6%">金额</th>
+												<th style="width: 8%">笔数</th>
+												<th style="width: 20%">操作</th>
+											</tr>
+										</thead>
+										<tbody id="total_tbody_Bankcard">
+											
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<!-- 分页 -->
+									<div id="fininStatBankcardPage"></div>
+								</div>
+								
+								<div id="sendCardCent" class="tab-pane">
+									<span style="float:right;">
+										<a onclick="showExportModal_InOut(0,'income')" type="button"  class="btn btn-xs btn-white btn-primary btn-bold">
+                                          <i class="ace-icon fa fa-list  bigger-100 blue"></i>导出</a>
+									</span>
+									<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+										<tr>
+											<th style="width: 3%">序号</th>
+											<th>盘口</th>
+											<th>收款账号</th>
+											<th>余额</th>
+											<th>金额</th>
+											<th style="display: none;">手续费</th>
+											<th>笔数</th>
+											<th>操作</th>
+										</tr>
+										</thead>
+										<tbody id="total_tbody_sendCardCent">
+											
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<!-- 分页 -->
+									<div id="fininStatSendCardCentPage"></div>
+								</div>
+								
+								<div id="standbyCardCent" class="tab-pane">
+									<span style="float:right;">
+										<a onclick="showExportModal_InOut(-1,'income')" type="button"  class="btn btn-xs btn-white btn-primary btn-bold">
+                                          <i class="ace-icon fa fa-list  bigger-100 blue"></i>导出</a>
+									</span>
+									<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+										<tr>
+											<th style="width: 3%">序号</th>
+											<th>盘口</th>
+											<th>收款账号</th>
+											<th>余额</th>
+											<th>金额</th>
+											<th style="display: none;">手续费</th>
+											<th>笔数</th>
+											<th>操作</th>
+										</tr>
+										</thead>
+										<tbody id="total_tbody_standbyCard">
+											
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<!-- 分页 -->
+									<div id="fininStatStandbyCardPage"></div>
+								</div>
+								
+								
+								<div id="clientCardCent" class="tab-pane">
+									<span style="float:right;">
+										<a onclick="showExportModal_InOut(-5,'income')" type="button"  class="btn btn-xs btn-white btn-primary btn-bold">
+                                          <i class="ace-icon fa fa-list  bigger-100 blue"></i>导出</a>
+									</span>
+									<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+										<tr>
+											<th style="width: 3%">序号</th>
+											<th>盘口</th>
+											<th>收款账号</th>
+											<th>余额</th>
+											<th>金额</th>
+											<th style="display: none;">手续费</th>
+											<th>笔数</th>
+											<th>操作</th>
+										</tr>
+										</thead>
+										<tbody id="total_tbody_clientCard">
+											
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<!-- 分页 -->
+									<div id="fininclientCardPage"></div>
+								</div>
+								
+								
+								
+
+								<div id="profile3" class="tab-pane">
+									<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+										<tr>
+											<th>盘口</th>
+											<th>收款账号</th>
+											<th>金额</th>
+											<th style="display: none;">手续费</th>
+											<th>笔数</th>
+											<th>操作</th>
+										</tr>
+										</thead>
+										<tbody id="total_tbody_WeChat">
+											
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<!-- 分页 -->
+									<div id="fininStatWeChatPage"></div>
+								</div>
+
+								<div id="alipay" class="tab-pane">
+									<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+										<tr>
+											<th style="width: 9%">盘口</th>
+											<th style="width: 15%">收款账号</th>
+											<th style="width: 6%">金额</th>
+											<th style="width: 9%">笔数</th>
+											<th style="width: 11%">操作</th>
+										</tr>
+										</thead>
+										<tbody id="total_tbody_Paytreasure">
+											
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<!-- 分页 -->
+									<div id="fininStatPaytreasurePage"></div>
+								</div>
+								
+								
+								<div id="thirdparty" class="tab-pane">
+									<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+										<tr>
+											<th style="width: 3%">序号</th>
+											<th style="width: 9%">盘口</th>
+											<th style="width: 40%">层级</th>
+											<th style="width: 15%">第三方</th>
+											<th style="width: 8%">余额</th>
+											<th style="width: 7%">笔数/金额</th>
+											<th style="width: 6%">手续费</th>
+											<th style="width: 16%">操作</th>
+										</tr>
+										</thead>
+										<tbody id="total_tbody_Thethirdparty">
+											
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<!-- 分页 -->
+									<div id="fininStatThethirdpartyPage"></div>
+								</div>
+								
+								<!-- 快速搜索 -->
+								<div id="FastSearch_tab" class="tab-pane">
+									<div id="FastSearch_accountFilter" class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left">
+										<span class="label label-lg label-purple arrowed-right">订单号</span>
+										<input type="text" style="height:32px" name="orderNo" class="input-medium" placeholder="订单号" />
+										&nbsp;&nbsp;
+										<span class="label label-lg label-purple arrowed-right">会员名</span>
+										<input type="text" style="height:32px" name="memberUserName" class="input-medium" placeholder="存款账号" />
+										&nbsp;&nbsp;
+										<span class="label label-lg label-purple arrowed-right">存款人</span>
+										<input type="text" style="height:32px" name="memberRealName" class="input-medium" placeholder="会员名" />
+										&nbsp;&nbsp;
+										<label class="pull-right inline">
+											<button id="searchBtn" class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="loadFastSearchList()">
+												<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+											</button>
+										</label>
+										<label onclick="reset('FastSearch_accountFilter');" class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+											</button>&nbsp;
+										</label>
+									</div>
+									<table class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+											<tr>
+												<th style="width:18%;" title="会员姓名 - 存款姓名">存款信息</th>
+												<th style="width:16%;">收款账号</th>
+												<th style="width:7%;">收款银行</th>
+												<th style="width:6%;">收款人</th>
+												<th style="width:10%;">金额</th>
+												<th style="width:12%;">订单号</th>
+												<th style="width:6%;">操作人</th>
+												<th style="width:6%;">确认人</th>
+												<th style="width:6%;">状态</th>
+												<th style="width:13%;">时间</th>
+											</tr>
+										</thead>
+										<tbody></tbody>
+									</table>
+									<div id="FastSearch_tablePage">
+										<div class="noDataTipsPage table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+											<div style="margin-bottom:0px;font-size: 20px;" class="alert alert-success center">请输入查询条件</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+<!-- 导出选择弹出框 -->
+<div id="choiceExportModal" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<input type="hidden" id="exportType"/>
+	<div class="modal-dialog modal-lg" style="width:400px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>导出
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="widget-box">
+					<div class="widget-header">
+						<h4 class="smaller">
+							入款明细
+						</h4>
+					</div>
+					<div class="widget-body">
+						<div class="widget-main">
+							<label class="control-label bolder blue">时间</label>
+							<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+							<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime_sys" style="height: 32px;width:290px;"/>
+							<div class="control-group">
+								<div class="radio">
+									<span class="lbl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									<label>
+										<input name="parentfieldval_sys" type="radio" class="ace" value="today">
+										<span class="lbl">今日</span>
+									</label>
+									<label>
+										<input name="parentfieldval_sys" type="radio" class="ace" value="yesterday">
+										<span class="lbl">昨日</span>
+									</label>
+									<label>
+										<input name="parentfieldval_sys" type="radio" class="ace" value="thisMonth">
+										<span class="lbl">本月</span>
+									</label>
+								</div>
+							</div>
+							<div style="text-align:center;">
+								<a class="btn btn-sm btn-success" id="sysLink" onclick="beforeExport(this,'sys','/r/export/incomeSys');">
+									<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="widget-box hide">
+					<div class="widget-header">
+						<h4 class="smaller">
+							流水明细
+						</h4>
+					</div>
+					<div class="widget-body">
+						<div class="widget-main">
+							<label class="control-label bolder blue">时间</label>
+							<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+							<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime_bank" style="height: 32px;width:290px;"/>
+							<div class="control-group">
+								<div class="radio">
+									<span class="lbl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									<label>
+										<input name="parentfieldval_bank" type="radio" class="ace" value="today">
+										<span class="lbl">今日</span>
+									</label>
+									<label>
+										<input name="parentfieldval_bank" type="radio" class="ace" value="yesterday">
+										<span class="lbl">昨日</span>
+									</label>
+									<label>
+										<input name="parentfieldval_bank" type="radio" class="ace" value="thisMonth">
+										<span class="lbl">本月</span>
+									</label>
+								</div>
+							</div>
+							<div style="text-align:center;">
+								<a class="btn btn-sm btn-success" id="bankLogLink"  onclick="beforeExport(this,'bank','/r/export/exportIncomeBankLog');">
+									<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--流水明细-->
+<div id="modal-logDetail" data-backdrop="static" data-keyboard="false" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:1200px;">
+        <div class="modal-content" >
+            <div class="modal-header text-center no-padding">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">×</span>
+                    </button>
+                   流水明细
+                </div>
+            </div>
+            <div class="  modal-body no-padding">
+                <div style="width: 100%">
+                    <div class="inline  "  style="width: 100%">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">金额</span>
+                        <input id="fromMoney_logDetail" onkeyup="clearNoNum(this)" type="text"
+                               class=" input-small" style="height:32px;width:33%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_logDetail" onkeyup="clearNoNum(this)" type="text"
+                               class="  input-small" style="height:32px;width:33%;">
+                    </div>
+                    <div class="col-sm-5">
+                            <span  class="label label-lg label-primary arrowed-right">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        <input id="timeScope_logDetail" name="timeScope_logDetail" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:72%;"/>
+                    </div>
+                    <div class="col-sm-4 ">
+                        <span style="width:43px;" class="label label-lg label-important">状态</span>
+                        <label class="inline">
+                            <input onclick="_searchForLog();" checked="checked" name="status_logDetail" class="ace" id="status_logDetail_1"
+                                   type="checkbox"
+                                   value="0">
+                            <span class="lbl">未匹配</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_searchForLog();" checked="checked" name="status_logDetail" class="ace" id="status_logDetail_2" type="checkbox"
+                                   value="1">
+                            <span class="lbl">已匹配</span>
+                        </label>
+                        <span class="pull-right">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetSearchLog(); ">
+                                <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置</button>
+                            </label>
+                         </span>
+                        <span class="pull-right">
+                        <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_logDetail" type="button"
+                                onclick="_searchForLog();">
+                            <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                        </button>
+                         </span>
+                    </div>
+                    </div>
+                    <div class="tab-content" >
+                        <div id="newPayTrade_detail" style="padding-top: 0px" class="tab-pane in active">
+                         <table  class="table table-striped table-bordered table-hover" style="margin-bottom: 0px">
+                        <thead>
+                        <tr>
+                            <th>收款账号</th>
+                            <th id="to_account" style="display: none">付款账号</th>
+                            <th>金额</th>
+                            <th>状态</th>
+                            <th>交易时间</th>
+                            <th>抓取时间</th>
+                            <th>摘要</th>
+                            <th id="to_remark" style="display: none">备注</th>
+                        </tr>
+                        </thead>
+                        <tbody id="detail_body">
+                        </tbody>
+                    </table><div id="log_detail_foot"></div></div></div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelDistributionForThird" type="button" data-dismiss="modal"
+                        class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--系统明细-->
+<div id="modal-SysDetail" data-backdrop="static" data-keyboard="false" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:1200px;">
+        <div class="modal-content" >
+            <div class="modal-header text-center no-padding">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">×</span>
+                    </button>
+                   系统明细
+                </div>
+            </div>
+            <div class="  modal-body no-padding">
+                <div style="width: 100%">
+                    <div class="inline  "  style="width: 100%">
+                     <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">订单号</span>
+                        <input id="sysAccount" type="text"
+                               class=" input-small" style="height:32px;width: 129px;">
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">金额</span>
+                        <input id="fromMoney_SysDetail" onkeyup="clearNoNum(this)" type="text"
+                               class=" input-small" style="height:32px;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_SysDetail" onkeyup="clearNoNum(this)" type="text"
+                               class="  input-small" style="height:32px;">
+                    </div>
+                    <div class="col-sm-3">
+                            <span  class="label label-lg label-primary arrowed-right">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        <input id="timeScope_SysDetail" name="timeScope_SysDetail" class="input-large date-range-picker" type="text"
+                               style="height: 32px;"/>
+                    </div>
+                    <div class="col-sm-3 ">
+                        <!--  <span class="label label-lg label-important">状态</span>
+                        <label class="inline">
+                            <input onclick="_searchForSys();" checked="checked" name="status_SysDetail" class="ace" id="status_SysDetail_1"
+                                   type="checkbox"
+                                   value="0">
+                            <span class="lbl">未匹配</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_searchForSys();" checked="checked" name="status_SysDetail" class="ace" id="status_SysDetail_2" type="checkbox"
+                                   value="1">
+                            <span class="lbl">已匹配</span>
+                        </label>-->
+                        <span class="pull-right">
+                        <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_SysDetail" type="button"
+                                onclick="_searchSysDetail();">
+                            <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                        </button>
+                         </span>
+                    </div>
+                    </div>
+                    <div class="tab-content" >
+                        <div id="sys_detail" style="padding-top: 0px" class="tab-pane in active">
+                         <table  class="table table-striped table-bordered table-hover" style="margin-bottom: 0px">
+                        <thead>
+                        <tr>
+                            <th>订单号</th>
+                            <th>层级</th>
+                            <th>金额</th>
+                            <th>创建时间</th>
+                            <th>匹配时间</th>
+                            <th>入款会员</th>
+                            <th>状态</th>
+                            <th>备注</th>
+                        </tr>
+                        </thead>
+                        <tbody id="sysdetail_body">
+                        </tbody>
+                    </table><div id="Sys_detail_foot"></div></div></div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelDistributionForSys" type="button" data-dismiss="modal"
+                        class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/common_export.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>

@@ -1,0 +1,105 @@
+<div class="row">
+    <div class="inline form-inline">
+        <!--<div class="col-sm-3">-->
+            <!--<span class="label label-lg label-primary arrowed-right">账号</span>-->
+            <!--<input id="account_newPayTradeDetail" class="input-large" placeholder="收款账号" type="text" style="height: 32px;width:78%;"/>-->
+        </div>
+        <!--<div class="col-sm-3">-->
+            <!--<span class="label label-lg label-primary arrowed-right">盘口</span>-->
+            <!--<select onchange="" id="handicap_newPayTradeDetail" class="chosen-select "-->
+                    <!--style="height:32px;width:78%;">-->
+                <!--<option>全部</option>-->
+            <!--</select>-->
+        <!--</div>-->
+        <div class="col-sm-3">
+            <span class="label label-lg label-primary arrowed-right">会员名</span>
+            <input id="member_newPayTradeDetail" class="input-large " type="text" style="height: 32px;width:24%;"/>
+            <!--<span class="label label-lg label-primary arrowed-right">存款人</span>-->
+            <!--<input id="operator_newPayTradeDetail" class="input-large " type="text" style="height: 32px;width:23%;"/>-->
+            <span class="label label-lg label-primary arrowed-right">订单号</span>
+            <input id="orderNo_newPayTradeDetail" class="input-large " type="text" style="height: 32px;width:24%;"/>
+        </div>
+
+        <div class="col-sm-3">
+            <span style="width: 54.5px;" class="label label-lg label-primary arrowed-right">金额</span>
+            <input id="fromMoney_newPayTradeDetail" onkeyup="clearNoNum(this)" type="text"
+                   class=" input-small" style="height:32px;width:33%;">
+            <span style="width: 0%;display: inline" class="">~</span>
+            <input id="toMoney_newPayTradeDetail" onkeyup="clearNoNum(this)" type="text"
+                   class=" input-small" style="height:32px;width:33.5%;">
+        </div>
+        <!--<div class="col-sm-12" style="height:1px;"></div>-->
+        <!--<div class="col-sm-3">-->
+            <!--<span class="label label-lg label-primary arrowed-right">层级</span>-->
+            <!--<select id="level_newPayTradeDetail" class="chosen-select "-->
+                    <!--style="height:32px;width:78%;">-->
+
+            <!--</select>-->
+        <!--</div>-->
+    <div class="col-sm-3">
+            <span style="width: 54.59px;" class="label label-lg label-primary arrowed-right">
+                <i class="fa fa-calendar bigger-110"></i>
+            </span>
+        <input id="timeScope_newPayTradeDetail" class="input-large date-range-picker" type="text"
+               style="height: 32px;width:72%;"/>
+    </div>
+
+        <!--<div class="col-sm-3">-->
+            <!--<span style="width: 54.59px;" class="label label-lg label-primary arrowed-right">-->
+                <!--<i class="fa fa-calendar bigger-110"></i>-->
+            <!--</span>-->
+            <!--<input id="timeScope_newPayTradeDetail" class="input-large date-range-picker" type="text"-->
+                   <!--style="height: 32px;width:72%;"/>-->
+        <!--</div>-->
+        <div class="col-sm-3">
+            <span class="pull-left">
+                <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_newPayTradeDetail" type="button"
+                        onclick="_searchForDetailData();">
+                    <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                </button>
+            </span>
+            <span class="pull-left">
+                <button class="btn btn-xs btn-white btn-info btn-bold " id="back_newPayTradeDetail" type="button"
+                        onclick="_back();">
+                    <i class="ace-icon fa fa-backward bigger-100 green"></i>返回
+                </button>
+            </span>
+            <span class="pull-left">
+                <button class="btn btn-xs btn-white btn-info btn-bold " id="reset_newPayTradeDetail" type="button"
+                        onclick="_resetForNewpayDetail();">
+                    <i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+                </button>
+            </span>
+        </div>
+    </div>
+    <div class="tab-content" >
+        <div id="newPayTrade_detail" style="padding-top: 0px" class="tab-pane in active">
+            <table id="newPayTrade_detail_accountListTable"
+                   class="table table-striped table-bordered table-hover no-margin-bottom">
+                <thead>
+                <tr>
+                    <th>盘口</th>
+                    <th>层级编码</th>
+                    <th id="levelName_td" style="display: none">层级名称</th>
+                    <th id="member_td" style="display: none">会员名</th>
+                    <!--<th>存款人</th>-->
+                    <th id="to_account">收款账号</th>
+                    <th id="from_account" style="display: none">付款账号</th>
+                    <th>金额</th>
+                    <th id="account_trade_type" style="display: none">类型</th>
+                    <th>订单号</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                    <th>确认时间</th>
+                    <th id="remark_detail" style="display: none">备注</th>
+                </tr>
+                </thead>
+                <tbody id="newPayTrade_detail_tbody">
+
+                </tbody>
+            </table>
+            <div id="newPayTrade_detail_accountPage"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>

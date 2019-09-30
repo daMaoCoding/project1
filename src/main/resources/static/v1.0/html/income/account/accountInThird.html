@@ -1,0 +1,178 @@
+<!-- 入款 账号管理 -->
+<div class="row">
+	<!-- 主页面查询条件 -->
+	<div id="accountFilter" style="z-index:1" class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left">
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">&nbsp;&nbsp;盘口&nbsp;&nbsp;</span>
+			<select class="chosen-select width150" name="search_EQ_handicapId"></select>
+		</div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">审核人</span>
+			<input type="text" name="search_LIKE_auditor" class="input-sm width150" placeholder="审核人" />
+		</div>
+		<div class="col-sm-3">
+			<input type="hidden" id="refresh_accountInThird"  >
+			<span class="label label-lg label-purple arrowed-right">&nbsp;&nbsp;刷新&nbsp;&nbsp;</span>
+			<div id="refreshAccountListSelect"></div>
+		</div>
+		<div class="col-sm-3">
+			<label onclick="reset('accountFilter');" class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button>
+			</label>
+           	<label class="pull-right inline">&nbsp;&nbsp;</label>
+       		<label class="pull-right inline contentRight"  >
+      			<button class="btn btn-xs btn-white btn-info btn-bold contentRight"  contentright="IncomeAccountThird:UpdateSysSetting:*"  onclick="showModal_thirdInfo()">
+      				<i class="ace-icon fa fa-cog bigger-100 green"></i>设置
+      			</button>
+      		</label>
+		</div>
+		<div  class="col-sm-12" style="height:10px;"></div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">&nbsp;&nbsp;帐号&nbsp;&nbsp;</span>
+			<input type="text" class="input-sm width150" name="search_LIKE_account" placeholder="账号" />
+		</div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">第三方</span>
+			<input type="text" class="input-sm width150" name="search_LIKE_bankName" placeholder="例：京东支付" />
+		</div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">经办人</span>
+			<input type="text" name="search_LIKE_owner" class="input-sm width150" placeholder="经办人" />
+		</div>
+		<div class="col-sm-3">
+			<label id="searchBtn" class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+			</label>
+		</div>
+	</div>
+	<!-- table数据列表 -->
+	<div class="modal-body">
+		<!-- 账号状态 -->
+		<input type="hidden"  id="tabStatus"  value="1">
+		<ul class="nav nav-tabs">
+			<li onclick="changeTabStatus('1,3,4')"  ><a data-toggle="tab" >全部&nbsp;</a></li>
+			<li onclick="changeTabStatus('1')"  class="active"><a data-toggle="tab" >在用&nbsp;</a></li>
+			<li onclick="changeTabStatus('4')"  ><a data-toggle="tab" >停用&nbsp;</a></li>
+			<li onclick="changeTabStatus('3')"  ><a data-toggle="tab" >冻结&nbsp;</a></li>
+			<li class="pull-right inline">
+				<label class="pull-right inline">
+					<button  onclick="showModal_set_inOut_limit();" class="incomeShow btn btn-xs btn-white btn-info btn-bold contentRight"  contentRight="IncomeAccountComp:ButtonOutSet:*">
+						<i class="ace-icon fa fa-cog bigger-100 green"></i>出入款额度
+					</button>
+				</label>
+			</li>
+		</ul>
+		<input type="hidden" id="accountTabType" value="2"/>
+		<table id="accountListTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th style="width:5%;">盘口</th>
+					<th style="width:22%;">层级</th>
+					<th style="width:8%;">账号</th>
+					<th style="width:10%;" title="第三方商户">第三方</th>
+					<!--<th style="width:10%;">经办人</th>-->
+					<th style="width:4%;">状态</th>
+					<th style="width:4%;">系统余额</th>
+					<th style="width:5%;">第三方余额</th>
+					<!--<th style="width:7%;" title="第三方余额 - 系统余额">差额</th>-->
+					<th style="width:7%;">提现记录</th>
+					<th style="width:10%;">操作</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		<div id="accountPage"></div>
+	</div>
+</div>
+
+
+<!-- 设置 第三方下发参数设置 -->
+<div id="thirdInfoModal" class="modal fade" aria-hidden="false" >
+	<div class="modal-dialog modal-lg"  style="width:1300px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					第三方系统设置
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="inline no-padding-bottom alert alert-success" style="width:99.3%">
+				    <div class="inline" style="width:48%">
+						<label class="inline">
+							<input type="radio" name="third2Out" class="ace" value="1">
+							<span class="lbl">开启</span>
+						</label>
+						<label class="inline">
+							<input type="radio" name="third2Out" class="ace" value="2">
+							<span class="lbl">关闭</span>
+						</label>
+						第三方下发到出款卡
+						<button type="button" class="pull-right btn btn-success btn-white btn-bold btn-round" onclick="third2OutSetting()">
+					        <i class="ace-icon fa fa-share icon-on-right"></i>&nbsp;保存
+					    </button>
+				    </div>
+				    <div class="inline" style="width:3%">&nbsp;</div>
+					<div class="inline"  style="width:48%">
+					</div>
+				</div>
+				<div class="inline no-padding-bottom" style="width:49.5%">
+					<p class="alert alert-success">
+                        <input class="input-sm" name="OUTCARD_THIRD_DRAW_LOCKED_EXPIRETIME" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+       					第三方下发到出款卡锁定的过期时间（分钟）
+					</p>
+					<p class="alert alert-success">
+                        <input class="input-sm" name="THIRD_TO_OUT_INTER_AMOUNT" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+       					内层的满足条件的出款卡数量超过设定值给第三方下发（张）
+					</p>
+					<p class="alert alert-success">
+                        <input class="input-sm" name="THIRD_TO_OUT_MORE_BALANCE" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+       					出款卡余额设置,判断同区域同层级中达到要求的出款卡张数（元）
+					</p>
+					<p class="alert alert-success">
+                        <input class="input-sm" name="THIRD_TO_OUT_LESS_BALANCE" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+       					出款卡可下发金额大于该值，给第三方下发（元）
+					</p>
+				</div>
+				<div class="inline no-padding-bottom" style="width:49.5%">
+					<p class="alert alert-success">
+                        <input class="input-sm" name="DRAW_TASK_SINGLE_AMOUNT" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+       					下发任务本次下发金额最小值（元）
+					</p>
+					<p class="alert alert-success">
+                        <input class="input-sm" name="THIRD_TO_OUT_OUTTER_AMOUNT" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+       					外层的满足条件的出款卡数量超过设定值给第三方下发（张）
+					</p>
+					<p class="alert alert-success">
+                        <input class="input-sm" name="ISSUED_TO_OUT_EXCEED_CREDITS_PERCENTAGE" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+       					下发给出款卡的钱允许超过该卡的信用额度百分比（%）
+					</p>
+					<p class="alert alert-success">
+                        <input class="input-sm" name="THIRD_TO_OUT_BELOW_BALANCE" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+       					出款卡余额大于该值，不给第三方下发（元）
+					</p>
+				</div>
+				<div class="inline no-padding-bottom" style="width:49.5%">
+				    <button type="button" class="pull-right btn btn-danger btn-white btn-bold btn-round" onclick="resetThirdInfo()">
+				        <i class="ace-icon fa fa-refresh icon-on-right"></i>&nbsp;重置
+				    </button>
+				</div>
+				<div class="inline no-padding-bottom" style="width:49.5%">
+				    <button type="button" class="pull-left btn btn-success btn-white btn-bold btn-round" onclick="saveThirdInfo()">
+				        <i class="ace-icon fa fa-check icon-on-right"></i>&nbsp;保存
+				    </button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 下拉框多选 -->
+<link rel="stylesheet" type="text/css" href="../style/bootstrap-multiselect.min.css" />
+<script type="text/javascript"  src="../javascript/lib/bootstrap-multiselect.min.js"></script>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<!-- 银行流水明细 -->
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>
+<!-- 平账 -->
+<script type="text/javascript"  src="../javascript/common/modalFlatBalance.js"></script>

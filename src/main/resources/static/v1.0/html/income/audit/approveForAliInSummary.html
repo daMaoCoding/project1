@@ -1,0 +1,136 @@
+<link rel="stylesheet" href="../style/jquery.chosen.min.css" type="text/css" xmlns="http://www.w3.org/1999/html">
+<style>
+    th {
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+        text-align: center
+    }
+
+    .message-footer {
+        padding: 0px !important;
+    }
+
+    #thirdFlows_tbody td {
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+        word-wrap: break-word !important;
+    }
+</style>
+<div class="row" name="pageContent">
+    <div class="col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li class="active" onclick="setSearchType('alimatched');">
+                    <a data-toggle="tab" href="#tab_alimatched">
+                        <i class="blue ace-icon fa fa-check bigger-110"></i><span>已对账</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content no-padding-bottom no-padding-top" name="tab-content">
+                <div id="tab_alimatched" class="tab-pane in active" tabInit="0">
+                    <h3 class="row header smaller lighter blue">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">盘口</span>
+                                    <select id="handicap_alimatched" class="chosen-select form-control"  style="height:32px">
+                                        <option >全部</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 81px" class="label label-lg label-primary arrowed-right">会员账号</span>
+                                    <input  id="member_alimatched" type="text"  placeholder="会员账号"  class="input-medium"  style="height:32px;width:60%;" />
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 68px" class="label label-lg label-primary  "><i class="fa fa-calendar bigger-110"></i></span>
+                                    <input id="startAndEndTime_alimatched" class="form-control date-range-picker" type="text"  style="height: 32px;width:69%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">金额</span>
+                                    <div class="input-group form-group col-sm-3" style="height:32px;width:78%;">
+                                        <input id="fromMoney_alimatched" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+                                               style="height:32px">
+                                        <span class="input-group-addon">~</span>
+                                        <input id="toMoney_alimatched" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+                                               style="height:32px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12" style="height: 2px"></div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">层级</span>
+                                    <select id="level_alimatched" class="chosen-select form-control"  style="height:32px">
+                                        <option>全部</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span  style="width: 81px" class="label label-lg label-primary arrowed-right">支付宝号</span>
+                                    <input  id="toAccount_alimatched" type="text"  placeholder="支付宝号"  class="input-medium"  style="height:32px;width:60%;" />
+                                    <!--<select id="toAccount_alimatched" class="chosen-select form-control" style="height:32px;width:147px;">-->
+                                        <!--<option>全部</option>-->
+                                    <!--</select>-->
+                                </div>
+                                <!--<div class="col-sm-3">-->
+                                <!--<span class="label label-lg label-primary arrowed-right">第三方名称</span>-->
+                                <!--<input id="thirdName_alimatched" type="text"  placeholder="收款账号"   class="input-medium"  style="height:32px;width:60%;" />-->
+                                <!--</div>-->
+                                <div class="col-sm-3">
+                                    <span style="width: 68px" class="label label-lg label-primary ">订单号</span>
+                                    <input id="orderNo_alimatched" type="text"  placeholder="订单号"   class="input-medium"  style="height:32px;width:69%;" />
+                                </div>
+                                <!--<div class="col-sm-3">-->
+                                <!--<span class="label label-lg label-primary">三方商号</span>-->
+                                <!--<input id="toAccount_alimatched" type="text"  placeholder="三方商号"   class="input-medium"  style="height: 32px;width:69%;" />-->
+                                <!--</div>-->
+
+                                <div class="col-sm-3">
+									<span>
+										<span class="label label-lg label-primary arrowed-right">刷新</span>
+										<select id="changeFlushTime" onchange="_changSearch();" class="chosen-select form-control"  style="height:32px">
+											<option  value="不刷新">不刷新</option>
+											<option  value="10000">10秒</option>
+											<option  value="30000">30秒</option>
+											<option  value="60000">60秒</option>
+											<option  value="120000">120秒</option>
+											<option  value="180000">180秒</option>
+										</select>
+										<button type="button" onclick="setSearchType('alimatched');" class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+										</button>
+										<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueSThird('alimatched');">
+											<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+										</button>
+									</span>
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+                    <div style="margin-right: -13px;margin-left: -13px" sclass="row">
+                        <table class="table  table-bordered table-hover no-margin-bottom">
+                            <thead>
+                            <tr>
+                                <th>盘口</th>
+                                <th>层级</th>
+                                <th>会员账号</th>
+                                <th>订单号</th>
+                                <th>支付宝号</th>
+                                <th>金额</th>
+                                <th>创建时间</th>
+                                <th>确认时间</th>
+                                <th>备注</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody_alimatched">
+
+                            </tbody>
+                        </table>
+                        <div id="alimatched_pageFoot">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>

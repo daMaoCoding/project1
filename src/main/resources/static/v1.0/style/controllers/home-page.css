@@ -1,0 +1,29 @@
+.home-page-content {
+    max-width: 665px;
+    border: 1px solid #cccccc;
+}
+
+.home-page-content h4 {
+    margin-top: 0px;
+    padding: 5px;
+    height: 38px;
+    line-height: 38px;
+    background: #F7F7F7;
+    border-bottom: 1px solid #cccccc;
+}
+
+.home-page-content>div {
+    padding: 8px;
+}
+
+.ui-view>* {
+    padding: 8px 0 0 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.home-page {
+    position: absolute;
+}

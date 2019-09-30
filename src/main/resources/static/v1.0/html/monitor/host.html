@@ -1,0 +1,103 @@
+<div class="page-header">
+	<h1>
+		<small id="host_total_info">
+			<span class="badge badge-pink">主机：<span name="total1"></span> 台，银行卡：<span name="total2"></span> 张</span>
+			<span class="label label-danger label-white middle"><span name="total3"></span>张入款卡</span>
+			<span class="label label-info label-white middle"><span name="total4"></span>张出款卡</span>
+			<span class="label label-purple label-white middle"><span name="total5"></span>张下发卡</span>
+			<span class="label label-white middle"><span name="total6"></span>张备用卡</span>
+		</small>
+		
+		<label class="blue bolder">模糊查询</label>&nbsp;&nbsp;
+		<input type="text" class="input-sm" style="width:300px;" name="search_filter_all" placeholder="请输入 IP/账号/编号/主机名">
+		<label id="searchBtn" class="inline" onclick="loadHostALL()">
+			<button class="btn btn-xs btn-white btn-info btn-bold" >
+				<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+			</button>
+		</label>&nbsp;
+		<label onclick="resetSearch();" class="inline">
+			<button class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+			</button>
+		</label>
+		<button class="btn btn-xs btn-pink pull-right" onclick="showModal_addHost();">
+			<i class="ace-icon fa fa-plus bigger-130"></i>
+			 添加主机
+		</button>
+	</h1>
+</div>
+<div class="row col-sm-12" id="hostList" ></div>
+
+
+<div id="addHost4clone" class="modal fade" data-backdrop="static">
+	<div  class="modal-dialog modal-lg" style="width:570px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					<span>添加</span>
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+					<table id="tableAdd" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:50px;"></th>
+							<th style="width:225px;"></th>
+							<th style="width:50px;"></th>
+							<th style="width:225px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>主机名</td>
+							<td>
+								<span class='input-icon'>
+								<input class="input-sm width200" name="name" type="text" placeholder="必填，主机名">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+							<td>排号</td>
+							<td>
+								<span class='input-icon'>
+								<input class="input-sm width200" name="x" type="text" placeholder="必填整数，主机排号">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>本机IP</td>
+							<td>
+								<span class='input-icon'>
+								<input class="input-sm width200" name="ip" type="text" placeholder="必填，主机IP">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+							<td>列号<td>
+								<span class='input-icon'>
+								<input class="input-sm width200" name="y" type="text" placeholder="必填整数，主机列号">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>虚拟机</td>
+							<td colspan="3">
+								<input class="input-sm" style="width:475px;" name="hostInfo" type="text" placeholder="虚拟机IP,多个IP请用英文逗号隔开">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doAddHost();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>

@@ -1,0 +1,189 @@
+
+<script type="text/javascript"
+	src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"
+	src="../javascript/common/modalBankLogList.js"></script>
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="tabbable">
+						<ul class="nav nav-tabs" id="myTab3">
+							<li class="active"><a data-toggle="tab"
+								onclick="queryDerating();"
+								id="derating" href="#deratingTab"><i
+									class="pink ace-icon fa fa-info-circle bigger-110"></i>审核</a></li>
+						</ul>
+						<div style="padding: 0px 0px;" class="tab-content">
+							<!-- -----------------------------------------------未出款-------------------------------------------------------------------->
+							<div id="deratingTab" class="tab-pane in active">
+								<div
+									class="col-sm-12 header smaller lighter less-margin no-margin-left">
+									<span class="label label-lg label-primary">盘口</span> <select
+										onchange="queryDerating()" id="deratingHandicap"
+										name="deratingHandicap"></select> 
+										<span class="label label-lg label-primary">状态</span>
+										<select onchange="queryDerating()" id="status" name="status">
+												<option value="">全部</option>
+												<option value="0" selected="selected">待审核</option>
+												<option value="1">通过</option>
+												<option value="2">不通过</option>
+										</select>
+										<span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">兼职名</span> <input
+										id="uName" class="input-large " type="text"
+										style="height: 32px; width: 10%">
+										<span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">订单号</span> <input
+										id="deratingOrderNo" class="input-large " type="text"
+										style="height: 32px; width: 15%"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">金额</span> <input
+										id="deratingFromMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 10%"> <span
+										style="width: 0%; display: inline" class="">~</span> <input
+										id="deratingToMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 10%;"> 
+										<button type="button"
+											onclick="queryDerating()"
+											class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+										</button>
+									</label>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>兼职名</th>
+											<th>盘口</th>
+											<th>开户信息</th>
+											<th>支行</th>
+											<th>收款卡</th>
+											<th>订单号</th>
+											<th>状态</th>
+											<th>金额</th>
+											<th>创建时间</th>
+											<th>备注</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="deratingTab_tbody">
+
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="deratingTabPage"></div>
+							</div>
+							<!--------------------------------------------------------未出款end------------------------------------------------------------------>
+						</div>
+					</div>
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+		</div>
+	</div>
+</div>
+
+<div id="Remark_modal" class="modal fade" tabindex="-1">
+	<input id="CustomerserviceRemark_id" type="hidden">
+	<div class="modal-dialog" style="width: 600px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding">
+				<div id="titleDivCustomer" style="text-align: center"
+					class="table-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					<span id="typeName"> 备注</span>
+				</div>
+			</div>
+
+			<div class="modal-body no-padding">
+				<div class="tabbable">
+					<div class="tab-content">
+						<div>
+							<form class="form-horizontal" role="form">
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-left"
+										for="CustomerserviceRemark">备注 </label>
+									<div class="col-sm-6">
+										<textarea style="height: 120px; width: 400px;" id="Remark"
+											name="Remark" class="autosize-transition form-control"></textarea>
+									</div>
+								</div>
+								<div class="space-4"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer no-margin-top">
+				<span id="prompt_remark"
+					style="display: none; color: red; padding-left: 160px;">请填写内容</span>
+				<button id="totalTaskFinishBTN" type="button"
+					class="btn btn-sm btn-success">确认</button>
+				<button type="button" data-dismiss="modal" aria-hidden="true"
+					class="btn btn-sm btn-warming">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="derating_modal" class="modal fade" tabindex="-1">
+	<div class="modal-dialog" style="width: 600px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding">
+				<div id="titleDivCustomer" style="text-align: center"
+					class="table-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					<span>审核降额</span>
+				</div>
+			</div>
+
+			<div class="modal-body no-padding">
+				<div class="tabbable">
+					<div class="tab-content">
+						<div>
+							<form class="form-horizontal" role="form">
+								<div>
+									<label class="col-sm-3 control-label no-padding-left">状态 </label>
+									<select id="auditResults" name="auditResults">
+												<option value="1">通过</option>
+												<option value="2">不通过</option>
+									</select>
+									
+								</div>
+								<div style="margin-top: 10px;" class="form-group">
+									<label class="col-sm-3 control-label no-padding-left"
+										for="CustomerserviceRemark">备注 </label>
+									<div class="col-sm-6">
+										<textarea style="height: 120px; width: 400px;" id="auditRemark"
+											name="auditRemark" class="autosize-transition form-control"></textarea>
+									</div>
+								</div>
+								<div class="space-4"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer no-margin-top">
+				<button id="auditFinishBTN" type="button"
+					class="btn btn-sm btn-success">确认</button>
+				<button type="button" data-dismiss="modal" aria-hidden="true"
+					class="btn btn-sm btn-warming">取消</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,59 @@
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>
+	<div class="main-content">
+		<div class="main-content-inner">
+			<div class="page-content" id="fczl">
+				<div class="row">
+					<div class="col-xs-12">
+						<h3 class="row header smaller lighter blue">
+							<div class="col-sm-12">
+								<div class="form-inline">
+									<strong><span id="showType" style="font-size: 16px;"></span></strong>
+									<span class="label label-lg label-pink  arrowed-right">账号</span>
+									<input class="form-control" placeholder="账号" id="account" name="account" type="text" />
+									<span class="label label-lg label-pink arrowed-right">银行类别</span>
+				                            <select onchange="queryFinBalanceStatCard()" id="detailBankType" name="detailBankType" class="chosen-select form-control" style="height:32px;width:100px;">
+				                                <option value="">请选择</option>
+				                            </select>
+									
+									<label class="pull-right inline">
+												<a  class="btn btn-xs btn-white btn-primary btn-bold" href="#/FinBalanceStat:*" type="button">返回</a>
+										</label>
+									<label class="pull-right inline">
+										&nbsp;&nbsp;
+									</label>
+									<label class="pull-right inline">
+										<button id="searhByCondition" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>
+											查询
+										</button>
+									</label>
+								</div>
+							</div><!-- /.col -->
+						</h3>
+
+						<table id="dynamic-table" class="table table-striped table-bordered table-hover no-margin-bottom">
+							<thead>
+							<tr>
+								<th>账号</th>
+								<th>账号类型</th>
+								<th>开户行</th>
+								<th>银行余额</th>
+								<th>系统余额</th>
+								<th>操作</th>
+							</tr>
+							</thead>
+							<tbody id="total_tbody">
+								
+							</tbody>
+						</table>
+						<!-- #分页 -->
+							<div id="BalancePage"></div>
+						<!-- #section:pages-footer end-->
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+
+			</div>
+		</div>
+	</div>
+

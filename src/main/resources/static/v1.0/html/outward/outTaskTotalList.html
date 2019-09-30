@@ -1,0 +1,2279 @@
+<style>
+    .no-padding-right-td {
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+        text-align: center;
+    }
+
+    .message-footer {
+        padding: 0px !important;
+    }
+
+    .message-footer {
+        padding: 0px !important;
+    }
+
+    #toOutDraw td {
+        padding: 7px !important;
+    }
+
+    #outDrawing td {
+        padding: 7px !important;
+    }
+
+    .table {
+        padding: 0px !important;
+    }
+
+    #successOut td {
+        padding-right: 0px !important;
+        padding-left: 1px !important;
+        padding-bottom: 4px !important;
+        padding-top: 4px !important;
+    }
+
+    #failedOut td {
+        padding: 4px !important;
+    }
+
+    #totalAliasLabel {
+        font-size: 30px !important;
+    }
+
+    #masterOut td {
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+        padding-bottom: 4px !important;
+        padding-top: 4px !important;
+    }
+</style>
+<link rel="stylesheet" href="../style/jquery.chosen.min.css" type="text/css" xmlns="http://www.w3.org/1999/html">
+<link rel="stylesheet" href="../style/bootstrap-multiselect.min.css"/>
+<link rel="stylesheet" href="../style/jquery.bootstrap.duallistbox.min.css" type="text/css">
+
+<div class="row">
+    <div class=" row col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="ulTable">
+                <li class="active" id="outDrawingTab"  onclick="$('#freshOutwardTaskLi').show();initialSearchTypeToal('outDrawing');">
+                    <a data-toggle="tab" href="#outType">
+                        <i class="ace-icon fa fa-hourglass-start bigger-110 pink"></i>
+                        正在出款
+                    </a>
+                </li>
+                <li id="toOutDrawTab" style="display: none;" 
+                onclick="$('#freshOutwardTaskLi').show();initialSearchTypeToal('toOutDraw');">
+                    <a data-toggle="tab" href="#outWait">
+                        <i class="pink ace-icon fa fa-info-circle bigger-110"></i>
+                        等待出款
+                    </a>
+                </li>
+                <li id="masterOutTab" style="display: none;"
+                    onclick="$('#freshOutwardTaskLi').show();initialSearchTypeToal('masterOut');">
+                    <a data-toggle="tab" href="#masterOut">
+                        <i class="pink ace-icon fa 	fa-user-circle bigger-110"></i>
+                        主管处理
+                    </a>
+                </li>
+                <li id="failedOutTab" style="display: none;"
+                onclick="$('#freshOutwardTaskLi').show();initialSearchTypeToal('failedOut');">
+                    <a data-toggle="tab" href="#failedOutWait">
+                        <i class="ace-icon fa fa-exclamation-circle  bigger-110 red"></i>
+                        待排查
+                    </a>
+                </li>
+                <li id="failedOutDealedTab" style="display: none;"
+                    onclick="$('#freshOutwardTaskLi').hide();initialSearchTypeToal('failedOutDealed');">
+                    <a data-toggle="tab" href="#failedOutDealed">
+                        <i class="green ace-icon fa fa-check-circle bigger-110"></i>
+                        已排查汇总
+                    </a>
+                </li>
+                <li id="successOutTab" style="display: none;"
+                onclick="$('#freshOutwardTaskLi').hide();_initialSort();initialSearchTypeToal('successOut');">
+                    <a data-toggle="tab" href="#successOutType">
+                        <i class="blue ace-icon fa fa-check-circle bigger-110"></i>
+                        完成出款
+                    </a>
+                </li>
+                <li id="refusedTab" style="display: none;"
+                    onclick="$('#freshOutwardTaskLi').hide();initialSearchTypeToal('refused');">
+                    <a data-toggle="tab" href="#refused">
+                        <i class="ace-icon fa  fa-hand-paper-o  bigger-110 red"></i>
+                        已拒绝
+                    </a>
+                </li>
+                <li id="canceledTab" style="display: none;"
+                	onclick="$('#freshOutwardTaskLi').hide();initialSearchTypeToal('canceled');">
+                    <a data-toggle="tab" href="#canceledType">
+                        <i class="ace-icon fa fa-times  bigger-110 red"></i>
+                        已取消
+                    </a>
+                </li>
+                <li id="backwashTab" style="display: none;"
+                    onclick="$('#freshOutwardTaskLi').hide();initialSearchTypeToal('backwash');">
+                    <a data-toggle="tab" href="#backwash">
+                        <i class="ace-icon fa fa-refresh bigger-110 red"></i>
+                        冲正
+                    </a>
+                </li>
+                <li id="QuickQueryTab" style="display: none;"
+                    onclick="$('#freshOutwardTaskLi').hide();initialSearchTypeToal('QuickQuery');">
+                    <a data-toggle="tab" href="#QuickQuery">
+                        <i class="ace-icon fa fa-rocket  bigger-110 red"></i>
+                        快捷查询
+                    </a>
+                </li>
+                <li id="freshOutwardTaskLi" style="display: none;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                        class="label label-lg label-primary arrowed-right">刷新</span>
+                    <select id="autoUpdateTimeTask">
+                    </select>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="tabOutTaskTotal" style="padding-top: 0px" class="tab-content">
+    <div id="QuickQuery" class="tab-pane">
+        <h3 class="row "><!--去除下划线 header smaller lighter blue-->
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">会员名</span>
+                        <input id="member_QuickQuery" class="input-large " type="text" placeholder="请输入正确的会员账号"
+                               style="height: 32px;width:72%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">订单号</span>
+                        <input id="orderNo_QuickQuery" class="input-large " placeholder="请输入正确的订单号" type="text"
+                               style="height: 32px;width:72%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary modifyOutTime">出款时间</span>
+                        <input id="timeScope_QuickQuery" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:68%;"/>
+                    </div>
+                    <div class="col-sm-3">
+		                <span class="col-sm-1 pull-left">
+                            <label class="pull-right inline">
+                                <button type="button" onclick="_quickQueryClick();"
+                                        id="button_QuickQuery"
+                                        class="btn btn-xs btn-white btn-info btn-bold ">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                </button>
+                            </label>
+                        </span>
+                        <span style="margin-left: 50px;" class="pull-left">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                        onclick="_resetValuesForTaskTotal('QuickQuery');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                                </button>
+                            </label>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </h3>
+    </div>
+
+
+<div id="outWait" class="tab-pane">
+		<ul class="nav nav-tabs">
+		 <li class="active" id="toOutDrawTab" 
+                    onclick="$('#freshOutwardTaskLi').show();initialSearchTypeToal('toOutDraw');">
+                    <a data-toggle="tab" href="#toOutDraw">
+                        <i class="pink ace-icon fa fa-info-circle bigger-110"></i>
+                        出款任务
+                    </a>
+                </li>
+                <li><a data-toggle="tab"
+								onclick="queryRebate();"
+								id="rebate" href="#rebateTab"><i
+									class="pink ace-icon fa fa-info-circle bigger-110"></i>返利任务</a></li>
+                </ul>
+   <div class="tab-content">
+    <div id="toOutDraw" class="tab-pane in active">
+            <div>
+                <form class="form-inline">
+                    <div class="col-sm-5">
+                        <span class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+                        <select onchange="_handicapTypeChange();" id="handicap_toOutDraw"
+                                class="chosen-select form-control"
+                                style="height:32px;width:15%;">
+                            <option>请选择</option>
+                        </select>
+                        <span class="label label-lg label-primary arrowed-right">会员名</span>
+                        <input id="member_toOutDraw" class="input-large " type="text" style="height: 32px;width:15%"/>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked_val="1" class="ace" id="maintain_toOutDraw"
+                                   type="radio" value="2">
+                            <span class="lbl" style="color: white;background: red">暂停出款</span>
+                        </label>
+                    </div>
+                    <div class="col-sm-7">
+                        <!--<span class="label label-lg label-primary">账号</span>-->
+                        <!--<input placeholder="出款账号或编号或别名" style="height:32px;width:20%;" type="text" id="account_outDrawing">-->
+                        <span class="label label-lg label-primary" title="出款账号层级">层级</span>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked="checked" checked_val="2"
+                                   name="sysLevel_toOutDraw" class="ace" id="sysLevel_all_toOutDraw" type="radio" value="3">
+                            <span class="lbl">全部</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked_val="1" name="sysLevel_toOutDraw" class="ace"
+                                   type="radio" value="2">
+                            <span class="lbl">内层</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked_val="1" name="sysLevel_toOutDraw" class="ace"
+                                   type="radio" value="1">
+                            <span class="lbl">外层</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked_val="1" name="sysLevel_toOutDraw" class="ace"
+                                   type="radio" value="8">
+                            <span class="lbl">指定层</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked_val="1" name="sysLevel_toOutDraw" class="ace"
+                                   type="radio" value="9">
+                            <span class="lbl">人工</span>
+                        </label>
+                        <span class="label label-lg label-primary modifyAmount ">金额</span>
+                        <input id="fromMoney_toOutDraw" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small ToDrawAmountInput" style="height:32px;width:10%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_toOutDraw" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small ToDrawAmountInput" style="height:32px;width:10%;">
+                        <!--<span class="label label-lg label-primary arrowed-right">盘口</span>-->
+                        <!--<select onchange="_handicapTypeChange();" id="handicap_toOutDraw"-->
+                        <!--class="chosen-select form-control"-->
+                        <!--style="height:32px;width:30%;">-->
+                        <!--<option>请选择</option>-->
+                        <!--</select>-->
+                        <span class="pull-right">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                        onclick="_resetValuesForTaskTotal('toOutDraw');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                                </button>
+                            </label>
+                        </span>
+                        <span class="pull-right">
+                            <label class="pull-right inline">
+                                <button type="button" onclick="_search();"
+                                        id="button_toOutDraw"
+                                        class="btn btn-xs btn-white btn-info btn-bold ">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                </button>
+                            </label>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th class="modifyHandicap">盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th>订单号</th>
+                <th class="modifyAmount">金额</th>
+                <!--<th>生成时间</th>-->
+                <!--<th>已用时</th>-->
+                <th>备注</th>
+                <th style="text-align: center">操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_toOutDraw">
+
+            </tbody>
+        </table>
+        <div id="toOutDraw_footPage"></div>
+    </div>
+    
+    <div id="rebateTab" class="tab-pane">
+								<div
+									class="col-sm-12 header smaller lighter less-margin no-margin-left">
+									<span class="label label-lg label-primary">盘口</span> <select
+										onchange="queryRebate()" id="rebateHandicap"
+										name="rebateHandicap"></select>
+										<span class="label label-lg label-primary">类型</span> <select
+										onchange="queryRebate()" id="rebateType"
+										name="rebateType">
+											<option value="">全部</option>
+											<option value="1">返利</option>
+											<option value="2">降额</option>
+										</select>
+										 <span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">订单号</span> <input
+										id="rebateOrderNo" class="input-large " type="text"
+										style="height: 32px; width: 15%"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">金额</span> <input
+										id="rebateFromMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 10%"> <span
+										style="width: 0%; display: inline" class="">~</span> <input
+										id="rebateToMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 10%;"> <!-- <span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">刷新</span> <select id="rebateTime"
+										onchange="_searchRebateTimeTask('Rebate')"><option
+											value="0">不刷新</option>
+										<option selected="selected" value="15">15秒</option>
+										<option value="30">30秒</option>
+										<option value="60">60秒</option>
+										<option value="120">120秒</option>
+										<option value="180">180秒</option></select> <label
+										class="pull-right inline"> -->
+										<button type="button"
+											onclick="queryRebate();_searchRebateTimeTask('Rebate');"
+											class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+										</button>
+										<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="resetValues('Rebate');">
+		                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+		                                   		 重置
+		                                </button>
+									</label>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>盘口</th>
+											<th>开户信息</th>
+											<!-- <th>开户行</th> -->
+											<th>支行</th>
+											<th>收款卡</th>
+											<th>订单号</th>
+											<th>类型</th>
+											<th>金额</th>
+											<th>创建时间</th>
+											<th>备注</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="rebateTab_tbody">
+
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="rebateTabPage"></div>
+							</div>
+    
+</div>
+</div>
+	<div id="outType"  class="tab-pane in active">
+		<ul class="nav nav-tabs">
+		 <li class="active" onclick="$('#freshOutwardTaskLi').show();initialSearchTypeToal('outDrawing');">
+                    <a data-toggle="tab" href="#outDrawing">
+                        <i class="ace-icon fa fa-hourglass-start bigger-110 pink"></i>
+                        出款任务
+                    </a>
+                </li>
+                <li><a data-toggle="tab"
+								onclick="queryRebateDrawing();"
+								id="rebateDrawing" href="#rebateDrawingTab"><i
+									class="ace-icon fa fa-hourglass-start bigger-110 pink"></i>返利任务</a>
+							</li>
+                </ul>
+   <div class="tab-content">
+      <div id="outDrawing" class="tab-pane in active">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <div class="col-sm-4">
+                        <span class="label label-lg label-primary modifyHandicap">盘口</span>
+                        <select onchange="_handicapTypeChange();" id="handicap_outDrawing"
+                                class="chosen-select form-control"
+                                style="height:32px;">
+
+                        </select>
+                        <span class="label label-lg label-primary">银行类别</span>
+                        <select onchange="_search();" id="bank_outDrawing" class="chosen-select form-control"
+                                style="height:32px;">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <!--<select onchange="_search();" id="level_outDrawing" class="chosen-select form-control"-->
+                    <!--style="height:32px;width:30%;">-->
+                    <!--<option>请选择</option>-->
+                    <!--</select>-->
+                    <!--</div>-->
+                    <div class="col-sm-8">
+                        <span class="label label-lg label-primary" title="出款账号层级">层级</span>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked="checked" checked_val="2"
+                                   name="sysLevel_outDrawing" class="ace" id="sysLevel_all_outDrawing" type="radio" value="3">
+                            <span class="lbl">全部</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked_val="1" name="sysLevel_outDrawing" class="ace"
+                                   type="radio" value="2">
+                            <span class="lbl">内层</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked_val="1" name="sysLevel_outDrawing" class="ace"
+                                   type="radio" value="1">
+                            <span class="lbl">外层</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked_val="1" name="sysLevel_outDrawing" class="ace"
+                                   type="radio" value="8">
+                            <span class="lbl">指定层</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked_val="1" name="sysLevel_outDrawing" class="ace"
+                                   type="radio" value="9">
+                            <span class="lbl">人工</span>
+                        </label>
+                        <!--<span class="label label-lg label-primary">账号</span>-->
+                        <!--<input placeholder="出款账号或编号或别名" style="height:32px;width:20%;" type="text" id="account_outDrawing">-->
+                        <span class="label label-lg label-primary modifyAmount">金额</span>
+                        <input id="fromMoney_outDrawing" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small DrawingAmountInput" style="height:32px;width:10%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_outDrawing" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small DrawingAmountInput" style="height:32px;width:10%;">
+                        <!--<div class="col-sm-3">-->
+                        <!--<span class="label label-lg label-primary arrowed-right">订单号</span>-->
+                        <!--<input id="orderNo_outDrawing" class="input-large " type="text"-->
+                        <!--style="height: 32px;width:73%;"/>-->
+                        <!--</div>-->
+                        <span class=" pull-right">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                        onclick="_resetValuesForTaskTotal('outDrawing');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+                                    重置
+                                </button>
+                            </label>
+                        </span>
+                        <span class=" pull-right">
+                            <label class="pull-right inline">
+                                <button type="button" class="btn btn-xs btn-white btn-info btn-bold "
+                                        onclick="_search();" id="searchBtn_outDrawing">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                </button>
+                            </label>
+                        </span>
+                    </div>
+                    <!--<div class="col-sm-12" style="height:2px;"></div>-->
+                    <!--<div class="col-sm-3">-->
+                    <!--<span class="label label-lg label-primary arrowed-right">层级</span>-->
+                    <!--<select onchange="_search();" id="level_outDrawing" class="chosen-select form-control"-->
+                    <!--style="height:32px;width:78%;">-->
+                    <!--<option>请选择</option>-->
+                    <!--</select>-->
+                    <!--</div>-->
+                    <!--<div class="col-sm-3">-->
+                    <!--<span class="label label-lg label-primary arrowed-right">-->
+                    <!--接单时间-->
+                    <!--</span>-->
+                    <!--<input id="timeScope_outDrawing" class="input-large date-range-picker" type="text"-->
+                    <!--style="height: 32px;width:68%;"/>-->
+                    <!--</div>-->
+                    <!--<div class="col-sm-3">-->
+                    <!--<span class="label label-lg label-primary arrowed-right">会员名</span>-->
+                    <!--<input id="member_outDrawing" class="input-large " type="text" style="height: 32px;width:73%;"/>-->
+                    <!--</div>-->
+                    <!--<div class="col-sm-3">-->
+                    <!--&lt;!&ndash;<span style="width: 67.59px" class="label label-lg label-primary arrowed-right">出款人</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input id="operator_outDrawing" class="input-medium " style="height: 32px;width:47%"&ndash;&gt;-->
+                    <!--&lt;!&ndash;type="text">&ndash;&gt;-->
+                    <!--<span class=" pull-right">-->
+                    <!--<label class="pull-right inline">-->
+                    <!--<button type="button" class="btn btn-xs btn-white btn-info btn-bold "-->
+                    <!--onclick="_search();" id="searchBtn_outDrawing">-->
+                    <!--<i class="ace-icon fa fa-search bigger-100 green"></i>-->
+                    <!--查询-->
+                    <!--</button>-->
+                    <!--</label>-->
+                    <!--</span>-->
+                    <!--</div>-->
+                </form>
+            </div>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th class="modifyHandicap">盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th>订单号</th>
+                <th>类型</th>
+                <th class="modifyOutOperator">出款人</th>
+                <th class="modifyOutAccount">出款账号</th>
+                <th class="modifyAmount">金额</th>
+                <th>认领时间</th>
+                <th>已用时</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_outDrawing">
+
+            </tbody>
+        </table>
+        <div id="outDrawing_footPage"></div>
+    </div>
+    
+    <div id="rebateDrawingTab"  class="tab-pane">
+								<div
+									class="col-sm-12 header smaller lighter less-margin no-margin-left">
+									<span class="label label-lg label-primary">盘口</span> <select
+										onchange="queryRebateDrawing()" id="RebateDrawingHandicap"
+										name="RebateDrawingHandicap"></select>
+										<span class="label label-lg label-primary">类型</span> <select
+										onchange="queryRebateDrawing()" id="rebateDrawingType"
+										name="rebateDrawingType">
+											<option value="">全部</option>
+											<option value="1">返利</option>
+											<option value="2">降额</option>
+										</select>
+										 <span
+										style="margin-left: 20px;"
+										class="label label-lg label-primary arrowed-right">订单号</span>
+									<input id="RebateDrawingOrderNo" class="input-large "
+										type="text" style="height: 32px; width: 15%"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">金额</span> <input
+										id="RebateDrawingFromMoney" onkeyup="clearNoNum(this); "
+										type="text" style="height: 32px; width: 10%"> <span
+										style="width: 0%; display: inline" class="">~</span> <input
+										id="RebateDrawingToMoney" onkeyup="clearNoNum(this); "
+										type="text" style="height: 32px; width: 10%;"><!--  <span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">刷新</span> <select
+										id="rebateDrawingTime"
+										onchange="_searchRebateTimeTask('RebateDrawing')"><option
+											value="0">不刷新</option>
+										<option selected="selected" value="15">15秒</option>
+										<option value="30">30秒</option>
+										<option value="60">60秒</option>
+										<option value="120">120秒</option>
+										<option value="180">180秒</option></select> <label
+										class="pull-right inline"> -->
+										<button type="button"
+											onclick="queryRebateDrawing();_searchRebateTimeTask('RebateDrawing');"
+											class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+										</button>
+										<lable>
+			                                <button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="resetValues('RebateDrawing');">
+			                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+			                                   		 重置
+			                                </button>
+		                                </lable>
+                            </label>
+									</label>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>盘口</th>
+											<th>开户人</th>
+											<th>开户信息</th>
+											<!-- <th>支行</th> -->
+											<th>收款卡</th>
+											<th>订单号</th>
+											<th>类型</th>
+											<th>出款人</th>
+											<th>出款卡号</th>
+											<th>金额</th>
+											<th>创建时间</th>
+											<th>认领时间</th>
+											<th>已用时</th>
+											<th>备注</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="rebateDrawing_tbody">
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="rebateDrawingPage"></div>
+								<span style="color: mediumvioletred; font-size: 15px">温馨提示：红色<span
+									style="background-color: indianred">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>表示已超过10分钟。绿色<span
+									style="background-color: lightgreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>表示已超过3分钟。
+								</span>
+							</div>
+                </div>
+    
+</div>
+
+<div id="successOutType"  class="tab-pane">
+		<ul class="nav nav-tabs">
+		 <li class="active" id="successOutTab"
+                    onclick="$('#freshOutwardTaskLi').hide();_initialSort();initialSearchTypeToal('successOut');">
+                    <a data-toggle="tab" href="#successOut">
+                        <i class="blue ace-icon fa fa-check-circle bigger-110"></i>
+                        出款任务
+                    </a>
+                </li>
+                <li><a data-toggle="tab"
+								onclick="querySuccess();"
+								id="success" href="#successTab"><i
+									class="blue ace-icon fa fa-check-circle bigger-110"></i>返利任务</a></li>
+                </ul>
+   <div class="tab-content">
+    <div id="successOut" class="tab-pane in active">
+            <div>
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+                        <select onchange="_handicapTypeChange();" id="handicap_successOut"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+
+                        </select>
+                    </div>
+                    <!--<div class="col-sm-3">-->
+                    <!--<span class="label label-lg label-primary arrowed-right">订单号</span>-->
+                    <!--<input id="orderNo_successOut" class="input-large " type="text"-->
+                    <!--style="height: 32px;width:72.8%;"/>-->
+                    <!--</div>-->
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary modifyOutAccount">出款账号</span>
+                        <input style="height:32px;width:68%;" type="text" id="account_successOut">
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">出款金额</span>
+                        <input id="fromMoney_successOut" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:28%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_successOut" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:28%;">
+                    </div>
+                    <div class="col-sm-3">
+                       <!-- <span style="width:68px;" class="label label-lg label-important">出款类型</span>
+                        <label class="inline"  >
+                            <input onclick="_checkSysOrderTr(this);" checked_val="2" checked="checked" name="allDraw_successOut" class="ace   drawType_successOut" id="allDraw_successOut"
+                                   type="radio" value="all">
+                            <span class="lbl">全部</span>
+                        </label>
+                        <label class="inline"  >
+                            <input onclick="_checkSysOrderTr(this);" checked_val="1"  name="bankDraw_successOut" class="ace  drawType_successOut" id="bankDraw_successOut"
+                            type="radio" value="bank">
+                            <span class="lbl">银行卡</span>
+                        </label>-->
+                        <span style="width:40px;" class="label label-lg label-important">类型</span>
+                        <label class="inline"  >
+                            <input onclick="_checkSysOrderTr(this);" checked_val="2" checked="checked" name="allType_successOut" class="ace   type_successOut" id="allType_successOut"
+                                   type="radio"
+                                   value="1111">
+                            <span class="lbl">全部</span>
+                        </label>
+                        <label class="inline" >
+                            <input onclick="_checkSysOrderTr(this);" checked_val="1"  name="manual_successOut" class="ace   type_successOut" id="manual_successOut"
+                                   type="radio"
+                                   value="0">
+                            <span class="lbl">人工</span>
+                        </label>
+                        <label class="inline" >
+                            <input onclick="_checkSysOrderTr(this);"checked_val="1"  name="robot_successOut" class="ace  type_successOut" id="robot_successOut"
+                                   type="radio" value="1">
+                            <span class="lbl">PC</span>
+                        </label>
+
+                        <label class="inline"  >
+                            <input onclick="_checkSysOrderTr(this);" checked_val="1" name="phone_successOut" class="ace  type_successOut" id="phone_successOut"
+                                   type="radio" value="2">
+                            <span class="lbl">返利网</span>
+                        </label>
+                        <label class="inline"  >
+                            <input onclick="_checkSysOrderTr(this);" checked_val="1" name="thirdDraw_successOut" class="ace  type_successOut"
+                                   id="thirdDraw_successOut" type="radio" value="third">
+                            <span class="lbl">第三方</span>
+                        </label>
+                        <label class="inline"   >
+                            <input onclick="_checkSysOrderTr(this);" checked_val="1"  name="daifuDraw_successOut" class="ace   type_successOut"
+                                   id="daifuDraw_successOut" type="radio" value="daifu">
+                            <span class="lbl">代付</span>
+                        </label>
+
+                    </div>
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">层级</span>
+                        <select onchange="_search();" id="level_successOut" class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary modifyOutTime">出款时间</span>
+                        <input id="timeScope_successOut" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:68%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="width:67.59px;" class="label label-lg label-primary arrowed-right">会员名</span>
+                        <input id="member_successOut" class="input-large " type="text" style="height: 32px;width:18%"/>
+                        <span style="width:45px;" class="label label-lg label-primary arrowed-right modifyOutOperator">出款人</span>
+                        <input id="operator_successOut" class="input-medium " type="text"
+                               style="height: 32px;width:22%"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <!--<span class="label label-lg label-primary">账号</span>-->
+                        <!--<input placeholder="出款账号或编号或别名" style="height:32px;width:20%;" type="text" id="account_outDrawing">-->
+                        <span class="label label-lg label-primary" title="出款账号层级">层级</span>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked="checked" checked_val="2" name="sysLevel_successOut" class="ace" id="sysLevel_all_successOut" type="radio" value="3">
+                            <span class="lbl">全部</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked_val="1" name="sysLevel_successOut" class="ace" type="radio" value="2">
+                            <span class="lbl">内层</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked_val="1" name="sysLevel_successOut" class="ace" type="radio" value="1">
+                            <span class="lbl">外层</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_radioClick(this);" checked_val="1" name="sysLevel_successOut" class="ace" type="radio" value="8">
+                            <span class="lbl">指定层</span>
+                        </label>
+                    </div>
+                    <div class="col-sm-3">
+
+                        <span class=" pull-right">
+                              <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                      onclick="_resetValuesForTaskTotal('successOut');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                                </button>
+                        </span>
+
+                        <span class="pull-right">
+                            <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_successOut"
+                                    type="button" onclick="_search();">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        <table id="dynamic-table-successOut" class="table  table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th class="modifyHandicap">盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th>订单号</th>
+                <th class="modifyAmountException">金额
+                    <div class="action-buttons inline" id="amountSortDiv" onclick="_sortSearch(this);">
+                        <a href="javascript:void(0);" class="green bigger-140 show-details-btn"
+                           title="降序(默认金额出款时间耗时降序)">
+                            <i class="ace-icon fa fa-angle-down"></i>
+                        </a>
+                    </div>
+                </th>
+                <th>状态</th>
+                <th class="modifyOutOperator">出款人</th>
+                <th class="modifyOutAccount">出款账号</th>
+                <th>时间
+                    <div class="action-buttons inline" id="asignTimeSortDiv" onclick="_sortSearch(this);">
+                        <a href="javascript:void(0);" class="green bigger-140 show-details-btn"
+                           title="降序(默认金额出款时间耗时降序)">
+                            <i class="ace-icon fa fa-angle-down"></i>
+                        </a>
+                    </div>
+                </th>
+                <th>耗时
+                    <div class="action-buttons inline" id="timeConsumingSortDiv" onclick="_sortSearch(this);">
+                        <a href="javascript:void(0);" class="green bigger-140 show-details-btn" title="升序">
+                            <i class="ace-icon fa fa-angle-up"></i>
+                        </a>
+                    </div>
+                </th>
+                <th>备注</th>
+                <th>截图</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_successOut">
+
+            </tbody>
+        </table>
+        <div id="successOut_footPage"></div>
+    </div>
+    
+    <div id="successTab" class="tab-pane">
+								<div
+									class="col-sm-12 header smaller lighter less-margin no-margin-left">
+									<span class="label label-lg label-primary">盘口</span> <select
+										onchange="querySuccess()" id="successHandicap"
+										name="successHandicap">
+										</select>
+										<span class="label label-lg label-primary">类型</span> <select
+										onchange="querySuccess()" id="successType"
+										name="successType">
+											<option value="">全部</option>
+											<option value="1">返利</option>
+											<option value="2">降额</option>
+										</select>
+										<span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">订单号</span> <input
+										id="successOrderNo" class="input-large " type="text"
+										style="height: 32px; width: 7%">
+										<span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">兼职名</span> <input
+										id="uName" class="input-large " type="text"
+										style="height: 32px; width: 7%">
+										 <span class="label label-lg label-primary " style="margin-left: 20px;">金额</span> <input
+										id="successFromMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 5%"> <span
+										style="width: 0%; display: inline" class="">~</span> <input
+										id="successToMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 5%;"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">完成时间</span> <input id="successTime"
+										name="successTime" class="input-large date-range-picker"
+										type="text" style="height: 32px; width: 18%;"> <label
+										class="pull-right inline">
+										<button type="button"
+											onclick="querySuccess();_searchRebateTimeTask('Success');"
+											class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+										</button>
+										<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="resetValues('Success');">
+		                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+		                                   		 重置
+		                                </button>
+									</label>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>兼职名</th>
+											<th>盘口</th>
+											<th>开户信息</th>
+											<!-- <th>开户行</th> -->
+											<th>支行</th>
+											<th>收款卡</th>
+											<th>订单号</th>
+											<th>类型</th>
+											<th>出款人</th>
+											<th>出款卡号</th>
+											<th>金额</th>
+											<th>状态</th>
+											<th>创建时间</th>
+											<th>完成时间</th>
+											<th>备注</th>
+											<th>截图</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="successTab_tbody">
+
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="successTabPage"></div>
+							</div>
+    
+</div>
+</div>
+    
+    
+    <div id="failedOutDealed" class="tab-pane">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-12">
+                <form class="form-inline">
+
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+                        <select onchange="_handicapTypeChange();" id="handicap_failedOutDealed"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">订单号</span>
+                        <input id="orderNo_failedOutDealed" class="input-large " type="text"
+                               style="height: 32px;width:72.8%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary modifyOutAccount">出款账号</span>
+                        <input style="height:32px;width:68%;" type="text"
+                               id="account_failedOutDealed">
+
+                    </div>
+
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">出款金额</span>
+                        <input id="fromMoney_failedOutDealed" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:18%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_failedOutDealed" onkeyup="clearNoNum(this); " type="text"
+                               class="form-control input-small" style="height:32px;width:18%;">
+                        <span class=" pull-right">
+                           <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                   onclick="_resetValuesForTaskTotal('failedOutDealed');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                                </button>
+                        </span>
+                    </div>
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">层级</span>
+                        <select onchange="_search();" id="level_failedOutDealed" class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">会员名</span>
+                        <input id="member_failedOutDealed" class="input-large " type="text"
+                               style="height: 32px;width:22%"/>
+                        <span class="label label-lg label-primary arrowed-right modifyOutOperator">出款人</span>
+                        <input id="operator_failedOutDealed" class="input-medium " type="text"
+                               style="height: 32px;width:22%"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">排查时间</span>
+                        <input id="timeScope_failedOutDealed" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:68%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="width:68px;" class="label label-lg label-primary arrowed-right">排查人</span>
+                        <input id="shooter_failedOutDealed" class="input-medium " type="text"
+                               placeholder="一个订单可能存在多个排查人"
+                               style="height: 32px;width:45%"/>
+                        <span class="pull-right">
+                            <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_failedOutDealed"
+                                    type="button" onclick="_search();">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                </button>
+                        </span>
+
+                    </div>
+                </form>
+            </div>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th class="modifyHandicap">盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th>订单号</th>
+                <th class="modifyAmount">金额</th>
+                <th>状态</th>
+                <th class="modifyOutOperator">出款人</th>
+                <th>排查人</th>
+                <th class="modifyOutAccount">出款账号</th>
+                <th>时间</th>
+                <th>耗时</th>
+                <th>备注</th>
+                <th>截图</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_failedOutDealed">
+
+            </tbody>
+
+        </table>
+        <div id="failedOutDealed_footPage"></div>
+    </div>
+    
+    
+<div id="failedOutWait"  class="tab-pane">
+		<ul class="nav nav-tabs">
+		<li class="active" id="failedOutTab"
+                    onclick="$('#freshOutwardTaskLi').show();initialSearchTypeToal('failedOut');">
+                    <a data-toggle="tab" href="#failedOut">
+                        <i class="ace-icon fa fa-exclamation-circle  bigger-110 red"></i>
+                        出款任务
+                    </a>
+                </li>
+               <li><a data-toggle="tab"
+								onclick="queryCheck();"
+								id="check" href="#checkTab"><i
+									class="ace-icon fa fa-exclamation-circle  bigger-110 red"></i>返利任务</a>
+							</li>
+                </ul>
+   <div class="tab-content">    
+    <div id="failedOut" class="tab-pane in active">
+        <h3 class="row header smaller lighter blue">
+            <form class="form-inline">
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary modifyHandicap">盘口</span>
+                    <select onchange="_handicapTypeChange();" id="handicap_failedOut"
+                            class="chosen-select form-control"
+                            style="height:32px;width:78%;">
+
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary modifyOutTime">出款时间</span>
+                    <input id="timeScope_failedOut" class="input-large date-range-picker" type="text"
+                           style="height: 32px;width:70%;"/>
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                    <input id="orderNo_failedOut" class="input-large " type="text"
+                           style="height: 32px;width:72.8%;"/>
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right modifyOutOperator">出款人</span>
+                    <input id="operator_failedOut" class="input-medium " type="text"
+                           style="height: 32px;width:42%"/>
+                    <span class=" pull-right">
+                       <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                               onclick="_resetValuesForTaskTotal('failedOut');">
+                                <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                            </button>
+                    </span>
+                </div>
+                <div class="col-sm-12" style="height:2px;"></div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary modifyAmount">金额</span>
+                    <input id="fromMoney_failedOut" onkeyup="clearNoNum(this); " type="text"
+                           class="form-control input-small FailOutAmountInput" style="height:32px;width:34%;">
+                    ~
+                    <input id="toMoney_failedOut" onkeyup="clearNoNum(this); " type="text"
+                           class="form-control input-small FailOutAmountInput" style="height:32px;width:35%;">
+                </div>
+                <!--<div class="col-sm-4">-->
+                <!--&lt;!&ndash;<span class="label label-lg label-primary arrowed-right">层级</span>&ndash;&gt;-->
+                <!--&lt;!&ndash;<select onchange="_search();" id="level_failedOut" class="chosen-select form-control"&ndash;&gt;-->
+                <!--&lt;!&ndash;style="height:32px;width:78%;">&ndash;&gt;-->
+                <!--&lt;!&ndash;<option>请选择</option>&ndash;&gt;-->
+                <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                <!--<span class="label label-lg label-primary">层级</span>-->
+                <!--<label class="inline">-->
+                <!--<input onclick="_radioClick(this);" checked="checked" checked_val="2"  name="level_failedOut" class="ace" id="level_all_failedOut" type="radio" value="3">-->
+                <!--<span class="lbl">全部</span>-->
+                <!--</label>-->
+                <!--<label class="inline">-->
+                <!--<input onclick="_radioClick(this);" checked_val="1"  name="level_failedOut" class="ace" id="level_in_failedOut" type="radio" value="2">-->
+                <!--<span class="lbl">内层</span>-->
+                <!--</label>-->
+                <!--<label class="inline">-->
+                <!--<input onclick="_radioClick(this);" checked_val="1"  name="level_failedOut" class="ace" id="level_out_failedOut" type="radio" value="1">-->
+                <!--<span class="lbl">外层</span>-->
+                <!--</label>-->
+                <!--<label class="inline">-->
+                <!--<input onclick="_radioClick(this);" checked_val="8"  name="level_failedOut" class="ace"  type="radio" value="8">-->
+                <!--<span class="lbl">指定层</span>-->
+                <!--</label>-->
+                <!--</div>-->
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary modifyOutAccountFail">出款账号</span>
+                    <input style="height:32px;width:70%;" type="text" id="account_failedOut">
+                    <!--<span class="label label-lg label-primary">银行类别</span>-->
+                    <!--<select onchange="_search();" id="bank_failedOut" class="chosen-select form-control"-->
+                    <!--style="height:32px;width:68%;">-->
+                    <!--<option>请选择</option>-->
+                    <!--</select>-->
+
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">会员名</span>
+                    <input id="member_failedOut" class="input-large " type="text" style="height: 32px;width:72.8%"/>
+                </div>
+                <div class="col-sm-3">
+                    <span style="width:40px;" class="label label-lg label-important">类型</span>
+                    <label class="inline"  >
+                        <input onclick="_checkSysOrderTr(this);" checked_val="2" checked="checked" name="allType_failedOut" class="ace  type_failedOut" id="allType_failedOut"
+                               type="radio" value="1111">
+                        <span class="lbl">全部</span>
+                    </label>
+                    <label class="inline"  >
+                        <input onclick="_checkSysOrderTr(this);" checked_val="1" name="manual_failedOut" class="ace  type_failedOut" id="manual_failedOut"
+                               type="radio" value="0">
+                        <span class="lbl">人工</span>
+                    </label>
+                    <label class="inline"  >
+                        <input onclick="_checkSysOrderTr(this);" checked_val="1" name="robot_failedOut" class="ace  type_failedOut" id="robot_failedOut"
+                               type="radio" value="1">
+                        <span class="lbl">机器</span>
+                    </label>
+                    <label class="inline" >
+                        <input onclick="_checkSysOrderTr(this);" checked_val="1" name="daifu_failedOut" class="ace  type_failedOut" id="daifu_failedOut"
+                               type="radio" value="2">
+                        <span class="lbl">代付</span>
+                    </label>
+                    <!--<label class="inline">-->
+                    <!--<input onclick="_search();" name="mobile_failedOut" class="ace" id="mobile_failedOut"-->
+                    <!--type="checkbox" value="2">-->
+                    <!--<span class="lbl">手机</span>-->
+                    <!--</label>-->
+
+                    <span class="pull-right">
+                        <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_failedOut"
+                                type="button" onclick="_search();">
+                                <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                            </button>
+                    </span>
+                </div>
+            </form>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom">
+            <thead>
+            <tr>
+                <th class="modifyHandicap">盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th>订单号</th>
+                <th class="modifyAmount">金额</th>
+                <th>状态</th>
+                <th class="modifyOutOperator">出款人</th>
+                <th>接单人</th>
+                <th class="modifyOutAccountFail">出款账号</th>
+                <th>时间</th>
+                <th>耗时</th>
+                <th>备注</th>
+                <th>截图</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_failedOut">
+
+            </tbody>
+
+        </table>
+        <div id="failedOut_footPage"></div>
+    </div>
+    
+    <div id="checkTab" class="tab-pane">
+								<div
+									class="col-sm-12 header smaller lighter less-margin no-margin-left">
+									<span class="label label-lg label-primary">盘口</span> <select
+										onchange="queryCheck()" id="checkHandicap"
+										name="checkHandicap"></select> 
+										<span class="label label-lg label-primary">类型</span> <select
+										onchange="queryCheck()" id="checkType"
+										name="checkType">
+											<option value="">全部</option>
+											<option value="1">返利</option>
+											<option value="2">降额</option>
+										</select>
+										<span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">订单号</span> <input id="checkOrderNo"
+										class="input-large " type="text"
+										style="height: 32px; width: 15%"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">金额</span> <input
+										id="checkFromMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 10%"> <span
+										style="width: 0%; display: inline" class="">~</span> <input
+										id="checkToMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 10%;"> <!-- <span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">刷新</span> <select id="checkTime"
+										onchange="_searchRebateTimeTask('Check')"><option value="0">不刷新
+										</option>
+										<option selected="selected" value="15">15秒</option>
+										<option value="30">30秒</option>
+										<option value="60">60秒</option>
+										<option value="120">120秒</option>
+										<option value="180">180秒</option>
+									</select> <label class="pull-right inline"> -->
+										<button type="button"
+											onclick="queryCheck();_searchRebateTimeTask('Check');"
+											class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+										</button>
+										<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="resetValues('Check');">
+		                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+		                                   		 重置
+		                                </button>
+									</label>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>盘口</th>
+											<th>开户信息</th>
+											<!-- <th>开户行</th> -->
+											<th>支行</th>
+											<th>收款卡</th>
+											<th>订单号</th>
+											<th>类型</th>
+											<th>出款人</th>
+											<th>出款卡号</th>
+											<th>编号</th>
+											<th>金额</th>
+											<th>创建时间</th>
+											<th>备注</th>
+											<th>截图</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="checkTab_tbody">
+
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="checkTabPage"></div>
+							</div>
+    
+</div>
+</div>
+    
+    <div id="refused" class="tab-pane">
+            <br/>
+            <div>
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+                        <select onchange="_handicapTypeChange();" id="handicap_refused"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyOutAccount">出款账号</span>
+                        <input style="height:32px;width:68%;" type="text" id="account_refused">
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="width:54.59px;"
+                              class="label label-lg label-primary arrowed-right modifyOrder">订单号</span>
+                        <input id="orderNo_refused" class="input-large " style="height: 32px;width:72.8%;" type="text">
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyAmount">出款金额</span>
+                        <input id="fromMoney_refused" onkeyup="clearNoNum(this); " class="form-control input-small"
+                               style="height:32px;width:29.2%;" type="text">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_refused" onkeyup="clearNoNum(this); " class="form-control input-small"
+                               style="height:32px;width:30%;" type="text">
+                    </div>
+
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">层级</span>
+                        <select onchange="_search();" id="level_refused" class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">处理时间</span>
+                        <input id="timeScope_refused" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:67.5%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">会员名</span>
+                        <input id="member_refused" class="input-large " type="text" style="height: 32px;width:22%"/>
+                        <span class="label label-lg label-primary arrowed-right modifyOutOperator">出款人</span>
+                        <input id="operator_refused" class="input-medium " type="text"
+                               style="height: 32px;width:22%"/>
+                    </div>
+                    <div class="col-sm-2">
+                         <span class=" pull-left">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                        onclick="_resetValuesForTaskTotal('refused');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+                                    重置
+                                </button>
+                            </label>
+                        </span>
+                        <span class=" pull-right">
+                            <label class="pull-right inline">
+                                <button type="button" onclick="_search();" id="button_refused"
+                                        class="btn btn-xs btn-white btn-info btn-bold ">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                </button>
+                            </label>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        <table class="table table-bordered table-hover no-margin-bottom ">
+            <thead>
+            <tr>
+                <th class="modifyHandicap">盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th class="modifyOrder">订单号</th>
+                <th class="modifyAmount">金额</th>
+                <th class="modifyOutOperator">出款人</th>
+                <th class="modifyOutAccount">出款账号</th>
+                <th>时间</th>
+                <th>耗时</th>
+                <th>备注</th>
+                <th>截图</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_refused">
+            </tbody>
+        </table>
+        <div id="refused_footPage"></div>
+    </div>
+
+<div id="canceledType"  class="tab-pane">
+		<ul class="nav nav-tabs">
+		 <li class="active" id="canceledTab"
+                    onclick="$('#freshOutwardTaskLi').hide();initialSearchTypeToal('canceled');">
+                    <a data-toggle="tab" href="#canceled">
+                        <i class="ace-icon fa fa-times  bigger-110 red"></i>
+                        出款任务
+                    </a>
+                </li>
+              <li><a data-toggle="tab"
+								onclick="queryCanceled();"
+								id="rebateCanceled" href="#rebateCanceledTab"><i
+									class="ace-icon fa fa-times  bigger-110 red"></i>返利任务</a></li>
+                </ul>
+   <div class="tab-content">    
+    <div id="canceled" class="tab-pane in active">
+            <div >
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+                        <select onchange="_handicapTypeChange();" id="handicap_canceled"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyOutAccount">出款账号</span>
+                        <input style="height:32px;width:65%;" type="text" id="account_canceled">
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="width:54.59px;"
+                              class="label label-lg label-primary arrowed-right modifyOrder">订单号</span>
+                        <input id="orderNo_canceled" class="input-large " style="height: 32px;width:72.8%;" type="text">
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyAmount">出款金额</span>
+                        <input id="fromMoney_canceled" onkeyup="clearNoNum(this); " class="form-control input-small"
+                               style="height:32px;width:29.2%;" type="text">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_canceled" onkeyup="clearNoNum(this); " class="form-control input-small"
+                               style="height:32px;width:30%;" type="text">
+                    </div>
+
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">层级</span>
+                        <select onchange="_search();" id="level_canceled" class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">处理时间</span>
+                        <input id="timeScope_canceled" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:64.5%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">会员名</span>
+                        <input id="member_canceled" class="input-large " type="text" style="height: 32px;width:22%"/>
+                        <span class="label label-lg label-primary arrowed-right modifyOutOperator">出款人</span>
+                        <input id="operator_canceled" class="input-medium " type="text"
+                               style="height: 32px;width:22%"/>
+                    </div>
+                    <div class="col-sm-2">
+                         <span class=" pull-left">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                        onclick="_resetValuesForTaskTotal('canceled');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+                                    重置
+                                </button>
+                            </label>
+                        </span>
+                        <span class=" pull-right">
+                            <label class="pull-right inline">
+                                <button type="button" onclick="_search();" id="button_canceled"
+                                        class="btn btn-xs btn-white btn-info btn-bold ">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                </button>
+                            </label>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        <table class="table table-bordered table-hover no-margin-bottom ">
+            <thead>
+            <tr>
+                <th class="modifyHandicap">盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th class="modifyOrder">订单号</th>
+                <th class="modifyAmount">金额</th>
+                <th class="modifyOutOperator">出款人</th>
+                <th class="modifyOutAccount">出款账号</th>
+                <th>时间</th>
+                <th>耗时</th>
+                <th>备注</th>
+                <th>截图</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_canceled">
+            </tbody>
+        </table>
+        <div id="canceled_footPage"></div>
+    </div>
+    
+    <div id="rebateCanceledTab" class="tab-pane">
+								<div
+									class="col-sm-12 header smaller lighter less-margin no-margin-left">
+									<span class="label label-lg label-primary">盘口</span> <select
+										onchange="queryCanceled()" id="canceledHandicap"
+										name="canceledHandicap"></select> 
+										<span class="label label-lg label-primary">类型</span> <select
+										onchange="queryCanceled()" id="canceledTypee"
+										name="canceledTypee">
+											<option value="">全部</option>
+											<option value="1">返利</option>
+											<option value="2">降额</option>
+										</select>
+										<span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">订单号</span> <input
+										id="canceledOrderNo" class="input-large " type="text"
+										style="height: 32px; width: 15%"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">金额</span> <input
+										id="canceledFromMoney" onkeyup="clearNoNum(this); "
+										type="text" style="height: 32px; width: 4%"> <span
+										style="width: 0%; display: inline" class="">~</span> <input
+										id="canceledToMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 4%;"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">取消时间</span> <input
+										id="canceledTime" name="canceledTime"
+										class="input-large date-range-picker" type="text"
+										style="height: 32px; width: 23%;"> <label
+										class="pull-right inline">
+										<button type="button"
+											onclick="queryCanceled();_searchRebateTimeTask('Canceled');"
+											class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+										</button>
+										<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="resetValues('Canceled');">
+		                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+		                                   		 重置
+		                                </button>
+									</label>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>盘口</th>
+											<th>开户信息</th>
+											<!-- <th>开户行</th> -->
+											<th>支行</th>
+											<th>收款卡</th>
+											<th>订单号</th>
+											<th>类型</th>
+											<th>出款人</th>
+											<th>出款卡号</th>
+											<th>金额</th>
+											<th>创建时间</th>
+											<th>取消时间</th>
+											<th>备注</th>
+											<th>截图</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="canceledTab_tbody">
+
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="canceledTabPage"></div>
+							</div>
+    
+</div>
+</div>    
+    
+    <div id="backwash" class="tab-pane">
+    		<br/>
+            <div>
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+                        <select onchange="_handicapTypeChange();" id="handicap_backwash"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyOutAccount">出款账号</span>
+                        <input style="height:32px;width:68%;" type="text" PLACEHOLDER="账号或者别名" id="account_backwash">
+                    </div>
+                    <!--<div class="col-sm-3">-->
+                    <!--<span style="width:54.59px;" class="label label-lg label-primary arrowed-right">订单号</span>-->
+                    <!--<input id="orderNo_backwash" class="input-large " style="height: 32px;width:72.8%;" type="text">-->
+                    <!--</div>-->
+                    <div class="col-sm-3">
+                        <span style="width:53px;" class="label label-lg label-important">状态</span>
+                        <label class="inline">
+                            <input onclick="_searchBackWash();" name="status_backwash" class="ace" id="backwash_done"
+                                   type="checkbox" value="7">
+                            <span class="lbl">已处理</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_searchBackWash();" name="status_backwash" class="ace" id="backwash_todo"
+                                   type="checkbox" checked="checked" value="6">
+                            <span class="lbl">待处理</span>
+                        </label>
+                    </div>
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyAmount">金额</span>
+                        <input id="fromMoney_backwash" class="form-control input-small"
+                               style="height:32px;width:34.4%;" type="text">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_backwash" class="form-control input-small"
+                               style="height:32px;width:34.4%;" type="text">
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">处理时间</span>
+                        <input id="timeScope_backwash" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:68%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">处理人</span>
+                        <input id="operator_backwash" class="input-medium " type="text"
+                               style="height: 32px;width:72.8%"/>
+                    </div>
+                    <div class="col-sm-2">
+                         <span class=" pull-left ">
+                            <label class="pull-right inline">
+                                <button type="button" onclick="_searchBackWash();" id="button_backwash"
+                                        class="btn btn-xs btn-white btn-info btn-bold ">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                </button>
+                            </label>
+                        </span>
+                        <span class="pull-left">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                        onclick="_resetValueBackwash();">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+                                    重置
+                                </button>
+                            </label>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        <table class="table table-bordered table-hover no-margin-bottom ">
+            <thead>
+            <tr>
+                <th class="modifyHandicap">盘口</th>
+                <th class="modifyOutAccount">出款账号</th>
+                <th>交易时间</th>
+                <th>抓取时间</th>
+                <th class="modifyAmount">交易金额</th>
+                <th>余额</th>
+                <th>对方账号</th>
+                <th>对方姓名</th>
+                <th>摘要</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+            <tbody id="tbody_backwash">
+            </tbody>
+        </table>
+        <div id="backwash_footPage"></div>
+    </div>
+    <div id="discarded" class="tab-pane">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+                        <select onchange="_handicapTypeChange();" id="handicap_discarded"
+                                class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right modifyOutAccount">出款账号</span>
+                        <input style="height:32px;width:68%;" type="text" id="account_discarded">
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="width:54.59px;" class="label label-lg label-primary arrowed-right">订单号</span>
+                        <input id="orderNo_discarded" class="input-large " style="height: 32px;width:73.6%;"
+                               type="text">
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">出款金额</span>
+                        <input id="fromMoney_discarded" onkeyup="clearNoNum(this)" class="form-control input-small"
+                               style="height:32px;width:29.2%;" type="text">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_discarded" onkeyup="clearNoNum(this)" class="form-control input-small"
+                               style="height:32px;width:30%;" type="text">
+                    </div>
+
+                    <div class="col-sm-12" style="height:2px;"></div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">层级</span>
+                        <select id="level_discarded" class="chosen-select form-control" style="height:32px;width:78%;">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">处理时间</span>
+                        <input id="timeScope_discarded" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:67.5%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">会员名</span>
+                        <input id="member_discarded" class="input-large " type="text" style="height: 32px;width:23%"/>
+                        <span class="label label-lg label-primary arrowed-right modifyOutOperator">出款人</span>
+                        <input id="operator_discarded" class="input-medium " type="text"
+                               style="height: 32px;width:22%"/>
+                    </div>
+                    <div class="col-sm-2">
+                         <span class=" pull-left">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                        onclick="_resetValuesForTaskTotal('discarded');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+                                    重置
+                                </button>
+                            </label>
+                        </span>
+                        <span class=" pull-right">
+                            <label class="pull-right inline">
+                                <button type="button" onclick="initialSearchTypeToal('discarded');"
+                                        id="button_discarded" class="btn btn-xs btn-white btn-info btn-bold ">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                </button>
+                            </label>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom ">
+            <thead>
+            <tr>
+                <th class="modifyHandicap">盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th>订单号</th>
+                <th class="modifyOutOperator">出款人</th>
+                <th class="modifyAmount">金额</th>
+                <th class="modifyOutAccount">出款账号</th>
+                <th>处理时间</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_discarded">
+            </tbody>
+        </table>
+        <div id="discarded_footPage"></div>
+    </div>
+    <div id="masterOut" class="tab-pane">
+        <h3 class="row header smaller lighter blue">
+            <form class="form-inline">
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary modifyHandicap">盘口</span>
+                    <select onchange="_handicapTypeChange();" id="handicap_masterOut"
+                            class="chosen-select form-control"
+                            style="height:32px;width:78%;">
+
+                    </select>
+                </div>
+                <div class="col-sm-3  ManagerDealDiv">
+                    <span class="label label-lg label-primary arrowed-right modifyOutAccount">出款账号</span>
+                    <input style="height:32px;width:68%;" type="text" id="account_masterOut">
+                    <!--<span class="label label-lg label-primary arrowed-right">银行类别</span>-->
+                    <!--<select onchange="_search();" id="bank_masterOut" class="chosen-select form-control"-->
+                    <!--style="height:32px;width:68%;">-->
+                    <!--<option>请选择</option>-->
+                    <!--</select>-->
+                </div>
+
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right modifyOrder">订单号</span>
+                    <input id="orderNo_masterOut" class="input-large " style="height: 32px;width:72.6%;" type="text">
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right modifyOutOperator">出款人</span>
+                    <input id="operator_masterOut" class="input-medium " type="text" style="height: 32px;width:42%"/>
+
+                    <span class=" pull-right">
+                          <button class="btn btn-xs btn-white btn-info btn-bold" type="button"
+                                  onclick="_resetValuesForTaskTotal('masterOut');">
+                                <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                            </button>
+                    </span>
+                </div>
+
+                <div class="col-sm-12" style="height:2px;"></div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary modifyAmount">金额</span>
+                    <input id="fromMoney_masterOut" onkeyup="clearNoNum(this); " type="text"
+                           class="form-control input-small" style="height:32px;width:34%;">
+                    ~
+                    <input id="toMoney_masterOut" onkeyup="clearNoNum(this); " type="text"
+                           class="form-control input-small" style="height:32px;width:35%;">
+                </div>
+                <!--<div class="col-sm-4">-->
+                <!--&lt;!&ndash;<span class="label label-lg label-primary arrowed-right">层级</span>&ndash;&gt;-->
+                <!--&lt;!&ndash;<select onchange="_search();" id="level_masterOut" class="chosen-select form-control"&ndash;&gt;-->
+                <!--&lt;!&ndash;style="height:32px;width:78%;">&ndash;&gt;-->
+                <!--&lt;!&ndash;<option>请选择</option>&ndash;&gt;-->
+                <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                <!--<span class="label label-lg label-primary">层级</span>-->
+                <!--<label class="inline">-->
+                <!--<input onclick="_radioClick(this);" checked="checked" checked_val="2"  name="level_masterOut" class="ace" id="level_all_masterOut" type="radio" value="3">-->
+                <!--<span class="lbl">全部</span>-->
+                <!--</label>-->
+                <!--<label class="inline">-->
+                <!--<input onclick="_radioClick(this);" checked_val="1"  name="level_masterOut" class="ace" id="level_in_masterOut" type="radio" value="2">-->
+                <!--<span class="lbl">内层</span>-->
+                <!--</label>-->
+                <!--<label class="inline">-->
+                <!--<input onclick="_radioClick(this);" checked_val="1"  name="level_masterOut" class="ace" id="level_out_masterOut" type="radio" value="1">-->
+                <!--<span class="lbl">外层</span>-->
+                <!--</label>-->
+                <!--<label class="inline">-->
+                <!--<input onclick="_radioClick(this);" checked_val="1"  name="level_masterOut" class="ace" type="radio" value="8">-->
+                <!--<span class="lbl">指定层</span>-->
+                <!--</label>-->
+                <!--</div>-->
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">处理时间</span>
+                    <input id="timeScope_masterOut" class="input-large date-range-picker" type="text"
+                           style="height: 32px;width:68%;"/>
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-primary arrowed-right">会员名</span>
+                    <input id="member_masterOut" class="input-large " type="text" style="height: 32px;width:72.8%"/>
+                </div>
+                <div class="col-sm-3">
+                    <span class="label label-lg label-important">类型</span>
+                    <label class="inline">
+                        <input onclick="_checkSysOrderTr(this);" checked_val="2" checked="checked" name="allType_masterOut" class="ace type_masterOut" id="allType_masterOut"
+                               type="radio"
+                               value="1111">
+                        <span class="lbl">全部</span>
+                    </label>
+                    <label class="inline" >
+                        <input onclick="_checkSysOrderTr(this);" checked_val="1"  name="manual_masterOut" class="ace type_masterOut" id="manual_masterOut"
+                               type="radio"
+                               value="0">
+                        <span class="lbl">人工</span>
+                    </label>
+                    <label class="inline"  >
+                        <input onclick="_checkSysOrderTr(this);" checked_val="1" name="robot_masterOut" class="ace type_masterOut" id="robot_masterOut"
+                               type="radio" value="1">
+                        <span class="lbl">机器</span>
+                    </label>
+                    <!--<label class="inline">-->
+                    <!--<input onclick="_search();" name="mobile_masterOut" class="ace" id="mobile_masterOut"-->
+                    <!--type="checkbox" value="2">-->
+                    <!--<span class="lbl">手机</span>-->
+                    <!--</label>-->
+                    <span class="pull-right">
+                        <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_masterOut"
+                                type="button" onclick="_search()">
+                                <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                            </button>
+                    </span>
+                </div>
+            </form>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom ">
+            <thead>
+            <tr>
+                <th class="modifyHandicap">盘口</th>
+                <th>层级</th>
+                <th>会员名</th>
+                <th class="modifyOrder">订单号</th>
+                <th class="modifyAmount">金额</th>
+                <th class="modifyOutOperator">出款人</th>
+                <th>接单人</th>
+                <th class="modifyOutAccount">出款账号</th>
+                <th>时间</th>
+                <th>已耗时</th>
+                <th>备注</th>
+                <th>截图</th>
+                <th id="masterOutOperateTh">操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_masterOut">
+            </tbody>
+        </table>
+        <div id="masterOut_footPage"></div>
+    </div>
+
+</div>
+<!--modal -->
+<div id="modal-table-detail" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:900px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    出款任务明细
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div id="detail_table" class="tab-content">
+                        <span class="label label-info ">出款任务</span>
+                        <table class="table table-bordered user-table audit_table">
+                            <tbody>
+                            <tr class="text-left">
+                                <td bgcolor="#F5F5F5">订单号</td>
+                                <td id="detail_orderNo"></td>
+                                <td bgcolor="#F5F5F5" class="modifyHandicap">盘口</td>
+                                <td id="detail_handicap"></td>
+                                <td bgcolor="#F5F5F5">会员名</td>
+                                <td id="detail_member"></td>
+                                <td bgcolor="#F5F5F5">类型</td>
+                                <td id="detail_type"></td>
+                                <td bgcolor="#F5F5F5">时间</td>
+                                <td id="detail_asignTime"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="label label-success ">任务拆分情况</span>
+                        <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>任务编号</th>
+                                <th class="modifyAmount">金额</th>
+                                <th>耗时（分钟）</th>
+                                <th>出款卡号</th>
+                                <th>状态</th>
+                                <th>出款人员</th>
+                                <th>备注</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="detail_body">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-table-feedback" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDiv" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    任务反馈
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <input type="hidden" id="feedback_taskId">
+                        <span class="label label-info ">出款任务</span>
+                        <table class="table table-bordered user-table audit_table">
+                            <tbody>
+                            <tr>
+                                <td bgcolor="#F5F5F5">订单号</td>
+                                <td id="feedback_orderNo"></td>
+                                <td bgcolor="#F5F5F5" class="modifyHandicap">盘口</td>
+                                <td id="feedback_handicap"></td>
+                                <td bgcolor="#F5F5F5">层级</td>
+                                <td id="feedback_level"></td>
+                            </tr>
+                            <tr>
+                                <td bgcolor="#F5F5F5">转交时间</td>
+                                <td id="feedback_asignTime"></td>
+                                <td bgcolor="#F5F5F5">会员名</td>
+                                <td id="feedback_member"></td>
+                                <td bgcolor="#F5F5F5">出款类型</td>
+                                <td id="feedback_type"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div id="messages">
+                            <form class="form-horizontal" role="form" id="save_form">
+                                <p></p>
+                                <!-- #section:elements.form -->
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"
+                                           for="feedback_amount">出款金额 </label>
+                                    <div class="col-sm-9">
+                                        <input readonly type="text" onkeyup="clearNoNum(this)" id="feedback_amount"
+                                               placeholder="出款金额"
+                                               class="input-sm" style="width:265px;"/>
+                                        <span class="help-inline col-xs-12 col-sm-7">
+											<span class="middle"></span>
+										</span>
+                                    </div>
+                                </div>
+
+                                <!-- /section:elements.form -->
+                                <div class="space-4"></div>
+                                <input type="hidden" id="button_type">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"
+                                           for="feedback_remark">备注 </label>
+                                    <div class="col-sm-6">
+                                        <textarea id="feedback_remark" name="feedback_remark"
+                                                  class="autosize-transition form-control"
+                                                  placeholder="如果该订单有一笔出款或者多笔出款失败，请填写失败原因说明"></textarea>
+
+                                        <span class="help-inline col-xs-12 col-sm-7">
+											<span class="middle"></span>
+										</span>
+                                    </div>
+                                    <span id="prompt" style="display:none;color: red;">请填写备注</span>
+                                </div>
+                                <span style="margin-left:150px;">会员收款账号异常</span>
+                                <input type="checkbox" id="toAccount_error" value="ACCOUNT_ERROR">
+                                <div class="space-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="_sureButton();" class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 未出款页签 分配给用户出款任务-->
+<div id="modal-distribution" data-backdrop="static" data-keyboard="false" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div style="padding: 0px" class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="blue">&times;</span>
+                </button>
+                <h3 id="modal-distribution-header">任务分配</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form role="form">
+                        <div class="form-group">
+                            <label style="color: mediumvioletred">&nbsp;&nbsp;&nbsp;&nbsp;开&nbsp;&nbsp;户&nbsp;&nbsp;行&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <select multiple="multiple" class="multiselect"
+                                    id="form-field-select-allocateTask1"></select>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: mediumvioletred">&nbsp;&nbsp;&nbsp;&nbsp;备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <input id="allocateTaskRemark" type="text" style="width: 500px;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="distribution-prompt" class="pull-left" style="color: red;display: none;"></span>
+                <input id="distributionTaskId" type="hidden">
+                <input id="operatePage" type="hidden">
+                <label class="pull-left blue">分配对象：</label>&nbsp;&nbsp;&nbsp;
+                <label class="pull-left distributeObject " onclick="_checkClickLabel(this);"><input
+                        onclick="window.event.stopPropagation();" name="distributeObject" value="robot" type="radio">机器&nbsp;&nbsp;</label>
+                <label class="pull-left distributeObject" onclick="_checkClickLabel(this);"><input
+                        onclick="window.event.stopPropagation();" type="radio" value="manual" name="distributeObject">人工&nbsp;&nbsp;</label>
+                <label class="pull-left distributeObject" onclick="_checkClickLabel(this);"><input
+                        onclick="window.event.stopPropagation();" type="radio" value="thirdOut" name="distributeObject">第三方人工</label>
+                <label id="noDistributionObj" style="color: red;display: none">请选择分配对象</label>
+                <button id="confirmDistribution" type="button" onclick="_distributionTask();"
+                        class="btn btn-sm btn-success">
+                    确定
+                </button>
+                <button id="cancelDistribution" type="button" data-dismiss="modal" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--modal 转排查任务为失败-->
+<div id="modal-turnToFailTotal" class="modal fade" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog" style="width:500px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    备注
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <label style="width: 100%;color: red;">&nbsp;&nbsp;备 注：<input id="turnToFailRemarkTotal"
+                                                                              style="width: 85%;" type="text"
+                                                                              placeholder="填写备注"></label>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <input id="turnFailIdTotal" type="hidden">
+                <span id="remark-turnToFailTotal" style="color: red;display: none;" class="pull-left">请填写备注信息</span>
+                <button id="confirmTurnToFailTotal" type="button"
+                        class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    确定
+                </button>
+                <button style="margin-right: 20px;" id="cancelTurnToFailTotal" type="button" data-dismiss="modal"
+                        class="btn btn-sm btn-default pull-right">
+                    <i class="ace-icon fa fa-remove"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--modal 客服备注 -->
+<div id="CustomerserviceRemark_modal" class="modal fade" tabindex="-1">
+    <input id="CustomerserviceRemark_id" type="hidden">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomer" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    备注
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div id="backwashOrderNoDiv" class="form-group" style="display: none">
+                                    <label class="col-sm-3 control-label no-padding-left"
+                                           for="CustomerserviceRemark">订单号</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="height: 40px;width: 400px;" id="backwashOrderNo"
+                                                  name="CustomerserviceRemark"
+                                                  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div id="thirdHandiacp" class="form-group" style="display: none">
+                                    <label class="col-sm-3 control-label no-padding-left modifyHandicap"
+                                           for="CustomerserviceRemark">盘口</label>
+                                    <div class="col-sm-6">
+                                        <input id="thirdHandiacpValue" class="autosize-transition form-control">
+                                    </div>
+                                </div>
+                                <div id="thirdAccountName" class="form-group" style="display: none">
+                                    <label class="col-sm-3 control-label no-padding-left"
+                                           for="CustomerserviceRemark">商号</label>
+                                    <div class="col-sm-6">
+                                        <input id="thirdAccountNameValue" class="autosize-transition form-control">
+                                    </div>
+                                </div>
+                                <div id="thirdOutAmount" class="form-group" style="display: none">
+                                    <label class="col-sm-3 control-label no-padding-left modifyAmount"
+                                           for="CustomerserviceRemark">金额</label>
+                                    <div class="col-sm-6">
+                                        <input id="thirdOutAmountValue" class="autosize-transition form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-left"
+                                           for="CustomerserviceRemark">备注 </label>
+                                    <div class="col-sm-6">
+                                        <textarea style="height: 120px;width: 400px;" id="CustomerserviceRemark"
+                                                  name="CustomerserviceRemark"
+                                                  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="space-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                 <span id="prompt_remark"
+                       style="display:none;color: red;padding-left: 160px;">请填写备注</span>
+                <label style="display:none;" id="reOutForThird" class="pull-left distributeObject"
+                       onclick="_checkClickLabel(this);"><input onclick="window.event.stopPropagation();" type="radio"
+                                                                value="reThirdOut" name="distributeObject">
+                    &nbsp;重新出款</label> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+                <label style="display:none;" id="normalRemarkForThird" class="pull-left distributeObject"
+                       onclick="_checkClickLabel(this);"><input onclick="window.event.stopPropagation();" type="radio"
+                                                                value="normalRemark" name="distributeObject">
+                    &nbsp;正常备注</label>
+                <button id="totalTaskFinishBTN" type="button" onclick="save_CustomerserviceRemark();"
+                        class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 客服发消息 -->
+<div id="CustomersendMessage_modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomerSendMessage" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    消息内容
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-left">消息 </label>
+                                    <div class="col-sm-6">
+                                        <textarea style="height: 120px;width: 400px;" id="messageCont"
+                                                  name="messageCont"
+                                                  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                                <span id="messageCont_remark"
+                                      style="display:none;color: red;padding-left: 160px;">请填写消息</span>
+                                <div class="space-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="save_message();" class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="taskTotalImgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="width:30%;">
+        <div class="modal-content">
+            <div style="text-align: center" class="table-header">
+                <button type="button" class="close white" data-dismiss="modal" aria-hidden="true">×</button>
+                交易截图
+            </div>
+            <div class="modal-body">
+                <img id="taskTotalImg" src=""  height="auto" width="100%" alt="auto">
+                </iframe>
+            </div>
+            <div class="modal-footer">
+                <a id="downLoadImgBtn" class="btn btn-success">下载</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="Remark_modal" class="modal fade" tabindex="-1">
+	<input id="CustomerserviceRemark_id" type="hidden">
+	<div class="modal-dialog" style="width: 600px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding">
+				<div id="titleDivCustomer" style="text-align: center"
+					class="table-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					<span id="typeName"> 备注</span>
+				</div>
+			</div>
+
+			<div class="modal-body no-padding">
+				<div class="tabbable">
+					<div class="tab-content">
+						<div>
+							<form class="form-horizontal" role="form">
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-left"
+										for="CustomerserviceRemark">备注 </label>
+									<div class="col-sm-6">
+										<textarea style="height: 120px; width: 400px;" id="Remark"
+											name="Remark" class="autosize-transition form-control"></textarea>
+									</div>
+								</div>
+								<div class="space-4"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer no-margin-top">
+				<span id="prompt_remarkk"
+					style="display: none; color: red; padding-left: 160px;">请填写内容</span>
+				<button id="rebateTotalTaskFinishBTN" type="button"
+					class="btn btn-sm btn-success">确认</button>
+				<button type="button" data-dismiss="modal" aria-hidden="true"
+					class="btn btn-sm btn-warming">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="historyDetail"></div>
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../javascript/outward/orderDetail.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript" src="../javascript/lib/bootstrap-multiselect.min.js"></script>
+<script type="text/javascript" src="../javascript/lib/jquery.bootstrap-duallistbox.min.js"></script>
+<script type="text/javascript" src="../javascript/common/modalBankLogList.js"></script>
+<script type="text/javascript" src="../third/thirdCommon.js"></script>

@@ -1,0 +1,754 @@
+
+<script type="text/javascript"
+	src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"
+	src="../javascript/common/modalBankLogList.js"></script>
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="tabbable">
+						<ul class="nav nav-tabs" id="myTab3">
+							<li class="active"><a data-toggle="tab"
+								onclick="queryAuditCommission();_searchRebateTimeTask('rebateAmount')"
+								id="auditCommission" href="#auditCommissionTab"><i
+									class="yellow ace-icon glyphicon glyphicon-user bigger-110"></i>佣金审核统计</a></li>
+							<li><a data-toggle="tab"
+								onclick="queryComplete();_searchRebateTimeTask('rebateAmountFin')"
+								id="Complete" href="#completeTab"><i
+									class="green ace-icon glyphicon glyphicon-book bigger-110"></i>佣金出款完成</a></li>
+							<li style="display: none;"><a data-toggle="tab"
+								onclick="queryRebateDrawing();_searchRebateTimeTask('RebateDrawing');"
+								id="rebateDrawing" href="#rebateDrawingTab"><i
+									class="ace-icon fa fa-hourglass-start bigger-110 pink"></i>正在出款</a>
+							</li>
+							<li style="display: none;"><a data-toggle="tab"
+								onclick="queryRebate();_searchRebateTimeTask('Rebate');"
+								id="rebate" href="#rebateTab"><i
+									class="pink ace-icon fa fa-info-circle bigger-110"></i>未出款</a></li>
+							<li style="display: none;"><a data-toggle="tab"
+								onclick="queryCheck();_searchRebateTimeTask('Check');"
+								id="check" href="#checkTab"><i
+									class="ace-icon fa fa-exclamation-circle  bigger-110 red"></i>待排查</a>
+							</li>
+							<li style="display: none;"><a data-toggle="tab"
+								onclick="queryCanceled();_searchRebateTimeTask('Canceled');"
+								id="canceled" href="#canceledTab"><i
+									class="ace-icon fa fa-times  bigger-110 red"></i>已取消</a></li>
+							<li style="display: none;"><a data-toggle="tab"
+								onclick="querySuccess();_searchRebateTimeTask('Success');"
+								id="success" href="#successTab"><i
+									class="blue ace-icon fa fa-check-circle bigger-110"></i>完成出款</a></li>
+						</ul>
+						<div style="padding: 0px 0px;" class="tab-content">
+
+							<!-- -----------------------------------------------正在出款-------------------------------------------------------------------->
+							<div id="rebateDrawingTab"  class="tab-pane">
+								<div
+									class="col-sm-12 header smaller lighter less-margin no-margin-left">
+									<span class="label label-lg label-primary">盘口</span> <select
+										onchange="queryRebateDrawing()" id="RebateDrawingHandicap"
+										name="RebateDrawingHandicap"></select> <span
+										style="margin-left: 20px;"
+										class="label label-lg label-primary arrowed-right">订单号</span>
+									<input id="RebateDrawingOrderNo" class="input-large "
+										type="text" style="height: 32px; width: 15%"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">金额</span> <input
+										id="RebateDrawingFromMoney" onkeyup="clearNoNum(this); "
+										type="text" style="height: 32px; width: 10%"> <span
+										style="width: 0%; display: inline" class="">~</span> <input
+										id="RebateDrawingToMoney" onkeyup="clearNoNum(this); "
+										type="text" style="height: 32px; width: 10%;"> <span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">刷新</span> <select
+										id="rebateDrawingTime"
+										onchange="_searchRebateTimeTask('RebateDrawing')"><option
+											value="0">不刷新</option>
+										<option selected="selected" value="15">15秒</option>
+										<option value="30">30秒</option>
+										<option value="60">60秒</option>
+										<option value="120">120秒</option>
+										<option value="180">180秒</option></select> <label
+										class="pull-right inline">
+										<button type="button"
+											onclick="queryRebateDrawing();_searchRebateTimeTask('RebateDrawing');"
+											class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+										</button>
+										<lable>
+			                                <button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="resetValues('RebateDrawing');">
+			                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+			                                   		 重置
+			                                </button>
+		                                </lable>
+                            </label>
+									</label>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>盘口</th>
+											<th>开户人</th>
+											<th>开户信息</th>
+											<!-- <th>支行</th> -->
+											<th>收款卡</th>
+											<th>订单号</th>
+											<th>类型</th>
+											<th>出款人</th>
+											<th>出款卡号</th>
+											<th>金额</th>
+											<th>创建时间</th>
+											<th>认领时间</th>
+											<th>已用时</th>
+											<th>备注</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="rebateDrawing_tbody">
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="rebateDrawingPage"></div>
+								<span style="color: mediumvioletred; font-size: 15px">温馨提示：红色<span
+									style="background-color: indianred">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>表示已超过10分钟。绿色<span
+									style="background-color: lightgreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>表示已超过3分钟。
+								</span>
+							</div>
+							<!--------------------------------------------------------正在出款end------------------------------------------------------------------>
+
+
+							<!-- -----------------------------------------------未出款-------------------------------------------------------------------->
+							<div id="rebateTab" class="tab-pane">
+								<div
+									class="col-sm-12 header smaller lighter less-margin no-margin-left">
+									<span class="label label-lg label-primary">盘口</span> <select
+										onchange="queryRebate()" id="rebateHandicap"
+										name="rebateHandicap"></select> <span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">订单号</span> <input
+										id="rebateOrderNo" class="input-large " type="text"
+										style="height: 32px; width: 15%"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">金额</span> <input
+										id="rebateFromMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 10%"> <span
+										style="width: 0%; display: inline" class="">~</span> <input
+										id="rebateToMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 10%;"> <span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">刷新</span> <select id="rebateTime"
+										onchange="_searchRebateTimeTask('Rebate')"><option
+											value="0">不刷新</option>
+										<option selected="selected" value="15">15秒</option>
+										<option value="30">30秒</option>
+										<option value="60">60秒</option>
+										<option value="120">120秒</option>
+										<option value="180">180秒</option></select> <label
+										class="pull-right inline">
+										<button type="button"
+											onclick="queryRebate();_searchRebateTimeTask('Rebate');"
+											class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+										</button>
+										<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="resetValues('Rebate');">
+		                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+		                                   		 重置
+		                                </button>
+									</label>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>盘口</th>
+											<th>开户信息</th>
+											<!-- <th>开户行</th> -->
+											<th>支行</th>
+											<th>收款卡</th>
+											<th>订单号</th>
+											<th>类型</th>
+											<th>金额</th>
+											<th>创建时间</th>
+											<th>备注</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="rebateTab_tbody">
+
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="rebateTabPage"></div>
+							</div>
+							<!--------------------------------------------------------未出款end------------------------------------------------------------------>
+
+
+							<!-- -----------------------------------------------待排查-------------------------------------------------------------------->
+							<div id="checkTab" class="tab-pane">
+								<div
+									class="col-sm-12 header smaller lighter less-margin no-margin-left">
+									<span class="label label-lg label-primary">盘口</span> <select
+										onchange="queryCheck()" id="checkHandicap"
+										name="checkHandicap"></select> <span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">订单号</span> <input id="checkOrderNo"
+										class="input-large " type="text"
+										style="height: 32px; width: 15%"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">金额</span> <input
+										id="checkFromMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 10%"> <span
+										style="width: 0%; display: inline" class="">~</span> <input
+										id="checkToMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 10%;"> <span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">刷新</span> <select id="checkTime"
+										onchange="_searchRebateTimeTask('Check')"><option value="0">不刷新
+										</option>
+										<option selected="selected" value="15">15秒</option>
+										<option value="30">30秒</option>
+										<option value="60">60秒</option>
+										<option value="120">120秒</option>
+										<option value="180">180秒</option>
+									</select> <label class="pull-right inline">
+										<button type="button"
+											onclick="queryCheck();_searchRebateTimeTask('Check');"
+											class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+										</button>
+										<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="resetValues('Check');">
+		                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+		                                   		 重置
+		                                </button>
+									</label>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>盘口</th>
+											<th>开户信息</th>
+											<!-- <th>开户行</th> -->
+											<th>支行</th>
+											<th>收款卡</th>
+											<th>订单号</th>
+											<th>类型</th>
+											<th>出款人</th>
+											<th>出款卡号</th>
+											<th>编号</th>
+											<th>金额</th>
+											<th>创建时间</th>
+											<th>备注</th>
+											<th>截图</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="checkTab_tbody">
+
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="checkTabPage"></div>
+							</div>
+							<!--------------------------------------------------------待排查end------------------------------------------------------------------>
+
+
+							<!-- -----------------------------------------------已取消-------------------------------------------------------------------->
+							<div id="canceledTab" class="tab-pane">
+								<div
+									class="col-sm-12 header smaller lighter less-margin no-margin-left">
+									<span class="label label-lg label-primary">盘口</span> <select
+										onchange="queryCanceled()" id="canceledHandicap"
+										name="canceledHandicap"></select> <span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">订单号</span> <input
+										id="canceledOrderNo" class="input-large " type="text"
+										style="height: 32px; width: 15%"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">金额</span> <input
+										id="canceledFromMoney" onkeyup="clearNoNum(this); "
+										type="text" style="height: 32px; width: 10%"> <span
+										style="width: 0%; display: inline" class="">~</span> <input
+										id="canceledToMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 10%;"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">取消时间</span> <input
+										id="canceledTime" name="canceledTime"
+										class="input-large date-range-picker" type="text"
+										style="height: 32px; width: 18%;"> <label
+										class="pull-right inline">
+										<button type="button"
+											onclick="queryCanceled();_searchRebateTimeTask('Canceled');"
+											class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+										</button>
+										<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="resetValues('Canceled');">
+		                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+		                                   		 重置
+		                                </button>
+									</label>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>盘口</th>
+											<th>开户信息</th>
+											<!-- <th>开户行</th> -->
+											<th>支行</th>
+											<th>收款卡</th>
+											<th>订单号</th>
+											<th>类型</th>
+											<th>出款人</th>
+											<th>出款卡号</th>
+											<th>金额</th>
+											<th>创建时间</th>
+											<th>取消时间</th>
+											<th>备注</th>
+											<th>截图</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="canceledTab_tbody">
+
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="canceledTabPage"></div>
+							</div>
+							<!--------------------------------------------------------已取消end------------------------------------------------------------------>
+
+
+
+							<!-- -----------------------------------------------完成出款-------------------------------------------------------------------->
+							<div id="successTab" class="tab-pane">
+								<div
+									class="col-sm-12 header smaller lighter less-margin no-margin-left">
+									<span class="label label-lg label-primary">盘口</span> <select
+										onchange="querySuccess()" id="successHandicap"
+										name="successHandicap"></select> <span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">订单号</span> <input
+										id="successOrderNo" class="input-large " type="text"
+										style="height: 32px; width: 7%">
+										<span
+										class="label label-lg label-primary arrowed-right"
+										style="margin-left: 20px;">兼职名</span> <input
+										id="uName" class="input-large " type="text"
+										style="height: 32px; width: 10%">
+										 <span class="label label-lg label-primary " style="margin-left: 20px;">金额</span> <input
+										id="successFromMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 5%"> <span
+										style="width: 0%; display: inline" class="">~</span> <input
+										id="successToMoney" onkeyup="clearNoNum(this); " type="text"
+										style="height: 32px; width: 5%;"> <span
+										class="label label-lg label-primary "
+										style="margin-left: 20px;">完成时间</span> <input id="successTime"
+										name="successTime" class="input-large date-range-picker"
+										type="text" style="height: 32px; width: 18%;"> <label
+										class="pull-right inline">
+										<button type="button"
+											onclick="querySuccess();_searchRebateTimeTask('Success');"
+											class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+										</button>
+										<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="resetValues('Success');">
+		                                    <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+		                                   		 重置
+		                                </button>
+									</label>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>兼职名</th>
+											<th>盘口</th>
+											<th>开户信息</th>
+											<!-- <th>开户行</th> -->
+											<th>支行</th>
+											<th>收款卡</th>
+											<th>订单号</th>
+											<th>类型</th>
+											<th>出款人</th>
+											<th>出款卡号</th>
+											<th>金额</th>
+											<th>状态</th>
+											<th>创建时间</th>
+											<th>完成时间</th>
+											<th>备注</th>
+											<th>截图</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="successTab_tbody">
+
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="successTabPage"></div>
+							</div>
+							<!--------------------------------------------------------完成出款end------------------------------------------------------------------>
+							
+							
+							
+							<!-- -----------------------------------------------佣金审核统计-------------------------------------------------------------------->
+								<div id="auditCommissionTab"  class="tab-pane in active">
+									<div>
+										<div class="col-sm-12 header smaller lighter less-margin no-margin-left">
+											<span
+												class="label label-lg label-primary "
+												style="margin-left: 20px;">日期</span> <input id="auditCommissionTime"
+												name="auditCommissionTime" class="input-large date-range-picker"
+												type="text" style="height: 32px; width: 18%;"> 
+												
+											<span style="margin-left: 30px;" class="label label-lg label-primary">审核结果</span> 
+											<select onchange="queryAuditCommission()" id="results" name="results">
+												<option value="">全部</option>
+												<option value="0">待审核</option>
+												<option value="1">通过</option>
+												<option value="2">不通过</option>
+											</select> 
+											<label class="pull-right inline">
+												<button type="button"
+													onclick="queryAuditCommission();"
+													class="btn btn-xs btn-white btn-info btn-bold">
+													<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+												</button>
+												</label>
+										</div>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>日期</th>
+											<th>返佣人数</th>
+											<th>产生佣金流水</th>
+											<th>平均佣金比例</th>
+											<th>总佣金额</th>
+											<th>备注</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="auditCommissionTab_tbody">
+
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="auditCommissionTabPage"></div>
+							</div>
+							<!--------------------------------------------------------佣金审核统计end------------------------------------------------------------------>
+						
+							<!-- -----------------------------------------------佣金出款完成-------------------------------------------------------------------->
+								<div id="completeTab" class="tab-pane">
+									<div>
+										<div class="col-sm-12 header smaller lighter less-margin no-margin-left">
+											<span
+												class="label label-lg label-primary "
+												style="margin-left: 20px;">日期</span> <input id="completeTime"
+												name="completeTime" class="input-large date-range-picker"
+												type="text" style="height: 32px; width: 18%;"> 
+												
+											<label class="pull-right inline">
+												<button type="button"
+													onclick="queryComplete();"
+													class="btn btn-xs btn-white btn-info btn-bold">
+													<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+												</button>
+												</label>
+										</div>
+								</div>
+								<table
+									class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>日期</th>
+											<th>提佣人数</th>
+											<th>提佣完成总金额</th>
+											<th>提佣总手续费</th>
+											<th>剩余总佣金余额</th>
+											<th>备注</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="completeTab_tbody">
+
+
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="completeTabPage"></div>
+							</div>
+							<!--------------------------------------------------------佣金出款完成end------------------------------------------------------------------>
+						</div>
+					</div>
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+		</div>
+	</div>
+</div>
+
+<div id="Remark_modal" class="modal fade" tabindex="-1">
+	<input id="CustomerserviceRemark_id" type="hidden">
+	<div class="modal-dialog" style="width: 600px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding">
+				<div id="titleDivCustomer" style="text-align: center"
+					class="table-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					<span id="typeName"> 备注</span>
+				</div>
+			</div>
+
+			<div class="modal-body no-padding">
+				<div class="tabbable">
+					<div class="tab-content">
+						<div>
+							<form class="form-horizontal" role="form">
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-left"
+										for="CustomerserviceRemark">备注 </label>
+									<div class="col-sm-6">
+										<textarea style="height: 120px; width: 400px;" id="Remark"
+											name="Remark" class="autosize-transition form-control"></textarea>
+									</div>
+								</div>
+								<div class="space-4"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer no-margin-top">
+				<span id="prompt_remark"
+					style="display: none; color: red; padding-left: 160px;">请填写内容</span>
+				<button id="totalTaskFinishBTN" type="button"
+					class="btn btn-sm btn-success">确认</button>
+				<button type="button" data-dismiss="modal" aria-hidden="true"
+					class="btn btn-sm btn-warming">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="show_deal" class="modal fade" tabindex="-1">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="tabbable">
+				<div class="modal-dialog" style="width: 1200px;">
+					<div class="modal-content">
+					<div class="modal-header no-padding">
+				<div id="titleDivCustomer" style="text-align: center"
+					class="table-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					<span id="typeName">佣金详情</span>
+				</div>
+			</div>
+						<div id="show_dealTab" class="tab-pane">
+								<div>
+									<div class="col-sm-12 header smaller lighter less-margin no-margin-left">
+										<span
+											class="label label-lg label-primary "
+											style="margin-left: 20px;">返利网账号</span> <input id="rebateUser" name="rebateUser" type="text" style="height: 32px; width: 18%;"> 
+							       <span class="label label-lg label-primary ">返利佣金</span>
+									<input id="startamount" name="startamount" onkeyup="clearNoNum(this)" type="text" style="height: 32px; width: 10%;">
+									<span style="width: 20px;">~</span>
+									<input id="endamount" name="endamount" onkeyup="clearNoNum(this)" type="text" style="height: 32px; width: 10%;">
+							<span style="margin-left: 30px;" class="label label-lg label-primary">开户行</span> 
+							 <select onchange="detail()" id="bankType" name="bankType" class="chosen-select form-control" style="height:32px;width:100px;">
+                                <option value="">请选择</option>
+                            </select>
+                            <span id="showButton" style="display: none;">
+	                            <button id="allPass" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+										 全部审核通过&nbsp;&nbsp;&nbsp;</button>
+								<button id="partPass" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+										 选中不通过,其它通过
+								</button>
+							</span>
+							<label class="pull-right inline">
+								<button type="button"
+									onclick="detail();"
+									class="btn btn-xs btn-white btn-info btn-bold">
+									<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+								</button>
+								</label>
+						</div>
+				</div>
+				<table
+					class="table table-striped table-bordered table-hover no-margin-bottom">
+					<thead>
+						<tr>
+							<th>选择</th>
+							<th>返利网账号</th>
+							<th>银行卡</th>
+							<th>产生佣金流水</th>
+							<th>佣金比例</th>
+							<th>银行卡产生佣金额</th>
+							<th>兼职应得佣金合计</th>
+						</tr>
+					</thead>
+					<tbody id="show_deal_tbody">
+						
+					</tbody>
+				</table>
+				<!-- 分页 -->
+				<div id="show_dealPage"></div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="audit_modal" class="modal fade" tabindex="-1">
+	<div class="modal-dialog" style="width: 600px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding">
+				<div id="titleDivCustomer" style="text-align: center"
+					class="table-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					<span id="typeName">审核佣金</span>
+				</div>
+			</div>
+
+			<div class="modal-body no-padding">
+				<div class="tabbable">
+					<div class="tab-content">
+						<div>
+							<form class="form-horizontal" role="form">
+								<div>
+									<!-- <label class="col-sm-3 control-label no-padding-left">审核佣金 </label> -->
+									<select style="display: none;" onchange="queryAuditCommission()" id="auditResults" name="auditResults">
+												<option value="1">通过</option>
+												<option value="2">不通过</option>
+											</select> <span style="color: red;margin-left: 150px;">(注：本操作不可撤销，请谨慎操作!)</span>
+									
+								</div>
+								<div style="margin-top: 10px;" class="form-group">
+									<label class="col-sm-3 control-label no-padding-left"
+										for="CustomerserviceRemark">备注 </label>
+									<div class="col-sm-6">
+										<textarea style="height: 120px; width: 400px;" id="auditRemark"
+											name="auditRemark" class="autosize-transition form-control"></textarea>
+									</div>
+								</div>
+								<div class="space-4"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer no-margin-top">
+				<button id="auditFinishBTN" type="button"
+					class="btn btn-sm btn-success">确认</button>
+				<button type="button" data-dismiss="modal" aria-hidden="true"
+					class="btn btn-sm btn-warming">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="complete_deal" class="modal fade" tabindex="-1">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="tabbable">
+				<div class="modal-dialog" style="width: 1200px;">
+					<div class="modal-content">
+					<div class="modal-header no-padding">
+				<div id="titleDivCustomer" style="text-align: center"
+					class="table-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					<span id="typeName">返佣详情</span>
+				</div>
+			</div>
+						<div id="show_dealTab" class="tab-pane">
+								<div>
+									<div class="col-sm-12 header smaller lighter less-margin no-margin-left">
+										<span
+											class="label label-lg label-primary "
+											style="margin-left: 20px;">返利网账号</span> <input id="completeRebateUser"
+								name="completeRebateUser" type="text" style="height: 32px; width: 18%;"> 
+								
+							<label class="pull-right inline">
+								<button type="button"
+									onclick="completeDetail();"
+									class="btn btn-xs btn-white btn-info btn-bold">
+									<i class="ace-icon fa fa-search bigger-100 green"></i> 查询
+								</button>
+								</label>
+						</div>
+				</div>
+				<table
+					class="table table-striped table-bordered table-hover no-margin-bottom">
+					<thead>
+						<tr>
+							<th>返利网账号</th>
+							<!-- <th>返佣金额</th> -->
+							<th>提佣完成金额</th>
+							<th>提佣手续费</th>
+							<th>剩余佣金余额</th>
+						</tr>
+					</thead>
+					<tbody id="complete_deal_tbody">
+						
+					</tbody>
+				</table>
+				<!-- 分页 -->
+				<div id="complete_dealPage"></div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div class="modal fade" id="taskTotalImgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="width:30%;">
+        <div class="modal-content">
+            <div style="text-align: center" class="table-header">
+                <button type="button" class="close white" data-dismiss="modal" aria-hidden="true">×</button>
+                交易截图
+            </div>
+            <div class="modal-body">
+                <img id="taskTotalImg" src="" height="auto" width="100%" alt="auto">
+                </iframe>
+            </div>
+            <div class="modal-footer">
+                <a id="downLoadImgBtn" class="btn btn-success">下载</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+
+        </div>
+    </div>
+</div>

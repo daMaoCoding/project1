@@ -1,0 +1,65 @@
+
+	<div class="main-content">
+		<div class="main-content-inner" id="fczl">
+			<div class="page-content">
+							<form class="form-inline">
+								<div class="row">
+									<div class="col-sm-10" style="width: 88%;">
+										<span class="label label-lg label-primary arrowed-right">汇出账号</span>
+										<input  type="text" id="to_account" name="to_account"  placeholder="汇出账号"  style="height:32px"  />
+										
+										<span class="label label-lg label-primary arrowed-right">汇入账号</span>
+										<input  type="text" id="from_account" name="from_account"  placeholder="汇入账号"  style="height:32px"  />
+		
+										<span class="label label-lg label-success arrowed-right">日期</span>
+										<input class="form-control date-range-picker" placeholder="自定义时间段" type="text" style="width: 230px;" id="startAndEndTime" name="startAndEndTime" />
+		
+										<span class="label label-lg label-warning arrowed-right">金额</span>
+										<div class="input-group form-group col-sm-2" style="height:32px">
+											<input type="text" id="startamount" onkeyup="clearNoNum(this)" name="startamount" class="form-control input-small"  style="height:32px">
+											<span class="input-group-addon">~</span>
+											<input type="text" id="endamount" onkeyup="clearNoNum(this)" name="endamount" class="form-control input-small"  style="height:32px">
+										</div>
+									</div>
+		
+									<span class="col-sm-2" style="width: 12%;">
+		
+		
+												<label class="pull-right inline">
+														<a  class="btn btn-xs btn-white btn-primary btn-bold" id="back"  type="button">返回</a>
+												</label>
+												<label class="pull-right inline">&nbsp;&nbsp;</label>
+												<label class="pull-right inline">
+													<button id="searhByCondition" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+														<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+													</button>
+												</label>
+		
+											</span><!-- /.col -->
+		
+								</div>
+							</form>
+							<div class="row">
+								<div class="col-sm-12">
+									<table id="simple-table3" class="table  table-bordered table-hover no-margin-bottom">
+										<thead>
+										<tr>
+											<th>汇出账号</th>
+											<th>汇入账号</th>
+											<th>金额</th>
+											<th>手续费</th>
+											<th>时间</th>
+											<!-- <th>备注</th> -->
+										</tr>
+										</thead>
+										<tbody id="total_tbody">
+											
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<div id="Page"></div>
+								</div>
+							</div>
+			</div>
+		</div>
+	</div>

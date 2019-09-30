@@ -1,0 +1,85 @@
+<div>
+	<div id="reportManage_modal" class="modal fade" aria-hidden="false" >
+		<div class="modal-dialog" style="width:1100px;">
+			<div class="modal-content">
+				<div class="modal-header text-center no-padding">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">×</span></button>
+						<span>账目排查</span>
+					</div>
+				</div>
+				<div class="modal-body no-padding">
+					<input id="logTab" type="hidden"  value="sysLog"/>
+					<ul class="nav nav-tabs">
+						<li onclick="report_changeLogTab('sysLog')" class="active"><a data-toggle="tab" href="#sysLog">系统订单</a></li>
+						<li onclick="report_changeLogTab('type0')"><a data-toggle="tab" href="#bankLog">银行流水</a></li>
+					</ul>
+					<div class="tab-content" style="margin:0px;padding:0px;">
+						<!-- 系统流水 -->
+						<div id="sysLog" class="tab-pane fade active in">
+							<input id="sysLogType" type="hidden" value="in" />
+							<table id="sysLog_inOut" class="table table-striped table-bordered table-hover no-margin-bottom">
+								<thead>
+									<tr>
+										<th style="width:10%;">设备处理时间</th>
+										<th style="width:10%;">转入</th>
+										<th style="width:10%;">转出</th>
+										<th style="width:20%;">对方账号</th>
+										<th style="width:15%;">分类</th>
+										<th style="width:15%;">备注</th>
+										<th style="width:20%;">处理</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+							<div id="sysLogPage_inOut"></div>
+						</div>
+						<!-- 银行流水 -->
+						<div id="bankLog" class="tab-pane fade">
+							<div id="filter" style="z-index:1" class="row col-sm-12 header smaller lighter blue  less-margin no-margin-left">
+								<div class="col-sm-10">
+									<span class="label label-lg label-purple arrowed-right">时间</span>
+									<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+									<input class="date-range-picker" type="text" placeholder="抓取时间 / 请选择起始日期" name="startAndEndTime" style="height: 32px;width:285px;"/>
+								</div>
+								<div class="col-sm-1">
+								</div>
+								<div class="col-sm-1">
+									<label id="searchBtn" class="pull-right inline">
+										<button onclick="report_bankLogList_In_OutList()" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+										</button>
+									</label>
+								</div>
+							</div>
+							<!-- 默认先抓取时间倒序，可以修改为交易时间trading_time  -->
+							<input id="orderByTh" value="create_time" type="hidden" />
+							<table id="list" class="table table-striped table-bordered table-hover no-margin-bottom">
+								<thead>
+									<tr>
+										<th style="width:9%;">交易时间</th>
+										<th style="width:9%;">抓取时间</th>
+										<th style="width:6%;">转入</th>
+										<th style="width:6%;">转出</th>
+										<th style="width:5%;">余额</th>
+										<th style="width:10%;">对方账号</th>
+										<th  style="width:10%;">摘要</th>
+										<th style="width:10%;">备注</th>
+										<th style="width:35%;">操作</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+							<div id="bankLogList_In_OutPage"></div>
+						</div>
+					</div>
+					<div id="bankLog_accountInfo_total" class="col-sm-12 modal-footer no-margin text-center">
+						<input type="hidden" id="accountInfo_id"/>
+						<input type="hidden" id="accountInfo_alias"/>
+						<span id='accountInfo_account'></span>&nbsp;&nbsp;&nbsp;&nbsp;- <span id='accountInfo_id_span'></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

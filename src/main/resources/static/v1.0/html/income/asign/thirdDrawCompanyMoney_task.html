@@ -1,0 +1,98 @@
+<!-- 公司用款下发  下发任务HTML -->
+<div id="company_task_div">
+	<!-- 查询条件 -->
+	<div class="col-sm-12 filter" >
+		<span class="control-label blue">用途类型</span>
+		<select class="chosen-select width150" name="task_search_IN_useName" ></select>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="control-label blue">盘口</span>
+		<select class="chosen-select width150" name="task_search_IN_handicapId" ></select>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="control-label blue">时间</span>
+	    <span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+	    <input name="task_startAndEndTime" class="date-range-picker input-sm" type="text" style="width:180px;" placeholder="请选择起始日期" />
+		&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="control-label blue">用款人</span>
+          <input type="text"  name="task_member" class="input-sm width150" placeholder="用款人"  />
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<label onclick="reset('company_task_div .filter');" class="pull-right inline">
+			<button class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+			</button>
+		</label>
+		<label class="pull-right inline" >&nbsp;&nbsp;</label>
+		<label id="searchBtn" class="pull-right inline" onclick="company_showTaskDataList()">
+			<button class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+			</button>
+		</label>
+	</div>
+	<div class="col-sm-12 filter"  style="height:10px;">&nbsp;</div>
+	<div class="col-sm-12 filter" >
+	  	<span class="control-label blue">收款方式</span>
+		<label class="inline">
+				<input type="radio" name="task_search_receiptType" class="ace defaultCheck" value="" checked="checked">
+				<span class="lbl">全部</span>
+		</label>
+		<label class="inline">
+				<input type="radio" name="task_search_receiptType" class="ace defaultNoCheck" value="1" >
+				<span class="lbl">第三方</span>
+		</label>
+		<label class="inline">
+			<input type="radio" name="task_search_receiptType" class="ace defaultNoCheck" value="0">
+			<span class="lbl">出款卡</span>
+		</label>
+		<span class="all" style="display:none;">
+			<label class="pull-right inline">&nbsp;&nbsp;</label>
+           	<label onclick="companyBatch_lockThirdDraw(1)" class="pull-right inline contentRight"   contentRight="ThirdDrawTask:LockUnlock:*">
+                   <button class="btn btn-xs btn-white btn-info btn-bold">
+                       <i class="ace-icon fa fa-lock bigger-100 green"></i>一键锁定选中
+                   </button>
+              </label>
+		</span>
+       <span class="mine" style="display:none;">
+			<label class="pull-right inline">&nbsp;&nbsp;</label>
+           	<label onclick="companyBatch_lockThirdDraw(0)" class="pull-right inline contentRight"    contentRight="ThirdDrawTask:LockUnlock:*">
+                     <button class="btn btn-xs btn-white btn-info btn-bold">
+                         <i class="ace-icon fa fa-unlock bigger-100 green"></i>一键解锁选中
+                     </button>
+               </label>
+			<label class="pull-right inline">&nbsp;&nbsp;</label>
+                	<label onclick="showChoiceThirdModal()" class="pull-right inline contentRight"    contentRight="ThirdDrawTask:ChoiceThird:*" >
+                    	<button class="btn btn-xs btn-white btn-info btn-bold">
+                        	<i class="ace-icon fa fa-cog bigger-100 green"></i>设定第三方
+                    	</button>
+               		</label>
+			<label class="pull-right inline">&nbsp;&nbsp;</label>
+                	<label onclick="company_showBindThirdModal()" class="pull-right inline contentRight"    contentRight="ThirdDrawTask:ChoiceThird:*" >
+                    	<button class="btn btn-xs btn-white btn-info btn-bold">
+                        	<i class="ace-icon fa fa-list bigger-100 green"></i>下发选中
+                    	</button>
+               		</label>
+           </span>
+	</div>
+	<table class="table table-striped table-bordered table-hover no-margin-bottom" >
+		<thead>
+			<tr>
+				<th style="min-width:40px;">
+					<input type="checkbox" onclick="company_selectAllOrNotAll(this);" class="ace" title="全选/全不选"><span class="lbl"></span>
+				</th>
+				<th>编码</th>
+				<th>盘口</th>
+				<th>状态</th>
+				<th>类型</th>
+				<th>账号信息</th>
+				<th>金额</th>
+				<th>手续费</th>
+				<th>下发耗时</th>
+				<th>总耗时</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+	<div id="company_task_accountPage"></div>
+</div>
+
+<!-- 公司用款 下发任务JS -->
+<script type="text/javascript"  src="../javascript/income/asign/thirdDrawCompanyMoney_task.js"></script>

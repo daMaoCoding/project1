@@ -1,0 +1,63 @@
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+	<div class="main-content">
+		<div class="main-content-inner">
+			<div class="page-content" id="fczl">
+				<div class="row">
+					<div class="col-xs-12">
+						<h3 class="row header smaller lighter blue">
+							<div class="col-sm-12">
+								<div class="form-inline">
+									<span class="label label-lg label-pink  arrowed-right">姓名</span>
+									<input class="form-control" placeholder="账号" id="username" name="username" type="text" />
+									<div class="input-group">
+										<span class="input-group-addon">
+										<i class="fa fa-calendar bigger-110"></i>
+										</span>
+										<input class="form-control date-range-picker" type="text" id="startAndEndTime" name="startAndEndTime" style="height: 32px;width:250px;"/>
+									</div>
+									<span class="label label-lg label-pink arrowed-right">类型</span>
+									<select class="chosen-select form-control" onchange="queryStopOrder();" id="stopOrderType" name="stopOrderType" style="height:32px">
+										<option value="">全部</option>
+										<option value="公司入款开始接单">公司入款开始接单</option>
+										<option value="公司入款停止接单">公司入款停止接单</option>
+										<option value="出款审核开始接单">出款审核开始接单</option>
+										<option value="出款审核结束接单">出款审核结束接单</option>
+										<option value="出款任务开始接单">出款任务开始接单</option>
+										<option value="出款任务结束接单">出款任务结束接单</option>
+									</select>
+									<label class="pull-right inline">
+										&nbsp;&nbsp;
+									</label>
+									<label class="pull-right inline">
+										<button id="searhByCondition" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>
+											查询
+										</button>
+									</label>
+								</div>
+							</div><!-- /.col -->
+						</h3>
+
+						<table id="dynamic-table" class="table table-striped table-bordered table-hover no-margin-bottom">
+							<thead>
+							<tr>
+								<th>姓名</th>
+								<th>时间</th>
+								<th>事件/说明</th>
+								<th>事件类型</th>
+							</tr>
+							</thead>
+							<tbody id="total_tbody">
+								
+							</tbody>
+						</table>
+						<!-- #分页 -->
+							<div id="stopOrderPage"></div>
+						<!-- #section:pages-footer end-->
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+
+			</div>
+		</div>
+	</div>
+

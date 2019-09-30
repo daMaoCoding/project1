@@ -1,0 +1,60 @@
+<div class="row col-sm-12" id="encashmentList">
+	<div class="row header smaller lighter blue  less-margin no-margin-left" id="accountFilter">
+		<span class="label label-lg label-purple arrowed-right">盘口</span>
+		<select class="chosen-select" name="search_EQ_handicapId" style="width:80px;">
+		</select>
+		&nbsp;&nbsp;
+		<span class="label label-lg arrowed-right label-purple">订单号</span>
+		<input name="orderNo" type="text" placeholder="订单号" style="width:80px" class="input-sm">
+		&nbsp;&nbsp;
+		<span class="label label-lg arrowed-right label-purple">会员名</span>
+		<input name="memberUserName" type="text" placeholder="会员名" style="width:80px" class="input-sm">
+		&nbsp;&nbsp;
+		<span class="label label-lg arrowed-right label-purple">金额</span>
+		<input name="minAmount" type="number" class="input-sm" style="width:50px;"/>
+		~
+		<input name="maxAmount" type="number" class="input-sm" style="width:50px;"/>
+		&nbsp;&nbsp;
+		<span class="label label-lg arrowed-right label-purple">日期</span>
+		<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+		<input name="startAndEndTime" class="date-range-picker input-sm" type="text" placeholder="请选择起始日期" style="width:285px;"/>
+		<label class="inline pull-right">&nbsp;
+			<button class="btn btn-xs btn-white btn-info btn-bold" onclick="showEncashmentList()" type="button">
+				<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+			</button>
+		</label>
+		<label class="inline pull-right">&nbsp;
+			<button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('accountFilter');" type="button">
+				<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+			</button>
+		</label>
+		<label class="inline pull-right">
+			<button class="btn btn-xs btn-white btn-info btn-bold" onclick="window.history.back();" type="button">
+				<i class="fa-rotate-left fa fa-search bigger-100 green"></i>返回
+			</button>
+		</label>
+	</div>
+	<div class="tab-pane in active" name="accountFlow">
+		<table class="table  table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th style="width:6%">盘口</th>
+					<th style="width:10%">层级</th>
+					<th style="width:7%">会员名</th>
+					<th style="width:6%">存款人</th>
+					<th style="width:17%">收款账号</th>
+					<th style="width:13%">订单号</th>
+					<th style="width:9%">金额</th>
+					<th style="width:6%">手续费</th>
+					<th style="width:4%">状态</th>
+					<th style="width:14%">时间</th>
+					<th style="width:8%">备注</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot></tfoot>
+		</table>
+		<div id="encashStatusPage"></div>
+	</div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>

@@ -1,0 +1,339 @@
+<!--modal 点击订单号查看明细-->
+<style>
+    #modal-orderDetail td{ font-size: 16px !important;text-align: center;}
+    #modal-orderDetail table tr td{padding-bottom: 5px;padding-top: 5px;padding-right: 0px;padding-left: 0px;}
+</style>
+<div id="modal-orderDetail" class="modal fade" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog" style="width:1200px;">
+        <div class="modal-content">
+            <input id="modal-orderDetail-pageFlag" type="hidden">
+            <div class="modal-header no-padding">
+                <div  style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    订单详情
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div style="padding: 0px;" class="tab-content">
+                        <div class="row" style="display: block;" >
+                            <div class="col-md-12">
+                                <table class=" table table-bordered ">
+                                    <thead>
+                                    	<tr>
+		                                    <th colspan="9" style="font-size: 20px;color: green" class="center">
+		                                    	<span>会员提单信息</span>
+		                                    	<label id="approveReasonLabelInOrderDetail" style="display: none;" class="pull-right">
+		                                        <span style="font-size: 20px;"></span>
+		                                            <i class="ace-icon fa fa-exclamation-triangle red bigger-130"></i>
+		                                        <span id="DetailReason" style="font-size: 18px;color: orangered;" >受审原因</span>
+		                                    </label>
+		                                    </th>
+                                    	</tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 5%;color: blue;font-size: 20px;">金额</td>
+                                        <td id="modal-orderDetail-amountToApprove"  style="width: 10%;color:red;"></td>
+                                        <td style="width: 10%;color: blue;">会员账号</td>
+                                        <td id="modal-orderDetail-memberName"  style="color: #00CC33"></td>
+                                        <td style="width: 5%;color: blue;">盘口</td>
+                                        <td id="modal-orderDetail-handicap"  style="color:#00CC33;"></td>
+                                        <td style="width: 5%;color: blue;">层级</td>
+                                        <td id="modal-orderDetail-level" style="color:#00CC33;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%;color: blue;">出款卡号</td>
+                                        <td id="modal-orderDetail-toAccount"  style="width: 15%;color:red;"></td>
+                                        <td style="width: 10%;color: blue;">订单号</td>
+                                        <td id="modal-orderDetail-orderNo"  style="width: 20%;font-size: 20px;color:#00CC33;"></td>
+                                        <td style="width: 10%;color: blue;">提单时间</td>
+                                        <td id="modal-orderDetail-createTime" colspan="3" style="color:#00CC33;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%;color: blue;">开户人</td>
+                                        <td id="modal-orderDetail-toAccountOwnerReq"  style="width: 15%;color:red;"></td>
+                                        <td style="width: 10%;color: blue;">开户行</td>
+                                        <td id="modal-orderDetail-toAccountBankReq"  style="width: 20%;font-size: 20px;color:#00CC33;"></td>
+                                        <td style="width: 10%;color: blue;">开户行地址</td>
+                                        <td id="modal-orderDetail-toAccountNameReq" colspan="3" style="color:#00CC33;"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="modal-orderDetail-info-in2" style="display: block;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table id="modal-orderDetail-info-in2-table" class=" table table-bordered ">
+                                        <thead>
+                                        	<tr>
+	                                        	<th colspan="9" class="center">
+	                                            	<span style="font-size: 20px;color: green">会员出款相关信息</span>
+	                                       		</th>
+                                       		</tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td style="width: 10%;color: blue;">上次出款后余额</td>
+                                            <td id="modal-orderDetail-balanceAfterLastDraw"  style="width: 10%;color:RED;"></td>
+                                            <td style="width: 15%;color: blue;">当前余额</td>
+                                            <td colspan="6"  id="modal-orderDetail-balanceBeforeDraw"  style="width: 15%;color:#00CC33;"></td>
+                                        <tr>
+                                            <td style="width: 10%;color: blue;">本次出款后余额</td>
+                                            <td id="modal-orderDetail-balanceAfterDraw"  style="width: 10%;color:RED;"></td>
+                                            <td style="width: 15%;color: blue;">最近入款总额</td>
+                                            <td colspan="6" id="modal-orderDetail-sumAmountsRecentDeposit" style="width: 15%;color:#00CC33;">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 10%;color: blue;">本次下注金额</td>
+                                            <td id="modal-orderDetail-fBetAmount"  style="width: 10%;color:#00CC33;"></td>
+                                            <td style="width: 15%;color: blue;">获利金额</td>
+                                            <td colspan="6" id="modal-orderDetail-fWinAmount"  style="width: 15%;color:#00CC33;"></td>
+                                        </tr>
+                                        <!--<tr>-->
+                                            <!--<td style="width: 10%;color: blue;">本次已达投注量</td>-->
+                                            <!--<td id="modal-orderDetail-needCodesAll"  style="width: 10%;color:#00CC33;"></td>-->
+                                            <!--<td style="width: 15%;color: blue;">要求打码量</td>-->
+                                            <!--<td colspan="6" id="modal-orderDetail-needCodes"   style="width: 15%;color:RED;"></td>-->
+                                        <!--</tr>-->
+                                        <tr>
+                                            <td style="width: 10%;color: blue;">几倍打码量</td>
+                                            <td id="modal-orderDetail-timesCodes" style="width: 10%;color:#00CC33;"></td>
+                                            <td style="width: 15%;color: blue;">中奖率</td>
+                                            <td colspan="6" id="modal-orderDetail-winRate"  style="width: 15%;color:#00CC33;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 10%;color: blue;">会员备注</td>
+                                            <td id="modal-orderDetail-remarkForMember"  style="width: 10%;color:red;"></td>
+                                            <td style="width: 15%;color: blue;">是否首次出款</td>
+                                            <td colspan="6" style="width: 15%;color:red;"  id="modal-orderDetail-isFirstOut"  ></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 10%;color: blue;">注册时间</td>
+                                            <td id="modal-orderDetail-registerTime"  style="width: 10%;color:#00CC33;"></td>
+                                            <td style="width: 15%;color: blue;">最后登陆时间</td>
+                                            <td colspan="6" id="modal-orderDetail-lastLoginTime"  style="width: 15%;color:#00CC33;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 20%;color: blue;">注册IP</td>
+                                            <td id="modal-orderDetail-regesterIp" style="width: 10%;color:#00CC33;"></td>
+                                            <td style="width: 15%;color: blue;">最后登陆IP</td>
+                                            <td colspan="6" id="modal-orderDetail-lastLoginIp"  style="width: 15%;color:#00CC33;"></td>
+                                        </tr>
+                                        <tr>
+	                                        <td style="width: 20%;color: blue;">账号登陆的IP明细</td>
+	                                        <td id="modal-orderDetail-tdAccIps"  style="width: 10%;color:#00CC33;">
+	                                            <a id="modal-orderDetail-accIpsDetail" href="javascript:void (0);" style="color:#00CC33;">点击查看详情</a>
+	                                        </td>
+	                                        <td style="width: 15%;color: blue;">IP登陆的账号明细</td>
+	                                        <td id="modal-orderDetail-tdIpAccs"  colspan="6"  style="width: 15%;color:#00CC33;">
+	                                           <a id="modal-orderDetail-ipAccsDetail" href="javascript:void (0);" style="color:#00CC33;">点击查看详情</a>
+	                                        </td>
+                                        </tr>
+                                        <tr id="toApprove_tr" style="display: none;">
+                                            <td style=" text-align: center" colspan="1">
+	                                            <input type="hidden" id="modal-orderDetail-toAppoveId">
+	                                            <input type="hidden" id="modal-orderDetail-orderNoInput">
+	                                            <input type="hidden" id="modal-orderDetail-memberCode">
+                                                <button id="modal-orderDetail-but_pass" class="btn btn-xs btn-white btn-info btn-bold">
+                                                    <i  class="ace-icon fa fa-check bigger-100 blue"></i>通过
+                                                </button>
+                                                <label><span id="modal-orderDetail-remarkPrompt1" style="color: red;display: none;">请填写备注</span></label>
+                                            </td>
+                                            <td  colspan="3"><input id="modal-orderDetail-remarkForApprove" type="text"
+                                                                    placeholder="不通过必须填写原因"
+                                                                    class="form-control">
+
+                                            </td>
+                                            <td  colspan="6">
+                                                <button id="modal-orderDetail-but_cancel" class="pull-left btn btn-xs btn-white btn-danger btn-bold"><i
+                                                        class="ace-icon fa fa-remove bigger-100 red"></i>取消
+                                                </button>
+                                                <button id="modal-orderDetail-but_refuse" class="pull-left btn btn-xs btn-white btn-warning btn-bold"><i
+                                                        class="ace-icon fa fa-ban bigger-100 red"></i>拒绝
+                                                </button>
+                                                <button id="modal-orderDetail-but_transfer" class="pull-left btn btn-xs btn-white btn-info btn-bold"><i
+                                                        class="ace-icon fa fa-level-up bigger-100 red"></i>转主管
+                                                </button>
+                                                <label><span id="modal-orderDetail-remarkPrompt2" style="color: red;display: none;">请填写原因</span></label>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr><td id="pauseHint" colspan="9" style="color: mediumvioletred">温馨提示：1.结束接单步骤：暂停—》完成当前审核—》结束&nbsp;&nbsp; &nbsp;2.打码规则：上次出款后余额+本次入款金额+盈利(含正负)= 出款前余额。</td></tr>
+                                        <tr id="modal-orderDetail-winTotalTr" style="display: none;"><td style="width: 10%;color: blue;">总盈利</td><td colspan="9" id="modal-orderDetail-winTotal"  style="width: 15%;color:#00CC33;">0.000</td></tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" data-dismiss="modal" aria-hidden="true"  class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 各个链接模态框明细------------------------------------------------start-------------->
+<!--modal 入款明细-->
+<div id="modal-orderDetail-depositDetail" class="modal fade" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" onclick="_closeDepositModal() ;" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    最近入款明细
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <table class="table table-bordered user-table audit_table">
+                            <thead>
+                            	<tr>
+		                            <th>订单号</th>
+		                            <th>入款金额</th>
+		                            <th>入款类型</th>
+		                            <!--<th>要求打码量</th>-->
+		                            <th>入款时间</th>
+                            	</tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="_closeDepositModal()" data-dismiss="modal" aria-hidden="true"  class="btn btn-sm btn-success pull-right">
+                	关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 账号登陆ip明细-->
+<div id="modal-orderDetail-accIpsDetails" class="modal fade" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div  style="text-align: center" class="table-header">
+                    <button type="button" class="close" onclick="_closeAccount2IpModal()" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    账号登陆的IP明细
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <table class="table table-bordered user-table audit_table">
+                            <thead>
+                            	<tr>
+                                    <th>账号</th>
+                                    <th>IP</th>
+                                    <th>登录时间</th>
+                            	</tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="_closeAccount2IpModal()" data-dismiss="modal" aria-hidden="true"  class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal IP-账号登陆明细-->
+<div id="modal-orderDetail-ipAccsDetails" class="modal fade" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div  style="text-align: center" class="table-header">
+                    <button type="button" onclick="_closeIP2AccountModal()" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    IP登陆的账号明细
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <table class="table table-bordered user-table audit_table">
+                            <thead>
+                            	<tr>
+                                    <th>IP</th>
+                                    <th>账号</th>
+                                    <th>登陆时间</th>
+                            	</tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="_closeIP2AccountModal()" data-dismiss="modal" aria-hidden="true"  class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--ip 归属地-->
+<div id="modal-orderDetail-attribution-ip" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div  style="text-align: center" class="table-header">
+                    <button type="button" onclick="_closeAttribution4IP();" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    IP归属地
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <table class="table table-bordered user-table audit_table">
+                            <thead>
+                            <th>国家</th>
+                            <th>省份</th>
+                            <th>城市</th>
+                            </thead>
+                            <tbody id="modal-orderDetail-attribution-ip-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="_closeAttribution4IP();" data-dismiss="modal" aria-hidden="true"  class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 各个链接模态框明细------------------------------------------------end-------------->

@@ -1,0 +1,76 @@
+<div class="row col-sm-12" id="encashmentList">
+	<div class="row header smaller lighter blue  less-margin no-margin-left" id="accountFilter">
+		<div class="col-sm-3">
+			<span class="label label-lg arrowed-right label-purple">转出账号</span>
+			<input name="fromAccount" type="text" placeholder="汇出账号" class="input-sm">
+		</div>
+		<div class="col-sm-3">
+			<span class="label label-lg arrowed-right label-purple">订单号</span>
+			<input name="orderNo" type="text" placeholder="订单号" style="height:30px">
+		</div>
+		<div class="col-sm-5">
+			<span class="label label-lg arrowed-right label-purple">金额</span>
+			<input name="minAmount" type="number" class="input-sm" style="width:69px;"/>
+			~
+			<input name="maxAmount" type="number" class="input-sm" style="width:69px;"/>
+			
+			<span class="label label-lg arrowed-right label-purple userNameNeedHide hidden">会员名</span>
+			<input name="memberUserName" type="text" placeholder="会员名" class="input-sm userNameNeedHide hidden" style="width:80px;">
+		</div>
+		<div class="col-sm-1">
+			<label class="inline pull-right">
+				<button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('accountFilter');" type="button">
+					<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+				</button>
+			</label>
+		</div>
+		<div class="col-sm-12" style="height:5px;"></div>
+		<div class="col-sm-3">
+			<span class="label label-lg arrowed-right label-purple">转入账号</span>
+			<input name="toAccount" type="text" placeholder="汇入账号"  class="input-sm">
+		</div>
+		<div class="col-sm-3">
+			<span class="label label-lg arrowed-right label-purple">&nbsp;&nbsp;备注&nbsp;&nbsp;</span>
+			<input name="remark" type="text" placeholder="备注" class="input-sm">
+		</div>
+		<div class="col-sm-4">
+			<span class="label label-lg arrowed-right label-purple">日期</span>
+			<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+			<input name="startAndEndTime" class="date-range-picker input-sm" type="text" placeholder="请选择起始日期" style="width:300px;"/>
+		</div>
+		<div class="col-sm-2">
+			<label class="inline pull-right">&nbsp;
+				<button class="btn btn-xs btn-white btn-info btn-bold" onclick="showEncashmentList()" type="button">
+					<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+				</button>
+			</label>
+			<label class="inline pull-right">
+				<button class="btn btn-xs btn-white btn-info btn-bold" onclick="window.history.back();" type="button">
+					<i class="fa-rotate-left fa fa-search bigger-100 green"></i>返回
+				</button>
+			</label>
+		</div>
+	</div>
+	<div class="tab-pane in active" name="accountFlow">
+		<table class="table  table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th style="width:13%;">类型</th>
+					<th style="width:15%;">转出账号</th>
+					<th style="width:15%;">转入账号</th>
+					<th style="width:12%;">订单号</th>
+					<th style="width:10%;">金额</th>
+					<th style="width:10%;">手续费</th>
+					<th style="width:12.5%;">状态</th>
+					<th style="width:12.5%;">时间</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot></tfoot>
+		</table>
+		<div id="encashStatusPage"></div>
+	</div>
+</div>
+
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>

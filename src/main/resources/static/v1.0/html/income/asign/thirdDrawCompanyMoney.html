@@ -1,0 +1,146 @@
+<!-- 公司用款TAB -->
+<ul class="nav nav-tabs">
+	<li onclick="changeTab_companyMoney('all')" class="active">
+		<a data-toggle="tab" href="#companyMoney_all"  >
+			<span>下发任务&nbsp;<span class="badge badge-danger" id="company_status6">0</span></span>
+		</a>
+	</li>
+	<li onclick="changeTab_companyMoney('mine')">
+		<a data-toggle="tab" href="#companyMoney_mine">
+	        <span>我已锁定&nbsp;<span class="badge badge-danger" id="company_status7">0</span></span>
+	    </a>
+	</li>
+</ul>
+<div class="tab-content" style="padding-top:5px;">
+	<!-- 用款审核 -->
+	<div id="companyMoney_list" class="tab-pane in"  style="margin-top:3px;z-index:10;">
+		<div class="	filter">
+			<span class="control-label blue">盘口</span>
+			<select class="chosen-select width150" name="search_IN_handicapId" ></select>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="control-label blue">用途类型</span>
+			<select class="chosen-select width150" name="search_IN_useName" ></select>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="control-label blue">时间</span>
+		    <span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+		    <input name="startAndEndTime" class="date-range-picker input-sm" type="text" style="width:180px;" placeholder="请选择起始日期" />
+			&nbsp;&nbsp;&nbsp;&nbsp;
+           <span class="control-label blue">用款人</span>
+           <input type="text"  name="member" class="input-sm width150" placeholder="用款人"  />
+			&nbsp;&nbsp;&nbsp;&nbsp;
+           	<label onclick="showTaskList();" class="pull-right inline" >
+				<button class="btn btn-xs btn-white btn-info btn-bold">
+                	<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                </button>
+            </label>
+            <label class="pull-right inline" >&nbsp;&nbsp;</label>
+			<label onclick="reset('companyMoney_list .filter');" class="pull-right inline" >
+            	<button class="btn btn-xs btn-white btn-info btn-bold">
+                	<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+              	</button>
+			</label>
+		</div>
+		<div style="height:10px;">&nbsp;</div>
+		<ul class="nav nav-tabs" >
+			<li class="active"  onclick="changeTab_4status('1')">
+				<a data-toggle="tab">
+					<span class="blue">&nbsp;待审核&nbsp;<span class="badge badge-danger" id="company_status1A">0</span>&nbsp;</span>
+				</a>
+			</li>
+			<li  onclick="changeTab_4status('2,5,6,7,8')" >
+		        <a data-toggle="tab" >
+		            <span class="green">&nbsp;通过记录&nbsp;</span>
+		        </a>
+		    </li>
+		    <li onclick="changeTab_4status('4')" >
+		        <a data-toggle="tab">
+		        	<span class="brown">&nbsp;不通过记录&nbsp;</span>
+		        </a>
+		    </li>
+		</ul>
+		<table class="table table-striped table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th style="width:15%;">编号</th>
+					<th style="width:5%;">盘口</th>
+					<th style="width:11%;">卡号</th>
+					<th style="width:8%;">金额</th>
+					<th style="width:6%;">用款人</th>
+					<th style="width:150px;">用途类型</th>
+					<th style="width:150px;">状态</th>
+					<th style="width:12%;">申请时间</th>
+					<th style="width:100px;">备注</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		<div id="taskPage"></div>
+	</div>
+	<!-- 下发任务 -->
+	<div id="companyMoney_all" class="tab-pane in active"  style="margin-top:3px;">
+		<ul class="nav nav-tabs">
+			<li onclick="changeTab_all_mine_SUB('1')" tabindex="0" class="active" >
+				<a data-toggle="tab" href="#companyMoneyTable_div">
+					<span>新下发任务&nbsp;<span class="badge badge-danger" id="company_status2">0</span></span>
+				</a>
+			</li>
+			<li onclick="changeTab_all_mine_SUB('2')" tabindex="0">
+				<a data-toggle="tab" href="#companyMoneyTable_div">
+					<span>正在下发&nbsp;<span class="badge badge-danger" id="company_status3">0</span></span>
+				</a>
+			</li>
+			<li onclick="changeTab_all_mine_SUB('3')" tabindex="0">
+				<a data-toggle="tab" href="#companyMoneyTable_div">
+			        <span>第三方资料&nbsp;</span>
+			    </a>
+			</li>
+			<li onclick="changeTab_all_mine_SUB('4')" tabindex="0">
+				<a data-toggle="tab" href="#companyMoneyTable_div">
+			        <span>下发完成记录&nbsp;</span>
+			    </a>
+			</li>
+			<li onclick="changeTab_all_mine_SUB('5')" tabindex="0">
+				<a data-toggle="tab" href="#companyMoneyTable_div">
+			        <span>下发失败记录&nbsp;</span>
+			    </a>
+			</li>
+		</ul>
+	</div>
+	<div id="companyMoney_mine" class="tab-pane in"  style="margin-top:3px;">
+		<ul class="nav nav-tabs">
+			<li onclick="changeTab_all_mine_SUB('1')" tabindex="0" class="active" >
+				<a data-toggle="tab" href="#companyMoneyTable_div">
+					<span>正在下发&nbsp;<span class="badge badge-danger" id="company_status4">0</span></span>
+				</a>
+			</li>
+			<li onclick="changeTab_all_mine_SUB('2')" tabindex="0">
+				<a data-toggle="tab" href="#companyMoneyTable_div">
+					<span>等待到账&nbsp;<span class="badge badge-danger" id="company_status5">0</span></span>
+				</a>
+			</li>
+			<li onclick="changeTab_all_mine_SUB('3')" tabindex="0">
+				<a data-toggle="tab" href="#companyMoneyTable_div">
+			        <span>第三方资料&nbsp;</span>
+			    </a>
+			</li>
+			<li onclick="changeTab_all_mine_SUB('4')" tabindex="0">
+				<a data-toggle="tab" href="#companyMoneyTable_div">
+			        <span>下发完成记录&nbsp;</span>
+			    </a>
+			</li>
+			<li onclick="changeTab_all_mine_SUB('5')" tabindex="0">
+				<a data-toggle="tab" href="#companyMoneyTable_div">
+			        <span>下发失败记录&nbsp;</span>
+			    </a>
+			</li>
+		</ul>
+	</div>
+	 <div class="tab-content" style="padding-top:5px;">
+           	<!-- 下发列表TAB 引入不同模块-->
+           	<div id="companyMoneyTable_div" class="tab-pane in active"  style="margin-top:3px;display:none;">
+           		
+           	</div>
+	</div>
+</div>
+

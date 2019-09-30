@@ -1,0 +1,288 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div id="accountFilter">
+            <div class="col-sm-3">
+                <span class="label label-lg label-purple arrowed-right">盘&nbsp;&nbsp;&nbsp;&nbsp;口</span>
+                <select class="chosen-select width150" name="search_EQ_handicapId">
+                    <option value="" selected="selected">全部</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <span class="label label-lg label-purple arrowed-right">银&nbsp;&nbsp;&nbsp;&nbsp;行</span>
+                <select name="search_EQ_bankType" class="chosen-select" style="height:32px;width:150px;">
+                    <option>请选择</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <span class="label label-lg label-purple arrowed-right">编&nbsp;&nbsp;&nbsp;&nbsp;号</span>
+                <input type="text" style="height:32px;width:150px;" class="input-medium" placeholder="编号" name="search_EQ_alias" />
+            </div>
+            <div class="col-sm-3">
+                <input type="hidden" id="refresh_account_expOpr"  >
+                <label class="pull-right inline">
+                    <span class="label label-lg label-purple arrowed-right">刷新</span>
+                    <div id="refreshAccountExpOprSelect" ></div>
+                </label>
+            </div>
+            <div  class="col-sm-12" style="height:10px;"></div>
+            <div class="col-sm-3">
+                <span class="label label-lg label-purple arrowed-right">操作人</span>
+                <input type="text" style="height:32px;" class="input" placeholder="操作人"
+                       name="search_LIKE_operator"/>
+            </div>
+            <div class="col-sm-3">
+                <span class="label label-lg label-purple arrowed-right" title="客户端操作时间">时&nbsp;&nbsp;&nbsp;&nbsp;间</span>
+                <span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+                <input name="startAndEndTime" class="date-range-picker input-sm" type="text" placeholder="请选择起始日期" />
+            </div>
+            <div class="col-sm-3">
+                <span class="label label-lg label-purple arrowed-right">帐&nbsp;&nbsp;&nbsp;&nbsp;号</span>
+                <input type="text" style="height:32px;width:150px;" name="search_LIKE_account" class="input-medium" placeholder="帐号" />
+            </div>
+
+            <div class="col-sm-3">
+                <label class="pull-right inline">
+                    <button class="btn btn-xs btn-white btn-info btn-bold" onclick="searchByFilter();" id="searchAccountExpOprBtn">
+                        <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                    </button>
+                </label>
+                <label class="pull-right inline">&nbsp; &nbsp;</label>
+                <label class="pull-right inline">
+                    <button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('accountFilter');">
+                        <i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+                    </button>
+                </label>
+            </div>
+        </div>
+        <table id="dynamic-table" class="table table-bordered table-hover  no-margin-bottom">
+            <thead>
+            <tr>
+                <th style="width:5%;">盘口</th>
+                <th style="width:5%;">别名</th>
+                <th style="width:15%;">账号信息</th>
+                <th style="width:9%;">坐标信息</th>
+                <th style="width:9%;">IP</th>
+                <th style="width:9%;">内容</th>
+                <th style="width:12%;">操作时间</th>
+                <th style="width:12%;">记录时间</th>
+                <th style="width:5%;">备注</th>
+                <th style="width:5%;">操作人</th>
+                <th style="width:10%;">操作</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="accountPage"></div>
+    </div>
+</div>
+
+<!-- 出款参数设置 -->
+<div id="outwardInfoModal" class="modal fade" aria-hidden="false">
+    <div class="modal-dialog modal-lg" style="width:1100px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding text-center">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
+                            class="white">&times;</span></button>
+                    出款系统设置
+                </div>
+            </div>
+            <div class="modal-body">
+                <h6 class="header smaller center lighter blue no-padding no-margin-top">出款参数设置,单个账号未设置参数时，取以下默认值</h6>
+                <div class="inline no-padding-bottom" style="width:49.5%">
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="OUTDRAW_LIMIT_CHECKOUT_TODAY" type="text"
+                               onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                        当日出款最大限额（元）
+                    </p>
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="OUTDRAW_LIMIT_OUT_ONE" type="text"
+                               onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                        单笔出款限额（元）
+                    </p>
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="OUTDRAW_SYSMONEYLIMIT" type="text"
+                               onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                        机器自动出款最大限额（元）
+                    </p>
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="OUTDRAW_SPLIT_AMOUNT_OUTSIDE" type="text"
+                               onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                        外层拆单金额（元）
+                    </p>
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="OUTDRAW_SPLIT_AMOUNT_INSIDE" type="text"
+                               onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                        内层拆单金额（元）
+                    </p>
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="OUTDRAW_RATE_LIMIT" type="number"
+                               onkeyup="this.value=this.value.replace(/[^\d]/g,'')" value="0">
+                        出款频率 (出款间隔，单位：秒；0:表示不限制)
+                    </p>
+                    <button type="button" class="pull-right btn btn-danger btn-white btn-bold btn-round"
+                            onclick="resetOutwardInfo()">
+                        <i class="ace-icon fa fa-refresh icon-on-right"></i>&nbsp;重置
+                    </button>
+                </div>
+                <div class="inline no-padding-bottom" style="width:49.5%">
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="OUTDRAW_LIMIT_APPROVE" type="text"
+                               onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                        大额出款，超过此设置将人工审核（元）
+                    </p>
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="OUTDRAW_LIMIT_APPROVE_MANAGE" type="text"
+                               onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                        大额出款，超过此设置将转主管审核（元）
+                    </p>
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="OUTDRAW_CHECK_CODE" type="text"
+                               onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                        出款审核几倍打码量限制
+                    </p>
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="OUTDRAW_THIRD_LOWEST_BAL" type="text"
+                               onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                        第三方出款最低金额（元）
+                    </p>
+                    <p class="alert alert-success">
+                        <input class="input-sm" name="OUTDRAW_SYSMONEY_LOWEST" type="text"
+                               onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                        出款卡最低余额，低于此设置通知下发人员（元）
+                    </p>
+                    <p class="alert alert-success">
+                        <select class="chosen-select" name="handicap_sync" style="width:150px;"></select>
+                        盘口
+                        <button type="button" class="pull-right btn btn-success btn-white btn-bold btn-round"
+                                onclick="saveSyncInfo()">
+                            <i class="ace-icon fa fa-share icon-on-right"></i>&nbsp;同步出款订单
+                        </button>
+                    </p>
+                    <button type="button" class="pull-left btn btn-success btn-white btn-bold btn-round"
+                            onclick="saveOutwardInfo()">
+                        <i class="ace-icon fa fa-check icon-on-right"></i>&nbsp;保存
+                    </button>
+                </div>
+                <div class="inline no-padding-bottom" style="width:49.5%">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="outLimitModal" class="modal fade" aria-hidden="false">
+    <div class="modal-dialog modal-lg" style="width:780px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding text-center">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
+                            class="white">&times;</span></button>
+                    在用出款卡(当日出款限额)设置
+                </div>
+            </div>
+            <div class="modal-body">
+                <h6 class="header smaller center lighter red no-padding no-margin-top">状态：在用</h6>
+                <div class="inline no-padding-bottom" style="width:750px;">
+                    <p class="alert alert-success">
+                        盘口&nbsp;&nbsp;
+                        <select class="chosen-select width150" name="search_EQ_handicapId">
+                            <option value="" selected="selected">全部</option>
+                        </select>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        类型&nbsp;&nbsp;
+                        <select class="chosen-select width150" name="search_EQ_flag" disabled>
+                            <option value="">全部</option>
+                            <option value="0" selected="selected">PC</option>
+                            <option value="1">手机</option>
+                        </select>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        银行类别&nbsp;&nbsp;
+                        <select class="chosen-select width150" name="search_EQ_bankType">
+                            <option value="" selected="selected">全部</option>
+                        </select>
+                    </p>
+                    <p class="alert alert-success">
+                        外层&nbsp;&nbsp;
+                        <input class="input-sm" placeholder="元" style="width:100px;" name="OUTDRAW_OUTER_LIMIT_TODAY"
+                               type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        内层&nbsp;&nbsp;
+                        <input class="input-sm" placeholder="元" style="width:100px;" name="OUTDRAW_INNER_LIMIT_TODAY"
+                               type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        指定层&nbsp;&nbsp;
+                        <input class="input-sm" placeholder="元" style="width:100px;" name="OUTDRAW_SPECIFY_LIMIT_TODAY"
+                               type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                    </p>
+                    <div class="center">
+                        <button type="button" class="pull-center btn btn-success btn-white btn-bold btn-round"
+                                onclick="saveOutwardLimit()">
+                            <i class="ace-icon fa fa-check icon-on-right"></i>&nbsp;保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="remarkModal4ExpOpr" class="modal fade" tabindex="-1">
+    <input id="remarkModal4ExpOpr_id" type="hidden">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    备注
+                </div>
+            </div>
+            <div class="modal-body">
+                <input style="width:95%" id="remarkModal4ExpOpr_remark"/>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button  type="button" onclick="addRemark4ExpOpr();"
+                        class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="operatorModal4ExpOpr" class="modal fade" tabindex="-1">
+    <input id="operatorModal4ExpOpr_id" type="hidden">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    添加操作人
+                </div>
+            </div>
+            <div class="modal-body">
+                <input style="width:95%" id="operatorModal4ExpOpr_operator"/>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="addOperator4ExpOpr();" class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript" src="../javascript/common/modalOutAccount.js"></script>
+<script type="text/javascript" src="../javascript/common/modalBankLogList.js"></script>

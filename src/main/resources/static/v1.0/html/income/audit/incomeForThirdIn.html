@@ -1,0 +1,282 @@
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<div class="row" id="fczl">
+	<div class="col-sm-12">
+		<div class="tabbable">
+			<ul class="nav nav-tabs">
+				<li class="active">
+					<a data-toggle="tab" href="#tab_matched">
+					<i class="blue ace-icon fa fa-check bigger-110"></i><span>已对账</span>
+					</a>
+				</li>
+				<li>
+					<a data-toggle="tab" href="#tab_unmatch">
+						<i class="blue ace-icon fa  fa-question-circle-o bigger-110"></i><span>未对账</span>
+					</a>
+				</li>
+				<li>
+					<a data-toggle="tab" href="#tab_thirdFlows">
+						<i class="blue ace-icon fa fa-barcode bigger-110"></i><span>第三方流水</span>
+					</a>
+				</li>
+			</ul>
+			<div class="tab-content no-padding-bottom no-padding-top" name="tab-content">
+				<div id="tab_matched" class="tab-pane in active" tabInit="0">
+					<h3 class="row header smaller lighter blue">
+						<div class="col-sm-12">
+							<form class="form-inline">
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">盘口</span>
+									<select id="handicap_matched" onchange="changeLevel();_searchByFilter();" name="handicap_matched" class="chosen-select form-control"  style="height:32px">
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 81px" class="label label-lg label-primary arrowed-right">会员账号</span>
+									<input  id="member_matched" type="text"  placeholder="会员账号"  class="input-medium"  style="height:32px;width:60%;" />
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 68px" class="label label-lg label-primary  "><i class="fa fa-calendar bigger-110"></i></span>
+									<input class="form-control date-range-picker" id="startAndEndTime" style="height: 32px;width:69%;" placeholder="自定义时间段" type="text" name="startAndEndTime" />
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">金额</span>
+									<div class="input-group form-group col-sm-3" style="height:32px;width:78%;">
+										<input id="fromMoney_matched" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+											   style="height:32px">
+										<span class="input-group-addon">~</span>
+										<input id="toMoney_matched" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+											   style="height:32px">
+									</div>
+								</div>
+								<div class="col-sm-12" style="height: 2px"></div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">层级</span>
+									<select id="level_matched" name="level_matched" onchange="_searchByFilter();" class="chosen-select form-control"  style="height:32px;width:32%;">
+										<option value="0">全部</option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">第三方名称</span>
+									<input id="thirdName_matched" type="text"  placeholder="收款账号"   class="input-medium"  style="height:32px;width:60%;" />
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary">收款账号</span>
+									<input id="toAccount_matched" type="text"  placeholder="收款账号"   class="input-medium"  style="height: 32px;width:69%;" />
+								</div>
+								<div class="col-sm-3">
+									<span>
+										<span class="label label-lg label-primary arrowed-right">刷新</span>
+										<select id="chooseSecond" onchange="search()" class="chosen-select form-control"  style="height:32px">
+											<option  value="18000000">不刷新</option>
+											<option  value="10000">10秒</option>
+											<option  value="30000">30秒</option>
+											<option  value="60000">60秒</option>
+											<option  value="120000">120秒</option>
+											<option  value="180000">180秒</option>
+										</select>
+										<button type="button" id="searchThird"  class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+										</button>
+										<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueS();">
+											<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</h3>
+					<div style="margin-right: -13px;margin-left: -13px" sclass="row">
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead>
+							<tr>
+								<th>盘口</th>
+								<th>层级</th>
+								<th>会员账号</th>
+								<th>订单号</th>
+								<th>收款第三方账号名称</th>
+								<th>收款第三方账号</th>
+								<th>充值金额</th>
+								<th>提单时间</th>
+								<th>确认时间</th>
+							</tr>
+							</thead>
+							<tbody id="third_matched_tbody">
+								
+							</tbody>
+						</table>
+						<!-- 分页 -->
+						<div id="thirdmatchPage"></div>
+					</div>
+				</div>
+				
+				
+				<div id="tab_unmatch" class="tab-pane " tabInit="0">
+					<h3 class="row header smaller lighter blue">
+						<div class="col-sm-12">
+							<form class="form-inline">
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">盘口</span>
+									<select id="handicap_unmatch" class="chosen-select form-control"  style="height:32px">
+										<option >全部</option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 81px" class="label label-lg label-primary arrowed-right">会员账号</span>
+									<input  id="member_unmatch" type="text"  placeholder="会员账号"  class="input-medium"  style="height:32px;width:60%;" />
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 68px" class="label label-lg label-primary  "><i class="fa fa-calendar bigger-110"></i></span>
+									<input id="startAndEndTime_unmatch" class="form-control date-range-picker" type="text"  style="height: 32px;width:69%;"/>
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">金额</span>
+									<div class="input-group form-group col-sm-3" style="height:32px;width:78%;">
+										<input id="fromMoney_unmatch" type="text" class="form-control input-small"
+											   style="height:32px">
+										<span class="input-group-addon">~</span>
+										<input id="toMoney_unmatch" type="text" class="form-control input-small"
+											   style="height:32px">
+									</div>
+								</div>
+								<div class="col-sm-12" style="height: 2px"></div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">层级</span>
+									<select id="level_unmatch" class="chosen-select form-control"  style="height:32px">
+										<option>全部</option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">第三方名称</span>
+									<input id="thirdName_unmatch" type="text"  placeholder="收款账号"   class="input-medium"  style="height:32px;width:60%;" />
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary">收款账号</span>
+									<input id="toAccount_unmatch" type="text"  placeholder="收款账号"   class="input-medium"  style="height: 32px;width:69%;" />
+								</div>
+								<div class="col-sm-3">
+									<span class="pull-left">
+										<label class="pull-right inline">
+											<button type="button" class="btn btn-xs btn-white btn-info btn-bold" onclick="_searchByFilter(0,'unmatch');">
+												<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+											</button>
+										</label>
+									</span>
+									<span style="margin-left: 30px;" class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueS('unmatch');">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+										</label>
+									</span>
+								</div>
+							</form>
+						</div>
+					</h3>
+					<div style="margin-right: -13px;margin-left: -13px" sclass="row">
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead>
+							<tr>
+								<th>盘口</th>
+								<th>层级</th>
+								<th>会员账号</th>
+								<th>订单号</th>
+								<th>第三方账号名称</th>
+								<th>第三方账号</th>
+								<th>充值金额</th>
+								<th>提单时间</th>
+							</tr>
+							</thead>
+							<tbody id="third_unmatch_tbody">
+
+							</tbody>
+						</table>
+						<div id="unthirdmatchPage"></div>
+					</div>
+				</div>
+				
+				
+				<div id="tab_thirdFlows" class="tab-pane" tabInit="0">
+					<h3 class="row header smaller lighter blue">
+						<div class="col-sm-12">
+							<form class="form-inline">
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">盘口</span>
+									<select id="handicap_thirdFlows" class="chosen-select form-control" style="height:32px">
+										<option>全部</option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span  class="label label-lg label-primary arrowed-right">收款账号</span>
+									<select id="toAccount_thirdFlows" class="chosen-select form-control" style="height:32px;width:190px;">
+										<option>全部</option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">金额</span>
+									<div class="input-group form-group" style="height:32px;width: 180px;">
+										<input id="fromMoney_thirdFlows" type="text" class="form-control input-small"
+											   style="height:32px">
+										<span class="input-group-addon">~</span>
+										<input id="toMoney_thirdFlows" type="text" class="form-control input-small"
+											   style="height:32px">
+									</div>
+								</div>
+								<div class="col-sm-12" style="height:2px;"></div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">层级</span>
+									<select  id="level_thirdFlows" class="chosen-select form-control"   style="height:32px">
+										<option>全部</option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 68px" class="label label-lg label-primary arrowed-right">付款人</span>
+									<input id="payer_thirdFlows" class="input-large " type="text"  style="height: 32px;width: 70%;"/>
+								</div>
+
+								<div class="col-sm-3">
+									<span style="width: 42px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+									<input id="startAndEndTime_thirdFlows" class="form-control date-range-picker" type="text" name="startAndEndTime" style="height: 32px;width:180px;"/>
+								</div>
+								<div class="col-sm-3">
+									<span class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_searchThirdFlow(0,'thirdFlows');">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+										</label>
+									</span>
+									<span style="margin-left: 30px;" class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueS('thirdFlows');">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+										</label>
+									</span>
+								</div>
+							</form>
+						</div>
+					</h3>
+					<div style="margin-right: -13px;margin-left: -13px" sclass="row">
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead>
+							<tr>
+								<th>盘口</th>
+								<th>层级</th>
+								<th>会员账号</th>
+								<th>充值金额</th>
+								<th>收款第三方账号名称</th>
+								<th>收款第三方账号</th>
+								<th>交易时间</th>
+								<th>备注</th>
+							</tr>
+							</thead>
+							<tbody id="thirdFlows_tbody">
+							</tbody>
+						</table>
+						<div id="unthirdmatchfootPage">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

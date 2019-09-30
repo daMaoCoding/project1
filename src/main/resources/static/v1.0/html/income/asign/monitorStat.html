@@ -1,0 +1,445 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="widget-box"><div id="transCanvas" style="margin:auto;width:100%;height:200px;"></div></div>
+    </div>
+    <div class="col-sm-12">
+        <div class="tabbable">
+            <input type="hidden" id="incomeReqStatus" value="0"/>
+            <ul class="nav nav-tabs">
+                <li class="active monitorStatTab" onclick="fillTransingContent();"><a data-toggle="tab" href="#tabTransing"><i class="ace-icon fa fa-hourglass-start bigger-110 pink"></i><span>正在下发</span></a></li>
+                <li class="monitorStatTab" onclick="fillWaitingContent()"><a data-toggle="tab" href="#tabWaiting"><i class="pink ace-icon fa fa-info-circle bigger-110"></i><span>待下发</span></a></li>
+                <li class="monitorStatTab" onclick="fillAckedContent(0,'#tabTransferFailure')"><a data-toggle="tab" href="#tabTransferFailure"><i class="ace-icon fa fa-exclamation-circle  bigger-110 red"></i><span>下发失败</span></a></li>
+                <li class="monitorStatTab" onclick="fillAckedContent(0,'#tabTransferSuccess')"><a data-toggle="tab" href="#tabTransferSuccess"><i class="blue ace-icon fa fa-check-circle bigger-110"></i><span>已完成</span></a></li>
+                <div id="accountFilter" style="z-index:1" class="no-margin inline pull-right">
+                    <input type="hidden" id="refresh_MonitorTransfer">
+                    <span class="label label-lg label-purple arrowed-right">自动刷新设置&nbsp;&nbsp;</span>
+                    <div id="refreshMonitorTransferSelect"></div>
+                    <label class="pull-right inline">
+                        <button class="btn btn-xs btn-white btn-info btn-bold" onclick="getMonitorStat();" id="refreshMonitorStatEvent">
+                                <i class="ace-icon fa fa-refresh  bigger-100 green"></i><span>手动刷新</span>
+                        </button>
+                    </label>
+                    <label class="pull-right inline">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                </div>
+            </ul>
+            <div class="tab-content no-padding no-margin">
+            	<!-- 正在下发 -->
+                <div id="tabTransing" class="tab-pane in active">
+                    <div style="z-index:1;margin:8px;" class="col-sm-12 row">
+                    	
+                            <span class="label label-lg label-purple arrowed-right">层级</span>
+							<label class="inline">
+								<input onchange="fillTransingContent();" type="radio" name="currSysLevel1" class="ace defaultCheck" checked value="" >
+								<span class="lbl">全部</span>
+							</label>
+                            <label class="inline">
+                                <input onchange="fillTransingContent();" type="radio" name="currSysLevel1" class="ace" value="1" >
+                                <span class="lbl">外层</span>
+                            </label>
+                            <label class="inline">
+                                <input onchange="fillTransingContent();" type="radio" name="currSysLevel1" class="ace" value="2" >
+                                <span class="lbl">内层</span>
+                            </label>
+                            <label class="inline">
+                                <input onchange="fillTransingContent();" type="radio" name="currSysLevel1" class="ace" value="8" >
+                                <span class="lbl">指定层</span>
+                            </label>
+                            &nbsp; &nbsp; &nbsp; &nbsp;
+                            <span class="label label-lg label-purple arrowed-right">类型</span>
+                            <label class="inline">
+                                <input onchange="fillTransingContent();" type="radio" name="search_In_accountType1" class="ace defaultCheck" value=",1,2,8,10,11,12,13," checked>
+                                <span class="lbl">全部</span>
+                            </label>
+                            <label class="inline">
+                                <input onchange="fillTransingContent();" type="radio" name="search_In_accountType1" class="ace defaultNoCheck" value=",1," >
+                                <span class="lbl">入款卡</span>
+                            </label>
+                            <label class="inline">
+                                <input onchange="fillTransingContent();" type="radio" name="search_In_accountType1" class="ace defaultNoCheck" value=",8," >
+                                <span class="lbl">备用卡</span>
+                            </label>
+                            <label class="inline">
+                                <input onchange="fillTransingContent();" type="radio" name="search_In_accountType1" class="ace defaultNoCheck" value=",10,11,12,13," >
+                                <span class="lbl">下发卡</span>
+                            </label>
+                            <label class="inline">
+                                <input onchange="fillTransingContent();" type="radio" name="search_In_accountType1" class="ace defaultNoCheck" value=",2," >
+                                <span class="lbl">第三方</span>
+                            </label>
+                            &nbsp; &nbsp; &nbsp; &nbsp;
+                            <span class="label label-lg label-purple arrowed-right">开户行</span>
+                            <select onchange="fillTransingContent();" id="tabTransing_bankType" name="search_LIKE_bankType" class="chosen-select form-control" style="height:32px;width:100px;">
+                                <option>请选择</option>
+                            </select>
+                            &nbsp; &nbsp; &nbsp; &nbsp;
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" onclick="getMonitorStat();">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i><span>查询</span>
+                                </button>
+                            </label>
+                            <label class="pull-right inline">&nbsp;&nbsp;</label>
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('tabTransing');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 green"></i><span>重置</span>
+                                </button>
+                            </label>
+                            <label class="pull-right inline">&nbsp;&nbsp;</label>
+							<label onclick="showModal_AsignInfo();" class="pull-right inline contentRight" contentright='IncomeAsignMonitorStat:SystemSetting:*'>
+								<button class="btn btn-xs btn-white btn-info btn-bold">
+									<i class="ace-icon fa fa-cog bigger-100 green"></i>设置
+								</button>
+							</label>
+                    </div>
+                    <table class="table table-bordered table-hover no-margin">
+                        <thead><tr><th>序号</th><th>盘口</th><th>层级</th><th>单号</th><th>分类</th><th>下发账号</th><th>出款账号</th><th>金额</th><th>分配时间</th><th>耗时</th><th>操作人</th><th>备注</th><th>操作</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                    <div class="noDataTipsPage table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+                        <div style="margin-bottom:0px;font-size: 20px;" class="alert alert-success center">无数据</div>
+                    </div>
+                </div>
+                <!-- 待下发 -->
+                <div id="tabWaiting" class="tab-pane in">
+                    <div style="z-index:1;margin:8px;" class="col-sm-12 row">
+                    	<span class="label label-lg label-purple arrowed-right">层级</span>
+						<label class="inline">
+							<input onchange="fillWaitingContent()" type="radio" name="currSysLevel2" class="ace defaultCheck" checked value="" >
+							<span class="lbl">全部</span>
+						</label>
+                           <label class="inline">
+                               <input onchange="fillWaitingContent()" type="radio" name="currSysLevel2" class="ace" value="1" >
+                               <span class="lbl">外层</span>
+                           </label>
+                           <label class="inline">
+                               <input onchange="fillWaitingContent()" type="radio" name="currSysLevel2" class="ace" value="2" >
+                               <span class="lbl">内层</span>
+                           </label>
+                           <label class="inline">
+                               <input onchange="fillWaitingContent()" type="radio" name="currSysLevel2" class="ace" value="8" >
+                               <span class="lbl">指定层</span>
+                           </label>
+                           &nbsp; &nbsp; &nbsp; &nbsp;
+                           <span class="label label-lg label-purple arrowed-right">开户行</span>
+                           <select onchange="fillWaitingContent()" id="tabWaiting_bankType" name="search_LIKE_bankType" class="chosen-select form-control" style="height:32px;width:100px;">
+                               <option>请选择</option>
+                           </select>
+                           &nbsp; &nbsp; &nbsp; &nbsp;
+                           <label class="pull-right inline">
+                               <button class="btn btn-xs btn-white btn-info btn-bold" onclick="getMonitorStat();">
+                                   <i class="ace-icon fa fa-search bigger-100 green"></i><span>查询</span>
+                               </button>
+                           </label>
+                           <label class="pull-right inline">&nbsp;&nbsp;</label>
+                           <label class="pull-right inline">
+                               <button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('tabWaiting');">
+                                   <i class="ace-icon fa fa-refresh bigger-100 green"></i><span>重置</span>
+                               </button>
+                           </label>
+                    </div>
+                    <table class="table table-bordered table-hover no-margin">
+                        <thead><tr><th>序号</th><th>盘口</th><th>层级</th><th>出款账号</th><th>金额</th><th>上报时间</th><th>耗时</th><th>状态</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                    <div class="noDataTipsPage table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+                        <div style="margin-bottom:0px;font-size: 20px;" class="alert alert-success center">无数据</div>
+                    </div>
+                </div>
+                <!-- 下发失败 -->
+                <div id="tabTransferFailure" class="tab-pane in">
+                    <div style="z-index:1;margin:8px;" class="col-sm-12 row">
+                        <div class="col-sm-5">
+                            <span class="label label-lg label-purple arrowed-right">层级</span>
+							<label class="inline">
+								<input onchange="fillAckedContent();" type="radio" name="currSysLevel3" class="ace defaultCheck" checked value="" >
+								<span class="lbl">全部</span>
+							</label>
+                            <label class="inline">
+                                <input onchange="fillAckedContent();" type="radio" name="currSysLevel3" class="ace" value="1" >
+                                <span class="lbl">外层</span>
+                            </label>
+                            <label class="inline">
+                                <input onchange="fillAckedContent();" type="radio" name="currSysLevel3" class="ace" value="2" >
+                                <span class="lbl">内层</span>
+                            </label>
+                            <label class="inline">
+                                <input onchange="fillAckedContent();" type="radio" name="currSysLevel3" class="ace" value="8" >
+                                <span class="lbl">指定层</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-3">
+                            <span class="label label-lg label-purple arrowed-right">账号</span>
+                            <span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+                            <input name="account_outDrawing" class="input-small" type="text" placeholder="账号或编号或别名"  style="height:32px;width:180px;"/>
+                        </div>
+                        <div class="col-sm-3">
+                            <span class="label label-lg label-purple arrowed-right">开户行</span>
+                            <select onchange="fillAckedContent();" id="tabTransferFailure_bankType" name="search_LIKE_bankType" class="chosen-select  form-control" style="height:32px;width:100px;">
+                                <option>请选择</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-1">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('tabTransferFailure');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 green"></i><span>重置</span>
+                                </button>
+                            </label>
+                        </div>
+	                    <div style="height:10px;" class="col-sm-12">&nbsp;</div>
+                        <div class="col-sm-5">
+                           <span class="label label-lg label-purple arrowed-right">类型</span>
+                           <label class="inline">
+                               <input onchange="fillAckedContent();" type="radio" name="search_In_accountType3" class="ace defaultCheck" value="1,2,8,10,11,12,13" checked>
+                               <span class="lbl">全部</span>
+                           </label>
+                           <label class="inline">
+                               <input onchange="fillAckedContent();" type="radio" name="search_In_accountType3" class="ace defaultNoCheck" value="1" >
+                               <span class="lbl">入款卡</span>
+                           </label>
+                           <label class="inline">
+                               <input onchange="fillAckedContent();" type="radio" name="search_In_accountType3" class="ace defaultNoCheck" value="8" >
+                               <span class="lbl">备用卡</span>
+                           </label>
+                           <label class="inline">
+                               <input onchange="fillAckedContent();" type="radio" name="search_In_accountType3" class="ace defaultNoCheck" value="10,11,12,13" >
+                               <span class="lbl">下发卡</span>
+                           </label>
+                           <label class="inline">
+                               <input onchange="fillAckedContent();" type="radio" name="search_In_accountType3" class="ace defaultNoCheck" value="2" >
+                               <span class="lbl">第三方</span>
+                           </label>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="label label-lg label-purple arrowed-right">日期</span>
+                            <span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+                            <input name="startAndEndTime" class="date-range-picker input-sm" type="text" placeholder="请选择起始日期"  style="width:300px;"/>
+                        </div>
+                        <div class="col-sm-1">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" onclick="fillAckedContent(0,'#tabTransferFailure');">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i><span>查询</span>
+                                </button>
+                            </label>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-hover no-margin">
+                        <thead><tr><th>盘口</th><th>层级</th><th>单号</th><th>分类</th><th>下发账号</th><th>出款账号</th><th>金额</th><th>认领时间</th><th>耗时</th><th>备注</th><th>操作</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                    <div id="tabTransferFailurePage"></div>
+                </div>
+                <!-- 已完成 -->
+                <div id="tabTransferSuccess" class="tab-pane in">
+                    <div style="z-index:1;margin:8px;" class="col-sm-12 row">
+                        <div class="col-sm-5">
+                            <span class="label label-lg label-purple arrowed-right">层级</span>
+							<label class="inline">
+								<input onchange="fillAckedContent();" type="radio" name="currSysLevel4" class="ace defaultCheck" checked value="" >
+								<span class="lbl">全部</span>
+							</label>
+                            <label class="inline">
+                                <input onchange="fillAckedContent();" type="radio" name="currSysLevel4" class="ace" value="1" >
+                                <span class="lbl">外层</span>
+                            </label>
+                            <label class="inline">
+                                <input onchange="fillAckedContent();" type="radio" name="currSysLevel4" class="ace" value="2" >
+                                <span class="lbl">内层</span>
+                            </label>
+                            <label class="inline">
+                                <input onchange="fillAckedContent();" type="radio" name="currSysLevel4" class="ace" value="8" >
+                                <span class="lbl">指定层</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-3">
+                            <span class="label label-lg label-purple arrowed-right">账号</span>
+                            <span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+                            <input name="account_outDrawing" class="input-small" type="text" placeholder="账号或编号或别名"  style="height:32px;width:180px;"/>
+                        </div>
+                        <div class="col-sm-3">
+                            <span class="label label-lg label-purple arrowed-right">开户行</span>
+                            <select onchange="fillAckedContent();" id="tabTransferSuccess_bankType" name="search_LIKE_bankType" class="chosen-select form-control" style="height:32px;width:100px;">
+                                <option>请选择</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-1">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('tabTransferSuccess');">
+                                    <i class="ace-icon fa fa-refresh bigger-100 green"></i><span>重置</span>
+                                </button>
+                            </label>
+                        </div>
+	                    <div style="height:10px;" class="col-sm-12">&nbsp;</div>
+                        <div class="col-sm-5">
+                           <span class="label label-lg label-purple arrowed-right">类型</span>
+                           <label class="inline">
+                               <input onchange="fillAckedContent();" type="radio" name="search_In_accountType4" class="ace defaultCheck" value="1,2,8,10,11,12,13" checked>
+                               <span class="lbl">全部</span>
+                           </label>
+                           <label class="inline">
+                               <input onchange="fillAckedContent();" type="radio" name="search_In_accountType4" class="ace defaultNoCheck" value="1" >
+                               <span class="lbl">入款卡</span>
+                           </label>
+                           <label class="inline">
+                               <input onchange="fillAckedContent();" type="radio" name="search_In_accountType4" class="ace defaultNoCheck" value="8" >
+                               <span class="lbl">备用卡</span>
+                           </label>
+                           <label class="inline">
+                               <input onchange="fillAckedContent();" type="radio" name="search_In_accountType4" class="ace defaultNoCheck" value="10,11,12,13" >
+                               <span class="lbl">下发卡</span>
+                           </label>
+                           <label class="inline">
+                               <input onchange="fillAckedContent();" type="radio" name="search_In_accountType4" class="ace defaultNoCheck" value="2" >
+                               <span class="lbl">第三方</span>
+                           </label>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="label label-lg label-purple arrowed-right">日期</span>
+                            <span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+                            <input name="startAndEndTime" class="date-range-picker input-sm" type="text" placeholder="请选择起始日期" style="width:300px;" />
+                        </div>
+                        <div class="col-sm-1">
+                            <label class="pull-right inline">
+                                <button class="btn btn-xs btn-white btn-info btn-bold" onclick="fillAckedContent(0,'#tabTransferSuccess');">
+                                    <i class="ace-icon fa fa-search bigger-100 green"></i><span>查询</span>
+                                </button>
+                            </label>
+                        </div>
+                    </div>
+                    <table  class="table table-bordered table-hover no-margin">
+                        <thead><tr><th>盘口</th><th>层级</th><th>单号</th><th>分类</th><th>下发账号</th><th>出款账号</th><th>金额</th><th>认领时间</th><th>耗时</th><th>备注</th><th>操作</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                    <div id="tabTransferSuccessPage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="transMonitorMessageModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomerSendMessage" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    <span>消息内容</span>
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-left">消息 </label>
+                                    <div class="col-sm-6">
+                                        <input name="orderNo" type="hidden" value=""/>
+                                        <textarea style="height:120px;width:400px;" id="messageCont" name="messageCont" class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                                <span id="messageCont_remark" style="display:none;color: red;padding-left: 160px;">请填写消息</span>
+                                <div class="space-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="remark4TransLock();" class="btn btn-sm btn-success"><span>确认</span></button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming"><span>取消</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="transMonitorAckedMsgModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    <span>消息内容</span>
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-left">消息 </label>
+                                    <div class="col-sm-6">
+                                        <input name="reqId" type="hidden" value=""/>
+                                        <textarea style="height:120px;width:400px;" id="messageCotent" name="messageCont" class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                                <span style="display:none;color: red;padding-left: 160px;">请填写消息</span>
+                                <div class="space-4"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="remark4TransReq();" class="btn btn-sm btn-success"><span>确认</span></button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming"><span>取消</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 下发参数设置 -->
+<div id="AsginInfoModal" class="modal fade" aria-hidden="false" >
+	<div class="modal-dialog modal-lg"  style="width:500px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					一键下发设置
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<div class="widget-main inline" style="width:100%">
+                    <p class="alert alert-success">
+                        <select class="input-sm chosen-select" name="zone_sync" style="width:150px;" onchange="onchangeZoneSelect();"></select>
+                        <span style="width:100px;">区域</span>
+                    </p>
+	                <p class="alert alert-success">
+                        <input class="input-sm" name="out_need_up_limit" type="number">
+                        <span style="width:100px;">下发上限值</span>
+	                </p>
+	                <p class="alert alert-success">
+                        <input class="input-sm" name="out_need_trig_limit" type="number">
+                        <span style="width:100px;">下发触发金额</span>
+	                </p>
+	                <p class="alert alert-success">
+                        <input class="input-sm" name="out_need_last_time" type="number">
+                        <span style="width:100px;">下发持续时间(分钟)</span>
+	                </p>
+	                <p class="alert alert-success">
+	                    <label class="inline">
+	                        <input type="radio" name="out_need_type" class="ace" value="1" >
+	                        <span class="lbl">开启</span>
+	                    </label>
+	                    <label class="inline">
+	                        <input type="radio" name="out_need_type" class="ace" value="0" >
+	                        <span class="lbl">关闭</span>
+	                    </label>
+                    	<span name="out_need_expire_time"></span>
+	                </p>
+	            </div>
+	        </div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-success"  type="button" onclick="resetAsignInfo()">重置</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button class="btn btn-danger"  type="button" onclick="saveAsignInfo()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/lib/echarts.min.js"></script>

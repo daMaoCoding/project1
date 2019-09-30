@@ -1,0 +1,331 @@
+<style>
+    table > th {
+        padding: 0px;
+    }
+</style>
+<link rel="stylesheet" href="../style/jquery.chosen.min.css" type="text/css" xmlns="http://www.w3.org/1999/html">
+<link rel="stylesheet" href="../style/bootstrap-multiselect.min.css"/>
+<link rel="stylesheet" href="../style/jquery.bootstrap.duallistbox.min.css" type="text/css">
+<div style="padding-top: 0px" class="tab-content">
+    <div class="">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">盘口</span>
+                        <select id="handicap_companyExpence_all" class="chosen-select form-control"
+                                style="height:32px;width:78%;">
+                            <option>请选择</option>
+                            <option>彩33</option>
+                            <option>123</option>
+                            <option>699</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">出款金额</span>
+                        <input id="fromMoney_companyExpence_all" name="Money_companyExpence_all"
+                               onkeyup="clearNoNum(this);_queryCompanyExpenditureAll();"
+                               step="10"
+                               type="number"
+                               class="form-control input-small" style="height:32px;width:29.5%;">
+                        <span style="width: 0%;display: inline" class="">~</span>
+                        <input id="toMoney_companyExpence_all" name="Money_companyExpence_all"
+                               onkeyup="clearNoNum(this);_queryCompanyExpenditureAll();"
+                               step="10"
+                               type="number"
+                               class="form-control input-small" style="height:32px;width:29.5%;">
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary ">创建时间</span>
+                        <input onchange="_queryCompanyExpenditureAll();" id="timeCreate_companyExpence_all" class="input-large date-range-picker" type="text"
+                               style="height: 32px;width:70%;"/>
+                    </div>
+                    <!--<div class="col-sm-3">-->
+                        <!--<span class="label label-lg label-primary ">出款状态</span>-->
+                        <!--<select onchange="_queryCompanyExpenditureAll();" id="status_companyExpence_all" class="chosen-select form-control" style="height:32px;width:66%;">-->
+                        <!--</select>-->
+                    <!--</div>-->
+                    <div class="col-sm-12" style="height:2px;"></div>
+
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right ">来源</span>
+                        <input onkeyup="_queryCompanyExpenditureAll();" placeholder="来源" class="input-large" type="text" style="height: 32px;width:76%;"
+                               type="text" id="companyExpenditurePurpose1_all"
+                               list="companyExpenditurePurposeList1_all">
+                        <datalist id="companyExpenditurePurposeList1_all">
+
+                        </datalist>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="label label-lg label-primary arrowed-right">出款账号</span>
+                        <input onkeyup="_queryCompanyExpenditureAll();" id="accountOut_companyExpence_all" PLACEHOLDER="出款账号或者编号" class="input-large" type="text"
+                               style="height: 32px;width:68%;"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="width:68px;" class="label label-lg label-important">出款类型</span>
+                        <label class="inline">
+                            <input onclick="_queryCompanyExpenditureAll();" name="type_companyExpence_all" class="ace" type="radio"
+                                   value="人工">
+                            <span class="lbl">人工</span>
+                        </label>
+                        <label class="inline">
+                            <input onclick="_queryCompanyExpenditureAll();" name="type_companyExpence_all" class="ace" type="radio" value="机器">
+                            <span class="lbl">机器</span>
+                        </label>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <span class="pull-left">
+                            <button class="btn btn-xs btn-white btn-info btn-bold " id="searchBtn_companyExpence_all"
+                                    type="button" onclick="_queryCompanyExpenditureAll();">
+                                <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                            </button>
+                        </span>
+                        <span class=" pull-left">
+                            <button class="btn btn-xs btn-white btn-purple btn-bold" type="button"
+                                    onclick="_resetValueCompanyExpenditureAll();">
+                                <i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+                            </button>
+                        </span>
+                        <span class="pull-left">
+                            <button class="btn btn-xs btn-white btn-success btn-bold " id="addOrderBtn_cashExpence"
+                                    type="button" onclick="_beforeAddCompanyExpenditureAll();">
+                                <i class="fa fa-plus-circle"></i>新增公司用款
+                            </button>
+                        </span>
+                        <span class="pull-left">
+                            <button class="btn btn-xs btn-white btn-warning btn-bold "
+                                    type="button" onclick="window.history.back()">
+                                <i class="ace-icon fa fa-reply icon-only"></i>返回
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </h3>
+        <table class="table table-bordered table-hover no-margin-bottom ">
+            <thead>
+            <tr>
+                <th>盘口</th>
+                <th>来源</th>
+                <th>订单号</th>
+                <th>金额</th>
+                <th>出款类型</th>
+                <th>出款账号</th>
+                <th>收款账号</th>
+                <th>状态</th>
+                <th>审批人</th>
+                <th>创建时间</th>
+                <th>出款时间</th>
+                <th>备注</th>
+                <th>截图</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_companyExpence_all">
+            </tbody>
+        </table>
+        <div id="footPage_companyExpence_all"></div>
+    </div>
+</div>
+<!--新增-->
+<div id="addCompanyExpenditureModalAll" class="modal fade " tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding text-center">
+                <div id="addCompanyExpenditureTitleAll" class="table-header" style="display: none">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    新增公司用款
+                </div>
+                <div id="editCompanyExpenditureTitleAll" class="table-header" style="display: none">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    编辑公司用款
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-18 b-r">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>用款金额<i class="fa fa-asterisk red"></i></label>
+                                <input style="width: 220px;" class="input-sm" id="companyExpenditureAmountAll"
+                                       type="number"
+                                       oninput="if(value.length>5)value=value.slice(0,4);if(value>50000)value=50000;if(value<0)value=0;"
+                                       step="100" placeholder="用款金额">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 b-r">
+                            <div class="form-group">
+                                <label>对方账号<i class="fa fa-asterisk red"></i></label>
+                                <input style="width: 220px;" class="input-sm" id="companyExpenditureToAccountAll"
+                                       type="text" placeholder="对方账号">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 ">
+                            <label>来源大类<i class="fa fa-asterisk red"></i></label>
+                            <input placeholder="用款来源大类" style="width: 220px" type="text"
+                                   id="companyExpenditurePurposeAll"
+                                   list="companyExpenditurePurposeListAll">
+                            <datalist id="companyExpenditurePurposeListAll">
+
+                            </datalist>
+                        </div>
+                        <div class="col-sm-6 b-r">
+                            <div class="form-group">
+                                <label>对方姓名<i class="fa fa-asterisk red"></i></label>
+                                <input style="width: 220px;" class="input-sm" id="companyExpenditureToNameAll"
+                                       type="text"
+                                       placeholder="对方姓名">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>来源细分<i class="fa fa-asterisk red"></i></label>
+                            <input placeholder="用款来源细分" style="width: 220px" type="text"
+                                   id="companyExpenditurePurposeChildAll"
+                                   list="companyExpenditurePurposeListChildAll">
+                            <datalist id="companyExpenditurePurposeListChildAll">
+
+                            </datalist>
+                        </div>
+                        <div class="col-sm-6 b-r">
+                            <div class="form-group">
+                                <label>开户银行<i class="fa fa-asterisk red"></i></label>
+                                <input style="width: 220px;" class="input-sm" id="companyExpenditureToBankAll"
+                                       type="text"
+                                       placeholder="开户行">
+                            </div>
+                        </div>
+                        <div class="col-sm-6" id="remarkOrHandicapAll">
+                            <label>用款盘口<i class="fa fa-asterisk red"></i></label>
+                            <select style="width: 220px" id="companyExpenditureHandicapAll">
+                            </select>
+                        </div>
+                        <div class="col-sm-6  b-r">
+                            <label>选审核人<i class="fa fa-asterisk red"></i></label>
+                            <select style="width: 220px" id="companyExpenditureAuditorAll">
+                                <option selected="selected" value="请选择">请选择</option>
+                                <option value="">david</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin right">
+                <input type="hidden" value="" id="editCompanyExpenditrueReqIdAll">
+                <span id="promptCompanyAll" style="color: red"></span>
+                <button class="btn btn-primary" type="button" id="addOreditCompanyExpenditrueAll">确认</button>
+                <button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--截图-->
+<div class="modal fade" id="companyImgModal_all" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="width:30%;">
+        <div class="modal-content">
+            <div style="text-align: center" class="table-header">
+                <button type="button" class="close white" data-dismiss="modal" aria-hidden="true">×</button>
+                交易截图
+            </div>
+            <div class="modal-body">
+                <img id="companyImg_all" src=""  height="auto" width="100%" alt="auto">
+            </div>
+            <div class="modal-footer">
+                <a id="downLoadImgCompanyExpendBtn_all" class="btn btn-success">下载</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--备注--->
+<div id="remarkForCompanyExpend_modal_all" class="modal fade" tabindex="-1">
+    <input id="remarkForCompanyExpend_reqId_all" type="hidden">
+    <input id="remarkForCompanyExpend_taskId_all" type="hidden">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomer_all" style="text-align: center;display: none" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    备注
+                </div>
+                <div id="titleDivApprove_all" style="text-align: center;display: none" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    审批
+                </div>
+                <div id="titleDivEdit_all" style="text-align: center;display: none" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    删除
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div id="approveBasicInfo_all" class="form-group center" style="display: none;">
+                                    <span>盘口：</span><span id="handicapToUse_all" style="color: red"></span>&nbsp;&nbsp;
+                                    <span>金额：</span><span id="amountToUse_all" style="color: red"></span>&nbsp;&nbsp;
+                                    <span>来源：</span><span id="purposeToUse_all"></span>&nbsp;&nbsp;<br>
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td style="padding-left:142px !important;">收款账号：</td>
+                                            <td id="toAccountToUse_all"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left:130px !important;">收款人：</td>
+                                            <td id="toOwnerToUse_all"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left:130px !important;">开户行：</td>
+                                            <td id="toBankToUse_all"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-left"
+                                           for="remarkForCompanyExpendAll">备注 </label>
+                                    <div class="col-sm-6">
+                                        <textarea style="height: 50px;width: 400px;" id="remarkForCompanyExpendAll"
+                                                  name="remarkForCompanyExpend_all"
+                                                  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <span id="prompt_remarkForCompanyExpend_all"
+                      style="display:none;color: red;padding-left: 160px;">请填写备注</span>
+                <button id="companyExpendModalConfirmOrRemarkBTN_all" type="button" class="btn btn-sm btn-success">
+                    确认
+                </button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../javascript/outward/orderDetail.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript" src="../javascript/lib/bootstrap-multiselect.min.js"></script>
+<script type="text/javascript" src="../javascript/lib/jquery.bootstrap-duallistbox.min.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>

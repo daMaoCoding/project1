@@ -1,0 +1,1396 @@
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>
+	<div class="main-content">
+		<div class="main-content-inner">
+			<div class="page-content">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="tabbable">
+							<ul class="nav nav-tabs" id="myTab3">
+								<li class="active" style="display: none;" id="financialGoldener">
+									<a data-toggle="tab" onclick="queryCashflow()" id="cashfloww" href="#cashflow"><i class=" ace-iconace-icon fa fa-eye bigger-110 pink"></i>待金流处理</a>
+								</li>
+								<li style="display: none;" id="dishProcessing">
+									<a data-toggle="tab" onclick="queryFinpending()" id="pending" href="#tabPending"><i class=" ace-icon fa fa-hourglass-start bigger-110 pink"></i>待盘口处理</a>
+								</li>
+								<li style="display: none;" id="financial">
+									<a data-toggle="tab" onclick="queryFinance()" id="finance" href="#tabfinance"><i class="ace-icon fa fa-bullhorn bigger-110 red"></i>待财务处理</a>
+								</li>
+								<li style="display: none;" id="financialTotal">
+									<a data-toggle="tab" onclick="queryFinprocessed()" id="processed" href="#tabProcessed"><i class="green ace-icon fa fa-check-circle bigger-110"></i>冻结卡汇总</a>
+								</li>
+								<!--<li>
+									<a data-toggle="tab" onclick="queryFinfrostLessStat()" id="frostless" href="#tab0"><i class="ace-icon fa fa-credit-card bigger-110 red"></i></i>冻结卡汇总</a>
+								</li>
+								 <li>
+									<a data-toggle="tab" id="inless" href="#tab1"><i class=" ace-icon fa fa-sort-amount-desc bigger-110 blue"></i>入款亏损</a>
+								</li>
+								<li>
+									<a data-toggle="tab" id="transitless" href="#tab2"><i class="ace-icon fa fa-exchange bigger-110 purple"></i>中转亏损</a>
+								</li>
+								<li>
+									<a data-toggle="tab" id="outless" href="#tab3"><i class="ace-icon fa fa-random bigger-110 green"></i>出款亏损</a>
+								</li>
+								<li>
+									<a data-toggle="tab" id="handicap" href="#tab4"><i class="ace-icon fa fa-user bigger-110 red"></i>盘口亏损</a>
+								</li> -->
+							</ul>
+							<div style="padding: 0px 0px; " class="tab-content">
+<!-- -----------------------------------------------冻结卡亏损start-------------------------------------------------------------------->
+								<div id="tab0" class="tab-pane">
+									<div class="col-sm-12 header smaller lighter less-margin no-margin-left">
+										<div class="inline" style="line-height:40px;" >
+											<span class="label label-lg label-pink arrowed-right">盘口</span>
+											<select onchange="queryFinfrostLessStat();" class="chosen-select" id="frosthandicap" name="frosthandicap" style="width:100px;" >
+											</select>
+											&nbsp;
+											<span class="label label-lg label-pink arrowed-right">类型</span>
+											<label class="inline">
+												<input type="radio" checked="checked" onclick="clearStartAndEndTimefrostless()" value="" name="carType" class="ace" />
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearStartAndEndTimefrostless()" value="income" name="carType" class="ace" />
+												<span class="lbl">入款</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearStartAndEndTimefrostless()" value="outward" name="carType" class="ace" />
+												<span class="lbl">出款</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearStartAndEndTimefrostless()" value="issue" name="carType" class="ace" />
+												<span class="lbl">下发</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearStartAndEndTimefrostless()" value="reserve" name="carType" class="ace" />
+												<span class="lbl">备用</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearStartAndEndTimefrostless()" value="third" name="carType" class="ace" />
+												<span class="lbl">第三方</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearStartAndEndTimefrostless()" value="other" name="carType" class="ace" />
+												<span class="lbl">其它</span>
+											</label>
+											&nbsp;
+										</div>
+										<br/>
+										<span class="label label-lg label-pink arrowed-right">账号</span>
+										<input type="text" id="frostaccount" name="frostaccount"  style="height:32px;width:100px;" class="input-small"/>
+										&nbsp;
+										<span class="label label-lg label-pink arrowed-right">时间</span>
+											<label class="inline">
+											<input type="radio"  onclick="clearStartAndEndTimefrostless()" value="" name="form-field-checkbox-frostless" class="ace" />
+											<span class="lbl">全部</span>
+										</label>
+										<label class="inline">
+											<input type="radio"  onclick="clearStartAndEndTimefrostless()" value="today" name="form-field-checkbox-frostless" class="ace" />
+											<span class="lbl">今日</span>
+										</label>
+										<label class="inline">
+											<input type="radio" checked="checked" onclick="clearStartAndEndTimefrostless()" value="thisWeek" name="form-field-checkbox-frostless" class="ace" />
+											<span class="lbl">昨日</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearStartAndEndTimefrostless()" value="week" name="form-field-checkbox-frostless" class="ace" />
+											<span class="lbl">本周</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearStartAndEndTimefrostless()" value="lastweek" name="form-field-checkbox-frostless" class="ace" />
+											<span class="lbl">上周</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearStartAndEndTimefrostless()" value="thisMonth" name="form-field-checkbox-frostless" class="ace" />
+											<span class="lbl">本月</span>
+										</label>
+										<input class="date-range-picker-frostless input-sm" placeholder="自定义时间段" type="text" style="width: 200px;" name="startAndEndTimefrostless" id="startAndEndTimefrostless" />
+										<label class="pull-right inline">
+											<button id="searhFrostless" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-search bigger-100 green"></i>
+												查询
+											</button>
+										</label>
+									</div>
+									<table class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+											<tr>
+												<th>盘口</th>
+												<th>层级</th>
+												<th>账号</th>
+												<th>账号类型</th>
+												<th>余额</th>
+												<th>系统余额</th>
+												<!-- <th>损失金额</th> -->
+												<th>冻结原因</th>
+												<th>备注</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody id="frostless_tbody">
+											
+
+										</tbody>
+									</table>
+									<!-- 分页 -->
+									<div id="frostlessPage"></div>
+								</div>
+<!--------------------------------------------------------冻结卡亏损end------------------------------------------------------------------>
+
+<!-- -----------------------------------------------待金流处理冻结卡-------------------------------------------------------------------->
+								<div id="cashflow" class="tab-pane in active">
+									<div class="col-sm-12 header smaller lighter less-margin no-margin-left">
+										<div class="inline" style="line-height:40px;" >
+											<span class="label label-lg label-pink arrowed-right">盘口</span>
+											<select onchange="queryCashflow()" class="chosen-select" id="cashflowHandicap" name="cashflowHandicap" style="width:100px;" >
+											</select>
+											<!-- <span class="label label-lg label-primary arrowed-right">层级</span>
+											<select class="chosen-select form-control" id="frostlevel" name="frostlevel" style="height:32px" >
+												
+											</select> -->
+											&nbsp;
+											<span class="label label-lg label-pink arrowed-right">类型</span>
+											<label class="inline">
+												<input checked="checked" type="radio" onclick="clearCashflow()" value="" name="cashflowType" class="ace" />
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearCashflow()" value="income" name="cashflowType" class="ace" />
+												<span class="lbl">入款</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearCashflow()" value="outward" name="cashflowType" class="ace" />
+												<span class="lbl">出款</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearCashflow()" value="issue" name="cashflowType" class="ace" />
+												<span class="lbl">下发</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearCashflow()" value="reserve" name="cashflowType" class="ace" />
+												<span class="lbl">备用</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearCashflow()" value="third" name="cashflowType" class="ace" />
+												<span class="lbl">第三方</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearCashflow()" value="other" name="cashflowType" class="ace" />
+												<span class="lbl">其它</span>
+											</label>
+											<span class="label label-lg label-pink arrowed-right">编号</span>
+											<input type="text" id="cashflowAlias" name="cashflowAlias"  style="height:32px;width:100px;" class="input-small"/>
+											<span class="label label-lg label-pink arrowed-right">来源</span>
+											<label class="inline">
+												<input checked="checked" type="radio" onclick="clearCashflow()" value="" name="cashflowClassification" class="ace" />
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearCashflow()" value="0" name="cashflowClassification" class="ace" />
+												<span class="lbl">自购卡</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearCashflow()" value="2" name="cashflowClassification" class="ace" />
+												<span class="lbl">返利网</span>
+											</label>
+										</div>
+										<br/>
+										<span class="label label-lg label-pink arrowed-right">账号</span>
+										<input type="text" id="cashflowAccount" name="cashflowAccount"  style="height:32px;width:100px;" class="input-small"/>
+										&nbsp;&nbsp;<span class="label label-lg label-pink arrowed-right">时间</span>
+										<label class="inline">
+											<input type="radio" checked="checked" onclick="clearCashflow()" value="" name="cashflowDate" class="ace" />
+											<span class="lbl">全部</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearCashflow()" value="today" name="cashflowDate" class="ace" />
+											<span class="lbl">今日</span>
+										</label>
+										<label class="inline">
+											<input type="radio"  onclick="clearCashflow()" value="thisWeek" name="cashflowDate" class="ace" />
+											<span class="lbl">昨日</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearCashflow()" value="week" name="cashflowDate" class="ace" />
+											<span class="lbl">本周</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearCashflow()" value="lastweek" name="cashflowDate" class="ace" />
+											<span class="lbl">上周</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearCashflow()" value="thisMonth" name="cashflowDate" class="ace" />
+											<span class="lbl">本月</span>
+										</label>
+										<input class="date-range-picker-cashflow input-sm" placeholder="自定义时间段" type="text" style="width: 200px;" name="cashflowStartAndEndTimefrostless" id="cashflowStartAndEndTimefrostless" />
+										&nbsp;
+										<label class="pull-right inline">
+											<button id="cashflowSearhFrostless" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-search bigger-100 green"></i>
+												查询
+											</button>
+										</label>
+									</div>
+									<table class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+											<tr>
+												<th>盘口</th>
+												<th>层级</th>
+												<th>账号</th>
+												<th>账号类型</th>
+												<th>冻结金额</th>
+												<th>未损失</th>
+												<th>已损失</th>
+												<th>冻结原因</th>
+												<th>冻结时间</th>
+												<th>状态</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody id="cashflow_tbody">
+											
+
+										</tbody>
+									</table>
+									<!-- 分页 -->
+									<div id="cashflowPage"></div>
+								</div>
+<!--------------------------------------------------------待金流处理冻结卡end------------------------------------------------------------------>
+
+
+<!-- -----------------------------------------------待盘口处理冻结卡-------------------------------------------------------------------->
+								<div id="tabPending"  class="tab-pane">
+									<div class="col-sm-12 header smaller lighter less-margin no-margin-left">
+										<div class="inline" style="line-height:40px;" >
+											<span class="label label-lg label-pink arrowed-right">盘口</span>
+											<select onchange="queryFinpending()" class="chosen-select" id="pendingHandicap" name="pendingHandicap" style="width:100px;" >
+											</select>
+											<!-- <span class="label label-lg label-primary arrowed-right">层级</span>
+											<select class="chosen-select form-control" id="frostlevel" name="frostlevel" style="height:32px" >
+												
+											</select> -->
+											&nbsp;
+											<span class="label label-lg label-pink arrowed-right">类型</span>
+											<label class="inline">
+												<input checked="checked" type="radio" onclick="clearPending()" value="" name="pendingCarType" class="ace" />
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearPending()" value="income" name="pendingCarType" class="ace" />
+												<span class="lbl">入款</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearPending()" value="outward" name="pendingCarType" class="ace" />
+												<span class="lbl">出款</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearPending()" value="issue" name="pendingCarType" class="ace" />
+												<span class="lbl">下发</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearPending()" value="reserve" name="pendingCarType" class="ace" />
+												<span class="lbl">备用</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearPending()" value="third" name="pendingCarType" class="ace" />
+												<span class="lbl">第三方</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearPending()" value="other" name="pendingCarType" class="ace" />
+												<span class="lbl">其它</span>
+											</label>
+											<span class="label label-lg label-pink arrowed-right">编号</span>
+											<input type="text" id="pendingAlias" name="pendingAlias"  style="height:32px;width:100px;" class="input-small"/>
+											<span class="label label-lg label-pink arrowed-right">来源</span>
+											<label class="inline">
+												<input checked="checked" type="radio" onclick="clearPending()" value="" name="pendingClassification" class="ace" />
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearPending()" value="0" name="pendingClassification" class="ace" />
+												<span class="lbl">自购卡</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearPending()" value="2" name="pendingClassification" class="ace" />
+												<span class="lbl">返利网</span>
+											</label>
+										</div>
+										<br/>
+										<span class="label label-lg label-pink arrowed-right">账号</span>
+										<input type="text" id="pendingAccount" name="pendingAccount"  style="height:32px;width:100px;" class="input-small"/>
+										&nbsp;&nbsp;<span class="label label-lg label-pink arrowed-right">时间</span>
+										<label class="inline">
+											<input type="radio" checked="checked" onclick="clearPending()" value="" name="pendingDate" class="ace" />
+											<span class="lbl">全部</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearPending()" value="today" name="pendingDate" class="ace" />
+											<span class="lbl">今日</span>
+										</label>
+										<label class="inline">
+											<input type="radio"  onclick="clearPending()" value="thisWeek" name="pendingDate" class="ace" />
+											<span class="lbl">昨日</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearPending()" value="week" name="pendingDate" class="ace" />
+											<span class="lbl">本周</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearPending()" value="lastweek" name="pendingDate" class="ace" />
+											<span class="lbl">上周</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearPending()" value="thisMonth" name="pendingDate" class="ace" />
+											<span class="lbl">本月</span>
+										</label>
+										<input class="date-range-picker-pending input-sm" placeholder="自定义时间段" type="text" style="width: 200px;" name="pendingStartAndEndTimefrostless" id="pendingStartAndEndTimefrostless" />
+										&nbsp;
+										<label class="pull-right inline">
+											<button id="pendingSearhFrostless" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-search bigger-100 green"></i>
+												查询
+											</button>
+										</label>
+									</div>
+									<table class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+											<tr>
+												<th>盘口</th>
+												<th>层级</th>
+												<th>账号</th>
+												<th>账号类型</th>
+												<th>冻结金额</th>
+												<th>未损失</th>
+												<th>已损失</th>
+												<!-- <th>处理人</th> -->
+												<th>冻结原因</th>
+												<th>冻结时间</th>
+												<th>状态</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody id="pending_tbody">
+											
+
+										</tbody>
+									</table>
+									<!-- 分页 -->
+									<div id="pendingPage"></div>
+								</div>
+<!--------------------------------------------------------待盘口处理冻结卡end------------------------------------------------------------------>
+
+
+
+
+<!-- -----------------------------------------------待财务处理冻结卡-------------------------------------------------------------------->
+								<div id="tabfinance"  class="tab-pane">
+									<div class="col-sm-12 header smaller lighter less-margin no-margin-left">
+										<div class="inline" style="line-height:40px;" >
+											<span class="label label-lg label-pink arrowed-right">盘口</span>
+											<select onchange="queryfinance()" class="chosen-select" id="financeHandicap" name="financeHandicap" style="width:100px;" >
+											</select>
+											&nbsp;
+											<span class="label label-lg label-pink arrowed-right">类型</span>
+											<label class="inline">
+												<input checked="checked" type="radio" onclick="clearFinance()" value="" name="financeCarType" class="ace" />
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="income" name="financeCarType" class="ace" />
+												<span class="lbl">入款</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="outward" name="financeCarType" class="ace" />
+												<span class="lbl">出款</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="issue" name="financeCarType" class="ace" />
+												<span class="lbl">下发</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="reserve" name="financeCarType" class="ace" />
+												<span class="lbl">备用</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="third" name="financeCarType" class="ace" />
+												<span class="lbl">第三方</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="other" name="financeCarType" class="ace" />
+												<span class="lbl">其它</span>
+											</label>
+											<span class="label label-lg label-pink arrowed-right">编号</span>
+											<input type="text" id="financeAlias" name="financeAlias"  style="height:32px;width:100px;" class="input-small"/>
+											<span class="label label-lg label-pink arrowed-right">来源</span>
+											<label class="inline">
+												<input checked="checked" type="radio" onclick="clearFinance()" value="" name="financeClassification" class="ace" />
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="0" name="financeClassification" class="ace" />
+												<span class="lbl">自购卡</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="2" name="financeClassification" class="ace" />
+												<span class="lbl">返利网</span>
+											</label>
+										</div>
+										<br/>
+											<span class="label label-lg label-pink arrowed-right">账号</span>
+											<input type="text" id="financeAccount" name="financeAccount"  style="height:32px;width:100px;" class="input-small"/>
+											&nbsp;
+											<span class="label label-lg label-pink arrowed-right">时间</span>
+											<label class="inline">
+												<input type="radio" checked="checked" onclick="clearFinance()" value="" name="financeDate" class="ace" />
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="today" name="financeDate" class="ace" />
+												<span class="lbl">今日</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="thisWeek" name="financeDate" class="ace" />
+												<span class="lbl">昨日</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="week" name="financeDate" class="ace" />
+												<span class="lbl">本周</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="lastweek" name="financeDate" class="ace" />
+												<span class="lbl">上周</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="thisMonth" name="financeDate" class="ace" />
+												<span class="lbl">本月</span>
+											</label>
+											<input class="date-range-picker-finance input-sm" placeholder="自定义时间段" type="text" style="width: 200px;" name="financeStartAndEndTimefrostless" id="financeStartAndEndTimefrostless" />
+											<br/>
+											<span class="label label-lg label-pink arrowed-right">解冻方式</span>
+											<label class="inline">
+												<input type="radio" checked="checked" onclick="clearFinance()" value="" name="frostType" class="ace" />
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="1" name="frostType" class="ace" />
+												<span class="lbl">卡商抵卡</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="2" name="frostType" class="ace" />
+												<span class="lbl">卡商转账</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="3" name="frostType" class="ace" />
+												<span class="lbl">资金归集</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="4" name="frostType" class="ace" />
+												<span class="lbl">快捷支付</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="5" name="frostType" class="ace" />
+												<span class="lbl">POS机刷卡</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="6" name="frostType" class="ace" />
+												<span class="lbl">取款机提现</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearFinance()" value="7" name="frostType" class="ace" />
+												<span class="lbl">其它</span>
+											</label>
+											<label class="pull-right inline">
+												<button id="financeSearhFrostless" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+													<i class="ace-icon fa fa-search bigger-100 green"></i>
+													查询
+												</button>
+											</label>
+									</div>
+									<table class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+											<tr>
+												<th>盘口</th>
+												<th>层级</th>
+												<th>账号</th>
+												<th>账号类型</th>
+												<th>冻结金额</th>
+												<th>未损失</th>
+												<th>已损失</th>
+												<th>处理人</th>
+												<th>解冻方式</th>
+												<th>冻结原因</th>
+												<th>冻结时间</th>
+												<th>状态</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody id="finance_tbody">
+											
+
+										</tbody>
+									</table>
+									<!-- 分页 -->
+									<div id="financePage"></div>
+								</div>
+<!--------------------------------------------------------待财务处理冻结卡end------------------------------------------------------------------>
+
+
+
+
+<!-- -----------------------------------------------已完成冻结卡-------------------------------------------------------------------->
+								<div id="tabProcessed" class="tab-pane">
+									<div class="col-sm-12 header smaller lighter less-margin no-margin-left">
+										<div class="inline" style="line-height:40px;" >
+											<span class="label label-lg label-pink arrowed-right">盘口</span>
+											<select onchange="queryFinprocessed()" class="chosen-select" id="processedHandicap" name="processedHandicap" style="width:100px;" >
+											</select>
+											&nbsp;
+											<span class="label label-lg label-pink arrowed-right">类型</span>
+											<label class="inline">
+												<input checked="checked" type="radio" onclick="clearProcessed()" value="" name="processedCarType" class="ace" />
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="income" name="processedCarType" class="ace" />
+												<span class="lbl">入款</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="outward" name="processedCarType" class="ace" />
+												<span class="lbl">出款</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="issue" name="processedCarType" class="ace" />
+												<span class="lbl">下发</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="reserve" name="processedCarType" class="ace" />
+												<span class="lbl">备用</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="third" name="processedCarType" class="ace" />
+												<span class="lbl">第三方</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="other" name="processedCarType" class="ace" />
+												<span class="lbl">其它</span>
+											</label>
+											<span class="label label-lg label-pink arrowed-right">编号</span>
+											<input type="text" id="processedAlias" name="processedAlias"  style="height:32px;width:80px;" class="input-small"/>
+											<span class="label label-lg label-pink arrowed-right">来源</span>
+											<label class="inline">
+												<input checked="checked" type="radio" onclick="clearProcessed()" value="" name="processeClassification" class="ace" />
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="0" name="processeClassification" class="ace" />
+												<span class="lbl">自购卡</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="2" name="processeClassification" class="ace" />
+												<span class="lbl">返利网</span>
+											</label>
+										</div>
+										<br/>
+										<span class="label label-lg label-pink arrowed-right">账号</span>
+										<input type="text" id="processedAccount" name="processedAccount"  style="height:32px;width:100px;" class="input-small"/>
+										&nbsp;
+										<span class="label label-lg label-pink arrowed-right">时间</span>
+										<label class="inline">
+											<input type="radio"  onclick="clearProcessed()" value="" name="processedDate" class="ace" />
+											<span class="lbl">全部</span>
+										</label>
+										<label class="inline">
+											<input type="radio"  onclick="clearProcessed()" value="today" name="processedDate" class="ace" />
+											<span class="lbl">今日</span>
+										</label>
+										<label class="inline">
+											<input type="radio" checked="checked" onclick="clearProcessed()" value="thisWeek" name="processedDate" class="ace" />
+											<span class="lbl">昨日</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearProcessed()" value="week" name="processedDate" class="ace" />
+											<span class="lbl">本周</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearProcessed()" value="lastweek" name="processedDate" class="ace" />
+											<span class="lbl">上周</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearProcessed()" value="thisMonth" name="processedDate" class="ace" />
+											<span class="lbl">本月</span>
+										</label>
+										
+										<span class="label label-lg label-pink arrowed-right">状态</span>
+										<label class="inline">
+											<input checked="checked" type="radio" onclick="clearProcessed()" value="" name="statusType" class="ace" />
+											<span class="lbl">全部</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearProcessed()" value="3" name="statusType" class="ace" />
+											<span class="lbl">持续冻结</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearProcessed()" value="4" name="statusType" class="ace" />
+											<span class="lbl">解冻恢复使用</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearProcessed()" value="5" name="statusType" class="ace" />
+											<span class="lbl">永久删除</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearProcessed()" value="6" name="statusType" class="ace" />
+											<span class="lbl">3天未启用</span>
+										</label>
+										<br/>
+											<span class="label label-lg label-pink arrowed-right">解冻方式</span>
+											<label class="inline">
+												<input type="radio" checked="checked" onclick="clearProcessed()" value="" name="processedfrostType" class="ace" />
+												<span class="lbl">全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="1" name="processedfrostType" class="ace" />
+												<span class="lbl">卡商抵卡</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="2" name="processedfrostType" class="ace" />
+												<span class="lbl">卡商转账</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="3" name="processedfrostType" class="ace" />
+												<span class="lbl">资金归集</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="4" name="processedfrostType" class="ace" />
+												<span class="lbl">快捷支付</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="5" name="processedfrostType" class="ace" />
+												<span class="lbl">POS机刷卡</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="6" name="processedfrostType" class="ace" />
+												<span class="lbl">取款机提现</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearProcessed()" value="7" name="processedfrostType" class="ace" />
+												<span class="lbl">其它</span>
+											</label>
+											<input class="date-range-picker-processed input-sm" placeholder="自定义时间段" type="text" style="width: 200px;" name="processedStartAndEndTimefrostless" id="processedStartAndEndTimefrostless" />
+										<label class="pull-right inline">
+											<button id="processedSearhFrostless" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-search bigger-100 green"></i>
+												查询
+											</button>
+										</label>
+									</div>
+									<table class="table table-striped table-bordered table-hover no-margin-bottom">
+										<thead>
+											<tr>
+												<th>盘口</th>
+												<th>层级</th>
+												<th>账号</th>
+												<th>账号类型</th>
+												<th>冻结金额</th>
+												<th>未损失</th>
+												<th>已损失</th>
+												<th>状态</th>
+												<th>解冻方式</th>
+												<th>处理人</th>
+												<th>确认人</th>
+												<th>冻结原因</th>
+												<th>冻结时间</th>
+												<th>状态</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody id="processed_tbody">
+											
+
+										</tbody>
+									</table>
+									<!-- 分页 -->
+									<div id="processedPage"></div>
+								</div>
+<!--------------------------------------------------------已完成冻结卡end------------------------------------------------------------------>
+
+							
+<!-- -----------------------------------------------入款亏损start-------------------------------------------------------------------->
+								<div id="tab1" class="tab-pane">
+									<h3 class="row header smaller lighter blue">
+										<div class="col-sm-12">
+											<form class="form-inline">
+												<span class="label label-lg label-pink arrowed-right">盘口</span>
+												<select class="chosen-select form-control" id="inhandicap" name="inhandicap" style="height:32px" >
+													
+												</select>
+												<span class="label label-lg label-primary arrowed-right">层级</span>
+												<select class="chosen-select form-control" id="inlevel" name="inlevel" style="height:32px" >
+													
+												</select>
+												<span class="label label-lg label-default arrowed-right">账号类型</span>
+												<select class="chosen-select form-control" id="inaccounttype" name="inaccounttype" style="height:32px" >
+													
+												</select>
+												<span class="label label-lg label-purple arrowed-right">账号</span>
+												<input type="text" id="inaccount" name="inaccount"  style="height:32px" class="input-small"/>
+												<div class="input-group">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar bigger-110"></i>
+										</span>
+													<input class="form-control date-range-picker-inless" placeholder="自定义时间段" type="text" name="startAndEndTimeInless" id="startAndEndTimeInless" />
+												</div>
+												<label class="inline">
+													<input type="radio" value="today" name="form-field-checkbox-inless" class="ace" checked/>
+													<span class="lbl"> 今日</span>
+												</label>
+												<label class="inline">
+													<input type="radio" value="thisWeek" name="form-field-checkbox-inless" class="ace" />
+													<span class="lbl"> 本周</span>
+												</label>
+												<label class="inline">
+													<input type="radio" value="thisMonth" name="form-field-checkbox-inless" class="ace" />
+													<span class="lbl"> 本月</span>
+												</label>
+												<label class="pull-right inline">
+													<button id="searhInless" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+														<i class="ace-icon fa fa-search bigger-100 green"></i>
+														查询
+													</button>
+												</label>
+
+											</form>
+										</div>
+									</h3>
+									<table class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<th>盘口</th>
+												<th>层级</th>
+												<th>账号类型</th>
+												<th>账号</th>
+												<th>亏损笔数</th>
+												<th>亏损金额</th>
+												<th>统计时间段</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody id="inless_tbody">
+											
+
+										</tbody>
+									</table>
+									<!-- 分页 -->
+									<div id="inlessPage"></div>
+								</div>
+<!--------------------------------------------------------入款亏损end------------------------------------------------------------------>
+								
+								
+<!-- -----------------------------------------------------中转亏损start------------------------------------------------------------ -->	
+								<div id="tab2" class="tab-pane">
+
+									<h3 class="row header smaller lighter blue">
+										<div class="col-sm-12">
+											<form class="form-inline">
+												<span class="label label-lg label-pink arrowed-right">汇出账号类型</span>
+												<select class="chosen-select form-control" id="transitaccounttype" name="transitaccounttype"   style="height:32px" >
+													
+												</select>
+												<span class="label label-lg label-purple arrowed-right">账号</span>
+												<input type="text" id="transitaccount" name="transitaccount" style="height:32px" class="input-small"/>
+												<div class="input-group">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar bigger-110"></i>
+										</span>
+													<input class="form-control date-range-picker-transit" placeholder="自定义时间段" type="text" name="startAndEndTimeTransitaless" id="startAndEndTimeTransitaless" />
+												</div>
+												<label class="inline">
+													<input type="radio" name="form-field-checkbox-transitless" value="today" class="ace" checked/>
+													<span class="lbl"> 今日</span>
+												</label>
+												<label class="inline">
+													<input type="radio" name="form-field-checkbox-transitless" value="thisWeek" class="ace" />
+													<span class="lbl"> 本周</span>
+												</label>
+												<label class="inline">
+													<input type="radio" name="form-field-checkbox-transitless" value="thisMonth" class="ace" />
+													<span class="lbl"> 本月</span>
+												</label>
+												<label class="pull-right inline">
+													<button id="searhTransitless" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+														<i class="ace-icon fa fa-search bigger-100 green"></i>
+														查询
+													</button>
+												</label>
+
+											</form>
+										</div>
+									</h3>
+									<table class="table table-striped table-bordered table-hover">
+										<thead>
+										<tr>
+											<th>汇出账号类型</th>
+											<th>汇出账号</th>
+											<th>汇入账号类型</th>
+											<th>汇入账号</th>
+											<th>亏损笔数</th>
+											<th>亏损金额</th>
+											<th>统计时间段</th>
+											<th>操作</th>
+										</tr>
+										</thead>
+										<tbody id="transitless_tbody">
+											
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<div id="transitlessPage"></div>
+								</div>
+<!-- ---------------------------------------------中转亏损end----------------------------------------------------------------------- -->
+								
+								
+								
+<!-- ---------------------------------------------出款亏损start-------------------------------------------------------------------- -->		
+								<div id="tab3" class="tab-pane">
+									<h3 class="row header smaller lighter blue">
+										<div class="col-sm-12">
+											<form class="form-inline">
+												<span class="label label-lg label-pink arrowed-right">账号类型</span>
+												<select class="chosen-select form-control" id="outaccounttype" name="outaccounttype" style="height:32px" >
+													<option value="" selected="selected">全部</option>
+													
+												</select>
+												<span class="label label-lg label-purple arrowed-right">账号</span>
+												<input type="text" id="outaccount" name="outaccount" style="height:32px" class="input-small"/>
+												<div class="input-group">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar bigger-110"></i>
+										</span>
+													<input class="form-control date-range-picker-out" placeholder="自定义时间段" type="text" name="startAndEndTimeoutless" id="startAndEndTimeoutless" />
+												</div>
+												<label class="inline">
+													<input type="radio" name="form-field-checkbox-outless" value="today" class="ace" checked/>
+													<span class="lbl"> 今日</span>
+												</label>
+												<label class="inline">
+													<input type="radio" name="form-field-checkbox-outless" value="thisWeek" class="ace" />
+													<span class="lbl"> 本周</span>
+												</label>
+												<label class="inline">
+													<input type="radio" name="form-field-checkbox-outless" value="thisMonth" class="ace" />
+													<span class="lbl"> 本月</span>
+												</label>
+												<label class="pull-right inline">
+													<button id="searhOutless" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+														<i class="ace-icon fa fa-search bigger-100 green"></i>
+														查询
+													</button>
+												</label>
+
+											</form>
+										</div>
+									</h3>
+									<table class="table table-striped table-bordered table-hover">
+										<thead>
+										<tr>
+											<th>账号类型</th>
+											<th>账号</th>
+											<th>亏损笔数</th>
+											<th>亏损金额</th>
+											<th>统计时间段</th>
+											<th>操作</th>
+										</tr>
+										</thead>
+										<tbody id="outless_tbody">
+										
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<div id="outless_Page"></div>
+								</div>
+<!-- ------------------------------------------------出款亏损end-------------------------------------------------------------------- -->
+								
+								
+								
+<!-- ------------------------------------------------盘口亏损end-------------------------------------------------------------------- -->		
+								<div id="tab4" class="tab-pane">
+									<h3 class="row header smaller lighter blue">
+										<div class="col-sm-12">
+											<form class="form-inline">
+												<span class="label label-lg label-pink arrowed-right">盘口</span>
+												<select class="chosen-select form-control" id="handicapHc" name="handicapHc" style="height:32px" >
+													
+												</select>
+												<div class="input-group">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar bigger-110"></i>
+										</span>
+													<input class="form-control date-range-picker-handicap" placeholder="自定义时间段" type="text" name="startAndEndTimeHandicapless" id="startAndEndTimeHandicapless" />
+												</div>
+												<label class="inline">
+													<input type="radio" name="form-field-checkbox-handicapless" value="today" class="ace" checked/>
+													<span class="lbl"> 今日</span>
+												</label>
+												<label class="inline">
+													<input type="radio" name="form-field-checkbox-handicapless" value="thisWeek" class="ace" />
+													<span class="lbl"> 本周</span>
+												</label>
+												<label class="inline">
+													<input type="radio" name="form-field-checkbox-handicapless" value="thisMonth" class="ace" />
+													<span class="lbl"> 本月</span>
+												</label>
+												<label class="inline">
+													<input type="radio" name="form-field-checkbox" class="ace" />
+													<span class="lbl"> 今年</span>
+												</label>
+
+												<label class="pull-right inline">
+													<button id="searhHandicapless" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+														<i class="ace-icon fa fa-search bigger-100 green"></i>
+														查询
+													</button>
+												</label>
+
+											</form>
+										</div>
+									</h3>
+									<table id="dynamic-table" class="table table-striped table-bordered table-hover">
+										<thead>
+										<tr>
+											<th>盘口</th>
+											<th>亏损笔数</th>
+											<th>亏损金额</th>
+											<th>统计时间段</th>
+											<th>操作</th>
+										</tr>
+										</thead>
+										<tbody id="handicapless_tbody">
+
+										</tbody>
+									</table>
+									<!-- #section:pages-footer -->
+									<div id="handicaplessPage"></div>
+								</div>
+								
+								
+							</div>
+						</div>
+
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div>
+		</div>
+	</div>
+	
+<div id="history_modal" class="modal fade" tabindex="-1">
+
+<div class="modal-dialog" style="width:900px;">
+    <div class="modal-content">
+        <div class="modal-header no-padding">
+            <div id="titleDivCustomer" style="text-align: center" class="table-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="white">&times;</span>
+                </button>
+              账号操作历史记录
+            </div>
+        </div>
+
+        <div class="modal-body no-padding">
+			            <div class="tabbable">
+				<table class="table table-striped table-bordered table-hover no-margin-bottom">
+					<thead>
+						<tr>
+							<th>备注</th>
+							<th>时间</th>
+							<th>操作人</th>
+						</tr>
+					</thead>
+					<tbody id="history_tbody">
+						
+			
+					</tbody>
+				</table>
+				<!-- 分页 -->
+				<div id="historyPage"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+	
+	
+<!-- 处理冻结账号 -->
+<div id="FrozenAccount_modal" class="modal fade" tabindex="-1">
+    <input id="FrozenAccount_id" type="hidden">
+    <input id="traceId" type="hidden">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomer" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                  冻结账号处理
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+               		 <form class="form-horizontal" role="form">
+                   			<div class="tab-content">
+	                   			<div>
+	                				<label style="padding-left: 20px;">冻结金额:</label>
+	                           	 	<label id="dAmount"></label>
+	                           	 	
+	                           	 	<label style="padding-left: 50px;">解冻金额:</label>
+	                           	 	<label style="padding-left: 20px;" id="jAmount"></label>
+	                           	 	
+	                           	 	<label style="padding-left: 50px;">损失金额:</label>
+	                           	 	<label style="padding-left: 20px;" id="sAmount"></label>
+	                			</div>
+	                			<div style="height:10px;">&nbsp;&nbsp;</div>
+	                			<div>
+	                				<label style="padding-left: 20px;">解冻方式:</label>
+	                           	 	<label id="jType"></label>
+	                			</div>
+	                			<div style="height:5px;">&nbsp;&nbsp;</div>
+	                			<div>
+	                				<label style="padding-left: 85px;" id="jconts"></label>
+	                			</div>
+	                			<div style="height:10px;">&nbsp;&nbsp;</div>
+                                   <label class="col-sm-2 control-label no-padding-left"
+                                          for="FrozenAccountRemark">备注<i class="ace-icon fa fa-asterisk red"></i> </label>
+                                       <textarea style="height: 120px;width: 400px;" id="FrozenAccountRemark"
+                                                 name="FrozenAccountRemark"
+                                                 class="autosize-transition form-control"></textarea>
+                                                 
+                                   <label class="col-sm-2 control-label no-padding-left"
+                                          for="FrozenAccountRemark">处理类型 <i class="ace-icon fa fa-asterisk red"></i></label>
+									<br/>
+									<label class="inline">
+										<input type="radio" checked="checked" name="ProcessingType" value="freeze" class="ace" />
+										<span class="lbl">持续冻结</span>
+									</label>
+									<br/>
+									<label class="inline" style="padding-left: 93px;">
+										<input id="syRadio" type="radio" name="ProcessingType" value="RecoveryUSES" class="ace" />
+										<span id="sySpan" class="lbl"> 解冻恢复使用(<span style="color: red;">恢复停用状态</span>)</span>
+									</label> 
+									<br/>
+									<label class="inline" style="padding-left: 93px;">
+										<input id="qsRadio" type="radio"  name="ProcessingType" value="PermanentlyFrozen" class="ace" />
+										<span id="qsSpan" class="lbl"> 永久删除(<span style="color: red;">最后一次清算永不启用</span>)</span>
+									</label> 
+									<br/>
+									<span id="deratingSpan">
+									<label class="col-sm-2 control-label no-padding-left">降低额度 <i class="ace-icon fa fa-asterisk red"></i></label>  
+                                     <input type="radio" checked="checked" name="jdxy" value="n">否            <input type="radio" name="jdxy" value="y">是      </span>      
+                               </div>
+                               
+                                <span id="prompt_remark"
+                      				 style="display:none;color: red;padding-left: 160px;">请填写备注</span>
+                      				 
+                               
+                               <div class="col-sm-12 modal-footer no-margin center">
+									<div class="col-md-offset-3 col-md-9">
+										<button id="save" onclick="save_FrozenAccount();" class="btn btn-info" type="button">
+											<i class="ace-icon fa fa-check bigger-110"></i>
+											提交
+										</button>
+										&nbsp; &nbsp; &nbsp;
+										<button class="btn btn-danger" type="button" data-dismiss="modal">
+											<i class="ace-icon fa fa-undo bigger-110"></i>
+											取消
+										</button>
+									</div>
+							  </div>
+                           </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- 解冻金额 -->
+<div id="jiedong_modal" class="modal fade" tabindex="-1">
+    <input id="jiedong_id" type="hidden">
+    <input id="alias" type="hidden">
+    <input id="los_amount" type="hidden">
+    <div class="modal-dialog" style="width:870px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomer" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button> 解冻处理
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                	<div class="tab-content">
+                			<div>
+                				<label class="col-sm-3 control-label no-padding-left">冻结金额</label>
+                           	 	<label id="frozenAmount"></label>
+                           	 	
+                           	 	<label style="padding-left: 100px;">损失金额</label>
+                           	 	<label style="padding-left: 20px;" id="residueAmount"></label>
+                			</div>
+                            <label class="col-sm-3 control-label no-padding-left">解冻金额<i class="ace-icon fa fa-asterisk red"></i></label>
+							<input type="text" id="jiedong_amount" onkeyup="clearNoNum(this)" name="jiedong_amount" class="form-control input-small"  style="height:32px">
+                            <div>
+                				<label class="col-sm-3 control-label no-padding-left">解冻方式<i class="ace-icon fa fa-asterisk red"></i></label>
+                				<label class="inline">
+									<input type="radio" onclick="chooseType()" value="1"  name="defrostType" class="ace" />
+									<span class="lbl">卡商赔付抵卡</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="chooseType()" value="2" name="defrostType" class="ace" />
+									<span class="lbl">卡商赔付转账</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="chooseType()" value="3" name="defrostType" class="ace" />
+									<span class="lbl">资金归集</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="chooseType()" value="4" name="defrostType" class="ace" />
+									<span class="lbl">快捷支付</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="chooseType()" value="5" name="defrostType" class="ace" />
+									<span class="lbl">POS机刷卡</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="chooseType()" value="6" name="defrostType" class="ace" />
+									<span class="lbl">取款机提现</span>
+								</label>
+								<label class="inline">
+									<input type="radio" checked="checked" onclick="chooseType()" value="7" name="defrostType" class="ace" />
+									<span class="lbl">其它</span>
+								</label>
+                			</div>
+                			
+                			<div id="payType" style="padding-left: 210px;display: none;">
+                				<div style="height:5px;">&nbsp;</div>
+	                            <label id="bankName">银行名称</label>
+								<input id="bkname" type="text" style="width: 100px;">
+								<label>账号</label>
+								<input id="account" type="text" style="width: 160px;">
+								<label>开户人</label>
+								<input id="owner" type="text" style="width: 80px;">
+								<!-- <label>金额</label>
+								<input id="amount" type="text" style="width: 80px;" onkeyup="onlyClearNoNum(this)"> -->
+							</div>
+							
+							<div id="payCarType" style="padding-left: 210px;display: none;">
+                				<div style="height:5px;">&nbsp;</div>
+	                            <label>卡数</label>
+								<input id="cardNum" type="text" style="width: 100px;">张
+								<!-- <label style="padding-left: 10px;">金额</label>
+								<input id="cardAmount" type="text" style="width: 80px;" onkeyup="onlyClearNoNum(this)"> -->
+							</div>
+							
+							<div id="payCash" style="padding-left: 210px;display: none;">
+                			   <div style="height:5px;">&nbsp;</div>
+	                           <label class="inline">
+									<input type="radio" checked="checked" onclick="chooseCashType()" value="rmb" name="cashType" class="ace" />
+									<span class="lbl">RMB(人民币)</span>
+								</label>
+	                           <label class="inline">
+									<input type="radio" onclick="chooseCashType()" value="pesos" name="cashType" class="ace" />
+									<span class="lbl">PESOS(披索)</span>
+								</label>
+								<label class="inline">
+									<input type="radio" onclick="chooseCashType()" value="TWD" name="cashType" class="ace" />
+									<span class="lbl">TWD(台币)</span>
+								</label>
+								<label style="padding-left: 10px;">金额</label>
+								<input id="cashAmount" type="text" style="width: 80px;" onkeyup="onlyClearNoNum(this)">
+								<label id="rateText">汇率</label>
+								<input id="rate" type="text" style="width: 80px;" onkeyup="onlyClearNoNum(this)">
+							</div>
+							
+                			
+                            <div id="jiedong_showPassword" style="display: none;">
+                				<div style="height:5px;">&nbsp;</div>
+	                            <label class="col-sm-3 control-label no-padding-left">显示密码</label>
+								<label class="inline">
+									<input type="radio" value="yes" onclick="jiedong_showPasswrod()" name="jiedong_password" class="ace" />
+									<span class="lbl">打开密码</span>
+								</label>
+								<label class="inline">
+									<input type="radio" checked="checked" onclick="jiedong_showPasswrod()" value="no" name="jiedong_password" class="ace" />
+									<span class="lbl">关闭密码</span>
+								</label>
+							</div>
+                            <div style="padding-left: 210px;" id="showPassword"></div>
+                            <br/>
+                            <label class="col-sm-3 control-label no-padding-left" for="jiedong_Remark">备注 <i class="ace-icon fa fa-asterisk red"></i></label>
+                            <textarea style="height: 120px;width: 400px;" id="jiedong_Remark"
+                            	 name="jiedong_Remark" class="autosize-transition form-control"></textarea>
+                            <span id="prompt_jiedong_remark" style="display:none;color: red;padding-left: 160px;">请填写备注</span>
+                     		<span id="prompt_jiedong_amount"  style="display:none;color: red;padding-left: 160px;">请填写金额</span>
+                     		<span id="prompt_jiedong_more"  style="display:none;color: red;padding-left: 160px;">解冻金额超过余额</span>
+                   </div>
+                </div>
+            </div>
+            
+          	<div class="col-sm-12 modal-footer no-margin center">
+				<div class="col-md-offset-3 col-md-9">
+					<button id="save" onclick="jiedong();" class="btn btn-info" type="button">
+						<i class="ace-icon fa fa-check bigger-110"></i>
+						提交
+					</button>
+					&nbsp; &nbsp; &nbsp;
+					<button class="btn btn-danger" type="button" data-dismiss="modal">
+						<i class="ace-icon fa fa-undo bigger-110"></i>
+						取消
+					</button>
+				</div>
+		  </div>
+   		</div>
+    </div>
+</div>
+
+
+<!-- 金流处理 -->
+<div id="password_modal" class="modal fade" tabindex="-1">
+    <input id="pending_id" type="hidden">
+    <input id="account_alias" type="hidden">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomer" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button> 处理
+                </div>
+            </div>
+            <div class="tabbable">
+                	<div class="tab-content">
+                            <label class="col-sm-3 control-label no-padding-left">显示密码<i class="ace-icon fa fa-asterisk red"></i></label>
+							<label class="inline">
+								<input type="radio" value="yes" onclick="showPasswrod()" name="password" class="ace" />
+								<span class="lbl">打开密码</span>
+							</label>
+							<label class="inline">
+								<input type="radio" checked="checked" onclick="showPasswrod()" value="no" name="password" class="ace" />
+								<span class="lbl">关闭密码</span>
+							</label>
+							<div style="height:10px;">&nbsp;&nbsp;</div>
+							<div style="padding-left: 140px;" id="message"></div>
+                            <label class="col-sm-3 control-label no-padding-left" for="password_remark">备注
+                             <i class="ace-icon fa fa-asterisk red"></i></label>
+                            <textarea style="height: 120px;width: 400px;" id="passwordRemark"
+                            	 name="passwordRemark" class="autosize-transition "></textarea>
+                            <span id="password_remark" style="display:none;color: red;padding-left: 160px;">请填写备注</span>
+                   </div>
+                </div>
+          	<div class="col-sm-12 modal-footer no-margin center">
+				<div class="col-md-offset-3 col-md-9">
+					<button onclick="cashflow()" class="btn btn-info" type="button">
+						<i class="ace-icon fa fa-check bigger-110"></i>
+						提交
+					</button>
+					&nbsp; &nbsp; &nbsp;
+					<button class="btn btn-danger" type="button" data-dismiss="modal">
+						<i class="ace-icon fa fa-undo bigger-110"></i>
+						取消
+					</button>
+				</div>
+		  </div>
+   		</div>
+    </div>
+</div>
+
+<!-- 修改密码-->
+<div id="updatePWD4clone" class="modal fade">
+	<input type="hidden" id="accId"/>
+	<div  class="modal-dialog modal-lg" style="width:360px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					<span>修改账号密码</span>
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<table  style="border:none;">
+					<tbody>
+					<tr>
+						<td class="center" style="width:100px;">账号信息</td>
+						<td class="center" style="width:260px;"><input class="input-sm width200" type="text" name="bankHide" disabled placeholder="未设置" value=""></td>
+					</tr>
+					<tr>
+						<td class="center" style="width:100px;">登陆账号</td>
+						<td class="center" style="width:260px;"><input class="input-sm width200" type="text" name="signBank"  placeholder="未设置" value=""></td>
+					</tr>
+					<tr>
+						<td class="center" style="width:100px;">登陆密码</td>
+						<td class="center" style="width:260px;"><input class="input-sm width200" type="password" name="hookBank"  placeholder="未设置" value=""></td>
+					</tr>
+					<tr>
+						<td class="center" style="width:100px;">支付密码</td>
+						<td class="center" style="width:260px;"><input class="input-sm width200" type="password" name="hubBank" placeholder="未设置" value=""/></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doUpdPWD();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>        
+        
+<!-- 备注 -->
+<div id="remark_modal" class="modal fade" tabindex="-1">
+    <input id="remark_id" type="hidden">
+    <input id="status" type="hidden">
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="titleDivCustomer" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                 备注
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+               		 <form class="form-horizontal" role="form">
+                   			<div class="tab-content">
+                                   <label class="col-sm-3 control-label no-padding-left"
+                                          for="jiedong_Remark">备注<i class="ace-icon fa fa-asterisk red"></i> </label>
+                                       <textarea style="height: 120px;width: 400px;" id="remark_Remark"
+                                                 name="remark_Remark"
+                                                 class="autosize-transition form-control"></textarea>
+                               </div>
+                               
+                                <span id="prompt_remark_remark"
+                      				 style="display:none;color: red;padding-left: 160px;">请填写备注</span>
+                      			
+                      				<div class="col-sm-12 modal-footer no-margin center">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="remarkFinishBTN"  onclick="saveRemark();" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												确认
+											</button>
+											&nbsp; &nbsp; &nbsp;
+											<button class="btn btn-danger" type="button" data-dismiss="modal">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												取消
+											</button>
+										</div>
+								  </div>
+                           </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+

@@ -1,0 +1,174 @@
+<link rel="stylesheet" href="../style/bootstrap-multiselect.min.css"/>
+<link rel="stylesheet" href="../style/jquery.bootstrap.duallistbox.min.css" type="text/css">
+<div id="bindKeyCode">
+<div class="row" id="showCont">
+    <div class="col-sm-12">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-8">
+                <div class="form-inline" id="userFilter">
+                    <span class="label label-lg arrowed-right label-pink">账号</span><input id="account" name="account" type="text" placeholder="账号" style="height: 32px"/>
+                    <span class="label label-lg arrowed-right label-primary">角色</span><span id="roleName" class=" form-control" style="height: 32px"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="window.history.back();"><i class="ace-icon fa fa-repay bigger-100 green"></i>返回</button></label>
+                <label class="pull-right inline">&nbsp;&nbsp;</label>
+                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="findPerplesByRoleId();"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button></label>
+                <label class="pull-right inline">&nbsp;&nbsp;</label>
+                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="undo('userFilter');"><i class="ace-icon fa fa-undo bigger-100 green"></i>撤销</button></label>
+                <!-- <label class="pull-right inline">&nbsp;&nbsp;</label>
+                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold contentRight" contentRight='SystemUser:Add:*' onclick="beforeAddUser();"><i class="ace-icon fa fa-plus bigger-100 green"></i>新增</button></label> -->
+                <label class="pull-right inline">&nbsp;&nbsp;</label>
+                <label class="pull-right inline"><button id="addUserRoleButton" style="display: none;" class="btn btn-xs btn-white btn-info btn-bold contentRight" onclick="addUserRole();"><i class="ace-icon fa fa-plus bigger-100 green"></i>添加</button></label>
+                <label class="pull-right inline">&nbsp;&nbsp;</label>
+                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('userFilter');"><i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button></label>
+            </div>
+        </h3>
+        <div class="tabbable">
+            <table id="simple-table-userDetail" class="table  table-bordered table-hover no-margin-bottom">
+				<thead>
+					<tr>
+						<th>选择</th>
+						<th>账号</th>
+						<th>姓名</th>
+						<th>分类</th>
+						<th>出款额度</th>
+						<th>审核额度</th>
+						<th>创建时间</th>
+						<th>状态</th>
+					</tr>
+				</thead>
+				<tbody id="total_tbody">
+					
+				</tbody>
+            </table>
+            <div id="userPage"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade _userNoOk in" id="editUser" data-backdrop="static" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="modal-title" style="padding: 0px 0px" class="modal-header text-center"><h6>编辑用户</h6></div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-18 b-r">
+                            <input type="hidden" id="id">
+                            <div class="col-sm-10 b-r">
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">登录帐号<i class="fa fa-asterisk red"></i></label>
+                                    <div class="col-lg-8"><input placeholder="必填项,3位以上数字字母下划线组合的字符 " id="uid" name="uid" class="form-control" type="text" placeholder="登录帐号"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">姓名<i class="fa fa-asterisk red"></i></label>
+                                    <div class="col-lg-8"><input placeholder="必填项,3位以上数字字母下划线组合的字符" id="username" name="username" class="form-control" type="text" placeholder="姓名"></div>
+                                </div>
+                                <div class="form-group" id="passwordGroup">
+                                    <label class="col-lg-4 control-label">密码<i class="fa fa-asterisk red"></i></label>
+                                    <div class="col-lg-8"><input placeholder="密码,6-20位数字字母组合的字符" id="password" name="password" class="form-control" type="password"></div>
+                                </div>
+                                <div class="form-group" id="singleOutLimit">
+                                    <label class="col-lg-4 control-label">单笔出款额度<i class="fa fa-asterisk red"></i></label>
+                                    <div class="col-lg-8"><input placeholder="必填项,不超过1000000" id="moneylimit" name="moneyLimit" min="0"  max="1000000" class="form-control" type="number" onkeyup="clearNoNum();" oninput="if(value>1000000)value=1000000"></div>
+                                </div>
+                                <div class="form-group" id="approveLimit">
+                                    <label class="col-lg-4 control-label">最大审核额度<i class="fa fa-asterisk red"></i></label>
+                                    <div class="col-lg-8"><input placeholder="必填项,不超过1000000"  id="auditlimit" class="form-control" min="0" max="1000000" type="number" name="auditLimit" onkeyup="clearNoNum();" oninput="if(value>1000000)value=1000000"></div>
+                                </div>
+                                <div style="display: none;" class="form-group" id="categoryGroup">
+                                    <label class="col-lg-4 control-label">用户类别</label>
+                                    <div class="col-lg-8">
+                                        <label><input name="category" value="0" type="radio" class="ace input-lg" checked="checked"/><span class="lbl bigger-120"> 用户</span></label>
+                                        <label><input name="category" value="1" type="radio" class="ace input-lg"/><span class="lbl bigger-120"> 机器人</span></label>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="statusGroup">
+                                    <label class="col-lg-4 control-label">状态</label>
+                                    <div class="col-lg-8">
+                                        <label><input name="status" value="0" type="radio" class="ace input-lg" checked="checked"/><span class="lbl bigger-120"> 启用</span></label>
+                                        <label><input name="status" value="1" type="radio" class="ace input-lg"/><span class="lbl bigger-120"> 停用</span></label>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="resetPasswordGroup">
+                                    <label class="col-lg-4 control-label">重置密码</label>
+                                    <div class="col-lg-8">
+                                        <label><input name="resetPassword" value="1" type="radio" class="ace input-lg"/><span class="lbl bigger-120">是&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></label>
+                                        <label><input name="resetPassword" value="0" type="radio" class="ace input-lg" checked="checked"/><span class="lbl bigger-120">否</span></label>
+                                        <label><span class="lbl bigger-60"><!-- &nbsp;&nbsp;&nbsp;&nbsp;（重置后密码：123456） --></span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 b-r">
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info" id="validateBtn" onclick="addOrEditUser()">提交</button>
+                                    <button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addUserRole_modal" class="modal fade in" aria-hidden="false">
+		<div class="modal-dialog" style="width:1100px;">
+			<div class="modal-content">
+				<div class="modal-header text-center no-padding">
+					<div class="table-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="white">×</span>
+						</button>
+						<span id="addUserTitle"></span>
+					</div>
+				</div>
+				<div class="modal-body no-padding">
+					<div class="tab-pane fade active in">
+					  <div class="row">
+					    <div class="col-sm-12">
+					        <br/>
+				            <div class="col-sm-8">
+				                <div class="form-inline" id="addUserFilter">
+				                    <span class="label label-lg arrowed-right label-pink">账号</span><input id="addAccount" name="account" type="text" placeholder="账号" style="height: 32px"/>
+				                </div>
+				            </div>
+				            <div class="col-sm-4">
+				            	<label class="pull-right inline">&nbsp;&nbsp;</label>
+				                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="addUserToRole();"><i class="ace-icon fa fa-plus bigger-100 green"></i>添加</button></label>
+				                <label class="pull-right inline">&nbsp;&nbsp;</label>
+				                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="addUserRole();"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button></label>
+				                <label class="pull-right inline">&nbsp;&nbsp;</label>
+				            </div>
+					        <br/>
+					        <h3 class=" header smaller lighter blue"></h3>
+					        <div class="tabbable">
+					            <table id="simple-table-userDetail" class="table  table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>选择</th>
+											<th>账号</th>
+											<th>姓名</th>
+											<th>分类</th>
+											<th>出款额度</th>
+											<th>审核额度</th>
+											<th>创建时间</th>
+											<th>状态</th>
+										</tr>
+									</thead>
+									<tbody id="addtotal_tbody">
+										
+									</tbody>
+					            </table>
+					            <div id="adduserPage"></div>
+					        </div>
+					    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"src="../javascript/lib/jquery.bootstrap-duallistbox.min.js"></script>
+<script type="text/javascript" src="../javascript/lib/bootstrap-multiselect.min.js"></script>

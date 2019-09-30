@@ -1,0 +1,234 @@
+<div class="main-content">
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="tabbable">
+                    <ul class="nav nav-tabs" id="myTab3">
+                        <li contentRight='ProblemInvTotal:accInvTab:*'  class="contentRight active" ><a data-toggle="tab" href="#accInvTab">账目排查</a></li>
+                        <li contentRight='ProblemInvTotal:eqpInvTab:*'  class="contentRight" ><a data-toggle="tab" href="#eqpInvTab">设备排查</a></li>
+                    </ul>
+                    <div class="tab-content" style="padding:0px;margin:0px;">
+                        <div id="accInvTab" class="tab-pane in active contentRight" contentRight='ProblemInvTotal:accInvTab:*'  >
+                            <div class="row">
+                                <div class="col-sm-12" >
+                                    <div id="searchButProblem4Acc">
+                                        <div class="col-sm-3">
+                                            <span class="label label-lg label-purple arrowed-right">盘口</span>
+                                            <select class="chosen-select width40" name="tarHandicap" onchange="queryProblem4AccInv();">
+                                                <option value="" selected="selected">全部</option>
+                                            </select>
+                                            <span class="label label-lg label-purple arrowed-right">银行</span>
+                                            <select name="tarBankType" class="chosen-select" style="height:32px;width:60px;"  onchange="queryProblem4AccInv();"><option>请选择</option></select>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <span class="label label-lg label-purple arrowed-right">编号</span>
+                                            <input type="text" style="height:32px;width:80px;" class="input-medium" placeholder="编号" name="tarAlias" />
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <span class="label label-lg label-purple arrowed-right">来源</span>
+                                            <label class="inline"><input type="radio" name="tarFlag" class="ace defaultCheck" checked value=""  onchange="queryProblem4AccInv();"><span class="lbl">全部</span></label>
+                                            <label class="inline"><input type="radio" name="tarFlag" class="ace" value="0"  onchange="queryProblem4AccInv();"><span class="lbl">PC</span></label>
+                                            <label class="inline"><input type="radio" name="tarFlag" class="ace" value="2"  onchange="queryProblem4AccInv();"><span class="lbl">返利网</span></label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <span class="label label-lg label-purple arrowed-right">层级</span>
+                                            <label class="inline"><input type="radio" name="tarLevel" class="ace defaultCheck" checked value=""  onchange="queryProblem4AccInv();"><span class="lbl">全部</span></label>
+                                            <label class="inline"><input type="radio" name="tarLevel" class="ace" value="1"  onchange="queryProblem4AccInv();"><span class="lbl">外层</span></label>
+                                            <label class="inline"><input type="radio" name="tarLevel" class="ace" value="2"  onchange="queryProblem4AccInv();"><span class="lbl">内层</span></label>
+                                            <label class="inline"><input type="radio" name="tarLevel" class="ace" value="8"  onchange="queryProblem4AccInv();"><span class="lbl">指定层</span></label>
+                                        </div>
+                                        <div  class="col-sm-12" style="height:5px;"></div>
+                                        <div class="col-sm-3">
+                                            <span class="label label-lg label-purple arrowed-right">异常差额</span>
+                                            <input type="number" style="height:30px;width:79px;" class="input-medium"  name="stBal" />
+                                            <span>~</span>
+                                            <input type="number" style="height:30px;width:79px;" class="input-medium" name="edBal" />
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <span class="label label-lg label-purple arrowed-right" title="发生时间">时间</span>
+                                            <span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+                                            <input name="startAndEndTime" class="date-range-picker input-sm" type="text" placeholder="请选择起始日期" style="width:80px;" />
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <span class="label label-lg label-purple arrowed-right">排查结果</span>
+                                            <label class="inline"><input type="radio" name="status" class="ace defaultCheck" checked value=""  onchange="queryProblem4AccInv();"><span class="lbl">全部</span></label>
+                                            <label class="inline"><input type="radio" name="status" class="ace" value="10"  onchange="queryProblem4AccInv();"><span class="lbl">等待排查</span></label>
+                                            <label class="inline"><input type="radio" name="status" class="ace" value="20"  onchange="queryProblem4AccInv();"><span class="lbl">锁定中</span></label>
+                                            <label class="inline"><input type="radio" name="status" class="ace" value="3"  onchange="queryProblem4AccInv();"><span class="lbl">恢复启用</span></label>
+                                            <label class="inline"><input type="radio" name="status" class="ace" value="4"  onchange="queryProblem4AccInv();"><span class="lbl">永久禁用</span></label>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <label class="pull-right inline">
+                                                <button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('searchButProblem4Acc');">
+                                                    <i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+                                                </button>
+                                            </label>
+                                            <label class="pull-right inline">&nbsp;&nbsp;</label>
+                                            <label class="pull-right inline">
+                                                <button class="btn btn-xs btn-white btn-info btn-bold" onclick="queryProblem4AccInv();">
+                                                    <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                                </button>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <table class="table table-bordered table-hover  no-margin-bottom">
+                                        <thead><tr><th>盘口</th><th>层级</th><th>编号</th><th>账号</th><th>状态</th><th>来源</th><th>系统余额</th><th>银行余额</th><th>异常差额</th><th>时间</th><th>排查结果</th><th>跟进人</th><th>操作</th></tr></thead>
+                                        <tbody></tbody>
+                                    </table>
+                                    <div id="accInvPage"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="eqpInvTab" class="tab-pane contentRight"  contentRight='ProblemInvTotal:eqpInvTab:*' >
+                            <div class="row">
+                                <div class="col-sm-12" >
+                                    <div id="searchButProblem4Dev">
+                                        <div class="col-sm-3">
+                                            <span class="label label-lg label-purple arrowed-right">编号：</span>
+                                            <input type="string" style="height:32px;width:120px;" class="input-medium"  name="alias" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span class="label label-lg label-purple arrowed-right">异常：</span>
+                                            <label class="inline"><input type="radio" name="status" class="ace defaultCheck" checked value=""  onchange="queryProblem4Mobile();"><span class="lbl">全部</span></label>
+                                            <label class="inline"><input type="radio" name="status" class="ace" value="0" onchange="queryProblem4Mobile();"/><span class="lbl">是</span></label>
+                                            <label class="inline"><input type="radio" name="status" class="ace" value="1" onchange="queryProblem4Mobile();"/><span class="lbl">否</span></label>
+                                            <span class="label label-lg label-purple arrowed-right">手机电量检测：</span>
+                                            <label class="inline"><input type="radio" name="batteryStatus" class="ace defaultCheck" checked value=""  onchange="queryProblem4Mobile();"><span class="lbl">全部</span></label>
+                                            <label class="inline"><input type="radio" name="batteryStatus" class="ace" value="1" onchange="queryProblem4Mobile();"/><span class="lbl">正常</span></label>
+                                            <label class="inline"><input type="radio" name="batteryStatus" class="ace" value="0" onchange="queryProblem4Mobile();"/><span class="lbl">异常</span></label>
+                                            <span class="label label-lg label-purple arrowed-right">在线离线：</span>
+                                            <label class="inline"><input type="radio" name="offLineStatus" class="ace defaultCheck" checked value="0" onchange="queryProblem4Mobile();"/><span class="lbl">在线</span></label>
+                                            <label class="inline"><input type="radio" name="offLineStatus" class="ace" value="1" onchange="queryProblem4Mobile();"/><span class="lbl">离线</span></label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <span class="label label-lg label-purple arrowed-right">是否兼职自处理：</span>
+                                            <label class="inline"><input type="radio" name="rebate_deal" class="ace defaultCheck" checked value=""  onchange="queryProblem4Mobile();"><span class="lbl">全部</span></label>
+                                            <label class="inline"><input type="radio" name="rebate_deal" class="ace" value="1" onchange="queryProblem4Mobile();"/><span class="lbl">是</span></label>
+                                            <label class="inline"><input type="radio" name="rebate_deal" class="ace" value="0" onchange="queryProblem4Mobile();"/><span class="lbl">否</span></label>
+                                        </div>
+
+                                        <div  class="col-sm-12" style="height:5px;"></div>
+                                        <div class="col-sm-3">
+                                            <span class="label label-lg label-purple arrowed-right">锁定：</span>
+                                            <label class="inline"><input type="radio" name="lockStatus" class="ace defaultCheck" checked value=""  onchange="queryProblem4Mobile();"><span class="lbl">全部</span></label>
+                                            <label class="inline"><input type="radio" name="lockStatus" class="ace" value="1" onchange="queryProblem4Mobile();"/><span class="lbl">已锁定</span></label>
+                                            <label class="inline"><input type="radio" name="lockStatus" class="ace" value="0" onchange="queryProblem4Mobile();"/><span class="lbl">未锁定</span></label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span class="label label-lg label-purple arrowed-right">异常处理状态：</span>
+                                            <label class="inline"><input type="checkbox" name="dealStatus" checked="checked" class="ace" value="0" onchange="queryProblem4Mobile();"/><span class="lbl">待处理</span></label>
+                                            <label class="inline"><input type="checkbox" name="dealStatus" checked="checked" class="ace" value="2" onchange="queryProblem4Mobile();"/><span class="lbl">处理中</span></label>
+                                            <label class="inline"><input type="checkbox" name="dealStatus" class="ace defaultNoCheck" value="1" onchange="queryProblem4Mobile();"/><span class="lbl">处理完成</span></label>
+                                            <span class="label label-lg label-purple arrowed-right">工具版本：</span>
+                                            <input type="string" style="height:26px;width:80px;" class="input-medium"  name="appVersion" />
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label class="pull-right inline">
+                                                <button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('searchButProblem4Dev');">
+                                                    <i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+                                                </button>
+                                            </label>
+                                            <label class="pull-right inline">&nbsp;&nbsp;</label>
+                                            <label class="pull-right inline">
+                                                <button class="btn btn-xs btn-white btn-info btn-bold" onclick="queryProblem4Mobile();">
+                                                    <i class="ace-icon fa fa-search bigger-100 green"></i>查询
+                                                </button>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <table class="table table-striped table-bordered table-hover no-margin-bottom">
+                                        <thead>
+                                        <tr><th style="width:6%;">手机号</th><th style="width:9%;">账号</th><th style="width:6%;">返利网账号</th><th style="width:6%;">工具版本</th><th style="width:6%;">手机型号</th><th style="width:6%;">当前使用银行APP版本</th><th style="width:6%;">网络状况</th><th style="width:20%;">异常</th><th style="width:8%;">手机电量检测</th><th style="width:6%;">排查耗时</th><th style="width:6%;">锁定人</th><th style="width:8%;">备注</th><th style="width:10%;">操作</th></tr>
+                                        </thead>
+                                        <tbody id="mobile_tbody"></tbody>
+                                    </table>
+                                    <div id="mobilePage"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--备注 -->
+<div id="invistRemarkModal" class="modal fade" tabindex="-1">
+    <input id="invistRemarkErrId" type="hidden">
+    <div class="modal-dialog" style="width:300px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+                    <span>备注</span>
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label no-padding-left" for="invistRemarkModalRemark">备注</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="width: 200px;" id="invistRemarkModalRemark" name="invistRemarkModalRemark"  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button id="totalTaskFinish" type="button" onclick="saveInvstRemark();" class="btn btn-sm btn-success">确认</button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--备注 -->
+<div id="invstAccInitModal" class="modal fade" tabindex="-1">
+    <input id="invstAccInitErrId" type="hidden">
+    <div class="modal-dialog" style="width:300px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+                    <span>初始化</span>
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label no-padding-left" for="invstAccInitModalRemark">备注</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="width: 200px;" id="invstAccInitModalRemark" name="invstAccInitModalRemark"  class="autosize-transition form-control"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="saveInvstInit();" class="btn btn-sm btn-success">确认</button>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-warming">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/common_export.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogInvstList.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalOutAccount.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalReportManage.js"></script>
+<!-- 下拉框带搜索 -->
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+
+

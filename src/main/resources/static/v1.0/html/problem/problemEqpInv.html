@@ -1,0 +1,87 @@
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="tabbable">
+						<ul class="nav nav-tabs" id="myTab3">
+							<li  class="active">
+								<a data-toggle="tab" href="#mobileTab"><i class=" ace-icon fa fa-phone bigger-110 pink"></i>手机</a>
+							</li>
+							<li>
+								<a data-toggle="tab" href="#pcTab"><i class="green ace-icon fa fa-desktop bigger-110"></i>电脑</a>
+							</li>
+						</ul>
+						<div class="tab-content" style="padding-top: 0px;">
+							<div id="mobileTab" class="tab-pane in active">
+								<h3 class="row">
+									<div class="col-sm-12">
+										<form class="form-inline">
+											<label class="pull-right inline">
+						                        <span class="pull-right">
+													<button onclick="queryProblem4Mobile()" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+														<i class="ace-icon fa fa-refresh bigger-100 green"></i>
+														刷新
+													</button>
+												</span>
+											</label>
+										</form>
+									</div>
+								</h3>
+								<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead><tr>
+									<th style="width:7%;">盘口</th>
+									<th style="width:20%;">账号</th>
+									<th style="width:9%;">流水超时</th>
+									<th style="width:9%;">余额超时</th>
+									<th style="width:9%;">任务超时</th>
+									<th style="width:9%;">离线</th>
+									<th style="width:9%;">主动告警</th>
+									<th style="width:28%;">操作</th>
+									</tr></thead>
+									<tbody id="total_tbody">
+									</tbody>
+								</table>
+								<div id="mobilePage"></div>
+							</div>
+							<div id="pcTab" class="tab-pane">
+								<h3 class="row">
+									<div class="col-sm-12">
+										<form class="form-inline">
+											<label class="pull-right inline">
+						                        <span class="pull-right">
+													<button onclick="queryProblem()" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+														<i class="ace-icon fa fa-refresh bigger-100 green"></i>
+														刷新
+													</button>
+												</span>
+											</label>
+										</form>
+									</div>
+								</h3>
+								<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead><tr>
+										<th style="width:7%;">盘口</th>
+										<th style="width:20%;">账号</th>
+										<th style="width:9%;">流水超时</th>
+										<th style="width:9%;">余额超时</th>
+										<th style="width:9%;">任务超时</th>
+										<th style="width:9%;">离线</th>
+										<th style="width:9%;">主动告警</th>
+										<th style="width:28%;">操作</th>
+									</tr></thead>
+									<tbody id="pc_tbody">
+									</tbody>
+								</table>
+								<div id="pcPage"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/common_export.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>

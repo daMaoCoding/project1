@@ -1,0 +1,167 @@
+<div class="row" name="pageContent">
+	<div class="col-sm-12">
+		<div class="tabbable">
+			<input type="hidden" id="outwardTaskStatus" value="1"/>
+			<ul class="nav nav-tabs">
+				<li class="tabli4outward" outwardTaskStatus="1" onclick="searchByFilter($(this).attr('outwardTaskStatus'))"><a data-toggle="tab" href="#tab1"><i class="ace-icon bigger-110 fa fa-hourglass-start  pink"></i><span>正在匹配</span></a></li>
+				<li class="tabli4outward" outwardTaskStatus="5" onclick="searchByFilter($(this).attr('outwardTaskStatus'))"><a data-toggle="tab" href="#tab5"><i class="ace-icon bigger-110 fa fa-check blue"></i><span>已匹配</span></a></li>
+				<li class="tabli4outward" outwardTaskStatus="6" onclick="searchByFilter($(this).attr('outwardTaskStatus'))"><a data-toggle="tab" href="#tab6"><i class="ace-icon bigger-110 fa fa-ban blue"></i><span>待排查</span></a></li>
+				<li>
+					<label>
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						<span class="label label-lg arrowed-right label-purple">返利网提现记录</span>
+						<input id="rebateDataOnly" type="checkbox" class="ace ace-switch ace-switch-5" onchange="clickRebateBtn()">
+						<span class="lbl middle"></span>
+					</label>
+				</li>
+			</ul>
+			<div class="tab-content no-padding-bottom no-padding-top" name="tab-content">
+				<div id="tab1" class="tab-pane in">
+					<div class="row header smaller lighter blue  less-margin no-margin-left" id="accountFilter1" >
+						<div class="col-sm-3">
+							<span class="label label-lg label-purple arrowed-right">转入账号</span>
+							<input class="input-sm" name="toAccount" type="text" placeholder="对方账号">
+						</div>
+						<div class="col-sm-5">
+							<span class="label label-lg label-purple arrowed-right">金额</span>
+							<input class="input-sm" name="minAmount" type="number" class="input-small" style="width:98px" />&nbsp;~&nbsp;<input name="maxAmount" type="number" class="input-sm" style="width:98px"/>
+						</div>
+						<div class="col-sm-3"></div>
+						<div class="col-sm-1">
+							<label class="pull-right inline">
+								<button class="btn btn-xs btn-white btn-info btn-bold" onclick="window.history.back();">
+									<i class="fa-rotate-left fa fa-search bigger-100 green"></i>返回
+								</button>
+							</label>
+						</div>
+						<div class="col-sm-12" style="height: 5px;"></div>
+						<div class="col-sm-3">
+							<span class="label label-lg label-purple arrowed-right">&nbsp;&nbsp;&nbsp;&nbsp;日期&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+							<input name="startAndEndTime" class="date-range-picker input-sm" type="text" placeholder="请选择起始日期" />
+						</div>
+						<div class="col-sm-3">
+							<span class="label label-lg label-danger arrowed-right">查询范围</span>
+							<label><input name="searchType" type="checkbox" checked="checked" value="sys"/>平台记录</label>&nbsp;&nbsp;
+							<label><input name="searchType" type="checkbox" checked="checked" value="bank"/>银行流水</label>
+						</div>
+						<div class="col-sm-3">
+							<label>
+								<span class="label label-lg arrowed-right label-purple">每页显示5行</span>
+								<input id="pageSizeFive" checked="checked" type="checkbox" class="ace ace-switch ace-switch-5">
+								<span class="lbl middle"></span>
+							</label>
+						</div>
+						<div class="col-sm-3">
+							<label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="searchByFilter()"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button></label>
+							<label class="pull-right inline">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('accountFilter1');"><i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button></label>
+						</div>
+					</div>
+					<div class="tabbable">
+						<div name="sysRecord">
+							<table name="tableIncome" class="table table-bordered table-hover no-margin-bottom">
+								<thead><tr><th></th><th>会员</th><th>订单号</th><th>出款账号</th><th>对方账号</th><th>对方姓名</th><th style="width: 100px;">分配时间</th><th>金额</th><th>操作员</th><th>备注</th><th>截图</th><th>操作</th></tr></thead>
+								<tbody></tbody>
+								<tfoot></tfoot>
+							</table>
+							<div id="tablePage1_sys"></div>
+						</div>
+						<div class="center less-margin no-margin-left no-margin-right"><button type="button" onclick="match();" class="btn btn-sm btn-success"><i class=" ace-icon fa fa-check-circle bigger-80">&nbsp;匹配</i></button></div>
+						<div name="bankFlow">
+							<table name="tableBank" class="table  table-bordered table-hover no-margin-bottom">
+								<thead><tr><th></th><th>出款账号</th><th>对方账号</th><th>对方姓名</th><th>交易时间</th><th>抓取时间</th><th>金额</th><th>摘要</th><th>备注</th></tr></thead>
+								<tbody></tbody>
+								<tfoot></tfoot>
+							</table>
+							<div id="tablePage1_bank"></div>
+						</div>
+					</div>
+				</div>
+				<div id="tab5" class="tab-pane in">
+					<div class="row header smaller lighter blue less-margin no-margin-left" >
+						<div  class="col-sm-12" id="accountFilter5">
+							<span class="label label-lg label-purple arrowed-right">匹配时间</span>
+							<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+							<input class="date-range-picker" type="text" name="startAndEndTime" style="height: 32px;width:180px;"/>
+							<span class="label label-lg label-purple arrowed-right">金额</span>
+							<input name="minAmount" type="number" class="input-small" style="height:34px"/>&nbsp;~&nbsp;<input name="maxAmount" type="number" class="input-small" style="height:34px"/>
+							<label class="pull-right inline">
+								<button class="btn btn-xs btn-white btn-info btn-bold" onclick="window.history.back();"><i class="fa-rotate-left fa fa-search bigger-100 green"></i>返回</button>
+							</label>
+							<label class="pull-right inline">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<label class="pull-right inline">
+								<button class="btn btn-xs btn-white btn-info btn-bold" onclick="searchByFilter()"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+							</label>
+							<label class="pull-right inline">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('accountFilter5');"><i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button></label>
+						</div>
+					</div>
+					<div class="row header smaller less-margin no-margin-left">
+						<table id="simple-table" class="table table-bordered table-hover  no-margin-bottom">
+							<thead>
+								<tr>
+									<th style="width:10%">转出账号</th>
+									<th style="width:10%">转入账号</th>
+									<th style="width:9%">交易金额</th>
+									<th style="width:13%">交易时间</th>
+									<th style="width:7%">操作人</th>
+									<th style="width:10%">备注</th>
+									<th style="width:5%">截图</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+							<tfoot></tfoot>
+						</table>
+						<div id="tablePage1"></div>
+					</div>
+				</div>
+				<div  id="tab6" class="tab-pane in">
+					<div class="row header smaller lighter blue  less-margin no-margin-left" id="accountFilter6">
+						<div class="col-sm-4">
+							<span class="label label-lg label-purple arrowed-right">金额&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<input name="minAmount" type="number" class="input-small" style="height:30px"/>&nbsp;~&nbsp;<input name="maxAmount" type="number" class="input-small" style="height:30px"/>
+						</div>
+						<div class="col-sm-4"></div>
+						<div class="col-sm-1">&nbsp;</div>
+						<div class="col-sm-3">
+							<label class="inline pull-right"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="window.history.back();"><i class="fa-rotate-left fa fa-search bigger-100 green"></i>返回</button></label>
+						</div>
+						<div class="col-sm-12" style="height: 5px;">&nbsp;</div>
+						<div class="col-sm-4">
+							<span class="label label-lg label-purple arrowed-right">转入账号</span>
+							<input name="toAccount" type="text" placeholder="转入账号" style="height:30px;width:195px;">
+						</div>
+						<div class="col-sm-4">
+							<span class="label label-lg label-purple arrowed-right">日期&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+							<input name="startAndEndTime" class="date-range-picker" type="text" placeholder="请选择起始日期" style="height: 30px;width:194px;"/>
+						</div>
+						<div class="col-sm-1">&nbsp;</div>
+						<div class="col-sm-3">
+							<label class="inline pull-right"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="searchByFilter()"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button></label>
+							<label class="inline pull-right">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<label class="inline pull-right"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('accountFilter6');"><i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button></label>
+						</div>
+					</div>
+					<div class="tabbable">
+						<div name="sysRecordUnmatched">
+							<table name="tableIncome" class="table table-bordered table-hover no-margin-bottom">
+								<thead><tr><th>转出账号</th><th>转入账号</th><th>金额</th><th>操作员</th><th>时间</th><th>备注</th><th>截图</th></tr></thead>
+								<tbody></tbody>
+								<tfoot></tfoot>
+							</table>
+							<div id="tablePage6"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--公共模块引用START-->
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<!--公共模块引用END-->
+<!--操作记录与流水匹配引用START-->
+<script type="text/javascript"  src="../javascript/common/modalConfirmMatch.js"></script>
+<!--操作记录与流水匹配引用END-->

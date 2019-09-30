@@ -1,0 +1,143 @@
+<!-- 修改入款银行卡账号信息 -->
+<div id="updateIncomeAccount" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<div class="modal-dialog modal-lg" style="width:700px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>联系方式</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableUpdate" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding-top: 10px;">盘口</td>
+							<td style="padding-top: 10px;">
+								<select name="handicap_select" class="chosen-select width200" disabled>
+								</select>
+							</td>
+							<td style="padding-top: 10px;display:none;" class="thirdShow">第三方</td>
+							<td style="padding-top: 10px;display:none;" class="thirdShow">
+								<select class="chosen-select"  style="width:100px;"name="choiceThirdBrand" ></select>
+								<input class="input-sm" style="width:98px;" name="thirdBankName" type="text" min="0" placeholder="第三方">
+							</td>
+							<td style="padding-top: 10px;" class="needHide">层级</td>
+							<td style="padding-top: 10px;" class="needHide">
+								<select name="currSysLevel" class="chosen-select width200">
+									<option selected="selected" value="">------------请选择------------</option>
+									<option value="1" >外层</option>
+									<option value="4" >中层</option>
+									<option value="2" >内层</option>
+									<option value="8" >指定层</option>
+								</select>
+							</td>
+						</tr>
+						<tr class="hide">
+							<td colspan="2"></td>
+							<td colspan="2">
+								<span class="blue" style="font-size:12px;">
+									<i class="ace-icon fa fa-exclamation-triangle bigger-130 red" style="cursor:pointer;"></i>
+									外层和指定层的账号不允许修改层级
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td style="padding-top: 10px;">账号</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" disabled="disabled" style="wiidth:200px" name="account" type="text" placeholder="账号"></td>
+							<td style="padding-top: 10px;display:none;" class="thirdShow">系统余额</td>
+							<td style="padding-top: 10px;display:none;" class="thirdShow">
+								<input class="input-sm width200"  name="thirdBalance" type="number" min="0" placeholder="系统余额">
+							</td>
+							<td style="padding-top: 10px;" class="needHide">银行类别</td>
+							<td style="padding-top: 10px;" class="needHide">
+								<select class="chosen-select" name="choiceBankBrand" style="width:98px;" ></select>
+								<input class="input-sm" name="bankName" type="text" style="width:98px;" placeholder="开户支行">
+							</td>
+						</tr>
+                        <tr class="needHide">
+                            <td style="padding-top: 10px;">省份</td>
+                            <td style="padding-top: 10px;">
+                                <select class="input-sm width200" name="province" ></select>
+                            </td>
+                            <td style="padding-top: 10px;">城市</td>
+                            <td style="padding-top: 10px;">
+                                <select class="input-sm width200" name="city" ></select>
+                            </td>
+                        </tr>
+						<tr class="needHide">
+							<td style="padding-top: 10px;">开户人</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="owner" type="text" ></td>
+							<td style="padding-top: 10px;">余额峰值</td>
+							<td style="padding-top: 10px;">
+								<input class="input-sm width200" name="peakBalance" type="number" placeholder="余额峰值">
+							</td>
+						</tr>
+						<tr>
+							<td style="padding-top: 10px;">当日入款限额</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitIn" type="number" ></td>
+							<td style="padding-top: 10px;">余额告警</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitBalance" type="number" ></td>
+						</tr>
+						<tr>
+							<td style="padding-top: 10px;">当日出款限额</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitOut" type="number" ></td>
+							<td style="padding-top: 10px;">单笔出款限额<br/><span class="blue">（最高）</span></td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitOutOne" type="number" placeholder="最高单笔出款限额"></td>
+						</tr>
+						<tr class="needHide">
+							<td style="padding-top: 10px;">当日出款笔数</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitOutCount" type="number" placeholder="当日出款笔数" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" ></td>
+							<td style="padding-top: 10px;">单笔出款限额<br/><span class="blue">（最低）</span></td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="limitOutOneLow" type="number" placeholder="最低单笔出款限额"></td>
+						</tr>
+						<tr class="needHide">
+							<td style="padding-top: 10px;">单笔最小入款金额</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="minInAmount" type="number" placeholder="单笔最小入款金额" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" ></td>
+						</tr>
+						<tr><td style="padding-top: 10px;display:none;" colspan="4" class="header smaller lighter blue no-padding no-margin"><h6>手续费率</h6></td></tr>
+						<tr>
+							<tbody id="rateTbody" style="border:none;">
+								<tr>
+									<td style="padding-top: 10px;display:none;" class="thirdShow">费率方式</td>
+									<td style="padding-top: 10px;display:none;" class="thirdShow">
+										<input type="radio" checked="checked" value="0" onclick="changeRateTyle(0)" name="rateType"/>固定费率&nbsp;&nbsp;&nbsp;
+										<input type="radio" value="1" onclick="changeRateTyle(1)" name="rateType"/>阶梯式
+									</td>
+									<td style="padding-top: 10px;display:none;" class="fixed">费率(百分比)</td>
+									<td style="padding-top: 10px;display:none;" class="fixed"><input onkeyup="clearNoNum(this)" type="text" name="rate" value="3">%</td>
+								</tr>
+								<tr>
+									<td style="padding-top: 10px;display:none;" class="ladder">金额</td>
+									<td style="padding-top: 10px;display:none;" class="ladder"><input style="width: 70px;" onblur="intersection(this,0)" onkeyup="clearNoNum(this)" name="startAmount" type="text">~<input onblur="intersection(this,0)" onkeyup="clearNoNum(this)" name="endAmount" style="width: 70px;" type="text"></td>
+									<td style="padding-top: 10px;display:none;" class="ladder">费率(百分比)</td>
+									<td style="padding-top: 10px;display:none;" class="ladder"><input onkeyup="clearNoNum(this)" type="text" name="rates" value="3">%<a onclick="addRow()"  style="cursor:pointer;" class="ace-icon glyphicon glyphicon-plus"></a></td>
+								</tr>
+							</tbody>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			 <span id="prompt_owner"
+   				 style="display:none;color: red;padding-left: 160px;">请填写开户人</span>
+   				 
+   			<span id="prompt_choiceBankBrand"
+   				 style="display:none;color: red;padding-left: 160px;">请选择开户行</span>
+   			<span id="prompt_bankName"
+   				 style="display:none;color: red;padding-left: 160px;">请填写开户支行</span>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" id="do_update" >确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>

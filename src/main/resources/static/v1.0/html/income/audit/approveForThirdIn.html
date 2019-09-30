@@ -1,0 +1,341 @@
+<link rel="stylesheet" href="../style/jquery.chosen.min.css" type="text/css" xmlns="http://www.w3.org/1999/html">
+<style>
+	th{padding-right: 0px !important ;padding-left: 0px !important;text-align:center}
+	.message-footer{padding: 0px !important;}
+	#thirdFlows_tbody td{
+		padding-right: 0px !important;
+		padding-left: 0px !important;
+		word-wrap:break-word !important;
+	}
+</style>
+<div class="row" name="pageContent">
+	<div class="col-sm-12">
+		<div class="tabbable">
+			<ul class="nav nav-tabs">
+				<li class="active" onclick="setSearchType('matched');">
+					<a data-toggle="tab" href="#tab_matched">
+					<i class="blue ace-icon fa fa-check bigger-110"></i><span>已对账</span>
+					</a>
+				</li>
+				<li onclick="setSearchType('unmatch');">
+					<a data-toggle="tab" href="#tab_unmatch">
+						<i class="blue ace-icon fa  fa-question-circle-o bigger-110"></i><span>未对账</span>
+					</a>
+				</li>
+				<li onclick="setSearchType('thirdFlows');">
+					<a data-toggle="tab" href="#tab_thirdFlows">
+						<i class="blue ace-icon fa fa-barcode bigger-110"></i><span>第三方流水</span>
+					</a>
+				</li>
+			</ul>
+			<div class="tab-content no-padding-bottom no-padding-top" name="tab-content">
+				<div id="tab_matched" class="tab-pane in active" tabInit="0">
+					<h3 class="row header smaller lighter blue">
+						<div class="col-sm-12">
+							<form class="form-inline">
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">盘口</span>
+									<select id="handicap_matched" class="chosen-select form-control"  style="height:32px">
+										<option >请选择</option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 81px" class="label label-lg label-primary arrowed-right">会员账号</span>
+									<input  id="member_matched" type="text"  placeholder="会员账号"  class="input-medium"  style="height:32px;width:60%;" />
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 68px" class="label label-lg label-primary  "><i class="fa fa-calendar bigger-110"></i></span>
+									<input id="startAndEndTime_matched" class="form-control date-range-picker" type="text"  style="height: 32px;width:69%;"/>
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">金额</span>
+									<div class="input-group form-group col-sm-3" style="height:32px;width:78%;">
+										<input id="fromMoney_matched" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+											   style="height:32px">
+										<span class="input-group-addon">~</span>
+										<input id="toMoney_matched" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+											   style="height:32px">
+									</div>
+								</div>
+								<div class="col-sm-12" style="height: 2px"></div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">层级</span>
+									<select id="level_matched" class="chosen-select form-control"  style="height:32px">
+										<option>请选择</option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span  style="width: 81px" class="label label-lg label-primary arrowed-right">三方商号</span>
+									<select id="toAccount_matched" class="chosen-select form-control" style="height:32px;width:170px;">
+										<option>请选择</option>
+									</select>
+								</div>
+								<!--<div class="col-sm-3">-->
+									<!--<span class="label label-lg label-primary arrowed-right">第三方名称</span>-->
+									<!--<input id="thirdName_matched" type="text"  placeholder="收款账号"   class="input-medium"  style="height:32px;width:60%;" />-->
+								<!--</div>-->
+								<div class="col-sm-3">
+									<span style="width: 68px" class="label label-lg label-primary ">订单号</span>
+									<input id="thirdOrderNo_matched" type="text"  placeholder="订单号"   class="input-medium"  style="height:32px;width:69%;" />
+								</div>
+								<!--<div class="col-sm-3">-->
+									<!--<span class="label label-lg label-primary">三方商号</span>-->
+									<!--<input id="toAccount_matched" type="text"  placeholder="三方商号"   class="input-medium"  style="height: 32px;width:69%;" />-->
+								<!--</div>-->
+
+								<div class="col-sm-3">
+									<span>
+										<span class="label label-lg label-primary arrowed-right">刷新</span>
+										<select id="changeFlushTime" onchange="_changSearch();" class="chosen-select form-control"  style="height:32px">
+											<option  value="不刷新">不刷新</option>
+											<option  value="15000">15秒</option>
+											<option  value="30000">30秒</option>
+											<option  value="60000">60秒</option>
+											<option  value="120000">120秒</option>
+											<option  value="180000">180秒</option>
+										</select>
+										<button type="button" onclick="_searchMatchedByFilter();" class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+										</button>
+										<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueSThird('matched');">
+											<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</h3>
+					<div style="margin-right: -13px;margin-left: -13px" sclass="row">
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead>
+							<tr>
+								<th>盘口</th>
+								<th>层级</th>
+								<th>会员账号</th>
+								<th>订单号</th>
+								<th>第三方商家名称</th>
+								<th>第三方商号</th>
+								<th>充值金额</th>
+								<th>手续费</th>
+								<th>提单时间</th>
+								<th>确认时间</th>
+							</tr>
+							</thead>
+							<tbody id="third_matched_tbody">
+
+							</tbody>
+						</table>
+						<div id="matched_pageFoot">
+
+						</div>
+					</div>
+				</div>
+				<div id="tab_unmatch" class="tab-pane " tabInit="0">
+					<h3 class="row header smaller lighter blue">
+						<div class="col-sm-12">
+							<form class="form-inline">
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">盘口</span>
+									<select id="handicap_unmatch" class="chosen-select form-control"  style="height:32px">
+										<option >请选择</option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 81px" class="label label-lg label-primary arrowed-right">会员账号</span>
+									<input  id="member_unmatch" type="text"  placeholder="会员账号"  class="input-medium"  style="height:32px;width:60%;" />
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 68px" class="label label-lg label-primary  "><i class="fa fa-calendar bigger-110"></i></span>
+									<input id="startAndEndTime_unmatch" class="form-control date-range-picker" type="text"  style="height: 32px;width:69%;"/>
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">金额</span>
+									<div class="input-group form-group col-sm-3" style="height:32px;width:78%;">
+										<input id="fromMoney_unmatch" type="text" class="form-control input-small"
+											   style="height:32px">
+										<span class="input-group-addon">~</span>
+										<input id="toMoney_unmatch" type="text" class="form-control input-small"
+											   style="height:32px">
+									</div>
+								</div>
+								<div class="col-sm-12" style="height: 2px"></div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">层级</span>
+									<select id="level_unmatch" class="chosen-select form-control"  style="height:32px">
+										<option>请选择</option>
+									</select>
+								</div>
+								<div class="col-sm-3" >
+									<span style="width: 81px" class="label label-lg label-primary arrowed-right">三方商号</span>
+									<select id="toAccount_unmatch" class="chosen-select form-control" style="height:32px;width:168px;">
+										<option>请选择</option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 68px;" class="label label-lg label-primary ">订单号</span>
+									<input id="thirdOrderNo_unmatch" type="text"  placeholder="订单号"   class="input-medium"  style="height:32px;width:69%;" />
+								</div>
+
+								<div class="col-sm-3">
+									<span class="pull-left">
+										<label class="pull-right inline">
+											<button type="button" class="btn btn-xs btn-white btn-info btn-bold" onclick="_searchMatchedByFilter();">
+												<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+											</button>
+										</label>
+									</span>
+									<span style="margin-left: 30px;" class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueSThird('unmatch');">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+										</label>
+									</span>
+								</div>
+							</form>
+						</div>
+					</h3>
+					<div style="margin-right: -13px;margin-left: -13px" sclass="row">
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead>
+							<tr>
+								<th>盘口</th>
+								<th>层级</th>
+								<th>会员账号</th>
+								<th>订单号</th>
+								<th>第三方商家名称</th>
+								<th>第三方商号</th>
+								<th>充值金额</th>
+								<th>提单时间</th>
+								<th>操作</th>
+							</tr>
+							</thead>
+							<tbody id="third_unmatch_tbody">
+
+							</tbody>
+						</table>
+						<div id="unmatch_pageFoot" class="message-footer clearfix">
+
+						</div>
+					</div>
+				</div>
+				<div id="tab_thirdFlows" class="tab-pane" tabInit="0">
+					<h3 class="row header smaller lighter blue">
+						<div class="col-sm-12">
+							<form class="form-inline">
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">盘口</span>
+									<select id="handicap_thirdFlows" class="chosen-select form-control" style="height:32px">
+										<option>请选择</option>
+									</select>
+								</div>
+								<div class="col-sm-3" style="width: 295px;">
+									<span  class="label label-lg label-primary arrowed-right">三方商号</span>
+									<select id="toAccount_thirdFlows" class="chosen-select form-control" style="height:32px;width:190px;">
+										<option>请选择</option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">金额</span>
+									<div class="input-group form-group" style="height: 32px;width:69%;">
+										<input id="fromMoney_thirdFlows" type="text" onkeyup="clearNoNum(this)" class="form-control input-small"
+											   style="height:32px">
+										<span class="input-group-addon">~</span>
+										<input id="toMoney_thirdFlows" type="text" onkeyup="clearNoNum(this)" class="form-control input-small"
+											   style="height:32px">
+									</div>
+								</div>
+								<div class="col-sm-3" style="width: 250px;">
+									<span class="label label-lg label-primary arrowed-right">渠道</span>
+									<input id="channel_thirdFlows" class="input-large " type="text"  style="height: 32px;width: 70%;"/>
+								</div>
+								<div class="col-sm-12" style="height:2px;"></div>
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">层级</span>
+									<select  id="level_thirdFlows" class="chosen-select form-control"   style="height:32px">
+										<option>请选择</option>
+									</select>
+								</div>
+								<div class="col-sm-3" style="width: 295px;">
+									<span style="width: 68px" class="label label-lg label-primary arrowed-right">订单号</span>
+									<input id="orderNo_thirdFlows" class="input-large " type="text"  style="height: 32px;width: 69%;"/>
+								</div>
+
+								<div class="col-sm-3">
+									<span style="width: 42px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+									<input id="startAndEndTime_thirdFlows" class="form-control date-range-picker" type="text" name="startAndEndTime" style="height: 32px;width:69%;"/>
+								</div>
+								<div class="col-sm-3" style="width: 200px;">
+									<span class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_searchThirdFlow();">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+										</label>
+									</span>
+									<span style="margin-left: 30px;" class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueSThird('thirdFlows');">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+										</label>
+									</span>
+								</div>
+							</form>
+						</div>
+					</h3>
+					<div style="margin-right: -13px;margin-left: -13px" sclass="row">
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead>
+							<tr>
+								<th>盘口</th>
+								<th>层级</th>
+								<th>第三方商家名称</th>
+								<th>第三方商号</th>
+								<th>渠道</th>
+								<th>余额</th>
+								<th>充值金额</th>
+								<th>手续费</th>
+								<th>订单号</th>
+								<th>交易时间</th>
+								<th>备注</th>
+							</tr>
+							</thead>
+							<tbody id="thirdFlows_tbody">
+
+							</tbody>
+						</table>
+						<div id="thirdFlows_pageFoot" class="message-footer clearfix">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!---取消操作modal--->
+<div id="third_cancel_modal" class="modal fade">
+	<div class="modal-dialog modal-middle">
+		<div class="modal-content">
+			<input type="hidden" id="sysRequestId_third">
+			<input type="hidden" id="orderNo_third">
+			<input type="hidden" id="handicap_third">
+			<input type="hidden" id="member_third">
+			<input type="hidden" id="accoutId_third">
+			<div class="modal-header text-center no-padding">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>备注信息</div></div>
+			<div class="modal-body no-padding">
+				<span><i class="fa fa-asterisk red" aria-hidden="true"></i><label >备注(必填)</label><input style="width: 86.4%" name="third_cancel_remark"  type="text"></span>
+			</div>
+			<div class="modal-footer">
+				<label><span id="remarkPrompt_cancel" style="color: red;display: none;">请填写备注再提交</span></label>
+				<button class="btn btn-primary" id="summit_cancel" type="button"
+						onclick="_beforeSummit($('#accoutId_third').val(), $('#sysRequestId_third').val(), $('#handicap_third').val(), $('#orderNo_third').val(), $('#member_third').val());">提交</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>

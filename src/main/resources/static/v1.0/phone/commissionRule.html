@@ -1,0 +1,232 @@
+<div class="row col-sm-12">
+	<div class="" id="accountFilter">
+		<div class="col-sm-12">
+			<span class="label label-lg label-purple arrowed-right">盘口</span>
+			<select class="chosen-select width60" name="search_EQ_handicapCode">
+				<option value="" selected="selected">全部</option>
+			</select>
+			
+			<span class="label label-lg label-purple arrowed-right">入款方式</span>&nbsp;
+			<label class="inline">
+				<input type="radio" name="inTypeRadio" class="ace defaultCheck" checked value="" >
+				<span class="lbl">全部</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="inTypeRadio" class="ace" value="0" >
+				<span class="lbl">微信</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="inTypeRadio" class="ace" value="1" >
+				<span class="lbl">支付宝</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="inTypeRadio" class="ace" value="2" >
+				<span class="lbl">银行卡</span>
+			</label>
+			
+			<span class="label label-lg label-purple arrowed-right">佣金比例</span>&nbsp;
+			<input type="text" name="commissionPercentStart" class="input-sm" style="width:70px;" />
+			&nbsp;-&nbsp;
+			<input type="text" name="commissionPercentEnd" class="input-sm" style="width:70px;" />
+			
+			<span class="label label-lg label-purple arrowed-right">最高限额</span>&nbsp;
+			<input type="text" name="commissionMaxStart" class="input-sm" style="width:70px;" />
+			&nbsp;-&nbsp;
+			<input type="text" name="commissionMaxEnd" class="input-sm" style="width:70px;" />
+			
+			<label id="searchBtn" class="pull-right inline" onclick="showPage()">
+				<button type="button" class="btn btn-xs btn-white btn-info btn-bold">
+					<i class="ace-icon fa fa-search bigger-100 green"></i><span>查询</span>
+				</button>
+			</label>
+			<label class="pull-right inline">&nbsp;&nbsp;</label>
+			<label class="pull-right inline" onclick="resetCustomer('accountFilter');">
+				<button class="btn btn-xs btn-white btn-info btn-bold"><i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button>
+			</label>
+			<label class="pull-right inline">&nbsp;&nbsp;</label>
+			<label class="pull-right inline contentRight" contentRight='CommissionRule:Add:*' onclick="showModalAddCommissionRule()">
+				<button type="button" class="btn btn-xs btn-white btn-info btn-bold" >
+					<i class="ace-icon fa fa-plus bigger-100 green"></i><span>新建</span>
+				</button>
+			</label>
+		</div>
+	</div>
+	<table id="accountListTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+		<thead>
+			<tr>
+				<th>序号</th>
+				<th>盘口</th>
+				<th>入款方式</th>
+				<th>流水范围</th>
+				<th>佣金比例</th>
+				<th>佣金最高限额</th>
+				<th>操作人</th>
+				<th>操作时间</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+	<div id="commissionRule_page"></div>
+</div>
+
+<!-- 新增佣金规则 -->
+<div id="addCommissionRule4clone" class="modal fade" data-backdrop="static"  tabindex="-1">
+	<div class="modal-dialog modal-lg" style="width:800px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>新增</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+					<tr>
+						<th style="width:120px;"></th>
+						<th style="width:220px;"></th>
+						<th style="width:120px;"></th>
+						<th style="width:220px;"></th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>盘口</td>
+							<td><select class="chosen-select width200" name="handicap_select"></select></td>
+							<td>入款方式</td>
+							<td>
+								<select class="chosen-select width200" name="inType">
+									<option value="" selected="selected">--------------请选择--------------</option>
+									<option value="0">微信</option>
+									<option value="1">支付宝</option>
+									<option value="2">银行卡</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>流水范围</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" name="startMoney" type="text" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" placeholder="流水范围开始值">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+							<td>至</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" name="endMoney" type="text" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" placeholder="流水范围结束值">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>佣金比例</td>
+							<td>
+								<span class="input-icon">
+									<input type="text" class="input-sm" name="commissionPercent" onkeyup="clearNoNum2(this)" style="width:180px;" placeholder="支持2位小数，如1.12%" />
+									&nbsp;&nbsp;%
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+							<td>最高限额</td>
+							<td>
+								<span class="input-icon">
+									<input type="text" class="input-sm width200" name="commissionMax" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" placeholder="佣金最高限额，0表示不限制" />
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doAddCommissionRule();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 修改佣金规则 -->
+<div id="updateCommissionRule4clone" class="modal fade" data-backdrop="static"  tabindex="-1">
+	<input type="hidden" name="id">
+	<div class="modal-dialog modal-lg" style="width:800px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>修改</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+					<tr>
+						<th style="width:120px;"></th>
+						<th style="width:220px;"></th>
+						<th style="width:120px;"></th>
+						<th style="width:220px;"></th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>盘口</td>
+							<td><select class="chosen-select width200" name="handicap_select" disabled></select></td>
+							<td>入款方式</td>
+							<td>
+								<select class="chosen-select width200" name="inType">
+									<option value="" selected="selected">--------------请选择--------------</option>
+									<option value="0">微信</option>
+									<option value="1">支付宝</option>
+									<option value="2">银行卡</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>流水范围</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" name="startMoney" type="text" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" placeholder="流水范围开始值">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+							<td>至</td>
+							<td>
+								<span class="input-icon">
+									<input class="input-sm width200" name="endMoney" type="text" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" placeholder="流水范围结束值">
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>佣金比例</td>
+							<td>
+								<span class="input-icon">
+									<input type="text" class="input-sm" name="commissionPercent" onkeyup="clearNoNum2(this)"  style="width:180px;" placeholder="支持2位小数，如1.12%" />
+									&nbsp;&nbsp;%
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+							<td>最高限额</td>
+							<td>
+								<span class="input-icon">
+									<input type="text" class="input-sm width200" name="commissionMax" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" placeholder="佣金最高限额，0表示不限制" />
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doUpdateCommissionRule();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../phone/common_phone.js"></script>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} %level [%thread] %logger{0}[%M:%L] %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="rollingFile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/opt/logs/funds/funds-transfer.log</file>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>/opt/logs/funds/funds-transfer.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<maxHistory>10</maxHistory>
+			<maxFileSize>100MB</maxFileSize>
+			<totalSizeCap>2GB</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} %level [%thread] %logger{0}[%M:%L] %msg%n
+			</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<!-- project default level -->
+	<logger name="com.xinbo.fundstransfer" level="info" additivity="false">
+		<appender-ref ref="console" />
+		<appender-ref ref="rollingFile" />
+	</logger>
+
+	<!-- Spring -->
+	<logger name="org.springframework" level="info" />
+
+	<!--<appender name="SQL-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<file>/opt/logs/funds-transfer.sqldump.log</file>-->
+	    <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+			<!--<fileNamePattern>/opt/logs/funds-transfer-sqldump.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+			<!--<maxHistory>10</maxHistory>-->
+			<!--<totalSizeCap>3GB</totalSizeCap>-->
+	    <!--</rollingPolicy>        -->
+        <!--<append>true</append>-->
+        <!--<encoder>-->
+            <!--<pattern>[%date] %level [%thread] %logger{10} %msg%n</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>	-->
+    <!--<logger name="org.hibernate.SQL" level="DEBUG" additivity="false">-->
+        <!--<appender-ref ref="SQL-FILE"/>-->
+    <!--</logger>    -->
+    <!--<logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">-->
+        <!--<appender-ref ref="SQL-FILE"/>-->
+    <!--</logger>-->
+
+	<root level="info">
+		<appender-ref ref="console" />
+		<appender-ref ref="rollingFile" />
+	</root>
+</configuration>

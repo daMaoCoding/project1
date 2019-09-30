@@ -1,0 +1,159 @@
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<div class="row" id="fczl">
+	<div class="col-sm-12">
+		<div class="tabbable">
+			<ul class="nav nav-tabs">
+				<li class="active"><a data-toggle="tab" href="#tabAlipayToday" onclick="initBonusTab(this)"><span>支付宝今日收款记录</span></a></li>
+				<li><a data-toggle="tab" href="#tabWechatToday" onclick="initBonusTab(this)"><span>微信今日收款记录</span></a></li>
+				<li><a data-toggle="tab" href="#tabAlipayHis" onclick="initBonusTab(this)"><span>支付宝历史收款记录</span></a></li>
+				<li><a data-toggle="tab" href="#tabWechatHis" onclick="initBonusTab(this)"><span>微信历史收款记录</span></a></li>
+				<li><a data-toggle="tab" href="#tabBonus" onclick="initBonusTab(this)"><span>返佣记录</span></a></li>
+				<label class="pull-right inline">
+					<button class="btn btn-xs btn-white btn-info btn-bold" onclick="window.history.back();">
+						<i class="ace-icon fa fa-rotate-left bigger-100 green"></i>返回
+					</button>
+				</label>
+			</ul>
+			<div class="tab-content no-padding-bottom no-padding-top" name="tab-content">
+				<div id="tabAlipayToday" class="tab-pane in active">
+					<div style="margin-right:-17px;margin-left:-17px ;margin-top:3px" class="row">
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead><tr><th>账号</th><th>交易时间</th><th>上报时间</th><th>金额</th><th>摘要</th><th>备注</th></tr></thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="tabAlipayTodayPage"></div>
+					</div>
+				</div>
+
+				<div id="tabWechatToday" class="tab-pane">
+					<div style="margin-right:-17px;margin-left:-17px ;margin-top:3px" class="row">
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead><tr><th>账号</th><th>交易时间</th><th>上报时间</th><th>金额</th><th>摘要</th><th>备注</th></tr></thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="tabWechatTodayPage"></div>
+					</div>
+				</div>
+
+				<div id="tabAlipayHis" class="tab-pane">
+					<h3 class="row header smaller lighter blue">
+						<div class="col-sm-12">
+							<form class="form-inline">
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">金额</span>
+									<div class="input-group form-group" style="height:32px;width: 180px;">
+										<input name="startAmt" type="number" class="form-control input-small" style="height:32px">
+										<span class="input-group-addon">~</span>
+										<input name="endAmt" type="number" class="form-control input-small" style="height:32px">
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 42px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+									<input class="form-control date-range-picker" type="text" name="startAndEndTime" style="height: 32px;width:180px;"/>
+								</div>
+								<div class="col-sm-3">
+									<span class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button"  onclick="fillContent(0,'tabAlipayHis')">
+												<i class="ace-icon fa fa-search bigger-100 green"></i><span>查询</span>
+											</button>
+										</label>
+									</span>
+								</div>
+							</form>
+						</div>
+					</h3>
+					<div style="margin-right:-17px;margin-left:-17px ;margin-top:3px" class="row">
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead><tr><th>账号</th><th>交易时间</th><th>上报时间</th><th>金额</th><th>摘要</th><th>备注</th></tr></thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="tabAlipayHisPage"></div>
+					</div>
+				</div>
+
+				<div id="tabWechatHis" class="tab-pane">
+					<h3 class="row header smaller lighter blue">
+						<div class="col-sm-12">
+							<form class="form-inline">
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">金额</span>
+									<div class="input-group form-group" style="height:32px;width: 180px;">
+										<input name="startAmt" type="number" class="form-control input-small" style="height:32px">
+										<span class="input-group-addon">~</span>
+										<input name="endAmt" type="number" class="form-control input-small" style="height:32px">
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 42px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+									<input class="form-control date-range-picker" type="text" name="startAndEndTime" style="height: 32px;width:180px;"/>
+								</div>
+								<div class="col-sm-3">
+									<span class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button"  onclick="fillContent(0,'tabWechatHis')">
+											 <i class="ace-icon fa fa-search bigger-100 green"></i><span>查询</span>
+											</button>
+										</label>
+									</span>
+								</div>
+							</form>
+						</div>
+					</h3>
+					<div style="margin-right:-17px;margin-left:-17px ;margin-top:3px" class="row">
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead><tr><th>账号</th><th>交易时间</th><th>上报时间</th><th>金额</th><th>摘要</th><th>备注</th></tr></thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="tabWechatHisPage"></div>
+					</div>
+				</div>
+
+				<div id="tabBonus" class="tab-pane">
+					<h3 class="row header smaller lighter blue">
+						<div class="col-sm-12">
+							<form class="form-inline">
+								<div class="col-sm-3">
+									<span class="label label-lg label-primary arrowed-right">金额</span>
+									<div class="input-group form-group" style="height:32px;width: 180px;">
+										<input name="startAmt" type="number" class="form-control input-small" style="height:32px">
+										<span class="input-group-addon">~</span>
+										<input name="endAmt" type="number" class="form-control input-small" style="height:32px">
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<span style="width: 42px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+									<input class="form-control date-range-picker" type="text" name="startAndEndTime" style="height: 32px;width:180px;"/>
+								</div>
+								<div class="col-sm-3">
+									<span class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="fillContent(0,'tabBonus')">
+												<i class="ace-icon fa fa-search bigger-100 green"></i><span>查询</span>
+											</button>
+										</label>
+									</span>
+								</div>
+							</form>
+						</div>
+					</h3>
+					<div style="margin-right:-17px;margin-left:-17px ;margin-top:3px" class="row">
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead><tr><th>汇款账号</th><th>对方账号</th><th>对方开户行</th><th>对方姓名</th><th>金额</th><th>状态</th><th>反点时间</th><th>备注</th><th></thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="tabBonusPage"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--公共模块引用START-->
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<!--公共模块引用END-->

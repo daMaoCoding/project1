@@ -1,0 +1,183 @@
+<link rel="stylesheet" href="../style/bootstrap-multiselect.min.css"/>
+<link rel="stylesheet" href="../style/jquery.bootstrap.duallistbox.min.css" type="text/css">
+<div class="row">
+    <div class="col-sm-12">
+        <h3 class="row header smaller lighter blue">
+            <div class="col-sm-9">
+                <form class="form-inline" id="userFilter">
+                    <span class="label label-lg arrowed-right label-pink">账号</span><input name="search_LIKE_uid" type="text" placeholder="姓名" style="height: 32px"/>
+                    <span class="label label-lg arrowed-right label-primary">角色</span><select name="roleSelect" id="roleSelect" class=" form-control" style="height: 32px"></select>
+                </form>
+            </div>
+            <div class="col-sm-3">
+                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="window.history.back();"><i class="ace-icon fa fa-repay bigger-100 green"></i>返回</button></label>
+                <label class="pull-right inline">&nbsp;&nbsp;</label>
+                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="refreshContent(0);"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button></label>
+                <label class="pull-right inline">&nbsp;&nbsp;</label>
+                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold contentRight" contentRight='SystemUser:Add:*' onclick="beforeAddUser();"><i class="ace-icon fa fa-plus bigger-100 green"></i>新增</button></label>
+                <label class="pull-right inline">&nbsp;&nbsp;</label>
+                <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('userFilter');"><i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button></label>
+            </div>
+        </h3>
+        <div class="tabbable">
+            <table id="simple-table-userDetail" class="table  table-bordered table-hover no-margin-bottom">
+
+            </table>
+            <div id="userPage"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade _userNoOk in" id="editUser" data-backdrop="static" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="modal-title" style="padding: 0px 0px" class="modal-header text-center"><h6>编辑用户</h6></div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-18 b-r">
+                        <form id="addOrEditUserForm" method="get" class="form-horizontal" action="">
+                            <input type="hidden" id="id">
+                            <div class="col-sm-10 b-r">
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">登录帐号<i class="fa fa-asterisk red"></i></label>
+                                    <div class="col-lg-8"><input placeholder="必填项,3位以上数字字母下划线组合的字符 " id="uid" name="uid" class="form-control" type="text" placeholder="登录帐号"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">姓名<i class="fa fa-asterisk red"></i></label>
+                                    <div class="col-lg-8"><input placeholder="必填项,3位以上数字字母下划线组合的字符" id="username" name="username" class="form-control" type="text" placeholder="姓名"></div>
+                                </div>
+                                <div class="form-group" id="passwordGroup">
+                                    <label class="col-lg-4 control-label">密码<i class="fa fa-asterisk red"></i></label>
+                                    <div class="col-lg-8"><input placeholder="密码,6-20位数字字母组合的字符" id="password" name="password" class="form-control" type="password"></div>
+                                </div>
+                                <div class="form-group" id="singleOutLimit">
+                                    <label class="col-lg-4 control-label">单笔出款额度<i class="fa fa-asterisk red"></i></label>
+                                    <div class="col-lg-8"><input placeholder="必填项,不超过10000000" id="moneylimit" name="moneyLimit" min="0"  max="10000000" class="form-control" type="number" onkeyup="clearNoNum();" oninput="if(value>10000000)value=10000000"></div>
+                                </div>
+                                <div class="form-group" id="approveLimit">
+                                    <label class="col-lg-4 control-label">最大审核额度<i class="fa fa-asterisk red"></i></label>
+                                    <div class="col-lg-8"><input placeholder="必填项,不超过10000000"  id="auditlimit" class="form-control" min="0" max="10000000" type="number" name="auditLimit" onkeyup="clearNoNum();" oninput="if(value>10000000)value=10000000"></div>
+                                </div>
+                                <div style="display: none;" class="form-group" id="categoryGroup">
+                                    <label class="col-lg-4 control-label">用户类别</label>
+                                    <div class="col-lg-8">
+                                        <label><input name="category" value="0" type="radio" class="ace input-lg" checked="checked"/><span class="lbl bigger-120"> 用户</span></label>
+                                        <label><input name="category" value="1" type="radio" class="ace input-lg"/><span class="lbl bigger-120"> 机器人</span></label>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="statusGroup">
+                                    <label class="col-lg-4 control-label">状态</label>
+                                    <div class="col-lg-8">
+                                        <label><input name="status" value="0" type="radio" class="ace input-lg" checked="checked"/><span class="lbl bigger-120"> 启用</span></label>
+                                        <label><input name="status" value="1" type="radio" class="ace input-lg"/><span class="lbl bigger-120"> 停用</span></label>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="resetPasswordGroup">
+                                    <label class="col-lg-4 control-label">重置密码</label>
+                                    <div class="col-lg-8">
+                                        <label><input name="resetPassword" value="1" type="radio" class="ace input-lg"/><span class="lbl bigger-120">是&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></label>
+                                        <label><input name="resetPassword" value="0" type="radio" class="ace input-lg" checked="checked"/><span class="lbl bigger-120">否</span></label>
+                                        <label><span class="lbl bigger-60"><!-- &nbsp;&nbsp;&nbsp;&nbsp;（重置后密码：123456） --></span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 b-r">
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info" id="validateBtn" onclick="addOrEditUser()">提交</button>
+                                    <button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div tabindex="-1" class="modal fade" data-backdrop="static" id="rolseAdd">
+    <div class="modal-dialog" style="width: 750px;">
+        <div class="modal-content ">
+            <form>
+                <div style="padding-bottom: 0px; padding-top: 0px" class="modal-header text-center"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="blue">&times;</span></button><h3>角色设置</h3></div>
+                <div style="padding-top: 0px;height: 400px;" class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form class="form-horizontal" role="form">
+                                <input type="hidden" id="userIdForRole" value="">
+                                <div class="form-group"><div class="col-sm-12"><select style="height: 352px;" multiple="multiple" size="15" name="duallistbox_demo1[]" id="duallist"></select></div></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="_saveRoles()" type="button" data-dismiss="modal">确认</button>
+                    <button class="btn btn-danger" type="button" data-dismiss="modal" aria-hidden="true">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in " id="dataAdd" data-backdrop="static" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="dataAdd-title" class="modal-header text-center"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="blue">&times;</span></button><h3>数据权限</h3></div>
+            <div class="modal-body">
+                <div class="row">
+                    <form role="form">
+                        <div class="form-group">
+                            <label style="color: mediumvioletred">&nbsp;&nbsp;&nbsp;&nbsp;盘&nbsp;&nbsp;&nbsp;&nbsp;  口&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <select multiple="multiple" class="multiselect" id="form-field-select-1"></select>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: mediumvioletred">&nbsp;&nbsp;&nbsp;&nbsp;层&nbsp;&nbsp;&nbsp;&nbsp;  级&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <select multiple="multiple" class="multiselect" id="form-field-select-2" ></select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="permisonId"> <span id="showInfo" style="display: none; color: red" class="pull-left">*请选择盘口或层级</span>
+                <button class="btn btn-primary" onclick="_addPersion();" type="button">确认</button>
+                <button class="btn btn-danger" onclick="_clearPersion();" type="button">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 入款人员区域设置 -->
+<div id="updateUserZone4clone" class="modal fade">
+	<input type="hidden" id="userId"/>
+	<div  class="modal-dialog modal-lg" style="width:300px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					<span id="zone_category">入款分组设置</span>
+				</div>
+			</div>
+			<div class="modal-body no-padding center">
+				<br/>
+	            	<label class="inline">
+						<input type="radio" name="HANDICAP_ZONE_MANILA0_TAIWAN1" class="ace" value="0">
+						<span class="lbl">马尼拉</span>
+					</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	            	<label class="inline">
+						<input type="radio" name="HANDICAP_ZONE_MANILA0_TAIWAN1" class="ace" value="1">
+						<span class="lbl">台湾</span>
+					</label>
+				<br/>
+				<br/>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doSettingZone();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"src="../javascript/lib/jquery.bootstrap-duallistbox.min.js"></script>
+<script type="text/javascript" src="../javascript/lib/bootstrap-multiselect.min.js"></script>

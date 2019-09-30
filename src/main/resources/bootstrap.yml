@@ -1,0 +1,12 @@
+
+spring:
+  application:
+    name: Fund_Transfer
+  cloud:
+    config:
+      uri: http://${configServerHost}:${configServerPort}
+
+
+funds:
+  transfer:
+    version: v4.03

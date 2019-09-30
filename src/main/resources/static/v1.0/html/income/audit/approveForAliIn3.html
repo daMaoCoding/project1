@@ -1,0 +1,910 @@
+<style>
+.tdBgcolor {
+	background-color: #428BCA;
+	color: white;
+}
+
+.siblingsDisplay {
+	display: none;
+}
+
+.clickedTd {
+	color: #DD5A43;
+	font-size: 15px;
+}
+</style>
+<div class="row">
+	<div class=" row col-sm-12">
+		<div class="tabbable col-sm-10">
+			<ul class="nav nav-tabs" id="approveForAliIn2Ul">
+				<li id="alipayToMatch_li" style="display: none;" class="active"
+					onclick="_initialSearTypeAlipay('alipayToMatch');"><a
+					data-toggle="tab" href="#alipayToMatch"> <i
+						class="ace-icon fa fa-hourglass-start bigger-110 pink"></i> 等待匹配
+				</a></li>
+				<li id="alipayMatched_li" style="display: none;"
+					onclick="_initialSearTypeAlipay('alipayMatched');"><a
+					data-toggle="tab" href="#alipayMatched"> <i
+						class="pink ace-icon fa 	fa-location-arrow bigger-110"></i> 进行中
+				</a></li>
+				<li id="alipayUnMatch_li" style="display: none;"
+					onclick="_initialSearTypeAlipay('alipaySuccess');"><a
+					data-toggle="tab" href="#alipaySuccess"> <i
+						class="blue ace-icon fa fa-check-circle   bigger-110 green"></i>
+						完成记录
+				</a></li>
+				<li id="alipayFail_li" style="display: none;"
+					onclick="_initialSearTypeAlipay('alipayFail');"><a
+					data-toggle="tab" href="#alipayFail"> <i
+						class="ace-icon fa fa-exclamation-circle  bigger-110 red"></i>
+						失败记录
+				</a></li>
+				<li id="freshAlipayInLi" style="display: none;" hidden>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+					class="label label-lg label-primary arrowed-right">刷新</span> <select
+					id="autoUpdateTimeAlipayIn"></select>
+				</li>
+
+			</ul>
+		</div>
+		<div class=" col-sm-2">
+			<button id="setAliParam" onclick="showModalPatch()"
+				class="btn btn-xs btn-white btn-info btn-bold ">
+				<i class="ace-icon fa fa-pencil  bigger-100 green"></i>设置
+			</button>
+		</div>
+	</div>
+</div>
+<div id="alipayBodyDiv" style="padding-top: 0px" class="tab-content">
+	<!--正在匹配  -->
+	<div id="alipayToMatch" class="tab-pane in active">
+		<div class="">
+			<h3 class="row header smaller lighter blue">
+				<form class="form-inline">
+					<div class="col-sm-3">
+						<span
+							class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+						<select name="approveForAliIn2_handicap"
+							id="handicap_alipayToMatch" class="chosen-select form-control"
+							style="height: 32px; width: 78%; display: none;">
+						</select>
+					</div>
+					<div class="col-sm-3">
+						<span class="label label-lg label-primary arrowed-right ">层级</span>
+						<select id="level_alipayToMatch" name="approveForAliIn2_level"
+							onchange="_searchAlipayInByStatus2();"
+							class="chosen-select form-control"
+							style="height: 32px; width: 78%; display: none;">
+						</select>
+
+					</div>
+					<div class="col-sm-3">
+						<span class="label label-lg label-primary arrowed-right">入款会员</span>
+						<input id="member_alipayToMatch" class="input-large " type="text"
+							style="height: 32px; width: 73%;">
+					</div>
+					<div class="col-sm-3">
+						<span class="label label-lg label-primary arrowed-right">入款单号</span>
+						<input id="orderNo_alipayToMatch" class="input-large " type="text"
+							style="height: 32px; width: 73%;">
+					</div>
+
+					<div class="col-sm-12" style="height: 2px;"></div>
+					<div class="col-sm-3">
+						<span style="width: 94.59px;"
+							class="label label-lg label-primary arrowed-right">入款提单时间</span>
+						<input id="time_alipayToMatch" name="time_alipayToMatch"
+							class="input-large date-range-picker" type="text"
+							style="height: 32px; width: 73%;">
+					</div>
+					<div id="aliIn_outer_btn" class="col-sm-3">
+						<span>
+							<button class="btn btn-xs btn-white btn-info btn-bold "
+								type="button" onclick="_searchAlipayInByStatus2();">
+								<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+							</button>
+						</span> <span>
+							<button class="btn btn-xs btn-white btn-info btn-bold "
+								type="button" onclick="_resetConditions('alipayToMatch');">
+								<i class="ace-icon fa fa-refresh  bigger-100 red"></i>重置
+							</button>
+						</span>
+					</div>
+					<div id="aliIn_inner_btn" style="display: none;" class="col-sm-3">
+						<span class="pull-left">
+							<button class="btn btn-xs btn-white btn-info btn-bold "
+								type="button" onclick="_searchOrderDetailDisplay();">
+								<i class="ace-icon fa fa-search bigger-100 green"></i>查询订单
+							</button>
+						</span> <span class="pull-left">
+							<button class="btn btn-xs btn-white btn-info btn-bold "
+								type="button" onclick="_searchFlowDetailDisplay();">
+								<i class="ace-icon fa fa-search bigger-100 green"></i>查询流水
+							</button>
+						</span> <span class="pull-left">
+							<button class="btn btn-xs btn-white btn-info btn-bold "
+								type="button"
+								onclick="_resetConditions('alipayToMatch_order_flow');">
+								<i class="ace-icon fa fa-refresh  bigger-100 red"></i>重置
+							</button>
+						</span>
+					</div>
+				</form>
+			</h3>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<table style="margin-bottom: 0px;" id="simple-table"
+					class="table  table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>盘口</th>
+							<th>入款会员</th>
+							<th>层级</th>
+							<th>入款金额</th>
+							<th>入款单号</th>
+							<th>入款提单时间</th>
+							<th>等待耗时</th>
+						</tr>
+					</thead>
+					<tbody id="alipayToMatch_tbody">
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id="alipayToMatch_footPage"></div>
+	</div>
+
+	<!-- 进行中-->
+	<div id="alipayMatched" class="tab-pane">
+
+		<h3 class="row header smaller lighter blue">
+			<form class="form-inline">
+				<div class="col-sm-3">
+					<span 
+						class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+					<select name="approveForAliIn2_handicap"
+						id="handicap_alipayMatched" class="chosen-select form-control"
+						style="height: 32px; width: 78%; display: none;">
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right ">层级</span>
+					<select id="level_alipayMatched" name="approveForAliIn2_level"
+						onchange="_searchAlipayInByStatus();"
+						class="chosen-select form-control"
+						style="height: 32px; width: 78%; display: none;">
+					</select>
+
+				</div>
+
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">入款会员</span>
+					<input id="member_alipayMatched" class="input-large " type="text"
+						style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">收款人</span>
+					<input id="toMember_alipayMatched" class="input-large " type="text"
+						style="height: 32px; width: 73%;"  />
+				</div>
+
+				<div class="col-sm-12" style="height: 2px;"></div>
+
+				<div class="col-sm-3">
+					<span style="width: 94.59px;"
+						class="label label-lg label-primary arrowed-right">入款提单时间</span> <input
+						id="time_alipayMatched" name="time_alipayMatched"
+						class="input-large date-range-picker" type="text"
+						style="height: 32px; width: 73%;">
+				</div>
+				<div class="col-sm-3">
+					<span
+						class="label label-lg label-primary arrowed-right modifyThChRemark">入款单号</span>
+					<input id="inOrderNo_alipayMatched" class="input-large "
+						type="text" style="height: 32px; width: 72%;" />
+				</div>
+				<div class="col-sm-6">
+					<span style="width: 135.59px"
+						class="label label-lg label-primary arrowed-right">出款单号（或返代入）</span>
+					<input id="outOrderNo_alipayMatched" class="input-large "
+						type="text" style="height: 32px; width: 27%;" />
+				</div>
+				<div class="col-sm-12" style="height: 2px;"></div>
+				<div class="col-sm-3">
+					<span style="width: 94.59px"
+						class="label label-lg label-primary arrowed-right">入款会员盘口</span> 
+						<input
+						value="0" type="radio" name = "fromHandicapRadio_alipayMatched" 
+						style="height: 14px; width: 8%;" /> <span style="font-size: 15px"
+						>全部 </span> <input
+						value="1" type="radio" name = "fromHandicapRadio_alipayMatched" checked="true"
+						style="height: 14px; width: 8%;" /><span style="font-size: 15px"
+						>盘口</span>
+				</div>
+				<div class="col-sm-3">
+					<span style="width: 100.59px"
+						class="label label-lg label-primary arrowed-right">收款人盘口</span> 
+						<input
+						value="0" type="radio" name = "toHandicapRadio_alipayMatched" checked="true"
+						style="height: 14px; width: 8%;" /> <span style="font-size: 15px"
+						>全部 </span> <input
+						value="1" type="radio" name = "toHandicapRadio_alipayMatched"
+						style="height: 14px; width: 8%;" /><span style="font-size: 15px"
+						>盘口</span><input
+						value="2" type="radio" name = "toHandicapRadio_alipayMatched"
+						style="height: 14px; width: 8%;" /><span style="font-size: 15px"
+						>返利网</span>
+				</div>
+				<div id="aliIn_outer_btn" class="col-sm-3">
+						<span>
+							<button class="btn btn-xs btn-white btn-info btn-bold "
+								type="button" onclick="_searchAlipayInByStatus();">
+								<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+							</button>
+						</span> <span>
+							<button class="btn btn-xs btn-white btn-info btn-bold "
+								type="button" onclick="_resetConditions('alipayMatched');">
+								<i class="ace-icon fa fa-refresh  bigger-100 red"></i>重置
+							</button>
+						</span>
+					</div>
+				
+			</form>
+		</h3>
+		<table class="table table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th>入款会员盘口</th>
+					<th>入款会员</th>
+					<th>层级</th>
+					<th>入款金额</th>
+					<th>订单号</th>
+					<th>收款人盘口</th>
+					<th>收款人</th>
+					<th>层级</th>
+					<th>收款金额</th>
+					<th>入款提单时间</th>
+					<th>进行中耗时</th>
+				</tr>
+			</thead>
+			<tbody id="alipayMatched_tbody">
+
+			</tbody>
+
+		</table>
+		<div id="alipayMatched_footPage"></div>
+
+	</div>
+
+	<!-- 失败记录 -->
+	<div id="alipayFail" class="tab-pane">
+
+		<h3 class="row header smaller lighter blue">
+			<form class="form-inline">
+				<div class="col-sm-3">
+					<span
+						class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+					<select name="approveForAliIn2_handicap" id="handicap_alipayFail"
+						class="chosen-select form-control"
+						style="height: 32px; width: 78%; display: none;">
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right ">层级</span>
+					<select id="level_alipayFail" name="approveForAliIn2_level"
+						onchange="_searchAlipayInByStatus2();"
+						class="chosen-select form-control"
+						style="height: 32px; width: 78%; display: none;">
+					</select>
+
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">入款会员</span>
+					<input id="member_alipayFail" class="input-large " type="text"
+						style="height: 32px; width: 73%;">
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">入款单号</span>
+					<input id="orderNo_alipayFail" class="input-large " type="text"
+						style="height: 32px; width: 73%;">
+				</div>
+
+				<div class="col-sm-12" style="height: 2px;"></div>
+				<div class="col-sm-3">
+					<span style="width: 94.59px;"
+						class="label label-lg label-primary arrowed-right">入款提单时间</span> <input
+						id="time_alipayFail" name="time_alipayToMatch"
+						class="input-large date-range-picker" type="text"
+						style="height: 32px; width: 73%;">
+				</div>
+				<div id="aliIn_outer_btn" class="col-sm-3">
+					<span>
+						<button class="btn btn-xs btn-white btn-info btn-bold "
+							type="button" onclick="_searchAlipayInByStatus2();">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+						</button>
+					</span> <span>
+						<button class="btn btn-xs btn-white btn-info btn-bold "
+							type="button" onclick="_resetConditions('alipayFail');">
+							<i class="ace-icon fa fa-refresh  bigger-100 red"></i>重置
+						</button>
+					</span>
+				</div>
+			</form>
+		</h3>
+		<table class="table table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th>盘口</th>
+					<th>入款会员</th>
+					<th>层级</th>
+					<th>入款金额</th>
+					<th>入款单号</th>
+					<th>入款提单时间</th>
+					<th>总耗时</th>
+				</tr>
+			</thead>
+			<tbody id="alipayFail_tbody">
+
+			</tbody>
+
+		</table>
+		<div id="alipayFail_footPage"></div>
+
+	</div>
+
+	<!-- 成功记录 -->
+	<div id="alipaySuccess" class="tab-pane">
+
+		<h3 class="row header smaller lighter blue">
+			<form class="form-inline">
+				<div class="col-sm-3">
+					<span
+						class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+					<select name="approveForAliIn2_handicap"
+						id="handicap_alipaySuccess" class="chosen-select form-control"
+						style="height: 32px; width: 78%; display: none;">
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right ">层级</span>
+					<select id="level_alipaySuccess" name="approveForAliIn2_level"
+						onchange="_searchAlipayInByStatus();"
+						class="chosen-select form-control"
+						style="height: 32px; width: 78%; display: none;">
+					</select>
+
+				</div>
+
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">入款会员</span>
+					<input id="member_alipaySuccess" class="input-large " type="text"
+						style="height: 32px; width: 73%;" />
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">收款人</span>
+					<input id="toMember_alipaySuccess" class="input-large " type="text"
+						style="height: 32px; width: 73%;"  />
+				</div>
+
+				<div class="col-sm-12" style="height: 2px;"></div>
+
+				<div class="col-sm-3">
+					<span style="width: 94.59px;"
+						class="label label-lg label-primary arrowed-right">入款提单时间</span> <input
+						id="time_alipaySuccess" name="time_alipayMatched"
+						class="input-large date-range-picker" type="text"
+						style="height: 32px; width: 73%;">
+				</div>
+				<div class="col-sm-3">
+					<span
+						class="label label-lg label-primary arrowed-right modifyThChRemark">入款单号</span>
+					<input id="inOrderNo_alipaySuccess" class="input-large "
+						type="text" style="height: 32px; width: 72%;" />
+				</div>
+				<div class="col-sm-6">
+					<span style="width: 135.59px"
+						class="label label-lg label-primary arrowed-right">出款单号（或返代入）</span>
+					<input id="outOrderNo_alipaySuccess" class="input-large "
+						type="text" style="height: 32px; width: 27%;" />
+				</div>
+				<div class="col-sm-12" style="height: 2px;"></div>
+				<div class="col-sm-3">
+					<span style="width: 94.59px"
+						class="label label-lg label-primary arrowed-right">入款会员盘口</span> 
+						<input
+						value="0" type="radio" name = "fromHandicapRadio_alipaySuccess" 
+						style="height: 14px; width: 8%;" /> <span style="font-size: 15px"
+						>全部 </span> <input
+						value="1" type="radio" name = "fromHandicapRadio_alipaySuccess" checked="true"
+						style="height: 14px; width: 8%;" /><span style="font-size: 15px"
+						>盘口</span>
+				</div>
+				<div class="col-sm-3">
+					<span style="width: 100.59px"
+						class="label label-lg label-primary arrowed-right">收款人盘口</span> 
+						<input
+						value="0" type="radio" name = "toHandicapRadio_alipaySuccess" checked="true"
+						style="height: 14px; width: 8%;" /> <span style="font-size: 15px"
+						>全部 </span> <input
+						value="1" type="radio" name = "toHandicapRadio_alipaySuccess"
+						style="height: 14px; width: 8%;" /><span style="font-size: 15px"
+						>盘口</span><input
+						value="2" type="radio" name = "toHandicapRadio_alipaySuccess"
+						style="height: 14px; width: 8%;" /><span style="font-size: 15px"
+						>返利网</span>
+				</div>
+				<div id="aliIn_outer_btn" class="col-sm-3">
+						<span>
+							<button class="btn btn-xs btn-white btn-info btn-bold "
+								type="button" onclick="_searchAlipayInByStatus();">
+								<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+							</button>
+						</span> <span>
+							<button class="btn btn-xs btn-white btn-info btn-bold "
+								type="button" onclick="_resetConditions('alipaySuccess');">
+								<i class="ace-icon fa fa-refresh  bigger-100 red"></i>重置
+							</button>
+						</span>
+					</div>
+				
+			</form>
+		</h3>
+		<table class="table table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th>入款会员盘口</th>
+					<th>入款会员</th>
+					<th>层级</th>
+					<th>入款金额</th>
+					<th>订单号</th>
+					<th>收款人盘口</th>
+					<th>收款人</th>
+					<th>层级</th>
+					<th>收款金额</th>
+					<th>入款提单时间</th>
+					<th>完成时间</th>
+					<th>总耗时</th>
+				</tr>
+			</thead>
+			<tbody id="alipaySuccess_tbody">
+
+			</tbody>
+
+		</table>
+		<div id="alipaySuccess_footPage"></div>
+
+	</div>
+	
+	<!-- 取消的记录 -->
+	<div id="alipayCanceled" class="tab-pane">
+		<h3 class="row header smaller lighter blue">
+			<form class="form-inline">
+				<div class="col-sm-3">
+					<span
+						class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+					<select onchange=" _searchAlipayInByStatus();"
+						name="approveForAliIn2_handicap" id="handicap_alipayCanceled"
+						class="chosen-select form-control"
+						style="height: 32px; width: 78%;">
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">会员名</span>
+					<input id="member_alipayCanceled" class="input-large " type="text"
+						style="height: 32px; width: 73%;" />
+				</div>
+
+				<div class="col-sm-3">
+					<span style="width: 67.59px;"
+						class="label label-lg label-primary arrowed-right">时间</span> <input
+						id="timeScope_alipayCanceled" name="timeScope_alipayCanceled"
+						class="input-large date-range-picker" type="text"
+						style="height: 32px; width: 68%;" />
+				</div>
+				<div class="col-sm-12" style="height: 2px;"></div>
+				<div class="col-sm-3">
+					<span
+						class="label label-lg label-primary arrowed-right modifyInAmount">金额</span>
+					<input id="fromMoney_alipayCanceled" onkeyup="clearNoNum(this)"
+						type="text" class="form-control input-small modifyInAmountInput"
+						style="height: 32px; width: 34.5%;"> <span
+						style="width: 0%; display: inline" class="">~</span> <input
+						id="toMoney_alipayCanceled" onkeyup="clearNoNum(this)" type="text"
+						class="form-control input-small modifyInAmountInput"
+						style="height: 32px; width: 34.5%;">
+				</div>
+				<div class="col-sm-3">
+					<span class="label label-lg label-primary arrowed-right">订单号</span>
+					<input id="orderNo_alipayCanceled" class="input-large " type="text"
+						style="height: 32px; width: 73%;" placeholder="必须输入完整的订单号" />
+				</div>
+				<div class="col-sm-3">
+					<span
+						class="label label-lg label-primary arrowed-right modifyThChRemark">收款理由</span>
+					<input id="chkRemark_alipayCanceled" class="input-large "
+						type="text" style="height: 32px; width: 68%;" placeholder="必须输入完整" />
+				</div>
+				<div class="col-sm-3">
+					<span class="pull-left">
+						<button onclick="_searchAlipayInByStatus()"
+							class="btn btn-xs btn-white btn-info btn-bold "
+							id="searchBtnalipayCanceled" type="button">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+						</button>
+					</span> <span class="pull-left">
+						<button onclick="_resetConditions('alipayCanceled');"
+							class="btn btn-xs btn-white btn-info btn-bold "
+							id="resetBtnalipayCanceled" type="button">
+							<i class="ace-icon fa fa-refresh  bigger-100 red"></i>重置
+						</button>
+					</span>
+				</div>
+			</form>
+		</h3>
+		<table class="table table-bordered table-hover no-margin-bottom">
+			<thead>
+				<tr>
+					<th class="modifyHandicap">盘口</th>
+					<th>层级</th>
+					<th>收款支付宝</th>
+					<th>会员名</th>
+					<th>订单号</th>
+					<th class="modifyInAmount">金额</th>
+					<th>创建时间</th>
+					<th>取消时间</th>
+					<th>备注</th>
+					<th class="modifyThChRemark">收款理由</th>
+				</tr>
+			</thead>
+			<tbody id="tbody_alipayCanceled">
+
+			</tbody>
+
+		</table>
+		<div id="alipayCanceled_footPage"></div>
+	</div>
+	<div id="tab_aliMatchedOrders" class="tab-pane">
+		<h3 class="row header smaller lighter blue">
+			<div class="col-sm-12">
+				<form class="form-inline">
+					<div class="col-sm-3">
+						<span
+							class="label label-lg label-primary arrowed-right modifyHandicap">盘口</span>
+						<select id="handicap_aliMatchedOrders"
+							class="chosen-select form-control" style="height: 32px">
+							<option>全部</option>
+						</select>
+					</div>
+					<div class="col-sm-3">
+						<span style="width: 81px"
+							class="label label-lg label-primary arrowed-right">会员账号</span> <input
+							id="member_aliMatchedOrders" type="text" placeholder="会员账号"
+							class="input-medium" style="height: 32px; width: 60%;" />
+					</div>
+					<div class="col-sm-3">
+						<span style="width: 68px" class="label label-lg label-primary  "><i
+							class="fa fa-calendar bigger-110"></i></span> <input
+							id="timeScope_aliMatchedOrders"
+							class="form-control date-range-picker" type="text"
+							style="height: 32px; width: 69%;" />
+					</div>
+					<div class="col-sm-3 ">
+						<span
+							class="label label-lg label-primary arrowed-right modifyInAmount">金额</span>
+						<div class="input-group form-group col-sm-3 modifyInAmountInDiv"
+							style="height: 32px; width: 78%;">
+							<input id="fromMoney_aliMatchedOrders" onkeyup="clearNoNum(this)"
+								type="text" class="form-control input-small "
+								style="height: 32px"> <span class="input-group-addon">~</span>
+							<input id="toMoney_aliMatchedOrders" onkeyup="clearNoNum(this)"
+								type="text" class="form-control input-small "
+								style="height: 32px">
+						</div>
+					</div>
+					<div class="col-sm-12" style="height: 2px"></div>
+					<div class="col-sm-3">
+						<span class="label label-lg label-primary arrowed-right">层级</span>
+						<select id="level_aliMatchedOrders"
+							class="chosen-select form-control" style="height: 32px">
+							<option>全部</option>
+						</select>
+					</div>
+					<div class="col-sm-3">
+						<span style="width: 81px"
+							class="label label-lg label-primary arrowed-right">支付宝号</span> <input
+							id="alipayNumber_aliMatchedOrders" type="text" placeholder="支付宝号"
+							class="input-medium" style="height: 32px; width: 60%;" />
+					</div>
+					<div class="col-sm-3">
+						<span style="width: 68px" class="label label-lg label-primary ">订单号</span>
+						<input id="orderNo_aliMatchedOrders" type="text" placeholder="订单号"
+							class="input-medium" style="height: 32px; width: 69%;" />
+					</div>
+					<div class="col-sm-3">
+						<span>
+							<button type="button"
+								onclick="_searchAliSummaryMatchedByFilter('aliMatchedOrders');"
+								class="btn btn-xs btn-white btn-info btn-bold">
+								<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+							</button>
+						</span> <span>
+							<button class="btn btn-xs btn-white btn-info btn-bold"
+								type="button" onclick="_resetConditions('aliMatchedOrders');">
+								<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+							</button>
+						</span>
+					</div>
+				</form>
+			</div>
+		</h3>
+		<div style="margin-right: -13px; margin-left: -13px" sclass="row">
+			<table class="table  table-bordered table-hover no-margin-bottom">
+				<thead>
+					<tr>
+						<th class="modifyHandicap">盘口</th>
+						<th>层级</th>
+						<th>会员账号</th>
+						<th>订单号</th>
+						<th>支付宝号</th>
+						<th class="modifyInAmount">金额</th>
+						<th>创建时间</th>
+						<th>确认时间</th>
+						<th>备注</th>
+					</tr>
+				</thead>
+				<tbody id="tbody_aliMatchedOrders">
+
+				</tbody>
+			</table>
+			<div id="aliMatchedOrders_pageFoot"></div>
+		</div>
+	</div>
+</div>
+
+<!---取消 提单--->
+<div id="cancel_modal" class="modal fade">
+	<div class="modal-dialog modal-middle">
+		<div class="modal-content">
+			<div class="modal-header text-center no-padding">
+				<div class="table-header">
+					<button id="cancel_btn" type="button" class="close"
+						data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					取消备注信息
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<span><i class="fa fa-asterisk red" aria-hidden="true"></i><label>备注</label>
+					<input style="width: 92.5%" id="cancel_remark" type="text">
+				</span>
+			</div>
+			<div class="modal-footer">
+				<input type="hidden" id="cancel_oid"> <input type="hidden"
+					id="cancel_id"> <input type="hidden" id="cancel_code">
+				<label><span id="cancel_remarkPrompt"
+					style="color: red; display: none;">请填写备注再提交</span></label>
+				<button class="btn btn-primary" id="cancel_confirm" type="button"
+					onclick="_confirmConcel();">确定</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--补提单信息-->
+<div id="makeUpFlow" class="modal fade" aria-hidden="false"
+	data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content" style="width: 500px;">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					补提单信息
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<span style="padding-top: 10px; color: blue; font-size: 20px;"
+							class="modifyHandicap">盘口</span><span
+							style="padding-top: 10px; color: red;">(*必填)</span> <input
+							style="width: 100%; color: tomato;" id="makeUpOid" type="text">
+						<span style="padding-top: 10px; color: blue; font-size: 20px;">会员账号</span><span
+							style="padding-top: 10px; color: red;">(*必填)</span> <input
+							style="width: 100%; color: tomato;" id="makeUpMemberAccount"
+							type="text" placeholder="会员账号"> <span
+							style="padding-top: 10px; color: blue; font-size: 20px;"
+							class="modifyInAmount">金额</span> <input disabled
+							style="width: 100%; color: tomato;" type="text" id="makeUpAmount"
+							onkeyup="clearNoNum(this);"> <span
+							style="padding-top: 10px; color: blue; font-size: 20px;">微信支付宝账号</span>
+						<input style="width: 100%; color: tomato;" type="text"
+							id="makeUpAccount" placeholder="微信支付宝账号"> <span
+							style="padding-top: 10px; color: blue; font-size: 20px;">备注</span><span
+							style="padding-top: 10px; color: red;">(*选填)</span> <input
+							style="width: 100%; color: tomato;" type="text" id="makeUpRemark"
+							placeholder="备注">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<span id="makeUpPrompt" style="display: none; color: red;"></span>
+				<button class="btn btn-primary" onclick="_confirmAddOrder();"
+					type="button">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!---备注 提单--->
+<div id="addRemark_modal" class="modal fade">
+	<div class="modal-dialog modal-middle">
+		<div class="modal-content">
+			<div class="modal-header text-center no-padding">
+				<div class="table-header">
+					<button id="addRemark_btn" type="button" class="close"
+						data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					添加备注
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<span><i class="fa fa-asterisk red" aria-hidden="true"></i><label>备注</label>
+					<input style="width: 92.5%" id="addRemark_remark" type="text">
+				</span>
+			</div>
+			<div class="modal-footer">
+				<input type="hidden" id="addRemark_Id"> <input type="hidden"
+					id="addRemark_Oid"> <input type="hidden"
+					id="addRemark_Type"> <label><span
+					id="addRemark_remarkPrompt" style="color: red; display: none;">请填写备注再提交</span></label>
+				<button class="btn btn-primary" id="addRemark_confirm" type="button"
+					onclick=" _confirmAddRemark();">确定</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!---需要匹配的记录 和 流水 信息 modal--->
+<div class="modal fade  in" id="toMatchInfo_ali" aria-hidden="false"
+	style="display: none;">
+	<input name="id" id="pp" type="hidden" value="11">
+	<div style="" class="modal-dialog">
+		<div class="modal-content">
+			<div style="padding: 0px 0px 0px 0px"
+				class="modal-header text-center">
+				<h2>匹配确认信息</h2>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="tab-content">
+							<span class="label label-purple">提单信息</span>
+							<p>
+								<tbody id="sysRequestBody_ali">
+									<tr>
+										<td><span style="color: blue;">充值金额:</span><span
+											id="sysRequestBody_ali_amount"
+											style="color: red; padding-left: 10px; font-size: 20px; font-weight: bolder"></span>
+										</td>
+									</tr>
+									</br>
+									<tr>
+										<td><span>提单号:</span><span
+											id="sysRequestBody_ali_orderNo" style="padding-left: 10px"></span></td>
+									</tr>
+									</br>
+									<tr>
+										<td><span>创建时间:</span><span id="sysRequestBody_ali_time"
+											style="padding-left: 10px"></span></td>
+									</tr>
+									</br>
+								</tbody>
+							</p>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="tab-content">
+							<span class="label label-purple">银行流水</span>
+							<p>
+								<tbody id="bankFlowBody_ali">
+									<tr>
+										<td><span style="color: blue;">存入金额:</span><span
+											id="bankFlowBody_ali_amount"
+											style="color: red; padding-left: 10px; font-size: 20px; font-weight: bolder"></span>
+										</td>
+									</tr>
+									</br>
+									<tr>
+										<td><span class="modifyThChRemark">收款理由:</span><span
+											id="bankFlowBody_ali_chkRemark" style="padding-left: 10px"></span></td>
+									</tr>
+									</br>
+									<tr>
+										<td><span>交易时间:</span><span id="bankFlowBody_ali_time"
+											style="padding-left: 10px"></span></td>
+									</tr>
+									</br>
+								</tbody>
+							</p>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<span style="display: none" id="inconsistentAmountMatchInfo1">
+							<i class="fa fa-asterisk red" aria-hidden="true"></i> <label>会员账号</label>
+							<input style="width: 34.2%"
+							id="inconsistentAmountMatchMemberAccount" readonly="readonly"
+							type="text"> <!--<i style="margin-left:25px;" class="fa fa-asterisk red" aria-hidden="true"></i>-->
+							<!--<label>存款人姓名</label><input style="width: 30.1%;color: red;" readonly=""-->
+							<!--id="inconsistentAmountMatchName" type="text">-->
+						</span><br> <span style="display: none"
+							id="inconsistentAmountMatchInfo2"> <i
+							class="fa fa-asterisk red" aria-hidden="true"></i> <label>存入金额</label>
+							<input style="width: 34.2%; color: red;"
+							id="inconsistentAmountMatchAmount" readonly="readonly"
+							type="text"> <i style="margin-left: 25px;"
+							class="fa fa-asterisk red" aria-hidden="true"></i> <label>收款支付宝</label><input
+							style="width: 30.1%; color: red;" readonly="readonly"
+							id="inconsistentAmountMatchBankAccount" type="text">
+						</span> <span style="display: none" id="inconsistentAmountMatchInfo3">
+							<i class="fa fa-asterisk red" aria-hidden="true"></i> <label
+							style="margin-left: 28px;">备注</label> <input style="width: 34.2%"
+							id="inconsistentAmountMatchRemark" type="text"
+							list="inconsistentAmountMatchRemarkList"> <datalist
+								id="inconsistentAmountMatchRemarkList" style="width: 34.2%">
+
+							</datalist> <i style="margin-left: 25px;" class="fa fa-asterisk red"
+							aria-hidden="true"></i> <label style="margin-left: 42px;">差额</label><input
+							style="width: 30%; color: red;" readonly="readonly"
+							id="inconsistentAmountMatchBalanceGap" type="text">
+						</span> <span style="display: none;" id="inconsistentAmountMatchInfo4">
+							<i class="fa fa-asterisk red" aria-hidden="true"></i> <label>存款类型</label>
+							<input style="width: 2%;" type="radio" name="makeUpDepositType"
+							value="1">网银转帐 <input style="width: 3%;" type="radio"
+							name="makeUpDepositType" value="2">ATM自动柜员机 <input
+							style="width: 2%;" type="radio" name="makeUpDepositType"
+							value="3">ATM现金入款 <input style="width: 3%;" type="radio"
+							name="makeUpDepositType" value="4">银行柜台 <input
+							style="width: 2%;" type="radio" name="makeUpDepositType"
+							value="5">手机银行 <input style="width: 3%;" type="radio"
+							name="makeUpDepositType" value="10">其它
+						</span> <br> <span id="commonMatchInfo" style="display: block">
+							<i class="fa fa-asterisk red" aria-hidden="true"></i> <label>备注(必填)</label>
+							<input style="width: 85.2%" id="matchRemark" type="text"
+							list="commonMatchRemark"> <datalist
+								id="commonMatchRemark" style="width: 85.4%">
+							</datalist>
+						</span>
+
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<input type="hidden" id="inId_ali_match"> <input
+					type="hidden" id="logId_ali_match"> <input type="hidden"
+					id="oid_ali_match"> <input type="hidden" id="uid_ali_match">
+				<input type="hidden" id="tradingFlow_ali_match"> <label
+					class="pull-left"><span id="balanceGapPrompt"
+					style="color: red;">注意:差额=提单金额-银行流水金额</span></label> <label><span
+					id="remarkPrompt" style="color: red; display: none;">请填写备注再提交</span></label>
+				<button class="btn btn-primary" onclick="_confirmMatch();"
+					type="button">提交</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"
+	src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript"
+	src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript" src="../phone/common_phone.js"></script>
+<!--<script type="text/javascript" src="../javascript/income/audit/approveForAliInSummary.js"></script>-->

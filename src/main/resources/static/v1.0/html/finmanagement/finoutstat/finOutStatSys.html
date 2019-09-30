@@ -1,0 +1,90 @@
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+		<div class="main-content-inner">
+			<div class="page-content">
+				<div class="tabbable" id="auditTab">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="row">
+									<div class="col-sm-12">
+									   <div class="form-inline">
+											<span class="label label-lg label-pink arrowed-right form-inline">会员账号</span>
+											<input type="text" id="account" name="account" class="form-control" style="width: 204px;"/>
+											<span class="label label-lg label-warning arrowed-right">金额</span>
+											<div class="input-group form-group col-sm-2" style="height:32px">
+												<input type="text" id="startamount" onkeyup="clearNoNum(this)" name="startamount" class="form-control input-small"  style="height:32px">
+												<span class="input-group-addon">~</span>
+												<input type="text" id="endamount" onkeyup="clearNoNum(this)" name="endamount" class="form-control input-small"  style="height:32px">
+											</div>
+											<i class="fa fa-calendar bigger-110"></i>
+											<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime" style="height: 32px;width:290px;"/>
+											</br>
+											<span class="label label-lg label-pink arrowed-right">审核状态</span>
+											<select onchange="queryFinOutStatSys();" name="search_EQ_handicapId" id="restatus" class="chosen-select form-control"   style="height:32px" >
+												<option value="9999">全部</option>
+												<option value="1">审核通过</option>
+												<option value="2">拒绝</option>
+												<option value="3">主管处理</option>
+												<option value="4">已取消</option>
+												<option value="5" selected>出款成功，平台已确认</option>
+												<option value="6">出款成功，与平台确认失败</option>
+											</select>
+											<span class="label label-lg label-pink arrowed-right">任务状态</span>
+											<select onchange="queryFinOutStatSys();" name="search_EQ_handicapId" id="tastatus" class="chosen-select form-control"   style="height:32px;width: 159px;" >
+												<option value="9999">全部</option>
+												<option value="0">未出款</option>
+												<option value="1">已出款</option>
+												<option value="2">主管处理</option>
+												<option value="3">主管取消</option>
+												<option value="4">主管拒绝</option>
+												<option value="5" selected>流水匹配</option>
+												<option value="6">待排查</option>
+												<option value="7">无效记录，已重新出款</option>
+												<option value="8">银行维护</option>
+											</select>
+											<!-- <span class="label label-info">
+														出款账号：9558855881236&nbsp;&nbsp;
+														账号类型：银行卡&nbsp;&nbsp;
+														盘口：彩33&nbsp;&nbsp;
+														层级：未分层&nbsp;&nbsp;
+														采集时间：2017-01-27 07:00:00~2017-04-27 06:59:59&nbsp;&nbsp;
+													</span> -->
+										        <label class="pull-right inline">
+													<a  class="btn btn-xs btn-white btn-primary btn-bold" id="back" type="button">返回</a>
+												</label>
+												<label class="pull-right inline">&nbsp;&nbsp;</label>
+												<label class="pull-right inline">
+													<button type="button" id="searhByAccount" class="btn btn-xs btn-white btn-info btn-bold">
+														<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+													</button>
+												</label>
+										</div>
+									</div>
+								</h3>
+							</div>
+						</div>
+					<div class="row" >
+						<table class="table  table-bordered table-hover no-margin-bottom">
+							<thead>
+							<tr>
+								<th>盘口</th>
+								<th>层级</th>
+								<th>会员账号</th>
+								<th>会员名字</th>
+								<th>订单号</th>
+								<th>审核状态</th>
+								<th>任务状态</th>
+								<th>金额</th>
+								<th>出款人</th>
+								<th>出款时间</th>
+							</tr>
+							</thead>
+							<tbody id="total_tbody">
+								
+							</tbody>
+						</table>
+						<!-- #section:pages-footer -->
+						<div id="finOutStatSysPage"></div>
+					</div>
+				</div>
+			</div>
+		</div>

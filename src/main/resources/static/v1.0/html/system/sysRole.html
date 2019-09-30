@@ -1,0 +1,122 @@
+<div class="row">
+	<div class="col-sm-12">
+		<h3 class="row header smaller lighter blue">
+			<span style="padding-left: 12px;" class="col-sm-1"> <label
+				class="pull-right inline"><button
+						class="btn btn-xs btn-success" onclick="addBefore();">
+						<i class="ace-icon fa fa-plus bigger-100 "></i><span>新增角色</span>
+					</button></label>
+			</span>
+		</h3>
+	</div>
+	<div class="tabbable">
+		<table id="simple-table" style="margin-bottom: 0px"
+			class="table  table-bordered table-hover">
+			<thead>
+				<tr>
+					<!--<th class="center">ID</th>-->
+					<th class="center">角色名</th>
+					<th class="center">描述</th>
+					<th class="center">等级(等级越高角色设置权限越高)</th>
+					<th class="center">操作</th>
+				</tr>
+			</thead>
+			<tbody id="roleBody"></tbody>
+		</table>
+		<div id="Page"></div>
+	</div>
+</div>
+
+<div class="modal fade  in" id="addRole" aria-hidden="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div id="modal-title" class="modal-header text-center">
+				<h2>新增角色</h2>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-12">
+
+
+						<form id="addOrEditForm" method="post" class="form-horizontal"
+							action="">
+
+							<input id="roleId" class="form-control" type="hidden" value=""
+								name="id">
+
+							<div class="form-group">
+								<label class="col-lg-3 control-label">角色名<i
+									class="fa fa-asterisk red"></i></label>
+								<div class="col-lg-7">
+									<input placeholder="必填项 " id="roleName" name="name"
+										class="form-control" type="text">
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<label class="col-lg-3 control-label">描述</label>
+								<div class="col-lg-7">
+									<input id="roleDesc" class="form-control" type="text"
+										name="description">
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-lg-3 control-label">等级<i
+									class="fa fa-asterisk red"></i></label>
+								<div class="col-lg-7">
+									<input id="level" placeholder="必填项 " oninput="if(value>100000)value=100000" onkeyup="clearNoNum(this)" class="form-control" type="text"
+										name="level">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="modal-footer">
+									<button type="button" onclick="addOrEditRole()"
+										class="btn btn-info" id="validateBtn">提交</button>
+									<button class="btn btn-danger" type="button"
+										data-dismiss="modal">取消</button>
+								</div>
+							</div>
+
+						</form>
+
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<span id="alertMsg" class="red"></span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="modal fade  in" id="menuPermission" aria-hidden="false">
+	<div class="modal-dialog">
+		<div class="modal-content animated fadeIn">
+			<form>
+				<div class="modal-header text-center no-padding">
+					<h2>数据权限设置</h2>
+				</div>
+				<div class="modal-body no-padding-right">
+					<div class="row">
+						<div class="col-sm-12">
+							<form role="form" id="menuSelect"></form>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary" onclick="" type="button"
+						data-dismiss="modal">确认</button>
+					<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+

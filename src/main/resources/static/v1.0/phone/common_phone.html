@@ -1,0 +1,108 @@
+<div>
+
+	<!-- 新增反馈 -->
+	<div id="addFeedbackModal" class="modal fade" aria-hidden="false" data-backdrop="static"   >
+		<div class="modal-dialog" style="width:470px;">
+			<div class="modal-content">
+				<div class="modal-header text-center no-padding">
+					<h3>新增反馈</h3>
+				</div>
+				<div class="modal-body">
+					<table id="tableAdd" style="border:none;">
+						<thead>
+							<tr>
+								<th style="width:100px;"></th>
+								<th style="width:350px;"></th>
+							</tr>
+						</thead>
+						<tbody class="left">
+							<tr>
+								<td class="blue">类型<i class='ace-icon fa fa-asterisk red'></i></td>
+								<td class="pull-left">
+									<label class="inline">
+										<input type="radio" name="type2" class="ace" value="0">
+										<span class="lbl">问题</span>
+									</label>&nbsp;&nbsp;
+									<label class="inline"> 
+										<input type="radio" name="type2" class="ace" value="1">
+										<span class="lbl">需求</span>
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td class="blue">级别<i class='ace-icon fa fa-asterisk red'></i></td>
+								<td class="pull-left">
+									<label class="inline"> 
+										<input type="radio" name="important" class="ace" value="0" checked>
+										<span class="lbl">一般</span>
+									</label>&nbsp;&nbsp;
+									<label class="inline"> 
+										<input type="radio" name="important" class="ace" value="1">
+										<span class="lbl">重要</span>
+									</label>&nbsp;&nbsp;
+									<label class="inline"> 
+										<input type="radio" name="important" class="ace" value="2">
+										<span class="lbl">非常重要</span>
+									</label>&nbsp;&nbsp;
+									<label class="inline"> 
+										<input type="radio" name="important" class="ace" value="3">
+										<span class="lbl">紧急</span>
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td class="blue">业务类型<i class='ace-icon fa fa-asterisk red'></i></td>
+								<td class="pull-left">
+									<select class="chosen-select" name="businessType" style="width:300px;">
+										<option value="">&nbsp;&nbsp;------------------请选择------------------&nbsp;&nbsp;</option>
+										<option value=1  >自动出入款系统</option>
+										<option value=2  >返利网</option>
+										<option value=3  >工具_返利网</option>
+										<option value=4  >工具_PC端</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+	                            <td class="blue">盘口<i class='ace-icon fa fa-asterisk red'></i></td>
+	                            <td class="pull-left">
+	                            	<select name="handicap_select" class="chosen-select" style="width:300px" ></select>
+	                            </td>
+							</tr>
+							<tr>
+								<td class="blue">标题<i class='ace-icon fa fa-asterisk red'></i></td>
+								<td class="pull-left">
+									<input class="input-sm" style="width:300px" name="title" type="text" placeholder="标题">
+								</td>
+							</tr>
+							<tr>
+								<td class="blue">内容<i class='ace-icon fa fa-asterisk red'></i></td>
+								<td class="pull-left">
+									<textarea style="margin: 0px; width: 300px; height: 60px;" name="content" ></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td class="blue">图片</td>
+								<td>
+									<input type="file" name="imgCol" accept="image/jpg, image/jpeg, image/png" multiple="multiple"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="blue">压缩文件</td>
+								<td>
+									<input type="file" name="zipCol" accept="aplication/zip" multiple="multiple"/>
+								</td>
+							</tr>
+						</tbody>
+					</table>	
+				</div>
+				<div class="col-sm-12 modal-footer no-margin center">
+					<button class="btn btn-primary" type="button" id=addFeedbackBtn>确认</button>
+					<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+</div>

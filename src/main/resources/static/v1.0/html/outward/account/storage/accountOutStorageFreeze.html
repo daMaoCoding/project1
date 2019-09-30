@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div id="accountFilter">
+	         <span class="label label-lg label-purple arrowed-right">帐号</span>
+	         <input type="text" style="height:32px;width:100px;" name="search_LIKE_account" class="input-medium" placeholder="帐号" />
+	         <span class="label label-lg label-purple arrowed-right">编号</span>
+	         <input type="text" style="height:32px;width:100px;" class="input-medium" placeholder="编号" name="search_LIKE_alias" />
+            <span class="label label-lg label-purple arrowed-right">银行</span>
+            <select name="search_LIKE_bankType" class="chosen-select" style="height:32px;width:100px;">
+                <option>请选择</option>
+            </select>
+	        <span class="label label-lg label-purple arrowed-right">操作人</span>
+	        <input type="text" style="height:32px;width:100px;" class="input-small" placeholder="操作人" name="search_LIKE_operator" />
+	        <span class="label label-lg label-danger arrowed-right">分类</span>
+	        <label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace" value="3" accountType="8"/><span class="lbl">备用金卡</span></label>
+	        <label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace" value="3" accountType="9"/><span class="lbl">现金卡</span></label>
+	        <label class="inline"><input type="checkbox" name="search_IN_status_type" class="ace" value="3"  accountType="8,9"/><span class="lbl">冻结</span></label>
+        	&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="label label-lg label-purple arrowed-right">来源</span>
+			<label class="inline"><input type="checkbox" name="flag" class="ace defaultNoCheck" value="0"/><span class="lbl">PC</span></label>
+			<label class="inline"><input type="checkbox" name="flag" class="ace defaultNoCheck" value="1"/><span class="lbl">手机</span></label>
+			
+            <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('accountFilter');"><i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button></label>
+            <label class="pull-right inline">&nbsp;&nbsp;</label>
+            <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="searchByFilter();"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button></label>
+        <table id="dynamic-table" class="table table-bordered table-hover  no-margin-bottom">
+            <thead><tr><th>盘口</th><th>层级</th><th>编号</th><th>账号</th><th>分类</th><th>状态</th><th>银行余额</th><th>当日出款</th><th>操作人</th><th>来源</th><th style="width: 140px;">更新时间</th><th>操作</th></tr></thead>
+            <tbody></tbody>
+        </table>
+        <div id="accountPage"></div>
+    </div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalOutAccount.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>

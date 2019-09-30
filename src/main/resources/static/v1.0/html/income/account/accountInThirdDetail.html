@@ -1,0 +1,125 @@
+<!-- 第三方出款、出现金、下发明细 -->
+<div>
+	<div id="Third_Detail_Modal" class="modal fade " tabindex="-1">
+		<input type="hidden" id="accountInfo_id" />
+		<div class="modal-dialog modal-lg" style="width:1300px;">
+			<div class="modal-content">
+				<div class="modal-header no-padding text-center">
+					<div class="table-header">
+						<button type="button" class="close" onclick="closeThirdModal();"><span class="white">&times;</span></button>
+						交易记录
+					</div>
+				</div>
+				<div class="modal-body no-padding">
+					<!-- Tab标签切换 -->
+					<input type="hidden" id="ThirdEncashTabType" value="1"/>
+					<div class="tab-content no-padding">
+						<ul class="nav nav-tabs">
+							<li onclick="showThirdIssuedDetailList(0)" id="ThirdEncashTab_one" class="active" ><a data-toggle="tab" href="#tabIssued_Third">下发记录</a></li>
+							<li onclick="showThirdEncashDetailList(0)" ><a data-toggle="tab" href="#tabEncash_Third">出现金记录</a></li>
+							<li onclick="showThirdMembersDetailList(0)" ><a data-toggle="tab" href="#tabEncash_Members">出会员记录</a></li>
+						</ul>
+						<div class="tab-content">
+							<!-- 下发卡和现金卡提现 -->
+							<div id="tabIssued_Third" class="tab-pane fade active in">
+								<div id="FilterIssued_Third" style="z-index:1" class="col-sm-13 row header smaller lighter blue  less-margin no-margin-left">
+									<span class="label label-lg label-pink arrowed-right">&nbsp;&nbsp;&nbsp;&nbsp;时间&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									<input class="form-control date-range-picker inline" type="text" id="startAndEndTimeThird" name="startAndEndTimeThird" style="height: 32px;width:250px;"/>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<label class="pull-right inline">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+									<label onclick="showThirdIssuedDetailList(0);"id="searchBtn" class="pull-right inline">
+										<button class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+										</button>
+									</label>
+								</div>
+								<table id="Issued_Third_Table" class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>对方账号</th>
+											<th>订单号</th>
+											<th>金额</th>
+											<th>手续费</th>
+											<th>状态</th>
+											<th>创建时间</th>
+										</tr>
+									</thead>
+									<tbody id="Issued_Third_Table_Page_tbody"></tbody>
+								</table>
+								<div id="Issued_Third_Table_Page"></div>
+							</div>
+							
+							<!-- 出现金记录 -->
+							<div id="tabEncash_Third" class="tab-pane">
+								<div id="FilterEncash_Third" style="z-index:1" class="col-sm-13 row header smaller lighter blue  less-margin no-margin-left">
+									<span class="label label-lg label-pink arrowed-right">&nbsp;&nbsp;&nbsp;&nbsp;时间&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									<input class="form-control date-range-picker inline" type="text" id="startAndEndTimeEncash" name="startAndEndTimeEncash" style="height: 32px;width:250px;"/>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<label class="pull-right inline">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+									<label onclick="showThirdEncashDetailList(0);"id="searchBtn" class="pull-right inline">
+										<button class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+										</button>
+									</label>
+								</div>
+								<table id="Encash_Third_Table" class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>对方账号</th>
+											<th>开户人</th>
+											<th>开户行</th>
+											<th>金额</th>
+											<th>手续费</th>
+											<th>备注</th>
+											<th>创建时间</th>
+											<th>操作人</th>
+										</tr>
+									</thead>
+									<tbody id="Encash_Third_Table_Page_tbody"></tbody>
+								</table>
+								<div id="Encash_Third_Table_Page"></div>
+							</div>
+							
+							<!-- 给会员出款记录 -->
+							<div id="tabEncash_Members" class="tab-pane">
+								<div id="FilterMembers_Third" style="z-index:1" class="col-sm-13 row header smaller lighter blue  less-margin no-margin-left">
+									<span class="label label-lg label-pink arrowed-right">盘口</span>
+									<select onchange="showThirdMembersDetailList(0);" name="search_account_handicapId" id="search_account_handicapId" style="height:32px" >
+										
+									</select>
+									<span class="label label-lg label-pink arrowed-right">&nbsp;&nbsp;&nbsp;&nbsp;时间&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									<input class="form-control date-range-picker inline" type="text" id="startAndEndTimeMembers" name="startAndEndTimeMembers" style="height: 32px;width:250px;"/>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<label class="pull-right inline">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+									<label onclick="showThirdMembersDetailList(0);"id="searchBtn" class="pull-right inline">
+										<button class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+										</button>
+									</label>
+								</div>
+								<table id="Members_Third_Table" class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th>盘口</th>
+											<th>层级</th>
+											<th>对方账号</th>
+											<th>开户人</th>
+											<th>开户行</th>
+											<th>订单号</th>
+											<th>会员名</th>
+											<th>金额</th>
+											<th>手续费</th>
+											<th>备注</th>
+											<th>创建时间</th>
+											<th>操作人</th>
+										</tr>
+									</thead>
+									<tbody id="Members_Third_Table_Page_tbody"></tbody>
+								</table>
+								<div id="Members_Third_Table_Page"></div>
+							</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>

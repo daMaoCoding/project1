@@ -1,0 +1,396 @@
+<div>
+<!-- 可引入后，根据输入条件展示对应模式框 -->
+
+
+
+<!-- 新增出款银行卡账号 -->
+<div id="addOutAccount" class="modal fade" data-backdrop="static" tabindex="-1">
+	<div class="modal-dialog modal-lg" style="width:700px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button><span class="classOfDialogTitle">新增银行账号</span></div>
+			</div>
+			<div class="modal-body">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>盘口</td>
+							<td>
+								<select name="handicap_select" class="chosen-select width200">
+								</select>
+							</td>
+							<td>账号</td>
+							<td>
+								<span class='input-icon'>
+								<input class="input-sm width200" style="wiidth:200px" name="account" type="text" placeholder="账号" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>层级</td>
+							<td>
+								<select name="currSysLevel" class="chosen-select width200">
+									<option selected="selected" value="">------------请选择------------</option>
+									<option value="1" >外层</option>
+                                    <option value="2" >内层</option>
+                                    <option value="8" >指定层</option>
+								</select>
+                                <!--<select name="currSysLevelInBank" style="display: none;" class="selectpicker" multiple>-->
+                                <!--</select>-->
+							</td>
+							<td class="ownerTitle">开户人</td>
+							<td>
+								<span class='input-icon'>
+									<input class="input-sm width200" name="owner" type="text"  placeholder="开户人">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr style="display:none;" id="level_prompt">
+							<td colspan="2">
+								<span class="blue" style="font-size:12px;">
+									<i class="ace-icon fa fa-exclamation-triangle bigger-130 red" style="cursor:pointer;"></i>
+									外层和指定层的账号新增后不允许修改
+								</span>
+							</td>
+							<td colspan="2"></td>
+						</tr>
+						<tr>
+							<td class="chocieBankType">银行类别</td>
+							<td>
+								<select name="bankType" class="chosen-select width200"></select>
+							</td>
+							<td class="bankNameTitle">支行</td>
+							<td>
+								<span class='input-icon'>
+									<input class="input-sm width200" name="bankName" type="text"  placeholder="支行">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+                        <tr class="inComeShow">
+                            <td>省份</td>
+                            <td>
+                                <select name="province_select" class="chosen-select width200">
+                                </select>
+                            </td>
+                            <td>城市</td>
+                            <td> <select name="city_select" class="chosen-select width200">
+                            </select>
+                            </td>
+                        </tr>
+						<tr>
+							<td>余额</td>
+							<td>
+								<span class='input-icon'>
+									<input class="input-sm width200" name="balance" type="number" min="0" placeholder="余额">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>余额告警</td>
+							<td><input class="input-sm width200" name="limitBalance" type="number" min="0"   placeholder="余额告警"></td>
+							<td name="label_peakBalance" >余额峰值</td>
+							<td><input class="input-sm width200" name="peakBalance" type="number" min="0"   placeholder="余额峰值"></td>
+						</tr>
+						<tr>
+							<td>当日入款限额</td>
+							<td><input class="input-sm width200" name="limitIn" type="number" min="0"  placeholder="当日入款限额"></td>
+							<td>当日出款限额</td>
+							<td><input class="input-sm width200" name="limitOut" type="number" min="0"  placeholder="当日出款限额"></td>
+						</tr>
+						<tr>
+							<td>最低余额限制</td>
+							<td><input class="input-sm width200" name="lowestOut" type="number"  placeholder="最低余额限制"></td>
+							<td>单笔出款限额<br/><span class="blue">（最高）</span></td>
+							<td><input class="input-sm width200" name="limitOutOne" type="number" min="0"  placeholder="最高单笔出款限额"></td>
+						</tr>
+						<tr>
+							<td>当日出款笔数</td>
+							<td><input class="input-sm width200" name="limitOutCount" type="number" placeholder="当日出款笔数" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" ></td>
+							<td>单笔出款限额<br/><span class="blue">（最低）</span></td>
+							<td><input class="input-sm width200" name="limitOutOneLow" type="number" placeholder="最低单笔出款限额"></td>
+						</tr>
+						<tr id="inBankAccount_min_amount" style="display: none;">
+							<td>入款单笔最小金额</td>
+							<td><input class="input-sm width200" name="min_amount" type="number" placeholder="单笔入款限额" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" ></td>
+						</tr>
+						<tr>
+							<td>备注</td>
+							<td colspan="3">
+								<span class='input-icon'>
+									<input class="input-sm" style="width:544px;" name="remark" type="text" placeholder="请输入账号来源等信息">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" id="doAdd">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 修改出款银行卡信息 -->
+<div id="updateOutAccount" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<div class="modal-dialog modal-lg" style="width:700px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button><span class="classOfDialogTitle">修改银行账号</span></div>
+			</div>
+			<div class="modal-body">
+				<input class="input-sm width200" disabled="disabled" name="id" type="hidden">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>类型</td>
+							<td>
+								<select name="accountType_select" class="chosen-select width200"></select>
+							</td>
+							<td>账号</td>
+							<td><input class="input-sm width200" disabled="disabled" style="wiidth:200px" name="account" type="text" placeholder="账号"></td>
+						</tr>
+						<tr>
+							<td>层级</td>
+							<td>
+								<select name="currSysLevel" class="chosen-select width200">
+									<option selected="selected" value="">------------请选择------------</option>
+									<option value="1" >外层</option>
+									<option value="2" >内层</option>
+									<option value="8" >指定层</option>
+								</select>
+							</td>
+							<td class="ownerTitle">开户人</td>
+							<td>
+								<span class='input-icon'>
+								<input class="input-sm width200" name="owner" type="text"  placeholder="开户人">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span  class="blue" style="font-size:12px;">
+									<i class="ace-icon fa fa-exclamation-triangle bigger-130 red" style="cursor:pointer;"></i>
+									外层和指定层的账号不允许修改层级
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="chocieBankType">银行类别</td>
+							<td>
+								<select name="bankType" class="chosen-select width200"></select>
+							</td>
+							<td class="bankNameTitle">支行</td>
+							<td>
+								<span class='input-icon'>
+									<input class="input-sm width200" name="bankName" type="text"  placeholder="支行">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>余额告警</td>
+							<td><input class="input-sm width200" name="limitBalance" type="number"  placeholder="余额告警"></td>
+							<td name="label_peakBalance" >余额峰值</td>
+							<td><input class="input-sm width200" name="peakBalance" type="number"  placeholder="余额峰值"></td>
+						</tr>
+						<tr>
+							<td>当日入款限额</td>
+							<td><input class="input-sm width200" name="limitIn" type="number"  placeholder="当日入款限额"></td>
+							<td>当日出款限额</td>
+							<td><input class="input-sm width200" name="limitOut" type="number"  placeholder="当日出款限额"></td>
+						</tr>
+						<tr>
+							<td>最低余额限制</td>
+							<td><input class="input-sm width200" name="lowestOut" type="number"  placeholder="最低余额限制"></td>
+							<td>单笔出款限额<br/><span class="blue">（最高）</span></td>
+							<td><input class="input-sm width200" name="limitOutOne" type="number"  placeholder="最高单笔出款限额"></td>
+						</tr>
+						<tr>
+							<td>当日出款笔数</td>
+							<td><input class="input-sm width200" name="limitOutCount" type="number" placeholder="当日出款笔数" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" ></td>
+							<td>单笔出款限额<br/><span class="blue">（最低）</span></td>
+							<td><input class="input-sm width200" name="limitOutOneLow" type="number" placeholder="最低单笔出款限额"></td>
+						</tr>
+						<tr class="statusTr" style="display:none;">
+							<td>状态</td>
+							<td>
+								<label class="inline incomeHide1">
+									<input type="radio" name="status" class="ace" value="1" >
+									<span class="lbl">在用</span>
+								</label>
+								<label class="inline">
+									<input type="radio" name="status" class="ace" value="4" >
+									<span class="lbl">停用</span>
+								</label>
+								<label class="inline">
+									<input type="radio" name="status" class="ace" value="3" >
+									<span class="lbl">冻结</span>
+								</label>
+								<label class="inline incomeHide5">
+									<input type="radio" name="status" class="ace" value="5" >
+									<span class="lbl">可用</span>
+								</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" id="doUpdate">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 修改返利网银行卡信息 -->
+<div id="updateFlag2Account" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<div class="modal-dialog modal-lg" style="width:700px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button><span class="classOfDialogTitle">修改银行账号</span></div>
+			</div>
+			<div class="modal-body">
+				<input class="input-sm width200" disabled="disabled" name="id" type="hidden">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:250px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>盘口</td>
+							<td>
+								<select name="handicap_select" class="chosen-select width200" >
+								</select>
+							</td>
+							<td>账号</td>
+							<td><input class="input-sm width200" disabled="disabled" style="wiidth:200px" name="account" type="text" placeholder="账号"></td>
+						</tr>
+						<tr class="needHide" style="display:none;">
+                            <td>省份</td>
+                            <td><select class="input-sm width200" name="province" ></select></td>
+                            <td>城市</td>
+                            <td><select class="input-sm width200" name="city" ></select></td>
+                        </tr>
+						<tr>
+							<td>层级</td>
+							<td>
+								<select name="currSysLevel" class="chosen-select width200">
+									<option selected="selected" value="">------------请选择------------</option>
+									<option value="1" >外层</option>
+									<option value="2" >内层</option>
+									<option value="8" >指定层</option>
+								</select>
+							</td>
+							<td>余额告警</td>
+							<td><input class="input-sm width200" name="limitBalance" type="number"  placeholder="余额告警"></td>
+						</tr>
+						<tr>
+							<td>当日入款限额</td>
+							<td><input class="input-sm width200" name="limitIn" type="number"  placeholder="当日入款限额"></td>
+							<td>当日出款限额</td>
+							<td><input class="input-sm width200" name="limitOut" type="number"  placeholder="当日出款限额"></td>
+						</tr>
+						<tr>
+							<td>最低余额限制</td>
+							<td><input class="input-sm width200" name="lowestOut" type="number"  placeholder="最低余额限制"></td>
+							<td>单笔出款限额<br/><span class="blue">（最高）</span></td>
+							<td><input class="input-sm width200" name="limitOutOne" type="number"  placeholder="最高单笔出款限额"></td>
+						</tr>
+						<tr>
+							<td>当日出款笔数</td>
+							<td><input class="input-sm width200" name="limitOutCount" type="number" placeholder="当日出款笔数" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" ></td>
+							<td>单笔出款限额<br/><span class="blue">（最低）</span></td>
+							<td><input class="input-sm width200" name="limitOutOneLow" type="number" placeholder="最低单笔出款限额"></td>
+						</tr>
+						<tr class="needHide" style="display:none;">
+							<td style="padding-top: 10px;">最小入款金额</td>
+							<td style="padding-top: 10px;"><input class="input-sm width200" name="minInAmount" type="number" placeholder="当日出款笔数" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" ></td>
+						</tr>
+						<tr class="statusTr" style="display:none;">
+							<td>状态</td>
+							<td>
+								<label class="inline incomeHide1">
+									<input type="radio" name="status" class="ace" value="1" >
+									<span class="lbl">在用</span>
+								</label>
+								<label class="inline">
+									<input type="radio" name="status" class="ace" value="4" >
+									<span class="lbl">停用</span>
+								</label>
+								<label class="inline">
+									<input type="radio" name="status" class="ace" value="3" >
+									<span class="lbl">冻结</span>
+								</label>
+								<label class="inline incomeHide5">
+									<input type="radio" name="status" class="ace" value="5" >
+									<span class="lbl">可用</span>
+								</label>
+							</td>
+							<td>类型</td>
+							<td>
+								<select name="accountType_select" class="chosen-select width200" ></select>
+							</td>
+						</tr>
+						<tr class="creditStr" style="display:none;" >
+							<td>设为零元信用额度</td>
+							<td>
+								<label class="inline">
+									<input type="checkbox" name="zerocredits" class="ace" value="1" >
+									<span class="lbl">是</span>
+								</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" id="doUpdate">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+</div>

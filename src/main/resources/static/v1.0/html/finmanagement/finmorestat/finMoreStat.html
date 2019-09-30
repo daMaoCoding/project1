@@ -1,0 +1,400 @@
+
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="tabbable">
+						<ul class="nav nav-tabs" id="myTab3">
+							<!-- <li  class="active">
+								<a data-toggle="tab" id="accounttab" onclick="queryFinMoreStat()"  href="#historyTimeTab"><i class="ace-icon fa fa-credit-card bigger-110 red"></i>历史汇总</a>
+							</li> -->
+							<!-- <li>
+								<a data-toggle="tab" id="handicaptab" onclick="queryRealTime()" href="#realTimeTab"><i class=" ace-icon fa fa-user bigger-110 blue"></i>今日实时汇总</a>
+							</li> -->
+						</ul>
+						<!-- 实时统计 -->
+						<div class="tab-content" style="padding-top: 0px;">
+							<div id="realTimeTab" class="tab-pane">
+								<h3 class="row">
+									<div class="col-sm-12">
+										<div class="col-sm-12">
+										<div class="form-inline">
+											<span class="label label-lg label-pink arrowed-right">盘口</span>
+											<select onchange="queryRealTime()"  id="realTime_handicap" name="realTime_handicap"  class="chosen-select form-control"   style="height:32px" >
+											</select>
+										</div>
+									</div>
+								</h3>
+								<table id="dynamic-table" class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th rowspan="2">盘口</th>
+											<th colspan="2" class="center">入款</th>
+											<th colspan="2" class="center">出款</th>
+											<th colspan="2" class="center">手续费</th>
+											<th colspan="2" class="center">亏损</th>
+											<th rowspan="2">毛利</th>
+											<th rowspan="2">盈利</th>
+											<!-- <th rowspan="2">明细</th> -->
+										</tr>
+										<tr>
+											<th>人数/笔数</th>
+											<th>实际入款金额</th>
+											<th>人数/笔数</th>
+											<th>实际出款金额</th>
+											<th>笔数/手续费(入款)</th>
+											<th>手续费(出款)</th>
+											<th>笔数/亏损费(出款)</th>
+											<th>张数/金额(冻结卡)</th>
+										</tr>
+									</thead>
+									<tbody id="realTime_tbody">
+										
+									</tbody>
+							</table>
+							<!-- 分页 -->
+								<div id="realTimePage"></div>
+							</div>
+							<!-- 历史汇总 -->
+							<div id="historyTimeTab" class="tab-pane in active">
+								<h3 class="row">
+									<div class="col-sm-12">
+									<div class="form-inline">
+										<span class="label label-lg label-pink arrowed-right">盘口</span>
+										<select id="handicap" name="handicap" onchange="queryFinMoreStat()" class="chosen-select form-control"   style="height:32px" >
+										</select>
+										<div class="input-group">
+											<span class="input-group-addon">
+												<i class="fa fa-calendar bigger-110"></i>
+											</span>
+											<input class="form-control date-range-picker" placeholder="自定义时间段" type="text" style="width: 230px;" name="startAndEndTime" id="startAndEndTime" />
+										</div>
+										<label class="inline">
+											<input type="radio" checked="checked" onclick="clearStartAndEndTime()" value="today" name="form-field-checkbox" class="ace" />
+											<span class="lbl"> 今日</span>
+										</label>
+										<label class="inline">
+											<input type="radio" checked="checked" onclick="clearStartAndEndTime()" value="thisWeek" name="form-field-checkbox" class="ace" />
+											<span class="lbl"> 昨日</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearStartAndEndTime()" value="week" name="form-field-checkbox" class="ace" />
+											<span class="lbl"> 本周</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearStartAndEndTime()" value="lastweek" name="form-field-checkbox" class="ace" />
+											<span class="lbl"> 上周</span>
+										</label>
+										<label class="inline">
+											<input type="radio" onclick="clearStartAndEndTime()" value="thisMonth" name="form-field-checkbox" class="ace" />
+											<span class="lbl"> 本月</span>
+										</label>
+										<!-- <label class="inline">
+											<input type="radio" onclick="clearStartAndEndTime()" value="lastMonth" name="form-field-checkbox" class="ace" />
+											<span class="lbl"> 上月</span>
+										</label> -->
+	
+										<!-- <label class="pull-right inline">
+											<button id="searhByCondition" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-search bigger-100 green"></i>
+												查询
+											</button>
+										</label> -->
+									</div>
+								</div>
+								</h3>
+								
+								<!--盘口统计-->
+								<table id="dynamic-table" class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+										<tr>
+											<th rowspan="2">盘口</th>
+											<th colspan="2" class="center">入款</th>
+											<th colspan="2" class="center">出款</th>
+											<th colspan="2" class="center">手续费</th>
+											<th colspan="2" class="center">亏损</th>
+											<th rowspan="2">毛利</th>
+											<th rowspan="2">盈利</th>
+											<!-- <th rowspan="2">明细</th> -->
+										</tr>
+										<tr>
+											<th>人数/笔数</th>
+											<th>实际入款金额</th>
+											<th>人数/笔数</th>
+											<th>实际出款金额</th>
+											<th>笔数/手续费(入款)</th>
+											<th>手续费(出款)</th>
+											<th>笔数/亏损费(出款)</th>
+											<th>张数/金额(冻结卡)</th>
+										</tr>
+									</thead>
+									<tbody id="historyTime_tbody">
+										
+									</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="historyTimePage"></div>
+								<!-- #section:pages-footer end-->
+							</div>
+						</div>
+					</div>
+				</div><!-- /.col -->
+			</div><!-- /.row -->
+		</div>
+	</div>
+</div>
+
+<div id="tabProcessed" class="modal fade" style="overflow: auto" tabindex="-1">
+	<input id="processedHandicap" type="hidden">
+	<div class="modal-dialog" style="width:1300px;height: 600px;">
+	 <div class="modal-content">
+	  <div class="modal-header no-padding">
+                <div id="titleDivCustomer" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                 	冻结卡信息
+                </div>
+            </div>
+      <div class="modal-body no-padding">
+	 <div class="col-sm-12 header smaller lighter less-margin no-margin-left">
+		<div class="inline" style="line-height:40px;" >
+			<span class="label label-lg label-pink arrowed-right">盘口</span>
+			<input type="text" name="handicapName" id="handicapName" style="height:32px;width:100px;" readonly="readonly" class="input-small">
+			&nbsp;
+			<span class="label label-lg label-pink arrowed-right">类型</span>
+			<label class="inline">
+				<input checked="checked" type="radio" onclick="clearProcessed()" value="" name="processedCarType" class="ace" />
+				<span class="lbl">全部</span>
+			</label>
+			<label class="inline">
+				<input type="radio" onclick="clearProcessed()" value="income" name="processedCarType" class="ace" />
+				<span class="lbl">入款</span>
+			</label>
+			<label class="inline">
+				<input type="radio" onclick="clearProcessed()" value="outward" name="processedCarType" class="ace" />
+				<span class="lbl">出款</span>
+			</label>
+			<label class="inline">
+				<input type="radio" onclick="clearProcessed()" value="issue" name="processedCarType" class="ace" />
+				<span class="lbl">下发</span>
+			</label>
+			<label class="inline">
+				<input type="radio" onclick="clearProcessed()" value="reserve" name="processedCarType" class="ace" />
+				<span class="lbl">备用</span>
+			</label>
+			<label class="inline">
+				<input type="radio" onclick="clearProcessed()" value="other" name="processedCarType" class="ace" />
+				<span class="lbl">其它</span>
+			</label>
+			<input class="date-range-picker-processed input-sm" placeholder="自定义时间段" type="text" style="width: 200px;" name="processedStartAndEndTimefrostless" id="processedStartAndEndTimefrostless" />
+		</div>
+		<br/>
+		<span class="label label-lg label-pink arrowed-right">账号</span>
+		<input type="text" id="processedAccount" name="processedAccount"  style="height:32px;width:100px;" class="input-small"/>
+		&nbsp;
+		<span class="label label-lg label-pink arrowed-right">时间</span>
+		<label class="inline">
+			<input type="radio"  onclick="clearProcessed()" value="" name="processedDate" class="ace" />
+			<span class="lbl">全部</span>
+		</label>
+		<label class="inline">
+			<input type="radio"  onclick="clearProcessed()" value="today" name="processedDate" class="ace" />
+			<span class="lbl">今日</span>
+		</label>
+		<label class="inline">
+			<input type="radio" checked="checked" onclick="clearProcessed()" value="thisWeek" name="processedDate" class="ace" />
+			<span class="lbl">昨日</span>
+		</label>
+		<label class="inline">
+			<input type="radio" onclick="clearProcessed()" value="week" name="processedDate" class="ace" />
+			<span class="lbl">本周</span>
+		</label>
+		<label class="inline">
+			<input type="radio" onclick="clearProcessed()" value="lastweek" name="processedDate" class="ace" />
+			<span class="lbl">上周</span>
+		</label>
+		<label class="inline">
+			<input type="radio" onclick="clearProcessed()" value="thisMonth" name="processedDate" class="ace" />
+			<span class="lbl">本月</span>
+		</label>
+		
+		<span class="label label-lg label-pink arrowed-right">状态</span>
+		<label class="inline">
+			<input checked="checked" type="radio" onclick="clearProcessed()" value="" name="statusType" class="ace" />
+			<span class="lbl">全部</span>
+		</label>
+		<label class="inline">
+			<input type="radio" onclick="clearProcessed()" value="3" name="statusType" class="ace" />
+			<span class="lbl">持续冻结</span>
+		</label>
+		<label class="inline">
+			<input type="radio" onclick="clearProcessed()" value="4" name="statusType" class="ace" />
+			<span class="lbl">解冻恢复使用</span>
+		</label>
+		<label class="inline">
+			<input type="radio" onclick="clearProcessed()" value="5" name="statusType" class="ace" />
+			<span class="lbl">永久删除</span>
+		</label>
+		<br/>
+			<span class="label label-lg label-pink arrowed-right">解冻方式</span>
+			<label class="inline">
+				<input type="radio" checked="checked" onclick="clearProcessed()" value="" name="processedfrostType" class="ace" />
+				<span class="lbl">全部</span>
+			</label>
+			<label class="inline">
+				<input type="radio" onclick="clearProcessed()" value="1" name="processedfrostType" class="ace" />
+				<span class="lbl">卡商抵卡</span>
+			</label>
+			<label class="inline">
+				<input type="radio" onclick="clearProcessed()" value="2" name="processedfrostType" class="ace" />
+				<span class="lbl">卡商转账</span>
+			</label>
+			<label class="inline">
+				<input type="radio" onclick="clearProcessed()" value="3" name="processedfrostType" class="ace" />
+				<span class="lbl">资金归集</span>
+			</label>
+			<label class="inline">
+				<input type="radio" onclick="clearProcessed()" value="4" name="processedfrostType" class="ace" />
+				<span class="lbl">快捷支付</span>
+			</label>
+			<label class="inline">
+				<input type="radio" onclick="clearProcessed()" value="5" name="processedfrostType" class="ace" />
+				<span class="lbl">POS机刷卡</span>
+			</label>
+			<label class="inline">
+				<input type="radio" onclick="clearProcessed()" value="6" name="processedfrostType" class="ace" />
+				<span class="lbl">取款机提现</span>
+			</label>
+			<label class="inline">
+				<input type="radio" onclick="clearProcessed()" value="7" name="processedfrostType" class="ace" />
+				<span class="lbl">其它</span>
+			</label>
+		<label class="pull-right inline">
+			<button id="processedSearhFrostless" onclick="queryFinprocessed()" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-search bigger-100 green"></i>
+				查询
+			</button>
+		</label>
+	</div>
+	<table class="table table-striped table-bordered table-hover no-margin-bottom">
+		<thead>
+			<tr>
+				<th>盘口</th>
+				<th>层级</th>
+				<th>账号</th>
+				<th>账号类型</th>
+				<th>冻结金额</th>
+				<th>未损失</th>
+				<th>已损失</th>
+				<th>状态</th>
+				<th>解冻方式</th>
+				<th>处理人</th>
+				<th>确认人</th>
+				<th>冻结原因</th>
+				<th>冻结时间</th>
+				<th>备注</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody id="processed_tbody">
+			
+
+		</tbody>
+	</table>
+	<!-- 分页 -->
+	<div id="processedPage"></div>
+	</div>
+	</div>
+  </div>
+</div>
+
+<div id="thirdIncom" class="modal fade" style="overflow: auto" tabindex="-1">
+	<input id="thirdHandicap" type="hidden">
+	<div class="modal-dialog" style="width:1300px;height: 600px;">
+	 <div class="modal-content">
+	  <div class="modal-header no-padding">
+	  	<div id="titleDivCustomer" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                 	第三方入款
+                </div>
+	  </div>
+<h3 class="row header smaller lighter blue">
+<div class="col-sm-10" style="width: 95%;">
+	<form class="form-inline" style="width: 95%">
+		<span class="label label-lg label-pink arrowed-right">盘口</span>
+		<input style="width: 135px;" readonly="readonly" type="text" id="thirdHandicapName" name="thirdHandicapName">
+		<span style="display: none;" class="label label-lg label-primary  arrowed-right">层级</span>
+									<select style="width: 90px;display: none;" onchange="search();" id="level" name="level" class="chosen-select form-control"   style="height:32px" >
+									</select>
+		<span class="label label-lg label-purple arrowed-right">收款账号</span>
+		<input id="account" name="account" style="width: 135px;" class="form-control" placeholder="收款账号" type="text"/>
+		<span style="display: none;" class="label label-lg label-purple arrowed-right">开户人</span>
+		<input style="display: none;" id="accountOwner" name="accountOwner" style="width: 135px;" class="form-control" placeholder="开户人" type="text"/>
+		<div class="input-group">
+			<span class="input-group-addon">
+				<i class="fa fa-calendar bigger-110"></i>
+			</span>
+			<input class="form-control date-range-picker-third" onclick="clearRadioValue('thirdTime');" style="height: 32px;width:280px;" placeholder="自定义时间段" type="text" id="thirdStartAndEndTime" name="thirdStartAndEndTime" />
+		</div>
+		<label class="inline">
+			<input type="radio" onclick="serThird()" value="today" name="thirdTime" class="ace" />
+			<span class="lbl"> 今日</span>
+		</label> 
+		<label class="inline">
+			<input type="radio" onclick="serThird()"  checked="checked" value="thisWeek" name="thirdTime" class="ace" />
+			<span class="lbl"> 昨日</span>
+		</label>
+		<label class="inline">
+			<input type="radio" onclick="serThird()" value="week" name="thirdTime" class="ace"/>
+			<span class="lbl"> 本周</span>
+		</label>
+		<label class="inline">
+			<input type="radio" onclick="serThird()" value="lastweek" name="thirdTime" class="ace"/>
+			<span class="lbl"> 上周</span>
+		</label>
+		<label class="inline">
+			<input type="radio" onclick="serThird()" value="thisMonth" name="thirdTime" class="ace" />
+			<span class="lbl"> 本月</span>
+		</label>
+		<span style="display: none;" class="label label-lg label-purple arrowed-right">银行类别</span>
+		 <select style="display: none;" onchange="queryFinInStatThethirdparty(0)" id="bankType" name="bankType" class="chosen-select form-control" style="height:32px;width:100px;">
+                            <option value="">请选择</option>
+                        </select>
+                        <label class="pull-right inline">
+		<button onclick="queryFinInStatThethirdparty(0)" id="searhByCondition" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+			<i class="ace-icon fa fa-search bigger-100 green"></i>
+			查询
+		</button>
+	</label>
+	</form>
+</div>
+</h3>
+<div id="thirdparty" class="tab-pane">
+	<table  class="table table-striped table-bordered table-hover no-margin-bottom">
+		<thead>
+		<tr>
+			<th style="width: 3%">序号</th>
+			<th style="width: 9%">盘口</th>
+			<th style="width: 40%">层级</th>
+			<th style="width: 15%">第三方</th>
+			<th style="width: 10%">余额</th>
+			<th style="width: 10%">笔数/金额</th>
+			<th style="width: 6%">手续费</th>
+		</tr>
+		</thead>
+		<tbody id="total_tbody_Thethirdparty">
+			
+		</tbody>
+	</table>
+	<!-- #section:pages-footer -->
+	<!-- 分页 -->
+	<div id="fininStatThethirdpartyPage"></div>
+</div>
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/common_export.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>

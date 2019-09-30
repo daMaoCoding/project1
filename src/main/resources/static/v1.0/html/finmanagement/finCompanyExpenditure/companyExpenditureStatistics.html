@@ -1,0 +1,36 @@
+<link rel="stylesheet" type="text/css" href="../style/ace-skins.css"/>
+<link rel="stylesheet" type="text/css" href="../style/ace-rtl.css"/>
+<div id="statisticHeader" class="tab-pane">
+    <h3 class=""><!--去除下划线 header smaller lighter blue  row(会有横滚动条) -->
+        <div class="col-sm-12">
+            <form class="form-inline">
+                <div class="col-sm-6">
+                    <span class="label label-lg label-primary arrowed-right">盘口</span>
+                    <input onkeyup="_statisticCompanyExpenditure();" id="handicapNameSearch" class="input-large "
+                           type="text"
+                           style="height: 32px;width:40%;"/>
+                    <button type="button" class="btn btn-xs btn-white btn-info btn-bold "
+                            onclick="_statisticCompanyExpenditure();">
+                        <i class="ace-icon fa fa-search bigger-100 green"></i>
+                        查询
+                    </button>
+                    <button type="button" class="btn btn-xs btn-white btn-info btn-bold "
+                            onclick="_statisticCompanyExpenditureReset();">
+                        <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+                        重置
+                    </button>
+                    <a href="#/financeCompanyExpenditureAll:*"><button type="button" class="btn btn-xs btn-white btn-info btn-bold "
+                            onclick="">
+                        <i class="ace-icon fa fa-refresh bigger-100 red"></i>
+                        查看汇总
+                    </button></a>
+                </div>
+            </form>
+        </div>
+    </h3>
+</div>
+<div id="statisticDiv" ></div>
+
+<script src="../javascript/lib/jquery.flot.min.js"></script>
+<script src="../javascript/lib/jquery.flot.pie.min.js"></script>
+<script src="../javascript/lib/jquery.flot.resize.min.js"></script>

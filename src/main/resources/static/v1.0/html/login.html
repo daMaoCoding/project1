@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>自动出入款系统 - 登录</title>
+		<link rel="stylesheet" href="../style/main.css" />
+		<link rel="stylesheet" href="../style/bootstrap.css" />
+		<link rel="stylesheet" href="../style/font-awesome.min.css" />
+		<link rel="stylesheet" href="../style/ace-fonts.css" />
+		<link rel="stylesheet" href="../style/ace.css" />
+	</head>
+	<body class="login-layout light-login">
+		<div class="main-container">
+			<div class="main-content">
+				<div class="row">
+					<div class="col-sm-10 col-sm-offset-1">						
+						<div class="login-container">
+							<div class="center">
+								<h1><i class="ace-icon fa fa-database green"></i><span class="red">  </span><span class="grey" id="id-text2">自动出入款系统</span></h1>
+							</div>
+							<div class="space-6"></div>
+							<div class="position-relative">
+								<div id="login-box" class="login-box visible widget-box no-border">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header blue lighter bigger"><i class="ace-icon fa fa-key green"></i><span>登录</span></h4>
+											<div class="space-6"></div>
+												<fieldset class="classLogin">
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="username" name="username"  type="text" class="form-control" placeholder="帐号" /><i class="ace-icon fa fa-user"></i>
+														</span>
+													</label>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="password" name="password"  type="password" class="form-control" placeholder="密码" /><i class="ace-icon fa fa-lock"></i>
+														</span>
+													</label>
+													<div class="space"></div>
+													<div class="clearfix">
+														<button id="login_button" type="button" class="width-35 pull-right btn btn-sm btn-primary"><i class="ace-icon fa fa-key"></i><span class="bigger-110">登录</span></button>
+													</div>
+													<div class="space-4"></div>
+												</fieldset>
+												<div class="space-6"></div>
+											</div>
+										</div>
+										<div class="toolbar clearfix"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<script src="../javascript/lib/jquery.min.js"></script>
+		<script src="../javascript/lib/bootstrap.min.js"></script>
+		<script src="../javascript/lib/bootbox.min.js"></script>
+		<script src="../javascript/lib/ace.js"></script>
+		<script src="../javascript/lib/jquery.session.js"></script>
+		<script src="../javascript/lib/json2.js"></script>
+		<script src="../javascript/app.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+			 var ua = navigator.userAgent.toLocaleLowerCase();
+	       	if (!ua.match(/chrome/)
+	       			||ua.match(/firefox/)||ua.match(/ubrowser/)||ua.match(/opera/)
+	       			||ua.match(/bidubrowser/)||ua.match(/metasr/)||ua.match(/tencenttraveler/)
+	       			||ua.match(/maxthon/)||ua.match(/metasr/)||ua.match(/edge/)) {
+	            $("body").html("<h1 class='center blue'>本项目仅支持谷歌内核的浏览器</h1>");
+	            return;
+	        }else{
+	        	 var is360 = _mime("type", "application/vnd.chromium.remoting-viewer");
+	             function _mime(option, value) {
+	                 var mimeTypes = navigator.mimeTypes;
+	                 for (var mt in mimeTypes) {
+	                     if (mimeTypes[mt][option] == value) {
+	                         return true;
+	                     }
+	                 }
+	                 return false;
+	             }
+	             if(is360){
+	 	            $("body").html("<h1 class='center blue'>本项目仅支持谷歌浏览器</h1>");
+		            return;
+	             }
+	        }
+			if (!!window.ActiveXObject || "ActiveXObject" in window){
+				$t = $("#login-box .widget-body .widget-main");
+				$t.find("h4.header.blue.lighter.bigger span").html("注意&nbsp;/&nbsp;Notice");
+				$t.find(".classLogin").html("<h4 class='red'>本系统不支持IE浏览器</h4><h5 class='red'>The system can't support IE Browser</h5>");
+			}
+		});
+			//登录按钮绑定回车
+			$("body").keydown(function(){
+				  if (event.keyCode == 13) {
+				    event.cancelBubble = true;
+				    event.returnValue = false;
+				    $("#login_button").click(); 
+				  }
+				});
+			var tmp = window.location.href.split("/html/")[0];
+			var version  = tmp.substring(tmp.lastIndexOf("/","http://")+1);
+			//IP
+			function grepIP(sdp) {
+		        sdp && (sdp.split('\r\n').forEach(function (line) { 
+		            if (~line.indexOf("a=candidate")) { 
+		                var items = line.split(' '); 
+		                var ip = items[4] ,type = items[7];
+		                if(type=='host'&&ip&&ip!='0.0.0.0'&&ip!='127.0.0.1'&&ip.indexOf(":")<0){
+							$.session.set('NativeIP',ip);
+		                }
+		            } 
+		            if(~line.indexOf("c=")){
+		                var ip = line.split(' ')[2];
+		                if(ip && '0.0.0.0' != ip && '127.0.0.1' != ip && ip.indexOf(":")<0){
+							$.session.set('NativeIP',ip);
+							request.setAttribute("sortId",sortId)
+		                }
+		            }    
+		        }));
+		    }
+			function NativeIP(){
+		    	var RTCPeerConn = window.RTCPeerConnection || window.webkitRTCPeerConnection || 
+		    			window.mozRTCPeerConnection;
+		        if(!RTCPeerConn) return "undefined";   
+		        var rtc = new RTCPeerConn({iceServers:[]});
+		        rtc.createDataChannel('', {reliable:!(window.mozRTCPeerConnection)});
+		        rtc.onicecandidate = function (evt) {
+		            (evt.candidate) && (grepIP("a="+evt.candidate.candidate));
+		        };
+		        rtc.createOffer(function (offerDesc) {
+		             (grepIP(offerDesc.sdp)) & (rtc.setLocalDescription(offerDesc));
+		        }, function (e) {console.info(e)});
+		    }
+			if(!$.session.get('NativeIP')){
+				NativeIP();
+			}
+			$("#login_button").on(ace.click_event, function() {
+				$.ajax({ dataType:'json',type:"post", url:"/auth/login", data:{"username":$('#username').val(),"password":$('#password').val(),"ip":$.session.get('NativeIP')},
+					beforeSend: function(){$("html").addClass("use-loading");	},complete:function(){	},
+					success:function(jsonObject){
+						if(jsonObject.status == 1){
+							$.session.clear();
+							window.location.href = 'index.html';
+						}else{
+							bootbox.alert(jsonObject.message);
+							$("html").removeClass("use-loading");
+						}
+					},error:function(result){
+						$("html").removeClass("use-loading");
+						bootbox.alert("Error. <br/> status: " + result.status + ", statusText: "  + result.statusText + ", responseText: " + result.responseText);
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

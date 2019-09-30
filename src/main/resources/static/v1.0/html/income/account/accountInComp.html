@@ -1,0 +1,345 @@
+<!-- 入款 账号管理 -->
+<div class="row">
+	<!-- Tab标签切换 -->
+	<input type="hidden" id="accountTabType" value="1"/>
+	<div class="no-border">
+		<ul class="nav nav-tabs">
+			<li class="active contentRight" contentRight='IncomeAccountComp:IncomeTab:*' onclick="changeTabInit(1)"  ><a data-toggle="tab" href="#tab1">入款卡</a></li>
+			<li class="contentRight" contentRight='IncomeAccountComp:ReservedTab:*' id="reservedTab" onclick="changeTabInit(8)"><a data-toggle="tab" href="#tab8">备用卡</a></li>
+			<li id="incomeAccountComp" style="display: none;padding-left: 70%;"><a type="button" class="btn btn-warning" onclick="openModal();">清算</a></li>
+			<li>
+				<label id="searchBtn" class="pull-right inline">
+					<button class="btn btn-xs btn-white btn-info btn-bold contentRight hide"  contentRight="IncomeAccountComp:addIncomeAccount:*" onclick="showModal_addIncomeAccount(showAccountList);">
+						<i class="ace-icon fa fa-plus bigger-100 green"></i>新增
+					</button>
+				</label>
+			</li>
+			<li class="pull-right inline">
+				<label class="pull-right inline">
+					<button  onclick="addInAccount();"  class="incomeShow btn btn-xs btn-white btn-info btn-bold contentRight" contentRight="IncomeAccountComp:addReservedAccount:*" id="add-inbank-button" >
+						<i class="ace-icon fa fa-plus bigger-100 green"></i>新增入款卡
+					</button>
+				</label>
+				<label class="pull-right inline">
+					<button onclick="showModal_incomeInfo();"  class="incomeShow btn btn-xs btn-white btn-info btn-bold contentRight"  contentright='IncomeAccountComp:SystemSetting:*'>
+						<i class="ace-icon fa fa-cog bigger-100 green"></i>入款设置
+					</button>
+				</label>
+				<label class="pull-right inline">
+					<button onclick="addAccount();"  id="add-button" class="incomeHide btn btn-xs btn-white btn-info btn-bold contentRight" contentRight="IncomeAccountComp:addReservedAccount:*"  style="display:none;">
+						<i class="ace-icon fa fa-plus bigger-100 green"></i>新增备用卡
+					</button>
+				</label>
+				<label class="pull-right inline contentRight" contentright='IncomeAccountComp:ReservedSystemSetting:*'>
+					<button class="btn btn-xs btn-white btn-info btn-bold hide" onclick="showModal_reserveInfo();">
+						<i class="ace-icon fa fa-cog bigger-100 green"></i>备用设置
+					</button>
+				</label>
+			</li>
+		</ul>
+		<div id="accountFilter"  style="z-index:2" class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left">
+		<div class="col-sm-12">
+			<span class="label label-lg label-purple arrowed-right">刷新</span>
+			<div id="refreshAccountListSelect"></div>
+			&nbsp;
+			<span class="label label-lg label-purple arrowed-right">开户行</span>
+			<select class="chosen-select" name="search_LIKE_bankType"  style="width:80px;">
+				<option value="">全部</option>
+			</select>
+			&nbsp;
+			<span class="label label-lg label-purple arrowed-right">&nbsp;&nbsp;编号&nbsp;&nbsp;</span>
+			<input type="text" class="input-sm" name="search_EQ_alias" style="width:80px;" placeholder="编号" />
+			&nbsp;
+			<span class="label label-lg label-purple arrowed-right">层级</span>
+			&nbsp;
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace defaultCheck" checked value="" >
+				<span class="lbl">全部</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace" value="1" >
+				<span class="lbl">外层</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace" value="2" >
+				<span class="lbl">内层</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace" value="8" >
+				<span class="lbl">指定层</span>
+			</label>
+			&nbsp;
+			<span class="incomeShow">
+				<span class="label label-lg label-purple arrowed-right">盘口</span>
+				<select class="chosen-select" name="search_EQ_handicapId"  style="width:80px;"></select>
+			</span>
+			&nbsp;
+			<label onclick="reset('accountFilter');" class="pull-right inline">
+				<button class="btn btn-xs btn-white btn-info btn-bold">
+					<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+				</button>
+			</label>
+		</div>
+		<div  class="col-sm-12" style="height:10px;"></div>
+		<div class="col-sm-12">
+			<span class="label label-lg label-purple arrowed-right">帐号</span>
+			<input type="text" class="input-sm" name="search_LIKE_account" style="width:80px;" placeholder="帐号" />
+			&nbsp;
+			<span class="label label-lg label-purple arrowed-right">开户人</span>
+			<input type="text" name="search_LIKE_owner" class="input-sm" style="width:80px;" placeholder="开户人" />
+			<input type="hidden" id="refresh_accountIncomp"  >
+			&nbsp;
+			<span class="label label-lg label-purple arrowed-right">审核人</span>
+			<input type="text" name="search_LIKE_auditor" class="input-sm" style="width:80px;" placeholder="审核人" />
+			&nbsp;
+			<span class="label label-lg label-purple arrowed-right">来源</span>
+			<label class="inline"><input type="checkbox" name="search_IN_flag" class="ace defaultNoCheck" value="0"/><span class="lbl">PC</span></label>
+			<label class="inline"><input type="checkbox" name="search_IN_flag" class="ace defaultNoCheck" value="2"/><span class="lbl">返利网</span></label>
+			<label id="searchBtn" class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold">
+				<i class="ace-icon fa fa-search bigger-100 green"></i>查询</button>
+			</label>
+		</div>
+	</div>
+		<div class="tab-content" style="padding-left:0px;padding-right:0px;">
+			<!-- 设备状态 -->
+			<input type="hidden"  id="deviceStatus"  value="online">
+			<ul class="nav nav-tabs">
+				<li onclick="changeDevice('')"  ><a data-toggle="tab" >全部&nbsp;<span class="badge badge-danger" id="totalIdSize">0</span></a></li>
+				<li onclick="changeDevice('online')"  class="active"><a data-toggle="tab" >在线&nbsp;<span class="badge badge-danger" id="onlineSize">0</span></a></li>
+				<li onclick="changeDevice('offline')"  ><a data-toggle="tab" >离线&nbsp;<span class="badge badge-danger" id="offlineSize">0</span></a></li>
+				<li onclick="changeDevice('stop')"  ><a data-toggle="tab" >停用&nbsp;<span class="badge badge-danger" id="stopSize">0</span></a></li>
+				<li class="pull-right inline">
+					<label class="pull-right inline">
+						<button  onclick="showModal_set_inOut_limit();" class="incomeShow btn btn-xs btn-white btn-info btn-bold contentRight"  contentRight="IncomeAccountComp:ButtonOutSet:*">
+							<i class="ace-icon fa fa-cog bigger-100 green"></i>出入款额度
+						</button>
+					</label>
+				</li>
+			</ul>
+			<div id="tab1" class="tab-pane in active contentRight" contentRight='IncomeAccountComp:IncomeTab:*'>
+				<table id="accountListTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+					<thead>
+						<tr>
+							<th style='width:5%;'>选择&nbsp;<i class="ace-icon fa fa-info-circle bigger-150 red" style="cursor:pointer " title="自购卡(大额专用)不能勾选"></i></th>
+							<th style='width:5%;'>盘口</th>
+							<th style='width:4%;'>层级</th>
+							<th style='width:5%;'>编号</th>
+							<th style='width:12%;'>账号</th>
+							<th style='width:5%;'>状态&nbsp;
+							<i class="ace-icon fa fa-info-circle bigger-150 red" style="cursor:pointer " 
+							title="说明：
+“在线”，指的是设备实时在线
+“暂停”，指的是兼职人员自己操作暂停了设备运作，或在PC监控/工具端 对账号操作了暂停
+“离线”，指的是设备离线，需要客服尽快联系兼职人员处理"></i></th>
+							<th style='width:9%;'>用途</th>
+							<th style='width:7%;'>银行余额</th>
+							<th style='width:7%;'> 系统余额</th>
+							<th style='width:9%;'>余额更新时间</th>
+							<th style='width:12%;'>转入/下发记录</th>
+							<th style='width:14%;'>操作</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+				<div id="account1Page"></div>
+			</div>
+			<div id="tab8" class="tab-pane contentRight" contentRight='IncomeAccountComp:ReservedTab:*'>
+				<table id="accountListTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+					<thead>
+						<tr>
+							<th style='width:5%;'>层级</th>
+							<th style='width:6%;'>编号</th>
+							<th style='width:11%;'>账号</th>
+							<th style='width:7%;'>状态</th>
+							<th style='width:6%;'>来源</th>
+							<th style='width:10%;'>银行余额</th>
+							<th style='width:9%;'>系统余额</th>
+							<th style='width:9%;'>转入记录</th>
+							<th style='width:9%;'>转出记录</th>
+							<th style='width:20%;'>操作</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+				<div id="account8Page"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 入款参数设置 -->
+<div id="incomeInfoModal" class="modal fade" aria-hidden="false" >
+	<div class="modal-dialog modal-lg"  style="width:1000px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					入款系统设置
+				</div>
+			</div>
+			<div class="modal-body">
+				<h6 class="header smaller center lighter blue no-padding no-margin-top">入款参数设置,单个账号未设置参数时，取以下默认值</h6>
+				<div class="inline no-padding-bottom" style="width:49.5%;">
+	                <p class="alert alert-success">
+	                    <input class="input-sm" name="INCOME_ACCOUNTS_PERUSER" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+	      				入款审核，分配账号最大数(张)
+	                </p>
+	                <p class="alert alert-success">
+	                    <input class="input-sm" name="INCOME_LIMIT_CHECKIN_TODAY" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+	         			当日入款最大限额(元)
+	                </p>
+	                <p class="alert alert-success">
+	                    <input class="input-sm" name="INCOME_PERCENT" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+	     				银行流水匹配浮动比例(%)
+	                </p>
+	            </div>
+				<div class="inline no-padding-bottom" style="width:49.5%;">
+	                <p class="alert alert-success">
+	                    <input class="input-sm" name="INCOME_BALANCE" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+	       				入款人工匹配差额(元)
+	                </p>
+	                <p class="alert alert-success">
+	                    <input class="input-sm" name="INCOME_MATCH_HOURS" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+	                   	 入款与流水记录匹配最大时间间隔(时)
+	                </p>
+	                <p class="alert alert-success">
+	                    <input class="input-sm" name="INCOME_LIMIT_REQUEST_CANCEL" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+						入款取消时间，超过将取消入款请求(时)
+	                </p>
+				</div>
+				<h6 class="header smaller center lighter blue no-padding no-margin-top">返利网同步来入款卡的默认值</h6>
+				<div class="inline no-padding-bottom" style="width:99.5%;">
+					 <p class="alert alert-success">
+		                	<span class='lbl'>	
+		                		<input class="input-sm" name="Income_YSF_OneDay_Limit" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+		                		云闪付（边入边出）卡每日入款限额(元)
+		                	</span>
+		              </p>
+					  <p class="alert alert-success">
+		                	<span class='lbl'>
+			                	大额专用(返利网)，当余额大于或等于信用额度的
+			                   	<input class="input-sm" name="INBANK_OUT_DEFAULT_CREDIT_PERCENTAGE" style="width:80px;" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+			                    % 时，留
+			                    <input class="input-sm" name="INBANK_OUT_RESERVED_FEES"  style="width:80px;" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+			                    元，其余一笔转出到出款卡
+		                    </span>
+		                </p>
+		                <p class="alert alert-success">
+		                	<span class='lbl'>
+			                	先入后出(返利网)，当余额大于或等于信用额度的
+			                   	<input class="input-sm" name="INBANK_CLOSE_OUT_DEFAULT_CREDIT_PERCENTAGE"  style="width:80px;" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+			                    %时，转为出款卡，当余额小于
+			                    <input class="input-sm" name="INBANK_CLOSE_OUT_LOWEST_BALANCE"  style="width:80px;" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+			                    元，再转为入款卡
+		                    </span>
+		                </p>
+				</div>
+				<div class="inline no-padding-bottom" style="width:49.5%;">
+				    <button type="button" class="pull-right btn btn-danger btn-white btn-bold btn-round" onclick="resetIncomeInfo()">
+				        <i class="ace-icon fa fa-refresh icon-on-right"></i>&nbsp;重置
+				    </button>
+				</div>
+				 <div class="inline no-padding-bottom" style="width:49.5%;">
+				    <button type="button" class="pull-left btn btn-success btn-white btn-bold btn-round" onclick="saveIncomeInfo()">
+				        <i class="ace-icon fa fa-check icon-on-right"></i>&nbsp;保存
+				    </button>
+				 </div>
+				<h6 class="header smaller center lighter blue no-padding">手工同步平台设置</h6>
+				<div class="inline no-padding-bottom" style="width:49.5%">
+	                <p class="alert alert-success">
+						<label class="inline" style="height:30px;line-height:30px;">
+							<input type="radio" name="sync_type" class="ace" value="3" >
+							<span class="lbl control-label">账号信息</span>
+						</label>
+						<label class="inline" style="height:30px;line-height:30px;">
+							<input type="radio" name="sync_type" class="ace" value="4" >
+							<span class="lbl control-label">层级信息</span>
+						</label>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<select class="chosen-select" name="handicap_sync" style="width:100px;" ></select>
+						盘口
+					</p>
+	            </div>
+	            <div class="inline no-padding-bottom" style="width:49.5%;margin-bottom:-13px;">
+				    <button type="button" class="pull-left btn btn-success btn-white btn-bold btn-round" onclick="saveSyncInfo()">
+				        <i class="ace-icon fa fa-share icon-on-right"></i>&nbsp;同步
+				    </button>
+	            </div>
+				<h6 class="header smaller center lighter blue no-padding">入款卡和备用卡用于给会员出款开关，以及开启的盘口</h6>
+				<div id="handNameList" class="row"></div>
+				<div class="inline no-padding-bottom" style="width:49.5%">
+					<span class="blue bolder">入款卡&备用卡当出款卡给会员出款&nbsp;&nbsp;&nbsp;&nbsp;</span>
+					<label class="inline" style="height:30px;line-height:30px;">
+						<input type="radio" name="open_close_btn" class="ace" value="1" >
+						<span class="lbl control-label blue">开启</span>
+					</label>
+					<label class="inline" style="height:30px;line-height:30px;">
+						<input type="radio" name="open_close_btn" class="ace" value="0" >
+						<span class="lbl control-label blue">关闭</span>
+					</label>
+				</div>
+	            <div class="inline no-padding-bottom" style="width:49.5%;margin-bottom:-13px;">
+				    <button type="button" class="pull-left btn btn-success btn-white btn-bold btn-round" onclick="saveAccount4Out()">
+				        <i class="ace-icon fa fa-check icon-on-right"></i>&nbsp;保存
+				    </button>
+	            </div>
+				<h6 class="header smaller center lighter blue no-padding">为开启的盘口设置区域<span class="red bolder">（默认马尼拉，选中则为台湾区域）</span></h6>
+				<div id="handNameZoneList" class="row"></div>
+				<h6 class="header smaller center lighter blue no-padding">新公司入款开启/停用<span class="red bolder">（选中则为开启）</span></h6>
+				<div id="newIncomeFlagList" class="row"></div>
+				<!-- 样式用DIV 勿删 -->
+				<div class="inline no-padding-bottom" style="width:49.5%"></div>
+	            <div class="inline no-padding-bottom" style="width:49.5%;margin-bottom:-13px;">
+				    <button disabled type="button" class="pull-left btn btn-success btn-white btn-bold btn-round" onclick="saveHandicapZone()" >
+				        <i class="ace-icon fa fa-check icon-on-right"></i>&nbsp;保存
+				    </button>
+	            </div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 备用卡参数设置 -->
+<div id="reserveInfoModal" class="modal fade" aria-hidden="false" >
+	<div class="modal-dialog modal-lg"  style="width:1000px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					备用卡参数设置
+				</div>
+			</div>
+			<div class="modal-body">
+				<div id="handNameZoneList" class="row"></div>
+				<!-- 样式用DIV 勿删 -->
+				<div class="inline no-padding-bottom" style="width:49.5%;">
+					<p class="alert alert-success">
+						<input class="input-small" name="RESERVE_TO_RESERVE_BALANCE" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+						备用卡互转阀值，余额大于该值会下发至其它备用卡
+					</p>
+					<button type="button" class="pull-right btn btn-danger btn-white btn-bold btn-round" onclick="resetReserveInfo()">
+						<i class="ace-icon fa fa-refresh icon-on-right"></i>&nbsp;重置
+					</button>
+				</div>
+				<div class="inline no-padding-bottom" style="width:49.5%;">
+					<p class="alert alert-success">
+						<input class="input-small" name="RESERVE_TO_RESERVE_MINAMOUNT" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" >
+						备用卡互转单笔最小金额
+					</p>
+					<button type="button" class="pull-left btn btn-success btn-white btn-bold btn-round" onclick="saveReservedInfo()">
+						<i class="ace-icon fa fa-check icon-on-right"></i>&nbsp;保存
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<!-- 银行流水明细 -->
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>
+<!-- 平账 -->
+<script type="text/javascript"  src="../javascript/common/modalFlatBalance.js"></script>
+
+<script type="text/javascript"  src="../javascript/common/modalOutAccount.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalTransferBalance.js"></script>

@@ -1,0 +1,801 @@
+<style>
+ #toApprove td{width:13.5% !important; font-size: 15px !important;text-align:center !important;}
+ .ths {padding:0px !important;}
+ .tables {margin-bottom:0px !important;padding: 6px 6px !important;}
+ .message-footer{padding: 0px !important;}
+    #toApprove table tr td{padding-bottom: 5px;padding-top: 5px;padding-right: 0px;padding-left: 0px;}
+</style>
+<link rel="stylesheet" href="../style/jquery.chosen.min.css" type="text/css">
+<div id="drawInfo" class="row">
+    <div class="col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="outwardRequestUL">
+                <li id="toApproveAuditLi" class="active"  onclick="_initPageRequest();_getCurrentLiA(this);">
+                    <a data-toggle="tab" href="#toApprove"><i class="ace-icon fa fa-hourglass-start bigger-110 pink"></i>正在审核</a>
+                </li>
+
+                <li id="doneApproveAuditLi" onclick="_reqLiClick(1);_getCurrentLiA(this);">
+                    <a data-toggle="tab" href="#doneApprove"><i class=" ace-icon fa fa-check bigger-110 blue"></i>已审核</a>
+                </li>
+
+                <li onclick="_reqLiClick(2);_getCurrentLiA(this);">
+                    <a data-toggle="tab" href="#refuseApprove"><i class="ace-icon fa fa-ban bigger-110 red"></i>已拒绝</a>
+                </li>
+                <li onclick="_reqLiClick(3);_getCurrentLiA(this);">
+                    <a data-toggle="tab" href="#cancelApprove"><i class="ace-icon fa fa-remove bigger-110 red"></i>已取消</a>
+                </li>
+
+                <li onclick="_reqLiClick(4);_getCurrentLiA(this);">
+                    <a data-toggle="tab" href="#masterApprove"><i class="ace-icon fa fa-level-up bigger-110 red"></i>主管处理</a>
+                </li>
+            </ul>
+
+            <div style="padding-top: 0px;padding-bottom: 0px;" class="tab-content">
+                <div id="toApprove" class="tab-pane in active">
+                    <div id="tab1_init" style="text-align: center;color: #497fff;display: none;"><h3>请点击右上角开始接单吧</h3></div>
+                    <div id="info_in1" class="row" style="display: none;" >
+                        <div class="col-md-12">
+                            <table class="tables table table-bordered ">
+                                <thead>
+                                <th colspan="8" >
+                                    <div class="col-sm-7 center" >
+                                        <span style="font-size: 20px;color: green;margin-left:450px;">会员提单信息</span>
+                                    </div>
+                                    <label id="approveReasonLabel" style="display: none;" class="pull-right">
+                                        <span style="font-size: 20px;">
+                                             <i class="ace-icon fa fa-exclamation-triangle red bigger-130"></i>
+                                        </span>
+                                        <span id="approveReason" style="font-size: 18px;color: orangered;" >受审原因</span>
+                                    </label>
+                                </th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td style="width: 5%;color: blue;font-size: 20px;">金额</td>
+                                    <td id="amountToApprove"  style="width: 10%;color:red;"></td>
+                                    <td style="width: 10%;color: blue;">会员账号</td>
+                                    <td id="memberName"  style="color: #00CC33"></td>
+                                    <td style="width: 5%;color: blue;">盘口</td>
+                                    <td id="handicap"  style="color:#00CC33;"></td>
+                                    <td style="width: 5%;color: blue;">层级</td>
+                                    <td id="level" style="color:#00CC33;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 10%;color: blue;">出款卡号</td>
+                                    <td id="toAccount"  style="width: 20%;color:red;"></td>
+                                    <td style="width: 10%;color: blue;">订单号</td>
+                                    <td id="orderNo"  style="width: 20%;color:#00CC33;"></td>
+                                    <td style="width: 10%;color: blue;font-size: 20px;">提单时间</td>
+                                    <td id="createTime" colspan="3" style="color:#00CC33;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 10%;color: blue;">开户人</td>
+                                    <td id="toAccountOwnerReq"  style="width: 20%;color:red;"></td>
+                                    <td style="width: 10%;color: blue;">开户行</td>
+                                    <td id="toAccountBankReq"  style="width: 20%;color:#00CC33;"></td>
+                                    <td style="width: 10%;color: blue;font-size: 20px;">开户行地址</td>
+                                    <td id="toAccountNameReq" colspan="3" style="color:#00CC33;"></td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <div id="info_in2" style="display: none">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="info_in2_table" class=" tables table table-bordered ">
+                                    <thead>
+                                    <th colspan="9" class="center">
+                                        <span style="font-size: 20px;color: green">会员出款相关信息</span>
+                                    </th>
+                                    </thead>
+                                    <tbody id="memberOutDrawInfo">
+                                    <tr>
+                                        <td style="width: 15%;color: blue;">上次出款后余额</td>
+                                        <td id="balanceLastDraw" colspan="2"  style="color: RED;"></td>
+                                        <td style="width: 15%;color: blue;">当前余额</td>
+                                        <td id="balanceBeforeDraw"  colspan="6" style="width: 20%;color: RED;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 15%;color: blue;">本次出款后余额</td>
+                                        <td colspan="2" id="balanceAfterDraw"  style="color:RED;"></td>
+                                        <td style="width: 15%;color: blue;">最近入款总额</td>
+                                        <td id="sumAmountsRecentDeposit" colspan="6" style="color:#00CC33;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 15%;color: blue;">本次下注金额</td>
+                                        <td colspan="2" id="fBetAmount"  style="color:#00CC33;"></td>
+                                        <td style="width: 15%;color: blue;">获利金额</td>
+                                        <td colspan="6" id="fWinAmount"  style="color:#00CC33;"></td>
+                                    </tr>
+                                    <!--<tr >-->
+                                        <!--<td style="width: 20%;color: blue;">本次已达投注量</td>-->
+                                        <!--<td id="needCodesAll" colspan="2" style="color:#00CC33;"></td>-->
+                                        <!--<td style="width: 15%;color: blue;">本次要求打码量</td>-->
+                                        <!--<td colspan="6" id="needCodes"  style="color:#00CC33;"></td>-->
+                                    <!--</tr>-->
+                                    <tr>
+                                        <td style="width: 15%;color: blue;">几倍打码量</td>
+                                        <td id="timesCodes"  colspan="2" style="color:#00CC33;"></td>
+                                        <td style="width: 15%;color: blue;">中奖率</td>
+                                        <td colspan="6" id="winRate"  style="color:#00CC33;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 15%;color: blue;">会员备注</td>
+                                        <td colspan="2" id="remarkForMember"  style="color:red;"></td>
+                                        <td style="width: 15%;color: blue;">是否首次出款</td>
+                                        <td colspan="6" id="isFirstOut"  style="color:red;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 15%;color: blue;">注册时间</td>
+                                        <td colspan="2" id="registerTime"  style="color:#00CC33;"></td>
+                                        <td style="width: 15%;color: blue;">最后登陆时间</td>
+                                        <td colspan="6" id="lastLoginTime"  style="color:#00CC33;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 15%;color: blue;">注册IP</td>
+                                        <td colspan="2" id="regesterIp"  style="color:#00CC33;"></td>
+                                        <td style="width: 15%;color: blue;">最后登陆IP</td>
+                                        <td colspan="6" id="lastLoginIp"  style="color:#00CC33;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 15%;color: blue;">账号登陆的IP明细</td>
+                                        <td  id="tdAccIps" colspan="2" >
+                                            <a id="accIpsDetail" href="javascript:void (0);" style="color:#00CC33;">点击查看详情</a>
+                                        </td>
+                                        <td style="width: 15%;color: blue;">IP登陆的账号明细</td>
+                                        <td id="tdIpAccs"  colspan="6"  >
+                                           <a id="ipAccsDetail" href="javascript:void (0);" style="color:#00CC33;">点击查看详情</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <input type="hidden" id="toAppoveIdRequest">
+                                        <input type="hidden" id="orderNoInputRequest">
+                                        <input type="hidden" id="memberCodeRequest">
+                                        <td style=" text-align: center" colspan="1">
+                                            <button id="but_pass" class="btn btn-xs btn-white btn-info btn-bold"><i
+                                                    class="ace-icon fa fa-check bigger-100 blue"></i>通过
+                                            </button>
+                                            <label><span id="remarkPrompt1" style="color: red;display: none;">请填写备注</span></label>
+                                        </td>
+                                        <td  colspan="3"><input id="remarkForApprove" type="text"
+                                                                                  placeholder="不通过必须填写原因"
+                                                                                  class="form-control">
+
+                                        </td>
+                                        <td  colspan="4">
+                                            <button id="but_cancel" style="margin-right: 10px;display: none" class="pull-left btn btn-xs btn-white btn-info btn-bold"><i
+                                                    class="ace-icon fa fa-remove bigger-100 red"></i>取消
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button id="but_refuse" style="margin-right: 10px;display: none" class="pull-left btn btn-xs btn-white btn-info btn-bold"><i
+                                                    class="ace-icon fa fa-ban bigger-100 red"></i>拒绝
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button id="but_transfer" style="margin-right: 10px;display: none" class="pull-left btn btn-xs btn-white btn-info btn-bold"><i
+                                                    class="ace-icon fa fa-level-up bigger-100 red"></i>转主管
+                                            </button>
+                                            <label><span id="remarkPrompt2" style="color: red;display: none;">请填写原因</span></label>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr><td id="pauseHint" colspan="8" style="color: mediumvioletred">温馨提示：1.结束接单步骤：暂停—》完成当前审核—》结束&nbsp;&nbsp; &nbsp;2.打码规则：上次出款后余额+本次入款金额+盈利(含正负)= 出款前余额。</td></tr>
+                                        <tr id="winTotalTr" style="display: none;"><td style="width: 15%;color: blue;">总盈利</td><td colspan="9" id="winTotal"  style="color:#00CC33;">0.000</td></tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="doneApprove" class="tab-pane">
+                    <h3 class="row header smaller lighter blue">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">盘口</span>
+                                    <select id="handicap_1" class="chosen-select form-control" style="height:32px;width:78%;">
+
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">会员名</span>
+                                    <input id="member2" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 55px;" class="label label-lg label-primary arrowed-right">金额</span>
+                                    <div class="input-group form-group col-sm-3" style="height:32px;width:72%;">
+                                        <input id="fromMoney2" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+                                               style="height:32px">
+                                        <span class="input-group-addon">~</span>
+                                        <input id="toMoney2" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+                                               style="height:32px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12" style="height:2px;"></div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">层级</span>
+                                    <select id="level_1" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                                    <input id="orderNo2" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 55px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+                                    <input id="timeScope2" class="input-large date-range-picker" type="text"  style="height: 32px;width:72%;"/>
+                                </div>
+
+                                <div class="col-sm-3">
+									<span class="pull-left">
+                                        <label class="pull-right inline">
+                                            <button id="button2" type="button" class="btn btn-xs btn-white btn-info btn-bold ">
+                                                <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                            </button>
+                                        </label>
+						            </span>
+                                    <span style="margin-left: 30px;" class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueR(2);">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+										</label>
+									</span>
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+                    <table style="margin-bottom: 0px" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>盘口</th>
+                            <th>层级</th>
+                            <th>会员名</th>
+                            <th>订单号</th>
+                            <th>金额</th>
+                            <th>申请时间</th>
+                            <th>审核时间</th>
+                            <th>耗时</th>
+                            <th>备注</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody2">
+
+                        </tbody>
+                    </table>
+                    <div id="approved_footPage">
+
+                    </div>
+                </div>
+                <div id="refuseApprove" class="tab-pane">
+                    <h3 class="row header smaller lighter blue">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">盘口</span>
+                                    <select id="handicap_2" class="chosen-select form-control" style="height:32px;width:78%;">
+
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">会员名</span>
+                                    <input id="member3" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 55px;" class="label label-lg label-primary arrowed-right">金额</span>
+                                    <div class="input-group form-group col-sm-3" style="height:32px;width:72%;">
+                                        <input id="fromMoney3" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+                                               style="height:32px">
+                                        <span class="input-group-addon">~</span>
+                                        <input id="toMoney3" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+                                               style="height:32px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12" style="height:2px;"></div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">层级</span>
+                                    <select id="level_2" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                                    <input id="orderNo3" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 55px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+                                    <input id="timeScope3" class="input-large date-range-picker" type="text"  style="height: 32px;width:72%;"/>
+                                </div>
+                                <div class="col-sm-3">
+									<span class="pull-left">
+                                        <label class="pull-right inline">
+                                            <button id="button3" type="button" class="btn btn-xs btn-white btn-info btn-bold ">
+                                                <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                            </button>
+                                        </label>
+						            </span>
+                                    <span style="margin-left: 30px;" class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueR(3);">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+										</label>
+									</span>
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+                    <table style="margin-bottom: 0px" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>盘口</th>
+                            <th>层级</th>
+                            <th>会员名</th>
+                            <th>订单号</th>
+                            <th>金额</th>
+                            <th>申请时间</th>
+                            <th>拒绝时间</th>
+                            <th>备注</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody3">
+
+                        </tbody>
+                    </table>
+                    <div id="refused_footPage"></div>
+                </div>
+                <div id="cancelApprove" class="tab-pane">
+                    <h3 class="row header smaller lighter blue">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">盘口</span>
+                                    <select id="handicap_3" class="chosen-select form-control" style="height:32px;width:78%;">
+
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">会员名</span>
+                                    <input id="member4" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 55px;" class="label label-lg label-primary arrowed-right">金额</span>
+                                    <div class="input-group form-group col-sm-3" style="height:32px;width:72%;">
+                                        <input id="fromMoney4" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+                                               style="height:32px">
+                                        <span class="input-group-addon">~</span>
+                                        <input id="toMoney4" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+                                               style="height:32px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12" style="height:2px;"></div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">层级</span>
+                                    <select id="level_3" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                                    <input id="orderNo4" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 55px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+                                    <input id="timeScope4" class="input-large date-range-picker" type="text"  style="height: 32px;width:72%;"/>
+                                </div>
+                                <div class="col-sm-3">
+									<span class="pull-left">
+                                        <label class="pull-right inline">
+                                            <button id="button4" type="button" class="btn btn-xs btn-white btn-info btn-bold ">
+                                                <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                            </button>
+                                        </label>
+						            </span>
+                                    <span style="margin-left: 30px;" class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueR(4);">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+										</label>
+									</span>
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+                    <table style="margin-bottom: 0px" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>盘口</th>
+                            <th>层级</th>
+                            <th>会员名</th>
+                            <th>订单号</th>
+                            <th>金额</th>
+                            <th>申请时间</th>
+                            <th>取消时间</th>
+                            <th>备注</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody4">
+
+                        </tbody>
+                    </table>
+                    <div id="canceled_footPage"></div>
+                </div>
+
+                <div id="masterApprove" class="tab-pane">
+                    <h3 class="row header smaller lighter blue">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">盘口</span>
+                                    <select id="handicap_4" class="chosen-select form-control" style="height:32px;width:78%;">
+
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">会员名</span>
+                                    <input id="member5" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 55px;" class="label label-lg label-primary arrowed-right">金额</span>
+                                    <div class="input-group form-group col-sm-3" style="height:32px;width:72%;">
+                                        <input id="fromMoney5" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+                                               style="height:32px">
+                                        <span class="input-group-addon">~</span>
+                                        <input id="toMoney5" onkeyup="clearNoNum(this)" type="text" class="form-control input-small"
+                                               style="height:32px">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12" style="height:2px;"></div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">层级</span>
+                                    <select id="level_4" class="chosen-select form-control" style="height:32px;width:78%;">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span class="label label-lg label-primary arrowed-right">订单号</span>
+                                    <input id="orderNo5" class="input-large " type="text"  style="height: 32px;width:66%;"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="width: 55px;" class="label label-lg label-primary arrowed-right"><i class="fa fa-calendar bigger-110"></i></span>
+                                    <input id="timeScope5" class="input-large date-range-picker" type="text"  style="height: 32px;width:72%;"/>
+                                </div>
+                                <div class="col-sm-3">
+									<span class=" pull-left">
+                                        <label class="pull-right inline">
+                                            <button id="button5" type="button" class="btn btn-xs btn-white btn-info btn-bold ">
+                                                <i class="ace-icon fa fa-search bigger-100 green"></i>
+                                            查询
+                                            </button>
+                                        </label>
+						            </span>
+                                    <span style="margin-left: 30px;" class="pull-left">
+										<label class="pull-right inline">
+											<button class="btn btn-xs btn-white btn-info btn-bold" type="button" onclick="_resetValueR(5);">
+												<i class="ace-icon fa fa-refresh bigger-100 red"></i>重置
+											</button>
+										</label>
+									</span>
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+                    <table style="margin-bottom: 0px" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>盘口</th>
+                            <th>层级</th>
+                            <th>会员名</th>
+                            <th>订单号</th>
+                            <th>金额</th>
+                            <th>申请时间</th>
+                            <th>转交时间</th>
+                            <th>备注</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody5">
+
+                        </tbody>
+                    </table>
+
+                    <div id="master_footPage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 入款明细-->
+<div id="modal-incomeDetail" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    最近入款明细
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <table class="table table-bordered user-table audit_table">
+                            <thead>
+                                <th>订单号</th>
+                                <th>入款金额</th>
+                                <th>入款类型</th>
+                                <!--<th>要求打码量</th>-->
+                                <th>入款时间</th>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="8" style="text-align: center"><h3>暂无数据</h3></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" data-dismiss="modal" aria-hidden="true"  class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 大额中奖明细-->
+<div id="modal-bigwin" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:1100px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div id="" style="text-align: center" class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    大额中奖明细
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <table class="table table-bordered user-table audit_table">
+                            <thead>
+                            <th>彩种ID</th>
+                            <th>彩种名称</th>
+                            <th>期号</th>
+                            <th>单注投注金额</th>
+                            <th>投注注数</th>
+                            <th>返点百分比</th>
+                            <th>中奖金额</th>
+                            <th>下注时间</th>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" data-dismiss="modal" aria-hidden="true"  class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 盈利明细-->
+<div id="modal-winLoseDetail" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:1100px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div  style="text-align: center" class="table-header">
+                    <button type="button" onclick="_closeDepositModalReq();" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    最近盈利明细
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <span style="color: red;font-size: 10px">注：中奖金额：10000以上属于大额中奖</span>
+                        <table class="table table-bordered user-table audit_table">
+                            <thead>
+                            <th>序号</th>
+                            <th>会员账号</th>
+                            <th>购买彩种</th>
+                            <th>单注金额</th>
+                            <th>购买数量</th>
+                            <th>是否中奖</th>
+                            <th>中奖金额</th>
+                            <th>购买时间</th>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="_closeDepositModalReq();" data-dismiss="modal" aria-hidden="true"  class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 账号登陆ip明细-->
+<div id="modal-accIpsDetail" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div  style="text-align: center" class="table-header">
+                    <button type="button" onclick="_closeAccount2IpModalReq();" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    账号登陆的IP明细
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <table class="table table-bordered user-table audit_table">
+                            <thead>
+                            <th>账号</th>
+                            <th>IP</th>
+                            <th>登录时间</th>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="_closeAccount2IpModalReq();" data-dismiss="modal" aria-hidden="true"  class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal IP-账号登陆明细-->
+<div id="modal-ipAccsDetail" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div  style="text-align: center" class="table-header">
+                    <button type="button" onclick="_closeIP2AccountModalReq();" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    IP登陆的账号明细
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <table class="table table-bordered user-table audit_table">
+                            <thead>
+                            <th>IP</th>
+                            <th>账号</th>
+                            <th>登陆时间</th>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="_closeIP2AccountModalReq();" data-dismiss="modal" aria-hidden="true"  class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="myContentForRequest"></div>
+<!--modal-->
+<div id="historyDetail" ></div>
+<!-- 停止接单原因 -->
+<div class="modal fade  in" id="stopOrder" aria-hidden="false" style="display: none;">
+	<div style="" class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					停止接单原因：
+				</div>
+			</div>
+			<div class="modal-body" id="modal_choose">
+				<div class="row">
+					<div>
+						<span class="label label-lg label-pink arrowed-right">原因：</span>
+						    <input type="radio" style="cursor: pointer;" onclick="changeReadonly();"  value="下班" name="radioWhy" >
+						    下班
+						    <input type="radio" style="cursor: pointer;" onclick="changeReadonly();"  value="去诊所" name="radioWhy" >
+						    去诊所
+						    <input type="radio" style="cursor: pointer;" onclick="changeReadonly();"  value="上厕所" name="radioWhy" >
+						    上厕所
+						    <input type="radio" style="cursor: pointer;" onclick="changeReadonly();"  value="吃饭" name="radioWhy" >
+						    吃饭
+						    <input type="radio" style="cursor: pointer;" onclick="changeReadonly();"  value="外出抽烟" name="radioWhy" >
+						    外出抽烟
+						    <input type="radio" style="cursor: pointer;" onclick="changeReadonly();"  value="其它" name="radioWhy" >
+						    其它
+					</div>
+					<div>
+						<textarea id="whyText" name="whyText" readonly="readonly" style="width: 580px;" rows="5"></textarea>
+						<label><span id="remarkWhyText" style="color: red;display: none;">请填写原因再提交</span></label>
+					</div>
+					<div class="modal-footer" style="height: 50px;">
+						<button class="btn btn-primary" style="height: 35px;" onclick="subStopOrder();" type="button" >提交</button>
+						<button class="btn btn-danger" onclick="closeStopOrder();" style="height: 35px;" type="button">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--ip 归属地-->
+<div id="modal-attribution-ip" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div  style="text-align: center" class="table-header">
+                    <button type="button" onclick="_closeAttribution4IP();" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    IP归属地
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <table class="table table-bordered user-table audit_table">
+                            <thead>
+                            <th>国家</th>
+                            <th>省份</th>
+                            <th>城市</th>
+                            </thead>
+                            <tbody id="modal-attribution-ip-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button type="button" onclick="_closeAttribution4IP();" data-dismiss="modal" aria-hidden="true"  class="btn btn-sm btn-success pull-right">
+                    <i class="ace-icon fa fa-check"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal-->
+<div id="changBtnDivOutReq"  class="btn-of-change" >
+    <button id="pauseBtn" style="display: none;"  onclick="_pauseWork();" type="button" btn_value="1" class="btn btn-white btn-warning btn-bold">
+    </button>
+    <button id="changBtn" type="button" btn_value="0" onclick="_startWork();" class="btn btn-white btn-info btn-bold" >
+    </button>
+</div>
+<script type="text/javascript" src="../javascript/lib/jquery.chosen.min.js"></script>
+<script type="text/javascript" src="../javascript/outward/orderDetail.js"></script>
+<script type="text/javascript" src="../javascript/common/common_getInfo.js"></script>

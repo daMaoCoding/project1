@@ -1,0 +1,91 @@
+<style>
+	#describe::-webkit-input-placeholder{color:red;font-size: 18px;text-align: center;}
+</style>
+
+<div class="page-content">
+						<div class="page-header" style="text-align: center;">
+							<h1>
+								反馈内容
+							</h1>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-12">
+								<!-- PAGE CONTENT BEGINS -->
+								<form class="form-horizontal" role="form">
+									<!-- #section:elements.form -->
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 级别 <i class="ace-icon fa fa-asterisk red"></i></label>
+										<div class="col-sm-9">
+											<input type="radio" id="suggest" checked="checked" name="level" value="1"><label for="suggest">建议</label>
+											<input id="ordinary" style="margin-left: 15px;" type="radio" name="level" value="2"><label for="ordinary">一般</label>
+											<input id="seriousness" style="margin-left: 15px;" type="radio" name="level" value="3"><label for="seriousness">严重</label>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> 问题描述 <i class="ace-icon fa fa-asterisk red"></i></label>
+
+										<div class="col-sm-5">
+											<textarea placeholder="温馨提示：请标明问题相应的单号或者账号信息。" style="height: 120px;" id="describe" name="describe" class="autosize-transition form-control"></textarea>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 上传截图<i class="ace-icon fa fa-asterisk red"></i> </label>
+										<div class="col-sm-5">
+											<!-- <button id="select">(重新)选择图片</button>                  
+											<button id="add">(追加)图片</button>   -->                
+											<label class="ace-file-input ace-file-multiple"><input multiple="" type="file" id="file_input"><span  class="ace-file-container" data-title="点击上传图片(最多支持上传五张图片)"><span class="ace-file-name" data-title="No File ..."><i class=" ace-icon ace-icon fa fa-cloud-upload"></i></span></span><a class="remove" href="#"><i class=" ace-icon fa fa-times"></i></a></label>            
+										</div>
+									</div>
+									
+									<div id="showPic">
+										
+									</div>
+
+									<div class="clearfix form-actions">
+										<span id="prompt_describe"
+	                      					 style="display:none;color: red;padding-left: 160px;">请填写备注</span>
+	                      				<span id="prompt_pic"
+	                      					 style="display:none;color: red;padding-left: 160px;">图片不能为空且最多只能上传五张图片</span>
+										<div class="col-md-offset-3 col-md-9">
+											<button id="save" onclick="send();" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												提交
+											</button>
+
+											<!--  &nbsp; &nbsp; &nbsp;
+											<button class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												重置
+											</button>-->
+											
+											&nbsp; &nbsp; &nbsp;
+											<button onclick="javascript :history.back(-1);" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div>
+<div class="modal fade" id="feedBackImgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog"  style="width:90%;">
+        <div class="modal-content">
+            <div style="text-align: center" class="table-header">
+                <button type="button" class="close white" data-dismiss="modal" aria-hidden="true">×</button>
+                反馈截图
+            </div>
+            <div id="feedImg" class="modal-body center">
+                <img id="feedBackImg" style="cursor: pointer;max-width:100%;" src=""  alt="auto">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/common_export.js"></script>

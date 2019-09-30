@@ -1,0 +1,85 @@
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+					<div class="col-xs-12" id="fczl">
+						<h3 class="row header smaller lighter blue">
+							<div class="col-sm-12">
+								<div class="form-inline">
+									<span class="label label-lg label-pink arrowed-right">盘口</span>
+									<select id="handicap" name="handicap" class="chosen-select form-control"   style="height:32px" >
+										
+									</select>
+									<span class="label label-lg label-primary arrowed-right">层级</span>
+									<select id="level" name="level" onchange="queryFinMoreLevelStat()" class="chosen-select form-control"   style="height:32px" >
+										
+									</select>
+									<div class="input-group">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar bigger-110"></i>
+										</span>
+										<input class="form-control date-range-picker" placeholder="自定义时间段" type="text" style="width: 230px;" name="startAndEndTime" id="startAndEndTime" />
+									</div>
+									<label class="inline">
+										<input type="radio" onclick="clearStartAndEndTime()" name="form-field-checkbox" value="today" class="ace" />
+										<span class="lbl"> 今日</span>
+									</label>
+									<label class="inline">
+										<input type="radio" onclick="clearStartAndEndTime()" name="form-field-checkbox" value="thisWeek" class="ace" />
+										<span class="lbl"> 昨日</span>
+									</label>
+									<label class="inline">
+										<input type="radio" onclick="clearStartAndEndTime()" name="form-field-checkbox" value="thisMonth" class="ace" />
+										<span class="lbl"> 本月</span>
+									</label>
+									<!-- <label class="inline">
+										<input type="radio" onclick="clearStartAndEndTime()" name="form-field-checkbox" value="lastMonth" class="ace" />
+										<span class="lbl"> 上月</span>
+									</label> -->
+
+									<label class="pull-right inline">
+											<a  class="btn btn-xs btn-white btn-primary btn-bold" id="back" type="button">返回</a>
+									</label>
+									<label class="pull-right inline">
+										&nbsp;&nbsp;&nbsp;
+									</label>
+									<label class="pull-right inline">
+										<button id="searhByCondition" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+											<i class="ace-icon fa fa-search bigger-100 green"></i>
+											查询
+										</button>
+									</label>
+
+								</div>
+							</div><!-- /.col -->
+						</h3>
+
+						<table id="dynamic-table" class="table table-striped table-bordered table-hover no-margin-bottom">
+							<thead>
+							<tr>
+								<th rowspan="2">盘口</th>
+								<th rowspan="2">层级</th>
+								<th colspan="4" class="center">入款</th>
+								<th colspan="4" class="center">出款</th>
+								<th colspan="2" class="center">亏损</th>
+								<th rowspan="2">盈利</th>
+							</tr>
+							<tr>
+								<th>人数</th>
+								<th>笔数</th>
+								<th style="display: none;">手续费</th>
+								<th>金额</th>
+								<th>实际入款金额</th>
+								<th>人数</th>
+								<th>笔数</th>
+								<th>金额</th>
+								<th>实际出款金额</th>
+								<th>笔数</th>
+								<th>亏损费</th>
+							</tr>
+							</thead>
+							<tbody id="total_tbody">
+								
+							</tbody>
+						</table>
+						<!-- 分页 -->
+						<div id="finMoreStatLevelPage"></div>
+						<!-- #section:pages-footer end-->
+</div>

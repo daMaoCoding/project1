@@ -1,0 +1,71 @@
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+	<div class="main-content">
+		<div class="main-content-inner">
+			<div class="page-content" id="fczl">
+				<div id="unmatch" class="tab-pane in active">
+					<form class="form-inline">
+						<div class="row">
+							<div class="col-sm-10">
+								<span class="label label-lg label-primary arrowed-right">汇出人</span>
+								<input  type="text" id="memberrealname" name="memberrealname"  placeholder="汇出人"  style="height:32px"  />
+
+								<span class="label label-lg label-success arrowed-right">日期</span>
+								<input class="form-control date-range-picker" placeholder="自定义时间段" type="text" style="width: 230px;" id="startAndEndTime" name="startAndEndTime" />
+
+								<span class="label label-lg label-warning arrowed-right">金额</span>
+								<div class="input-group form-group col-sm-2" style="height:32px">
+									<input type="text" id="startamount" onkeyup="clearNoNum(this)" name="startamount" class="form-control input-small"  style="height:32px">
+									<span class="input-group-addon">~</span>
+									<input type="text" id="endamount" onkeyup="clearNoNum(this)" name="endamount" class="form-control input-small"  style="height:32px">
+								</div>
+							</div>
+
+							<span class="col-sm-2">
+
+
+										<label class="pull-right inline">
+												<a  class="btn btn-xs btn-white btn-primary btn-bold" id="back"  type="button">返回</a>
+										</label>
+										<label class="pull-right inline">&nbsp;&nbsp;</label>
+										<label class="pull-right inline">
+											<button id="searhByCondition" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-search bigger-100 green"></i>查询
+											</button>
+										</label>
+
+									</span><!-- /.col -->
+
+						</div>
+					</form>
+					<div class="row">
+						<div class="col-sm-12">
+							<table id="simple-table3" class="table  table-bordered table-hover no-margin-bottom">
+								<thead>
+								<tr>
+									<th>盘口</th>
+									<th>类型</th>
+									<th>会员账号</th>
+									<th>订单号</th>
+									<th>金额</th>
+									<th>时间</th>
+									<!-- <th>支付确认码</th> -->
+									<th>备注</th>
+								</tr>
+								</thead>
+
+								<tbody id="total_tbody_Match">
+									
+								</tbody>
+							</table>
+							<!-- #section:pages-footer -->
+							<!-- 分页 -->
+							<div id="fininStatMatchPage"></div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>

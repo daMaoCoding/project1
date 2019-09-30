@@ -1,0 +1,54 @@
+<div id="modalPage">
+	<div id="clearAccountDateListModal" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<div class="modal-dialog modal-lg" style="width:900px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header"aria-hidden="false" data-backdrop="static" >
+					<button type="button" class="close" onclick="closeModal();" >
+						<span class="white">&times;</span>
+					</button>
+					<button type="button" class="close" onclick="toMinimize();" >
+						<span class="white">-</span>
+					</button>
+					清算
+				</div>
+			</div>
+			<div class="modal-body">
+				<!-- 查询条件 -->
+				<form class="form-inline">
+					<span class="label label-lg label-pink arrowed-right">清算时间：</span>
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="fa fa-calendar bigger-110"></i>
+						</span>
+						<input class="form-control date-range-picker" readonly="readonly" type="text" name="startAndEndTime" id="startAndEndTime" style="height: 32px;width:180px;"/>
+					</div>
+					<span class="blue">
+						<i class="ace-icon fa fa-exclamation-triangle red bigger-130"></i>
+						&nbsp;提示：清算所选日期之前的数据！
+					</span>
+					<label class="pull-right inline">
+						<button onclick="queryClearDate()" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+							<i class="ace-icon fa fa-search bigger-100 green"></i>
+							查询
+						</button>
+					</label>
+				</form>
+				<div id="result" class="pull-right inline"></div>
+				<table class="table table-striped table-bordered table-hover no-margin-bottom" >
+					<thead><tr>
+						<th style="width:25%;">账号</th>
+						<th style="width:25%;">账号类型</th>
+						<th style="width:25%;">状态</th>
+						<th style="width:25%;">未对账的条数</th>
+					</tr></thead>
+					<tbody id="clear_total_tbody"></tbody>
+				</table>
+				<div id="clearAccountDateListPage"></div>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center"></div>
+		</div>
+	</div>
+</div>
+</div>

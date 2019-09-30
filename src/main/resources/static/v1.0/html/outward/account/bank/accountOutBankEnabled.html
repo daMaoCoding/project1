@@ -1,0 +1,121 @@
+<div class="row">
+   	<div  id="accountFilter"  style="z-index:2" class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left">
+		<div class="col-sm-3">
+		     <span class="label label-lg label-purple arrowed-right">盘口</span>
+		 	<select class="chosen-select width150" name="search_EQ_handicapId">
+		         <option value="" selected="selected">全部</option>
+		     </select>
+		</div>
+		<div class="col-sm-3">
+			<!--<span class="label label-lg label-purple arrowed-right">银行</span>
+			<input type="text" style="height:32px;width:80px;" name="search_LIKE_bankType" placeholder="银行类别" />-->
+			<span class="label label-lg label-purple arrowed-right">&nbsp;&nbsp;银行&nbsp;&nbsp;</span>
+			<select name="search_LIKE_bankType" class="chosen-select" style="height:32px;width:150px;">
+				<option>请选择</option>
+			</select>
+		</div>
+		<div class="col-sm-6">
+	        <span class="label label-lg label-purple arrowed-right">帐号</span>
+	        <input type="text" style="width:150px;" name="search_LIKE_account" class="input-sm" placeholder="帐号" />&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="label label-lg label-purple arrowed-right">来源</span>
+			&nbsp;
+			<label class="inline">
+				<input type="radio" name="flag" class="ace defaultCheck" checked value="" >
+				<span class="lbl">全部</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="flag" class="ace" value="0" >
+				<span class="lbl">PC</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="flag" class="ace" value="2" >
+				<span class="lbl">返利网</span>
+			</label>
+			
+	        <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="reset('accountFilter');"><i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button></label>
+	        
+		</div>
+		<div class="col-sm-12" style="height:10px;">&nbsp;
+		</div>
+		<div class="col-sm-3">
+	        <span class="label label-lg label-purple arrowed-right">编号</span>
+	        <input type="text" style="width:150px;" class="input-sm" placeholder="编号" name="search_LIKE_alias" />
+		</div>
+		<div class="col-sm-3">
+	        <span class="label label-lg label-purple arrowed-right">操作人</span>
+	        <input type="text" style="width:150px;" class="input-sm" placeholder="操作人" name="search_LIKE_operator" />
+		</div>
+		<div class="col-sm-6">
+			<span class="label label-lg label-purple arrowed-right">层级</span>
+			&nbsp;
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace defaultCheck" checked value="" >
+				<span class="lbl">全部</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace" value="1" >
+				<span class="lbl">外层</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace" value="2" >
+				<span class="lbl">内层</span>
+			</label>
+			<label class="inline">
+				<input type="radio" name="currSysLevel" class="ace" value="8" >
+				<span class="lbl">指定层</span>
+			</label>
+			
+			<a type="button" id="outwardAccountBankUsed" style="display: none;padding-left: 1%;" class="btn btn-warning" onclick="openModal();">清算</a>
+       		<label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold" onclick="searchByFilter();"><i class="ace-icon fa fa-search bigger-100 green"></i>查询</button></label>
+			<label class="pull-right inline">&nbsp;&nbsp;</label>
+			<label class="pull-right inline" >
+				<button class="btn btn-xs btn-white btn-info btn-bold" onclick="saveAllocByBatch()">
+					<i class="ace-icon fa fa-list bigger-100 green"></i>一键分配
+				</button>
+			</label>
+			<label class="pull-right inline">&nbsp;&nbsp;</label>
+	        <label class="pull-right inline"><button class="btn btn-xs btn-white btn-info btn-bold contentRight" contentRight="OutwardAccountBankEnabled:Create:*" onclick="addAccount();"><i class="ace-icon fa fa-plus bigger-100 green"></i>新增</button></label>
+		</div>
+   	</div>
+    <div  class="col-sm-12">&nbsp;&nbsp;</div>
+    <div>
+		<input type="hidden"  id="deviceStatus"  value="online">
+		<ul class="nav nav-tabs">
+			<li onclick="changeDevice('')"  ><a data-toggle="tab" >全部&nbsp;<span class="badge badge-danger" id="totalIdSize">0</span></a></li>
+			<li onclick="changeDevice('online')"  class="active"><a data-toggle="tab" >在线&nbsp;<span class="badge badge-danger" id="onlineSize">0</span></a></li>
+			<li onclick="changeDevice('stop')"  ><a data-toggle="tab" >暂停&nbsp;<span class="badge badge-danger" id="stopSize">0</span></a></li>
+			<li onclick="changeDevice('offline')"  ><a data-toggle="tab" >离线&nbsp;<span class="badge badge-danger" id="offlineSize">0</span></a></li>
+		</ul>
+	</div>
+       <table id="dynamic-table" class="table table-bordered table-hover  no-margin-bottom">
+           <thead>
+           	<tr>
+				<th style="width:4%;"><input type="checkbox" onclick="selectAllOrNotAll(this);" title="一键回收复选框"/></th>
+           		<th style="width:6%;">盘口</th>
+           		<th style="width:5%;">层级</th>
+           		<th style="width:5%;">编号&nbsp;
+							<i class="ace-icon fa fa-info-circle bigger-150 red" style="cursor:pointer " 
+							title="说明：
+“在线”，指的是设备实时在线
+“暂停”，指的是兼职人员自己操作暂停了设备运作，或在PC监控/工具端 对账号操作了暂停
+“离线”，指的是设备离线，需要客服尽快联系兼职人员处理"></i></th>
+           		<th style="width:10%;">账号</th>
+           		<th style="width:9%;">银行余额</th>
+				<th style="width:7%;">系统余额</th>
+           		<th style="width:9%;">转出对账</th>
+           		<th style="width:9%;">转入对账</th>
+           		<th style="width:6%;">持卡人</th>
+           		<th style="width:4%;">来源</th>
+           		<th style="width:33%;">
+           		操作&nbsp;&nbsp;<i class="ace-icon fa fa-info-circle bigger-130 red" style="cursor:pointer " title="返利网账号保证金大于0时，可分配、可修改限额"></i>
+           		</th>
+           	</tr>
+           </thead>
+           <tbody></tbody>
+       </table>
+       <div id="accountPage"></div>
+</div>
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalOutAccount.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalTransferBalance.js"></script>

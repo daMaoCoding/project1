@@ -1,0 +1,801 @@
+<div class="row col-sm-12">
+	<div class="" id="accountFilter">
+		<input type="hidden" id="refresh_phoneNumber"  >
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">盘口</span>
+			<select class="chosen-select width60" name="search_EQ_handicapId">
+				<option value="" selected="selected">全部</option>
+			</select>
+			<span class="label label-lg label-purple arrowed-right" title="内外层">内外</span>
+			<select class="chosen-select width60" name="search_EQ_level"  title="内外层">
+				<option value="" >全部</option>
+				<option value="1">外层</option>
+				<option value="2">内层</option>
+			</select>
+		</div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">银行卡</span>
+			<input type="text" name="search_LIKE_bankCard" class="input-sm"  placeholder="已绑银行卡"/>
+		</div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">微信</span>
+			<input type="text" name="search_LIKE_wechat" class="input-sm" placeholder="已绑微信" />
+		</div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">刷新</span>
+			<div id="refreshAccountListSelect"></div>
+			<label class="pull-right inline" onclick="reset('accountFilter');">
+				<button class="btn btn-xs btn-white btn-info btn-bold"><i class="ace-icon fa fa-refresh bigger-100 green"></i>重置</button>
+			</label>
+			<label class="pull-right inline">&nbsp;&nbsp;</label>
+			<label class="pull-right inline contentRight" contentRight='IncomePhoneNumber:addMobile:*'  onclick="showModalAddPhone()">
+				<button type="button" class="btn btn-xs btn-white btn-info btn-bold">
+					<i class="ace-icon fa fa-plus bigger-100 green"></i><span>新建</span>
+				</button>
+			</label>
+		</div>
+		<div  class="col-sm-12" style="height:5px;"></div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">手机号</span>
+			<input type="text" name="search_LIKE_mobileNo" class="input-sm" placeholder="手机号" />
+		</div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">支付宝</span>
+			<input type="text" name="search_LIKE_alipay" class="input-sm"  placeholder="已绑支付宝"/>
+		</div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">状态</span>
+			<label class="inline">
+				<input type="checkbox" name="status" class="ace" value="1" checked="checked">
+				<span class="lbl">在用</span>
+			</label>
+			<label class="inline">
+				<input type="checkbox" name="status" class="ace defaultNoCheck" value="4">
+				<span class="lbl">停用</span>
+			</label>
+			<label class="inline">
+				<input type="checkbox" name="status" class="ace defaultNoCheck" value="3">
+				<span class="lbl">冻结</span>
+			</label>
+		</div>
+		<div class="col-sm-3">
+			<span class="label label-lg label-purple arrowed-right">类型</span>
+			<label class="inline">
+				<input type="checkbox" name="type" class="ace" value="1" checked="checked">
+				<span class="lbl">客户</span>
+			</label>
+			<label class="inline">
+				<input type="checkbox" name="type" class="ace" value="2" checked="checked">
+				<span class="lbl">自用</span>
+			</label>
+			&nbsp;
+			<label id="searchBtn" class="pull-right inline" onclick="showPage()">
+				<button type="button" class="btn btn-xs btn-white btn-info btn-bold">
+					<i class="ace-icon fa fa-search bigger-100 green"></i><span>查询</span>
+				</button>
+			</label>
+		</div>
+	</div>
+	<table id="accountListTable" class="table table-striped table-bordered table-hover no-margin-bottom">
+		<thead>
+			<tr>
+				<th>盘口</th><th>手机号</th><th>联系人</th><th>状态</th><th>类型</th><th>银行卡</th><th>微信</th><th>支付宝</th><th>信用额度</th><th>总余额</th><th>今日收款/佣金</th><th>已绑账号操作</th><th>手机号操作</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+	<div id="phoneNumber_page"></div>
+</div>
+
+<!-- 新增手机号 -->
+<div id="addPhoneNo4clone" class="modal fade" data-backdrop="static"  tabindex="-1">
+	<div class="modal-dialog modal-lg" style="width:1080px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>新增</div>
+			</div>
+			<div class="modal-body">
+				<table id="tableAdd" style="border:none;">
+					<thead>
+					<tr>
+						<th style="width:120px;"></th>
+						<th style="width:220px;"></th>
+						<th style="width:120px;"></th>
+						<th style="width:220px;"></th>
+						<th style="width:120px;"></th>
+						<th style="width:220px;"></th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td colspan="2"><h6 class="header smaller lighter blue no-padding no-margin" >手机号信息</h6></td>
+							<td></td>
+							<td colspan="2"><h6 class="header smaller lighter blue no-padding no-margin" >返佣信息</h6></td>
+						</tr>
+						<tr>
+							<td>手机号</td>
+							<td>
+								<span class='input-icon'>
+									<input class="input-sm width200" name="mobile" type="number" placeholder="手机号">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+							<td>内外层</td>
+							<td>
+								<div style="height:30px;line-height:30px;color:#333">
+									<label class="form-group bl"><input type="radio" name="level" value="1" ><span>外层</span></label>
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									<label class="form-group bl"><input type="radio" name="level" value="2"><span>内层</span></label>
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								</div>
+							</td>
+							<td class="customerShow">账号</td>
+							<td class="customerShow">
+								<span class='input-icon'>
+									<input class="input-sm width200" name="bonusCard" type="number"  placeholder="必填，返佣账号">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>联系人</td>
+							<td>
+								<span class='input-icon'>
+									<input class="input-sm width200" name="owner" type="text"  placeholder="联系人">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+							<td>类型</td>
+							<td>
+								<div style="height:30px;line-height:30px;color:#333">
+									<label class="form-group bl">
+										<input type="radio" name="type" value="1" >
+										<span>客户</span>
+									</label>&nbsp;&nbsp;&nbsp;&nbsp;
+									<label class="form-group bl">
+										<input type="radio" name="type" value="2">
+										<span>自用</span>
+									</label>&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</td>
+							<td class="customerShow">开户人</td>
+							<td class="customerShow">
+								<span class='input-icon'>
+									<input type="text" class="input-sm width200" name="bonusCardOwner"  placeholder="必填，返佣账号开户人" />
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>盘口</td>
+							<td><select class="chosen-select width200" name="handicap_select"></select></td>
+							<td class="customerShow">信用额度</td>
+							<td class="customerShow">
+								<span class='input-icon'>
+									<input class="input-sm width200" name="creditLimit" type="number" placeholder="必填，信用额度">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+							<td class="customerShow">开户行</td>
+							<td class="customerShow">
+								<span class='input-icon'>
+									<input type="text" class="input-sm width200"  name="bonusCardName"  placeholder="必填，返佣账号开户行" />
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2"><h6 class="header smaller lighter blue no-padding no-margin" >微信信息（填写账号后，其它输入项必填）</h6></td>
+							<td colspan="2"><h6 class="header smaller lighter blue no-padding no-margin" >支付宝信息（填写账号后，其它输入项必填）</h6></td>
+							<td colspan="2"><h6 class="header smaller lighter blue no-padding no-margin" >银行卡信息（填写账号后，其它输入项必填）</h6></td>
+						</tr>
+						<tr>
+							<td>微信账号</td>
+							<td><input class="input-sm width200" name="wechat" type="text"  placeholder="选填，微信账号"></td>
+							<td>支付宝账号</td>
+							<td><input class="input-sm width200" name="alipay" type="text"  placeholder="选填，支付宝账号"></td>
+							<td>银行卡账号</td>
+							<td><input class="input-sm width200" name="bankCard" type="number"  placeholder="选填，银行卡账号"></td>
+						</tr>
+						<tr>
+							<td>姓名</td>
+							<td><input type="text" class="input-sm width200" name="wechatOwner"  placeholder="选填，微信姓名" /></td>
+							<td>姓名</td>
+							<td><input type="text" class="input-sm width200" name="alipayOwner"  placeholder="选填，支付宝姓名" /></td>
+							<td>开户人</td>
+							<td><input type="text" class="input-sm width200" name="bankCardOwner"  placeholder="选填，银行卡开户人" /></td>
+						</tr>
+						<tr>
+							<td>入款限额</td>
+							<td><input type="text" class="input-sm width200" name="wechatLimitIn"  placeholder="选填，微信当日入款限额" /></td>
+							<td>入款限额</td>
+							<td><input type="text" class="input-sm width200" name="alipayLimitIn"  placeholder="选填，支付宝当日入款限额" /></td>
+							<td>开户行</td>
+							<td>
+								<span class="input-icon">
+									<select class="chosen-select"  style="width:98px;"name="choiceBankBrand" ></select>
+									<i class="ace-icon fa fa-asterisk red"></i>
+								</span>
+								<input type="text" class="input-sm" name="bankCardName"  style="width:100px;" placeholder="选填，支行" />
+							</td>
+						</tr>
+						<tr>
+							<td>余额告警</td>
+							<td><input type="text" class="input-sm width200" name="wechatLimitBalance"  placeholder="选填，微信余额告警" /></td>
+							<td>余额告警</td>
+							<td><input type="text" class="input-sm width200" name="alipayLimitBalance"  placeholder="选填，支付宝余额告警" /></td>
+							<td>余额告警</td>
+							<td><input type="text" class="input-sm width200" name="bankLimitBalance"  placeholder="选填，银行卡余额告警" /></td>
+						</tr>
+						<tr>
+							<td>提现方式</td>
+							<td>
+								<label class="inline">
+									<input type="checkbox" class="ace" name="wechatTransOutType" value="1" checked="checked" >
+									<span class="lbl">二维码收款</span>
+								</label>&nbsp;&nbsp;&nbsp;&nbsp;
+								<label class="inline">
+									<input type="checkbox" class="ace" name="wechatTransOutType" value="2" checked="checked" >
+									<span class="lbl">银行卡</span>
+								</label>
+							</td>
+							<td>提现方式</td>
+							<td>
+								<label class="inline">
+									<input type="checkbox" class="ace" name="alipayTransOutType" value="1" checked="checked" >
+									<span class="lbl">二维码收款</span>
+								</label>&nbsp;&nbsp;&nbsp;&nbsp;
+								<label class="inline">
+									<input type="checkbox" class="ace" name="alipayTransOutType" value="2" checked="checked" >
+									<span class="lbl">银行卡</span>
+								</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doAddPhone();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 修改手机号基本信息-->
+<div id="updateMobile4clone" class="modal fade">
+	<input type="hidden" id="mobileId"/>
+	<div  class="modal-dialog modal-lg" style="width:640px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					<span>修改基本信息</span>
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<table  style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:220px;"></th>
+							<th style="width:100px;"></th>
+							<th style="width:220px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>手机号</td>
+							<td><input class="input-sm width200" type="number" name="mobile" ></td>
+							<td>盘口</td>
+							<td><input class="input-sm width200" type="text" disabled name="handicap" ></td>
+						</tr>
+						<tr>
+							<td>联系人</td>
+							<td>
+								<span class='input-icon'>
+									<input class="input-sm width200" type="text" name="owner" >
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+							<td>内外层</td>
+							<td>
+								<div style="height:30px;line-height:30px;color:#333">
+									<label class="form-group bl"><input type="radio" name="level" value="1" ><span>外层</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+									<label class="form-group bl"><input type="radio" name="level" value="4"><span>中	层</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+									<label class="form-group bl"><input type="radio" name="level" value="2"><span>内层</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>状态</td>
+							<td>
+								<div style="height:30px;line-height:30px;color:#333">
+									<label class="form-group bl"><input type="radio" name="status" value="1"><span>启用</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+									<label class="form-group bl"><input type="radio" name="status" value="4"><span>停用</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+									<label class="form-group bl"><input type="radio" name="status" value="3"><span>冻结</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</td>
+							<td>类型</td>
+							<td>
+								<div style="height:30px;line-height:30px;color:#333">
+									<label class="form-group bl"><input type="radio" name="type" value="1" disabled><span>客户</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+									<label class="form-group bl"><input type="radio" name="type" value="2" disabled><span>自用</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</td>
+						</tr>
+						<tr class="customerShow">
+							<td>信用额度</td>
+							<td>
+								<span class='input-icon'>
+									<input class="input-sm width200" name="creditLimit" type="number" placeholder="类型为“客户”时，请输入">
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr class="customerShow">
+							<td colspan="4"><h6 class="header smaller lighter blue no-margin" >返佣信息</h6></td>
+						</tr>
+						<tr class="customerShow">
+							<td>银行卡</td>
+							<td><input class="input-sm width200" type="number" name="bonusCard" ></td>
+							<td>开户人</td>
+							<td>
+								<span class='input-icon'>
+									<input type="text" class="input-sm width200" name="bonusCardOwner" />
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+						<tr class="customerShow">
+							<td>开户行</td>
+							<td colspan="3">
+								<span class='input-icon'>
+									<input type="text" class="input-sm" style="width:518px;" name="bonusCardName" />
+									<i class='ace-icon fa fa-asterisk red'></i>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doUpdateMobile();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 修改已绑账号信息-->
+<div id="updateBindAccount4clone" class="modal fade">
+	<input type="hidden" id="mobile"/>
+	<input type="hidden" id="account"/>
+	<div  class="modal-dialog modal-lg" style="width:350px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					<span>修改已绑账号信息</span>
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<div class="tabbable">
+					<input type="hidden" id='updateBindAccount_tabType' value='bank'>
+					<ul class="nav nav-tabs">
+						<li onclick="updateBindAccount_changeTab('bank')" class="active"><a data-toggle="tab" href="#tab">银行卡</a></li>
+						<li onclick="updateBindAccount_changeTab('wechat')" ><a data-toggle="tab" href="#tab">微信</a></li>
+						<li onclick="updateBindAccount_changeTab('alipay')" ><a data-toggle="tab" href="#tab">支付宝</a></li>
+					</ul>
+					<div class="tab-content padding-2">
+						<div id="tab" class="tab-pane active">
+							<table id="bankInfo" style="border:none;" >
+								<thead>
+									<tr>
+										<th style="width:100px;"></th>
+										<th style="width:250px;"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>账号</td>
+										<td><input type="number" class="input-sm width200" name="account" placeholder="新增账号"/></td>
+									</tr>
+									<tr>
+										<td>开户人</td>
+										<td><input type="text" class="input-sm width200" name="owner" /></td>
+									</tr>
+									<tr>
+										<td>开户行</td>
+										<td>
+											<span class="input-icon">
+												<select class="chosen-select"  style="width:98px;"name="choiceBankBrand" ></select>
+												<i class="ace-icon fa fa-asterisk red"></i>
+											</span>
+											<input type="text" class="input-sm" style="width:100px;" name="bankName"/>
+										</td>
+									</tr>
+									<tr>
+										<td>余额告警</td>
+										<td><input type="text" class="input-sm width200" name="limitBalance" /></td>
+									</tr>
+								</tbody>
+							</table>
+							<table id="wechatAlipayInfo" style="border:none;display:none;" >
+								<thead>
+									<tr>
+										<th style="width:100px;"></th>
+										<th style="width:250px;"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>账号</td>
+										<td><input type="text" class="input-sm width200" name="account" placeholder="新增账号"/></td>
+									</tr>
+									<tr>
+										<td>姓名</td>
+										<td><input type="text" class="input-sm width200" name="owner"/></td>
+									</tr>
+									<tr>
+										<td>当日入款限额</td>
+										<td><input type="text" class="input-sm width200" name="limitInDaily" /></td>
+									</tr>
+									<tr>
+										<td>余额告警</td>
+										<td><input type="text" class="input-sm width200" name="limitBalance" /></td>
+									</tr>
+									<tr>
+										<td>提现方式</td>
+										<td>
+											<label class="inline">
+												<input type="checkbox" class="ace" name="transOutType" value="1"  >
+												<span class="lbl">二维码收款</span>
+											</label>&nbsp;&nbsp;&nbsp;&nbsp;
+											<label class="inline">
+												<input type="checkbox" class="ace" name="transOutType" value="2"  >
+												<span class="lbl">银行卡</span>
+											</label>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div id="unBind" style="display:none;" class="noDataTipsPage table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+								<div style="margin-bottom:0px;font-size: 20px;" class="alert alert-success center">
+									未绑定
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doUpdateBindAccount();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 修改密码-->
+<div id="updatePWD4clone" class="modal fade">
+	<input type="hidden" id="mobile"/>
+	<div  class="modal-dialog modal-lg" style="width:920px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					<span>修改已绑账号密码</span>
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<table  style="border:none;">
+					<thead>
+						<tr>
+							<th style="width:100px;"></th>
+							<th style="width:220px;"></th>
+							<th style="width:80px;"></th>
+							<th style="width:220px;"></th>
+							<th style="width:80px;"></th>
+							<th style="width:220px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>银行卡</td>
+							<td>
+								<input class="input-sm width200" type="hidden" name="bank" disabled value="">
+								<input class="input-sm width200" type="text" name="bankHide" disabled placeholder="未设置" value="">
+							</td>
+							<td>登陆密码</td>
+							<td><input type="password" class="input-sm width200" name="singBank" placeholder="未设置" value=""/></td>
+							<td>支付密码</td>
+							<td><input type="password" class="input-sm width200" name="pingBank" placeholder="未设置" value=""/></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>银行密码</td>
+							<td><input type="password" class="input-sm width200" name="bingBank" placeholder="未设置" value="" /></td>
+							<td>U盾密码</td>
+							<td><input type="password" class="input-sm width200" name="uingBank" placeholder="未设置" value="" /></td>
+						</tr>
+						<tr>
+							<td>微信</td>
+							<td>
+								<input class="input-sm width200" type="hidden" disabled name="wechat" value="">
+								<input class="input-sm width200" type="text" disabled placeholder="未设置" name="wechatHide" value="">
+							</td>
+							<td>登陆密码</td>
+							<td><input type="password" class="input-sm width200" placeholder="未设置" name="singWechat" value=""/></td>
+							<td>支付密码</td>
+							<td><input type="password" class="input-sm width200" placeholder="未设置" name="pingWechat" value=""/></td>
+						</tr>
+						<tr>
+							<td>支付宝</td>
+							<td>
+								<input class="input-sm width200" type="hidden" disabled name="alipay">
+								<input class="input-sm width200" type="text" disabled placeholder="未设置" name="alipayHide">
+							</td>
+							<td>登陆密码</td>
+							<td><input type="password" class="input-sm width200" placeholder="未设置" name="singAlipay" value=""/></td>
+							<td>支付密码</td>
+							<td><input type="password" class="input-sm width200" placeholder="未设置" name="pingAlipay" value=""/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" type="button" onclick="doUpdatePWD();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 修改已绑账号状态-->
+<div id="updateBindStatus4clone" class="modal fade">0
+	<input type="hidden" id="mobile"/>
+	<input type="hidden" id="account"/>
+	<div  class="modal-dialog modal-lg" style="width:350px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					<span>修改已绑账号状态</span>
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<div class="tabbable">
+					<input type="hidden" id='updateBindAccount_tabType' value='bank'>
+					<ul class="nav nav-tabs">
+						<li onclick="updateBindStatus_changeTab('bank')" class="active"><a data-toggle="tab" href="#tab">银行卡</a></li>
+						<li onclick="updateBindStatus_changeTab('wechat')" ><a data-toggle="tab" href="#tab">微信</a></li>
+						<li onclick="updateBindStatus_changeTab('alipay')" ><a data-toggle="tab" href="#tab">支付宝</a></li>
+					</ul>
+					<div class="tab-content padding-2">
+						<div id="tabStatus" class="tab-pane active">
+							<table  style="border:none;">
+								<thead>
+								<tr><th style="width:100px;"></th><th style="width:250px;"></th></tr>
+								</thead>
+								<tbody>
+								<tr>
+									<td>账号</td>
+									<td><input type="text" class="input-sm width200" name="account" disabled/></td>
+								</tr>
+								<tr>
+									<td>状态</td>
+									<td>
+										<div style="height:30px;line-height:30px;color:#333">
+											<label class="form-group bl"><input type="radio" name="status" value="1"><span>启用</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+											<label class="form-group bl"><input type="radio" name="status" value="4"><span>停用</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+											<label class="form-group bl"><input type="radio" name="status" value="3"><span>冻结</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+										</div>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+							<div id="unBind" style="" class="noDataTipsPage table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+								<div style="margin-bottom:0px;font-size: 20px;" class="alert alert-success center">
+									未绑定
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-primary" id="updateBindStatus_ok" type="button" onclick="doUpdateBindStatus();">确认</button>
+				<button class="btn btn-danger" type="button" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 获取已绑账号二维码-->
+<div id="searchBindQR" class="modal fade">
+	<input type="hidden" id="mobile"/>
+	<div  class="modal-dialog modal-lg" style="width:800px;">
+		<div class="modal-content">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button>
+					<span>修改已绑账号状态</span>
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<div class="tabbable">
+					<input type="hidden" id='searchBindQR_tabType' value='4'>
+					<ul class="nav nav-tabs">
+						<li onclick="searchBindQR_changeTab('4')" class="active" ><a data-toggle="tab" href="#wechatAlipayQRInfo">微信</a></li>
+						<li onclick="searchBindQR_changeTab('3')" ><a data-toggle="tab" href="#wechatAlipayQRInfo">支付宝</a></li>
+						<label id="searchBtn" class="pull-right inline control-label bolder blue" style="line-height:30px;">
+							账号：<span id="account"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</label>
+					</ul>
+					<div class="tab-content padding-2">
+						<div id="wechatAlipayQRInfo" class="tab-pane active">
+							<!-- table查询条件与结果集  -->
+							<div id="dataDiv">
+								<!-- 查询条件 -->
+								<div id="searchBindQR_filter" style="z-index:1" class="col-sm-12 row header smaller lighter blue  less-margin no-margin-left">
+									<div class="col-sm-4">
+										<span class="label label-lg arrowed-right label-purple">金额</span>
+										<input name="minAmount" type="number" class="input-sm" style="width:69px;">
+										&nbsp;&nbsp;
+										<input name="maxAmount" type="number" class="input-sm" style="width:69px;">
+							        </div>
+									<div class="col-sm-8">
+										<label class="pull-right inline" >&nbsp;&nbsp;
+											<button class="btn btn-xs btn-white btn-warning btn-bold orange contentRight" 
+												contentright='IncomePhoneNumber:delQR:*' onclick='searchBindQR_doBatchDelQR()'>
+												<i class='ace-icon fa fa-trash-o bigger-100 red'></i>
+												<span>一键删除</span>
+											</button>
+										</label>
+										<label id="searchBtn" class="pull-right inline" onclick="searchBindQR_infoLoad();">&nbsp;&nbsp;
+											<button class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-search bigger-100 green"></i>
+												查询
+											</button>
+										</label>
+										<label onclick="reset('searchBindQR_filter');" class="pull-right inline">&nbsp;&nbsp;
+											<button class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-refresh bigger-100 green"></i>重置
+											</button>
+										</label>
+										<label class="pull-right inline contentRight" contentright="IncomePhoneNumber:genQR:*"  onclick="show_hide_do_genQr()">&nbsp;&nbsp;
+											<button class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-barcode barcode bigger-100 green"></i>
+												生成收款码
+											</button>
+										</label>
+										<label class="pull-right inline contentRight" contentright="IncomePhoneNumber:genQR:*"  onclick="searchBindQR_genZeroQR()">&nbsp;&nbsp;
+											<button class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon fa fa-barcode barcode bigger-100 green"></i>
+												生成0元收款码
+											</button>
+										</label>
+									</div>
+								</div>
+								<!-- 生成收款码部分 -->
+								<div class="col-sm-12 do_genQr" style="display:none;">
+									<h6 class="header smaller lighter blue no-margin no-padding">按导入金额生成</h6>
+									<div style="height:5px;">&nbsp;</div>
+									<p class="alert alert-success">
+										<label class="inline control-label bolder blue" >
+											上传TXT：
+										</label>
+										<span class='input-icon'>
+											<input id="file"  class="input-sm" type="file" accept=".txt" />
+											<i class='ace-icon fa fa-asterisk red'></i>
+										</span>
+										<label class="pull-right inline contentRight" contentright="IncomePhoneNumber:genQR:*" onclick="searchBindQR_genImportQR();">&nbsp;&nbsp;
+											<button class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon glyphicon glyphicon-ok bigger-100 green"></i>
+												确定生成
+											</button>
+										</label>
+									</p>
+								</div>
+								<div class="col-sm-12 do_genQr" style="display:none;">
+									<h6 class="header smaller lighter blue no-margin no-padding">按输入金额生成（多个金额请用英文逗号隔开，单个金额最大不可超过50000）</h6>
+									<div style="height:5px;">&nbsp;</div>
+									<p class="alert alert-success">
+										<label class="inline control-label bolder blue" >
+											生成金额：
+										</label>
+										<span class='input-icon'>
+											<input type="text" class="input-sm" onkeyup="this.value=this.value.replace(/[^\d\,]/g,'')" name="amount" style="width:470px;"  placeholder="如 :100 或:100,200,300" />
+											<i class='ace-icon fa fa-asterisk red'></i>
+										</span>&nbsp;&nbsp;
+										<label class="pull-right inline contentRight" contentright="IncomePhoneNumber:genQR:*" onclick="searchBindQR_genPrintQR();">&nbsp;&nbsp;
+											<button class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon glyphicon glyphicon-ok bigger-100 green"></i>
+												确定生成
+											</button>
+										</label>
+									</p>
+								</div>
+								<div class="col-sm-12 do_genQr" style="display:none;">
+									<h6 class="header smaller lighter blue no-margin no-padding">按间隔生成</h6>
+									<div style="height:5px;">&nbsp;</div>
+									<p class="alert alert-success">
+										<label class="inline control-label bolder blue" >
+											最小限额：
+										</label>
+										<span class='input-icon'>
+											<input type="number" class="input-sm" name="smallAmount" style="width:110px;" placeholder="如：1000" />
+											<i class='ace-icon fa fa-asterisk red'></i>
+										</span>&nbsp;&nbsp;
+										<label class="inline control-label bolder blue" >
+											最高限额：
+										</label>
+										<span class='input-icon'>
+											<input type="number" class="input-sm" name="limitAmount" style="width:110px;"  placeholder="如 50000" />
+											<i class='ace-icon fa fa-asterisk red'></i>
+										</span>&nbsp;&nbsp;
+										<label class="inline control-label bolder blue" >
+											间隔：
+										</label>
+										<span class='input-icon'>
+											<input type="number" class="input-sm" name="stepAmount" style="width:110px;"  placeholder="如 100" />
+											<i class='ace-icon fa fa-asterisk red'></i>
+										</span>&nbsp;&nbsp;
+										<label class="pull-right inline contentRight" contentright="IncomePhoneNumber:genQR:*" onclick="searchBindQR_genQR();">&nbsp;&nbsp;
+											<button class="btn btn-xs btn-white btn-info btn-bold">
+												<i class="ace-icon glyphicon glyphicon-ok bigger-100 green"></i>
+												确定生成
+											</button>
+										</label>
+										<label class="red" style="line-height:30px;">
+											温馨提示：<br/>
+											1.最小限额及以下的金额，每个整数金额都会生成，如：1,2,3...<br/>
+											2.最小限额 - 最高限额的间隔，如：最小限额1000，最高限额5000，间隔100，生成：1100,1200,1300...5000<br/>
+										</label>
+									</p>
+								</div>
+								<!-- 收款码列表 -->
+								<table id="tableQRList" style="border:none;" class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+									<tr>
+										<th>
+											<label class="pos-rel" onclick="checkedAll_batchDelQR();">
+												<input type="checkbox" class="ace defaultNoCheck" id="checkedBbatchDelQR" />
+												<span class="lbl"></span>
+											</label>
+										</th>
+										<th>序号</th>
+										<th style="width:50%">二维码链接</th>
+										<th>金额</th>
+										<th>操作</th>
+									</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="searchBindQRPage"></div>
+							</div>
+							<div id="unBind" style="display:none;" class="noDataTipsPage table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+								<div style="margin-bottom:0px;font-size: 20px;" class="alert alert-success center">
+									未绑定
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 modal-footer no-margin center">
+				<button class="btn btn-danger" type="button" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalWithdrawCash.js"></script>

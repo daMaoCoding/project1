@@ -1,0 +1,386 @@
+
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="tabbable">
+						<ul class="nav nav-tabs" id="myTab3">
+							<li  class="active">
+								<a data-toggle="tab" id="accounttab" href="#finOutStatTab"><i class="ace-icon fa fa-credit-card bigger-110 red"></i>按账号统计</a>
+							</li>
+							<li>
+								<a data-toggle="tab" id="handicaptab" href="#handicapTab"><i class=" ace-icon fa fa-user bigger-110 blue"></i>按盘口统计</a>
+							</li>
+							 <li>
+			                    <a data-toggle="tab" href="#QuickQuery">
+			                        <i class="ace-icon fa fa-rocket  bigger-110 red"></i>
+			                        	快捷查询
+			                    </a>
+			                </li>
+						</ul>
+						<!-- 账号统计 -->
+						<div class="tab-content" style="padding-top: 0px;">
+							<div id="finOutStatTab" class="tab-pane in active">
+								<h3 class="row">
+									<div class="col-sm-12">
+										<form class="form-inline">
+											<span class="label label-lg label-pink arrowed-right">账号</span>
+											<input type="text" id="account" name="account" style="height:32px;width: 150px" class="input-medium" placeholder="例：95588251478526" />
+											<span class="label label-lg label-pink arrowed-right">开户人</span>
+											<input type="text" id="accountOwner" name="accountOwner" style="height:32px;width: 52px;" class="input-medium"/>
+											<span class="label label-lg label-pink arrowed-right">银行类别</span>
+				                            <select onchange="queryAccountStatistics();" id="bankType" name="bankType" class="chosen-select form-control" style="height:32px;width:100px;">
+				                                <option value="">请选择</option>
+				                            </select>
+											<div class="input-group">
+											<span class="input-group-addon">
+											<i class="fa fa-calendar bigger-90"></i>
+											</span>
+												<input class="form-control date-range-picker" onclick="clearRadioValue('form-field-checkbox');" type="text" id="startAndEndTime" name="startAndEndTime" style="height: 32px;width:220px;"/>
+											</div>
+											<!-- <label class="inline">
+												<input type="radio" checked="checked" value="today" name="form-field-checkbox" class="ace" />
+												<span class="lbl"> 今日</span>
+											</label> -->
+											<label class="inline">
+												<input type="radio" checked="checked" value="thisWeek" name="form-field-checkbox" class="ace" />
+												<span class="lbl"> 昨日</span>
+											</label>
+											<label class="inline">
+												<input type="radio" value="week" name="form-field-checkbox" class="ace"/>
+												<span class="lbl"> 本周</span>
+											</label>
+											<label class="inline">
+												<input type="radio" value="lastweek" name="form-field-checkbox" class="ace"/>
+												<span class="lbl"> 上周</span>
+											</label>
+											<label class="inline">
+												<input type="radio" value="thisMonth" name="form-field-checkbox" class="ace" />
+												<span class="lbl"> 本月</span>
+											</label>
+											<!-- <label class="inline">
+												<input type="radio" onclick="clearStartAndEndTime()" value="lastMonth" name="form-field-checkbox" class="ace" />
+												<span class="lbl"> 上月</span>
+											</label>-->
+											<br/>
+											<span class="label label-lg label-pink arrowed-right">盘口</span>
+											<select onchange="queryAccountStatistics();" name="search_account_handicapId" id="search_account_handicapId" class="chosen-select form-control"   style="height:32px;width: 150px;" >
+												
+											</select>
+											<span class="label label-lg label-pink arrowed-right">类型</span>
+											<label class="inline">
+												<input type="radio" checked="checked" onclick="queryAccountStatistics();" value="" name="carType" class="ace" />
+												<span class="lbl"> 全部</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="queryAccountStatistics();" value="5" name="carType" class="ace" />
+												<span class="lbl">出款卡</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="queryAccountStatistics();" value="1" name="carType" class="ace" />
+												<span class="lbl">入款卡</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="queryAccountStatistics();" value="14" name="carType" class="ace" />
+												<span class="lbl">客户绑定卡</span>
+											</label>
+											
+											<span style="float:right;">
+												<a onclick="showExportModal_InOut(-2,'income')" type="button"  class="btn btn-xs btn-white btn-primary btn-bold">
+		                                          <i class="ace-icon fa fa-list  bigger-100 blue"></i>导出</a>
+											</span>
+											<label class="pull-right inline">
+												<button id="searhByCondition" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+													<i class="ace-icon fa fa-search bigger-100 green"></i>
+													查询
+												</button>
+											</label>
+										</form>
+									</div>
+								</h3>
+								<table  class="table table-striped table-bordered table-hover no-margin-bottom" >
+								<thead>
+									<tr>
+										<th rowspan="2" class="center">序号</th>
+										<th rowspan="2" class="center">盘口</th>
+										<th rowspan="2" class="center">账号</th>
+										<th rowspan="2" class="center">余额</th>
+										<th colspan="2" class="center">流水</th>
+										<th colspan="2" class="center">系统</th>
+										<th rowspan="2" class="center">手续费</th>
+										<th rowspan="2" class="center">手续费笔数</th>
+										<th rowspan="2" class="center">亏损金额</th>
+										<th rowspan="2" class="center">亏损笔数</th>
+										<th rowspan="2" class="center">操作</th>
+									</tr>
+									<tr>
+										<th  class="center">金额</th>
+										<th  class="center">笔数</th>
+										<th  class="center">金额</th>
+										<th  class="center">笔数</th>
+									</tr>
+									</thead>
+									<tbody id="total_tbody">
+										
+           							</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="finOutStatPage"></div>
+								<!-- #section:pages-footer end-->
+							</div>
+							
+							
+							<!-- 盘口统计 -->
+							<div id="handicapTab" class="tab-pane">
+								<h3 class="row">
+									<div class="col-sm-12">
+										<div class="form-inline">
+											<span class="label label-lg label-pink arrowed-right">盘口</span>
+											<select onchange="changeLevel();queryHandicap();" name="search_EQ_handicapId" id="search_EQ_handicapId" class="chosen-select form-control"   style="height:32px" >
+												
+											</select>
+											<span style="display: none;" class="label label-lg label-purple  arrowed-right">层级</span>
+											<select style="display: none;" disabled name="search_EQ_LevelId" onchange="queryHandicap()" id="search_EQ_LevelId" class="chosen-select form-control"   style="height:32px" >
+												
+											</select>
+											<div class="input-group">
+											<span class="input-group-addon">
+											<i class="fa fa-calendar bigger-110"></i>
+											</span>
+												<input class="form-control date-range-picker-handicap" onclick="clearRadioValue('form-field-checkboxHandicap');" placeholder="自定义时间段" type="text" name="startAndEndTimeHandicap" id="startAndEndTimeHandicap" style="height: 32px;width:250px;" />
+											</div>
+											<!-- <label class="inline">
+												<input type="radio" onclick="clearStartAndEndTimeHandicap()" name="form-field-checkboxHandicap" value="today" class="ace"/>
+												<span class="lbl"> 今日</span>
+											</label> -->
+											<label class="inline">
+												<input type="radio" checked="checked" onclick="clearStartAndEndTimeHandicap()" name="form-field-checkboxHandicap" value="thisWeek" class="ace" />
+												<span class="lbl"> 昨日</span>
+											</label>
+											<label class="inline">
+												<input type="radio" value="week" onclick="clearStartAndEndTimeHandicap()" name="form-field-checkboxHandicap" class="ace"/>
+												<span class="lbl"> 本周</span>
+											</label>
+											<label class="inline">
+												<input type="radio" value="lastweek" onclick="clearStartAndEndTimeHandicap()" name="form-field-checkboxHandicap" class="ace"/>
+												<span class="lbl"> 上周</span>
+											</label>
+											<label class="inline">
+												<input type="radio" onclick="clearStartAndEndTimeHandicap()" name="form-field-checkboxHandicap" value="thisMonth" class="ace" />
+												<span class="lbl"> 本月</span>
+											</label>
+											<!-- <label class="inline">
+												<input type="radio" onclick="clearStartAndEndTimeHandicap()" name="form-field-checkboxHandicap" value="lastMonth" class="ace" />
+												<span class="lbl"> 上月</span>
+											</label> -->
+											
+											<label class="pull-right inline">
+												<a class="btn btn-xs btn-white btn-primary btn-bold" onclick="showMoal(8888,8888);">
+													<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+											    </a>
+												<button id="searhByConditionHandicap" type="button" class="btn btn-xs btn-white btn-info btn-bold">
+													<i class="ace-icon fa fa-search bigger-100 green"></i>
+													查询
+												</button>
+											</label>
+										</div>
+									</div>
+								</h3>
+								
+								
+								<!--盘口统计-->
+								<table id="dynamic-table" class="table table-striped table-bordered table-hover no-margin-bottom">
+									<thead>
+									<tr>
+										<th>盘口</th>
+										<!-- <th>层级</th> -->
+										<th>金额</th>
+										<th>手续费</th>
+										<th>笔数</th>
+										<th>操作</th>
+									</tr>
+									</thead>
+									<tbody id="total_tbodyHandicap">
+									
+          								</tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="finHandicapPage"></div>
+								<!-- #section:pages-footer end-->
+							</div>
+							
+							<!-- 快捷查询 -->
+							<div id="QuickQuery" class="tab-pane">
+						        <h3 class="row header smaller lighter blue">
+						            <div class="col-sm-12">
+						                <form class="form-inline">
+					                        <span class="label label-lg label-primary arrowed-right">会员名</span>
+					                        <input id="member_QuickQuery" class="input-large " type="text" style="height: 32px;width:8%;"/>
+					                        &nbsp;
+					                        <span class="label label-lg label-primary arrowed-right">订单号</span>
+					                        <input id="orderNo_QuickQuery" class="input-large " type="text" style="height: 32px;width:15%;"/>
+						                    &nbsp;
+						                    <button type="button" onclick="_searchQuickQuery();"
+			                                        id="button_QuickQuery"
+			                                        class="btn btn-xs btn-white btn-info btn-bold ">
+			                                    <i class="ace-icon fa fa-search bigger-100 green"></i>
+			                                         	查询
+			                                </button>
+			                                &nbsp;&nbsp;
+						                    <a class="btn btn-xs btn-white btn-primary btn-bold" onclick="showMoal(0,0);">
+												<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+											</a>
+						                </form>
+						            </div>
+						        </h3>
+						        <table class="table table-bordered table-hover no-margin-bottom">
+						            <thead>
+						            <tr>
+						                <th style="width: 4%;">盘口</th>
+						                <th style="width: 5%;">层级</th>
+						                <th style="width: 8%;">会员名</th>
+						                <th style="width: 15%">订单号</th>
+						                <th style="width: 8%">订单金额</th>
+						                <th style="width: 8%">任务金额</th>
+						                <th style="width: 12%">审核状态</th>
+						                <th style="width: 12%">出款状态</th>
+						                <th style="width: 12%">审核时间</th>
+						                <th style="width: 12%">出款时间</th>
+						                <th style="width: 4%">备注</th>
+						            </tr>
+						            </thead>
+						            <tbody id="tbody_QuickQuery">
+						            </tbody>
+						        </table>
+						        <div id="QuickQuery_footPage"></div>
+						    </div>
+						</div>
+					</div>
+				</div><!-- /.col -->
+			</div><!-- /.row -->
+		</div>
+	</div>
+</div>
+
+<!-- 导出选择弹出框 -->
+<div id="choiceExportModal" class="modal fade " tabindex="-1">
+	<input type="hidden" id="accountId"/>
+	<div class="modal-dialog modal-lg" style="width:400px;">
+	<div class="modal-content">
+		<div class="modal-header no-padding text-center">
+			<div class="table-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="white">&times;</span>
+				</button>导出
+			</div>
+		</div>
+		<div class="modal-body">
+			<div class="widget-box">
+				<div class="widget-header">
+					<h4 class="smaller">
+						出款明细
+					</h4>
+				</div>
+				<div class="widget-body">
+					<div class="widget-main" id="widget_sys">
+						<label class="control-label bolder blue">时间</label>
+						<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+						<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime_sys" style="height: 32px;width:290px;"/>
+						<div class="control-group">
+							<div class="radio">
+								<span class="lbl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								<label>
+									<input name="parentfieldval_sys" type="radio" class="ace" value="today">
+									<span class="lbl">今日</span>
+								</label>
+								<label>
+									<input name="parentfieldval_sys" type="radio" class="ace" value="yesterday">
+									<span class="lbl">昨日</span>
+								</label>
+								<label>
+									<input name="parentfieldval_sys" type="radio" class="ace" value="thisMonth">
+									<span class="lbl">本月</span>
+								</label>
+							</div>
+						</div>
+						<div style="text-align:center;">
+							<a class="btn btn-sm btn-success" id="sysLink" onclick="beforeExport(this,'sys','/r/export/exportoutwardSys');">
+								<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="widget-box">
+				<div class="widget-header">
+					<h4 class="smaller">
+						流水明细
+					</h4>
+				</div>
+				<div class="widget-body">
+					<div class="widget-main" id="widget_bank">
+						<label class="control-label bolder blue">时间</label>
+						<span class="input-group-addon sr-only"><i class="fa fa-calendar bigger-110"></i></span>
+						<input class="date-range-picker" type="text" placeholder="请选择起始日期" name="startAndEndTime_bank" style="height: 32px;width:290px;"/>
+						<div class="control-group">
+							<div class="radio">
+								<span class="lbl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								<label>
+									<input name="parentfieldval_bank" type="radio" class="ace" value="today">
+									<span class="lbl">今日</span>
+								</label>
+								<label>
+									<input name="parentfieldval_bank" type="radio" class="ace" value="yesterday">
+									<span class="lbl">昨日</span>
+								</label>
+								<label>
+									<input name="parentfieldval_bank" type="radio" class="ace" value="thisMonth">
+									<span class="lbl">本月</span>
+								</label>
+							</div>
+						</div>
+						<div style="text-align:center;">
+							<a class="btn btn-sm btn-success" id="bankLogLink" onclick="beforeExport(this,'bank','/r/export/exportBankLog');">
+									<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- modalbox 快捷查询点击导出弹出-->
+<div class="modal inmodal" id="exportParagraph" tabindex="-1" role="dialog"  aria-hidden="true">
+	<div class="form-inline">
+		<div class="modal-dialog modal-lg" style="width: 500px;">
+			<div class="modal-header no-padding text-center">
+				<div class="table-header" style="width: 500px;"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="white">&times;</span></button><span style="font-size: 16pt;">导出出款单信息</span></div>
+			</div>
+			<div class="modal-content" style="width: 500px;height: 68px;padding-top: 10px;">
+				<span class="label label-lg label-pink arrowed-right">盘口</span>
+				<select onchange="changeHandicap()" name="exportHandicap" id="exportHandicap" class="chosen-select form-control"   style="height:32px" >
+					
+				</select>
+				 <div class="input-group">
+					<span class="input-group-addon">
+						<i class="fa fa-calendar bigger-110"></i>
+					</span>
+					<input class="form-control date-range-picker-export" type="text" id="exportStartAndEndTime" name="exportStartAndEndTime" style="height: 32px;width:250px;"/>
+				</div>
+				<a class="btn btn-xs btn-white btn-primary btn-bold" id="exportOut">
+					<i class="fa fa-cloud-download" aria-hidden="true"></i>&nbsp;&nbsp;导出
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript"  src="../javascript/common/common_getInfo.js"></script>
+<script type="text/javascript"  src="../javascript/common/common_export.js"></script>
+<script type="text/javascript"  src="../javascript/common/modalBankLogList.js"></script>
